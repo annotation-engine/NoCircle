@@ -10,6 +10,8 @@ plugins {
 	alias(libs.plugins.kotlin.serialization)
 }
 
+val noCircleVersion = property("no-circle.version").toString()
+
 kotlin {
 	androidTarget {
 		compilerOptions {
@@ -40,26 +42,13 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-//			implementation(compose.preview)
-//			implementation(libs.androidx.activity.compose)
 			implementation(projects.noCircleCompose)
 		}
 		commonMain.dependencies {
-//			implementation(compose.runtime)
-//			implementation(compose.foundation)
-//			implementation(compose.material3)
-//			implementation(compose.ui)
-//			implementation(compose.components.resources)
-//			implementation(compose.components.uiToolingPreview)
-//			implementation(compose.materialIconsExtended)
-//			implementation(libs.androidx.lifecycle.viewmodel)
-//			implementation(libs.androidx.lifecycle.runtime.compose)
-//			implementation(libs.navigation.compose)
 			implementation(projects.noCircleCompose)
+			implementation(compose.components.resources)
 		}
 		desktopMain.dependencies {
-//			implementation(compose.desktop.currentOs)
-//			implementation(libs.kotlinx.coroutines.swing)
 			implementation(projects.noCircleCompose)
 		}
 	}
@@ -77,7 +66,7 @@ android {
 		minSdk = libs.versions.android.minSdk.get().toInt()
 		targetSdk = libs.versions.android.targetSdk.get().toInt()
 		versionCode = 1
-		versionName = "1.0.0"
+		versionName = noCircleVersion
 	}
 	packaging {
 		resources {
@@ -109,12 +98,12 @@ compose.desktop {
 		nativeDistributions {
 			targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
 			packageName = "com.nocircle.app"
-			packageVersion = "1.0.0"
+			packageVersion = noCircleVersion
 		}
 	}
 }
 
 compose.resources {
 	packageOfResClass = "com.nocircle.app.generated.resources"
-	publicResClass = true
+	publicResClass = false
 }

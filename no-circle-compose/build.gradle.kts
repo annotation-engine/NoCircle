@@ -48,12 +48,13 @@ kotlin {
 			api(compose.foundation)
 			api(compose.material3)
 			api(compose.ui)
-			api(compose.components.resources)
+			implementation(compose.components.resources)
 			api(compose.components.uiToolingPreview)
 			api(compose.materialIconsExtended)
 			api(libs.androidx.lifecycle.viewmodel)
 			api(libs.androidx.lifecycle.runtime.compose)
 			api(libs.navigation.compose)
+			api(libs.bundles.ktor.client)
 		}
 		desktopMain.dependencies {
 			api(compose.desktop.currentOs)
@@ -71,7 +72,6 @@ android {
 	
 	defaultConfig {
 		minSdk = libs.versions.android.minSdk.get().toInt()
-		targetSdk = libs.versions.android.targetSdk.get().toInt()
 	}
 	packaging {
 		resources {
@@ -96,19 +96,7 @@ dependencies {
 	debugImplementation(compose.uiTooling)
 }
 
-compose.desktop {
-	application {
-		mainClass = "com.nocircle.app.MainKt"
-		
-		nativeDistributions {
-			targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-			packageName = "com.nocircle.app"
-			packageVersion = "1.0.0"
-		}
-	}
-}
-
 compose.resources {
-	packageOfResClass = "com.nocircle.app.generated.resources"
-	publicResClass = true
+	packageOfResClass = "com.nocircle.compose.generated.resources"
+	publicResClass = false
 }

@@ -5,6 +5,8 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -17,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.DefaultShadowColor
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -25,13 +28,19 @@ fun NoInput(
 	value: String,
 	onValueChange: (String) -> Unit,
 	modifier: Modifier = Modifier,
+	enabled: Boolean = true,
+	readOnly: Boolean = false,
 	placeholder: String? = null,
 	leadingIcon: @Composable (() -> Unit)? = null,
 	trailingIcon: @Composable (() -> Unit)? = null,
+	isError: Boolean = false,
+	visualTransformation: VisualTransformation = VisualTransformation.None,
+	keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+	keyboardActions: KeyboardActions = KeyboardActions.Default,
+	interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
 	val focusedColor = MaterialTheme.colorScheme.primary
 	val unfocusedColor = MaterialTheme.colorScheme.outline
-	val interactionSource = remember { MutableInteractionSource() }
 	val isFocused by interactionSource.collectIsFocusedAsState()
 	val shadowElevation by animateDpAsState(
 		targetValue = if (isFocused) 4.dp else 2.dp
@@ -47,6 +56,8 @@ fun NoInput(
 				ambientColor = DefaultShadowColor.copy(alpha = 0.6f),
 				spotColor = DefaultShadowColor.copy(alpha = 0.6f)
 			),
+		enabled = enabled,
+		readOnly = readOnly,
 		textStyle = LocalTextStyle.current.copy(
 			fontSize = 16.sp,
 			lineHeight = 24.sp
@@ -73,6 +84,12 @@ fun NoInput(
 		trailingIcon = trailingIcon?.let {
 			{ if (isFocused) it() }
 		},
+		isError = isError,
+		visualTransformation = visualTransformation,
+		keyboardOptions = keyboardOptions,
+		keyboardActions = keyboardActions,
+		singleLine = true,
+		interactionSource = interactionSource,
 		shape = MaterialTheme.shapes.large,
 		colors = OutlinedTextFieldDefaults.colors(
 			focusedBorderColor = focusedColor,
@@ -80,7 +97,5 @@ fun NoInput(
 			focusedContainerColor = MaterialTheme.colorScheme.surface,
 			unfocusedContainerColor = MaterialTheme.colorScheme.surface,
 		),
-		singleLine = true,
-		interactionSource = interactionSource
 	)
 }

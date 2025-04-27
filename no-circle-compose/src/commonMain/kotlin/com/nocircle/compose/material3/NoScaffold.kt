@@ -7,11 +7,10 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -41,7 +40,7 @@ fun NoScaffold(
 	contentColor: Color = contentColorFor(containerColor),
 	contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
 	backgroundColors: List<Color> = NoScaffoldDefaults.DefaultBackgroundColors,
-	content: @Composable BoxScope.() -> Unit
+	content: @Composable (PaddingValues) -> Unit
 ) {
 	Scaffold(
 		modifier = modifier,
@@ -83,9 +82,8 @@ fun NoScaffold(
 							end = end
 						)
 					)
-					.padding(paddingValues)
 			) {
-				content()
+				content(paddingValues)
 			}
 		}
 	}
@@ -95,7 +93,7 @@ object NoScaffoldDefaults {
 	
 	val DefaultBackgroundColors: List<Color>
 		@Composable get() = listOf(
-			MaterialTheme.colorScheme.primaryContainer.copy(0.3f),
-			MaterialTheme.colorScheme.tertiaryContainer.copy(0.6f)
+			MaterialTheme.colorScheme.primaryContainer.copy(0.4f),
+			MaterialTheme.colorScheme.tertiaryContainer.copy(0.4f)
 		)
 }

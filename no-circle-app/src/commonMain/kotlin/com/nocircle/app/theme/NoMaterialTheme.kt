@@ -7,6 +7,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.nocircle.app.theme.colors.ColorSchemeContrast
+import com.nocircle.app.theme.colors.ColorSchemeGroup
+import com.nocircle.app.theme.colors.DefaultColorSchemeGroup
+import com.nocircle.app.theme.colors.getColorScheme
 
 @Composable
 fun NoMaterialTheme(
@@ -17,9 +21,10 @@ fun NoMaterialTheme(
 		NoThemes.darkTheme = darkTheme
 	}
 	
-	val colorScheme = NoThemes.colorSchemes.let {
-		if (darkTheme) it.darkColorScheme else it.lightColorScheme
-	}
+	val colorScheme = NoThemes.colorSchemeGroup.getColorScheme(
+		contrast = NoThemes.colorSchemeContrast,
+		isDark = darkTheme
+	)
 	MaterialTheme(
 		colorScheme = colorScheme,
 		content = content
@@ -28,7 +33,9 @@ fun NoMaterialTheme(
 
 object NoThemes {
 	
-	var colorSchemes by mutableStateOf<ColorSchemes>(DefaultColorSchemes)
+	val colorSchemeGroup by mutableStateOf<ColorSchemeGroup>(DefaultColorSchemeGroup)
+	
+	val colorSchemeContrast by mutableStateOf(ColorSchemeContrast.Standard)
 	
 	var darkTheme by mutableStateOf(false)
 }
