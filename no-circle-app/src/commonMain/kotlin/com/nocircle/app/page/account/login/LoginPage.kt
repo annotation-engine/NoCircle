@@ -12,6 +12,9 @@ import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,13 +37,23 @@ import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoInput
 import com.nocircle.compose.material3.NoScaffold
+import com.nocircle.compose.material3.NoSnackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 
 @Composable
 fun LoginPage(
 	navController: NavController,
-	viewModel: LoginViewModel = remember { LoginViewModel() },
+	hostState: SnackbarHostState = remember { SnackbarHostState() },
+	viewModel: LoginViewModel = remember { LoginViewModel(hostState) },
 ) {
-	NoScaffold {
+	NoScaffold(
+		snackbarHost = {
+			SnackbarHost(hostState) {
+				NoSnackbar(it)
+			}
+		}
+	) {
 		Column(
 			modifier = Modifier
 				.fillMaxSize()
@@ -52,6 +65,7 @@ fun LoginPage(
 				style = MaterialTheme.typography.displayLarge
 			)
 			Spacer(modifier = Modifier.height(40.dp))
+			
 			val username = viewModel.username.collectAsState()
 			NoInput(
 				value = username.value,
@@ -60,6 +74,7 @@ fun LoginPage(
 				leadingIcon = { NoIcon(Icons.Outlined.AccountBox) }
 			)
 			Spacer(modifier = Modifier.height(24.dp))
+			
 			val password = viewModel.password.collectAsState()
 			val showPassword = viewModel.showPassword.collectAsState()
 			NoInput(
@@ -78,11 +93,20 @@ fun LoginPage(
 				visualTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation()
 			)
 			Spacer(modifier = Modifier.height(120.dp))
+			
 			NoButton(
 				text = Res.string.login.value,
 				modifier = Modifier.fillMaxWidth(),
+				context = Dispatchers.IO
 			) {
-			
+				val success = viewModel.login()
+				if (success) {
+					navController.navigate(AppRoute.MAIN) {
+						popUpTo(AppRoute.ACCOUNT_LOGIN) {
+							inclusive = true
+						}
+					}
+				}
 			}
 			Spacer(modifier = Modifier.height(24.dp))
 			NoButton(

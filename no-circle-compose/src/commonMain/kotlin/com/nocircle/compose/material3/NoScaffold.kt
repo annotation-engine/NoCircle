@@ -93,7 +93,7 @@ object NoScaffoldDefaults {
 	
 	val DefaultBackgroundColors: List<Color>
 		@Composable get() = listOf(
-			MaterialTheme.colorScheme.primaryContainer.copy(0.4f),
-			MaterialTheme.colorScheme.tertiaryContainer.copy(0.4f)
+			MaterialTheme.colorScheme.primaryContainer.copy(0.3f),
+			MaterialTheme.colorScheme.tertiaryContainer.copy(0.6f)
 		)
 }

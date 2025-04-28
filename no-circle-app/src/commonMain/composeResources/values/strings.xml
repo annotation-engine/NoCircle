@@ -1,8 +1,12 @@
 <resources>
 	<string name="login">登录</string>
-	<string name="login_username">用户名</string>
-	<string name="login_password">密码</string>
 	<string name="login_please_input_username">请输入用户名</string>
 	<string name="login_please_input_password">请输入密码</string>
 	<string name="login_to_register">去注册</string>
+	
+	<string name="register">注册</string>
+	<string name="register_please_input_username">请输入用户名</string>
+	<string name="register_please_input_password">请输入密码</string>
+	<string name="register_please_confirm_password">请确认密码</string>
+	<string name="register_back_to_login">返回登录</string>
 </resources>

@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -35,7 +34,7 @@ fun NoButton(
 	fontWeight: FontWeight? = null,
 	colors: NoButtonColors = NoButtonDefaults.DefaultButtonColors,
 	context: CoroutineContext = EmptyCoroutineContext,
-	onClick: (suspend CoroutineScope.() -> Unit)? = null
+	onClick: (suspend CoroutineScope.() -> Unit)? = null,
 ) {
 	val interactionSource = remember { MutableInteractionSource() }
 	val isPressed by interactionSource.collectIsPressedAsState()
@@ -56,11 +55,11 @@ fun NoButton(
 			.height(56.dp)
 			.shadow(
 				elevation = shadowElevation,
-				shape = MaterialTheme.shapes.large,
+				shape = MaterialTheme.shapes.medium,
 				ambientColor = DefaultShadowColor.copy(alpha = 0.6f),
 				spotColor = DefaultShadowColor.copy(alpha = 0.6f)
 			),
-		shape = RoundedCornerShape(16.dp),
+		shape = MaterialTheme.shapes.medium,
 		colors = ButtonDefaults.buttonColors(
 			containerColor = colors.containerColor,
 			contentColor = colors.contentColor,
@@ -85,7 +84,7 @@ object NoButtons {
 		containerColor: Color = MaterialTheme.colorScheme.primary,
 		contentColor: Color = MaterialTheme.colorScheme.onPrimary,
 		disabledContainerColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-		disabledContentColor: Color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+		disabledContentColor: Color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
 	): NoButtonColors = NoButtonColors(containerColor, contentColor, disabledContainerColor, disabledContentColor)
 	
 	val PrimaryColors: NoButtonColors
@@ -165,5 +164,5 @@ class NoButtonColors internal constructor(
 	val containerColor: Color,
 	val contentColor: Color,
 	val disabledContainerColor: Color,
-	val disabledContentColor: Color
+	val disabledContentColor: Color,
 )

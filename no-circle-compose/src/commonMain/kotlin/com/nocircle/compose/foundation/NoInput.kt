@@ -5,6 +5,8 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
@@ -45,28 +47,32 @@ fun NoInput(
 	val shadowElevation by animateDpAsState(
 		targetValue = if (isFocused) 4.dp else 2.dp
 	)
+	val textStyle = LocalTextStyle.current.copy(
+		fontSize = 16.sp,
+		lineHeight = 24.sp
+	)
 	OutlinedTextField(
 		value = value,
 		onValueChange = onValueChange,
 		modifier = modifier
 			.fillMaxWidth()
+			.height(56.dp)
 			.shadow(
 				elevation = shadowElevation,
-				shape = MaterialTheme.shapes.large,
+				shape = MaterialTheme.shapes.medium,
 				ambientColor = DefaultShadowColor.copy(alpha = 0.6f),
 				spotColor = DefaultShadowColor.copy(alpha = 0.6f)
 			),
 		enabled = enabled,
 		readOnly = readOnly,
-		textStyle = LocalTextStyle.current.copy(
-			fontSize = 16.sp,
-			lineHeight = 24.sp
-		),
+		textStyle = textStyle,
 		placeholder = placeholder?.let {
 			{
 				Text(
 					text = it,
-					color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+					style = textStyle.copy(
+						color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+					)
 				)
 			}
 		},
@@ -90,7 +96,7 @@ fun NoInput(
 		keyboardActions = keyboardActions,
 		singleLine = true,
 		interactionSource = interactionSource,
-		shape = MaterialTheme.shapes.large,
+		shape = MaterialTheme.shapes.medium,
 		colors = OutlinedTextFieldDefaults.colors(
 			focusedBorderColor = focusedColor,
 			unfocusedBorderColor = unfocusedColor,
