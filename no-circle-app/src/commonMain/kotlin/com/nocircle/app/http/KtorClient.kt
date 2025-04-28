@@ -4,8 +4,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.http.URLProtocol
-import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -13,12 +11,7 @@ import kotlinx.serialization.json.Json
 val ktorClient by lazy {
 	HttpClient(CIO) {
 		defaultRequest {
-			url {
-				protocol = URLProtocol.HTTP
-				host = "10.0.2.2"
-				port = 8080
-				encodedPath = "/api"
-			}
+			url("http://10.0.2.2:8080/api/")
 		}
 		engine {
 			requestTimeout = 10_000L

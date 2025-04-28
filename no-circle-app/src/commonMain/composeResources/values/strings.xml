@@ -9,4 +9,8 @@
 	<string name="register_please_input_password">请输入密码</string>
 	<string name="register_please_confirm_password">请确认密码</string>
 	<string name="register_back_to_login">返回登录</string>
+	<string name="register_username_length_at_least_8">用户名至少是8位</string>
+	<string name="register_password_length_at_least_8">用户名至少是8位</string>
+	<string name="register_passwords_are_inconsistent_twice">两次密码不一致</string>
+	<string name="register_success">注册成功，请前往登录</string>
 </resources>

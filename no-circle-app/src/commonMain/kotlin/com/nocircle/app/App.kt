@@ -15,6 +15,7 @@ fun App() {
 		val navController = rememberNavController()
 		NavHost(navController, AppRoute.ACCOUNT_LOGIN) {
 			composable(AppRoute.ACCOUNT_LOGIN) {
+				println(it.destination.route?.toString())
 				LoginPage(navController)
 			}
 			

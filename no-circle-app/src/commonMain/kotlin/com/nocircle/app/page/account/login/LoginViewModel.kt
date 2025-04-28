@@ -1,12 +1,13 @@
 package com.nocircle.app.page.account.login
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
+import com.nocircle.app.generated.resources.Res
+import com.nocircle.app.generated.resources.login_please_input_password
+import com.nocircle.app.generated.resources.login_please_input_username
 import com.nocircle.app.http.ApiModel
 import com.nocircle.app.http.ktorClient
+import com.nocircle.compose.expends.value
 import com.nocircle.compose.material3.showNoSnackbar
 import io.ktor.client.call.body
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -43,20 +44,14 @@ class LoginViewModel(
 		val username = this.username.value
 		val password = this.password.value
 		if (username.isEmpty()) {
-			hostState.showNoSnackbar(
-				message = "请输入用户名请输入用户名请输入用户名请输入用户名请输入用户名请输入用户名请输入用户名请输入用户名请输入用户名请输入用户名",
-				actionLabel = "确定",
-				prefixIcon = Icons.Default.Warning,
-				withDismissAction = true,
-				duration = SnackbarDuration.Indefinite
-			)
+			hostState.showNoSnackbar(Res.string.login_please_input_username.value())
 			return false
 		}
 		if (password.isEmpty()) {
-			hostState.showSnackbar("请输入密码")
+			hostState.showNoSnackbar(Res.string.login_please_input_password.value())
 			return false
 		}
-		val response = ktorClient.post("/user/login") {
+		val response = ktorClient.post("user/login") {
 			contentType(ContentType.MultiPart.FormData)
 			val parts = formData {
 				append("username", username)
@@ -68,9 +63,10 @@ class LoginViewModel(
 			return false
 		}
 		val model = response.body<ApiModel<Login>>()
-		hostState.showSnackbar(model.msg)
 		if (model.success) {
-			// 储存 token
+			// 保存 token
+		} else {
+			hostState.showNoSnackbar(model.msg)
 		}
 		return model.success
 	}

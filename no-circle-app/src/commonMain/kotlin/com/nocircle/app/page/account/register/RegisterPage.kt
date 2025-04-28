@@ -6,13 +6,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -31,12 +32,17 @@ import com.nocircle.app.generated.resources.register_please_confirm_password
 import com.nocircle.app.generated.resources.register_please_input_password
 import com.nocircle.app.generated.resources.register_please_input_username
 import com.nocircle.compose.expends.not
+import com.nocircle.compose.expends.setResult
 import com.nocircle.compose.expends.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoInput
 import com.nocircle.compose.material3.NoScaffold
+import com.nocircle.compose.material3.NoSnackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterPage(
@@ -47,16 +53,19 @@ fun RegisterPage(
 	NoScaffold(
 		snackbarHost = {
 			SnackbarHost(hostState) {
-				Snackbar(it)
+				NoSnackbar(it)
 			}
 		}
 	) {
+		val verticalScroll = rememberScrollState()
 		Column(
 			modifier = Modifier
 				.fillMaxSize()
-				.padding(horizontal = 32.dp)
+				.verticalScroll(verticalScroll)
+				.padding(it)
+				.padding(horizontal = 40.dp)
 		) {
-			Spacer(modifier = Modifier.height(120.dp))
+			Spacer(modifier = Modifier.height(100.dp))
 			Text(
 				text = Res.string.register.value,
 				style = MaterialTheme.typography.displayLarge
@@ -113,10 +122,14 @@ fun RegisterPage(
 			NoButton(
 				text = Res.string.register.value,
 				modifier = Modifier.fillMaxWidth(),
+				context = Dispatchers.IO
 			) {
 				val success = viewModel.register()
 				if (success) {
-					navController.popBackStack()
+					launch(Dispatchers.Main) {
+						navController.setResult("username", username.value)
+						navController.popBackStack()
+					}
 				}
 			}
 			Spacer(modifier = Modifier.height(24.dp))

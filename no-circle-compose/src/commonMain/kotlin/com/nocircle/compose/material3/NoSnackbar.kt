@@ -1,6 +1,7 @@
 package com.nocircle.compose.material3
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarData
@@ -41,11 +43,10 @@ fun NoSnackbar(
 	modifier: Modifier = Modifier,
 	singleLine: Boolean = true,
 	maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
-	shape: Shape = MaterialTheme.shapes.small,
-	colors: NoSnackbarColors = NoSnackbars.Primary,
+	shape: Shape = MaterialTheme.shapes.medium,
+	colors: NoSnackbarColors = NoSnackbars.PrimaryColors,
 ) {
 	val visuals = snackbarData.visuals as? NoSnackbarVisuals ?: return
-	val colors = visuals.colors ?: colors
 	Row(
 		modifier = modifier
 			.fillMaxWidth()
@@ -59,7 +60,12 @@ fun NoSnackbar(
 				color = colors.containerColor,
 				shape = shape
 			)
-			.padding(12.dp),
+			.border(
+				width = 2.dp,
+				color = colors.contentColor.copy(alpha = 0.6f),
+				shape = shape
+			)
+			.padding(16.dp),
 		verticalAlignment = Alignment.CenterVertically
 	) {
 		if (visuals.prefixIcon != null) {
@@ -84,10 +90,10 @@ fun NoSnackbar(
 			Spacer(modifier = Modifier.width(8.dp))
 			Box(
 				modifier = Modifier
-					.clip(MaterialTheme.shapes.extraSmall)
+					.clip(MaterialTheme.shapes.small)
 					.background(
 						color = colors.actionColor,
-						shape = MaterialTheme.shapes.extraSmall
+						shape = MaterialTheme.shapes.small
 					)
 					.clickable {
 						snackbarData.performAction()
@@ -138,11 +144,11 @@ object NoSnackbars {
 		dismissActionContentColor: Color = MaterialTheme.colorScheme.onPrimary,
 	): NoSnackbarColors = NoSnackbarColors(containerColor, contentColor, prefixIconColor, actionColor, actionContentColor, dismissActionContentColor)
 	
-	val Primary: NoSnackbarColors
+	val PrimaryColors: NoSnackbarColors
 		@Composable
 		get() = colors()
 	
-	val Secondary: NoSnackbarColors
+	val SecondaryColors: NoSnackbarColors
 		@Composable
 		get() = colors(
 			containerColor = MaterialTheme.colorScheme.secondary,
@@ -153,7 +159,7 @@ object NoSnackbars {
 			dismissActionContentColor = MaterialTheme.colorScheme.onSecondary
 		)
 	
-	val Tertiary: NoSnackbarColors
+	val TertiaryColors: NoSnackbarColors
 		@Composable
 		get() = colors(
 			containerColor = MaterialTheme.colorScheme.tertiary,
@@ -164,7 +170,7 @@ object NoSnackbars {
 			dismissActionContentColor = MaterialTheme.colorScheme.onTertiary
 		)
 	
-	val Error: NoSnackbarColors
+	val ErrorColors: NoSnackbarColors
 		@Composable
 		get() = colors(
 			containerColor = MaterialTheme.colorScheme.error,
@@ -176,7 +182,8 @@ object NoSnackbars {
 		)
 }
 
-data class NoSnackbarColors(
+@ConsistentCopyVisibility
+data class NoSnackbarColors internal constructor(
 	val containerColor: Color,
 	val contentColor: Color,
 	val prefixIconColor: Color,
@@ -192,14 +199,12 @@ data class NoSnackbarVisuals internal constructor(
 	val prefixIcon: ImageVector?,
 	override val withDismissAction: Boolean,
 	override val duration: SnackbarDuration,
-	val colors: NoSnackbarColors?,
 ) : SnackbarVisuals
 
 suspend fun SnackbarHostState.showNoSnackbar(
 	message: String,
 	actionLabel: String? = null,
-	prefixIcon: ImageVector? = null,
+	prefixIcon: ImageVector? = Icons.Rounded.Info,
 	withDismissAction: Boolean = false,
 	duration: SnackbarDuration = SnackbarDuration.Short,
-	colors: NoSnackbarColors? = null,
-): SnackbarResult = this.showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors))
+): SnackbarResult = this.showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration))
