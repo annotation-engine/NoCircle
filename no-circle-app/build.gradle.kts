@@ -16,7 +16,7 @@ kotlin {
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_1
+			languageVersion = KotlinVersion.KOTLIN_2_2
 		}
 	}
 	
@@ -34,7 +34,7 @@ kotlin {
 	jvm("desktop") {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_1
+			languageVersion = KotlinVersion.KOTLIN_2_2
 		}
 	}
 	
@@ -53,7 +53,8 @@ kotlin {
 		}
 	}
 	compilerOptions {
-		languageVersion = KotlinVersion.KOTLIN_2_1
+		languageVersion = KotlinVersion.KOTLIN_2_2
+		freeCompilerArgs.add("-Xcontext-parameters")
 	}
 }
 

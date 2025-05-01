@@ -2,7 +2,7 @@
 android-compileSdk = "36"
 android-minSdk = "26"
 android-targetSdk = "36"
-kotlin = "2.1.20"
+kotlin = "2.2.0-Beta2"
 agp = "8.9.2"
 androidx-activity-compose = "1.10.1"
 lifecycle = "2.9.0-alpha07"
@@ -10,27 +10,78 @@ compose-multiplatform = "1.8.0-rc01"
 kotlinx-coroutines = "1.10.2"
 navigation-compose = "2.9.0-alpha17"
 ktor = "3.1.2"
+exposed = "0.61.0"
+mysql = "8.4.0"
+logback-classic = "1.5.18"
+hutool = "5.8.37"
+redisson = "3.46.0"
 
 [libraries]
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
-kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-server-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-auth = { group = "io.ktor", name = "ktor-server-auth-jvm", version.ref = "ktor" }
+ktor-server-auth-jwt = { group = "io.ktor", name = "ktor-server-auth-jwt-jvm", version.ref = "ktor" }
+ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation-jvm", version.ref = "ktor" }
+ktor-server-cio = { group = "io.ktor", name = "ktor-server-cio-jvm", version.ref = "ktor" }
+ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml-jvm", version.ref = "ktor" }
+ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages-jvm", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-
+exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
+exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
+exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kotlin-datetime", version.ref = "exposed" }
+mysql-connector-j = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
+hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
+redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 
 [plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 
 [bundles]
-ktor-client = ['ktor-client-core', 'ktor-client-cio', 'ktor-client-websockets', 'ktor-client-content-negotiation', 'ktor-serialization-kotlinx-json']
+kotlin-multiplatform = [
+    'androidx-lifecycle-viewmodel',
+    'androidx-lifecycle-runtime-compose',
+    'androidx-navigation-compose',
+    'ktor-client-core',
+    'ktor-client-cio',
+    'ktor-client-websockets',
+    'ktor-client-content-negotiation',
+    'ktor-serialization-kotlinx-json'
+]
+
+ktor-server = [
+    'kotlin-reflect',
+    'ktor-server-core',
+    'ktor-server-auth',
+    'ktor-server-auth-jwt',
+    'ktor-server-content-negotiation',
+    'ktor-server-cio',
+    'ktor-server-config-yaml',
+    'ktor-server-status-pages',
+    'ktor-serialization-kotlinx-json',
+    'exposed-core',
+    'exposed-dao',
+    'exposed-jdbc',
+    'exposed-kotlin-datetime',
+    'mysql-connector-j',
+    'logback-classic',
+    'hutool-crypto',
+    'redisson'
+]

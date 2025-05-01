@@ -8,7 +8,7 @@ import com.nocircle.app.generated.resources.register_passwords_are_inconsistent_
 import com.nocircle.app.generated.resources.register_please_input_password
 import com.nocircle.app.generated.resources.register_please_input_username
 import com.nocircle.app.generated.resources.register_username_length_at_least_8
-import com.nocircle.app.http.ApiModel
+import com.nocircle.app.http.ApiResult
 import com.nocircle.app.http.ktorClient
 import com.nocircle.compose.expends.isAlphanumeric
 import com.nocircle.compose.expends.value
@@ -18,7 +18,6 @@ import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
@@ -92,7 +91,7 @@ class RegisterViewModel(
 		if (response.status != HttpStatusCode.OK) {
 			return false
 		}
-		val model = response.body<ApiModel<Nothing>>()
+		val model = response.body<ApiResult<Nothing>>()
 		if (!model.success) {
 			hostState.showNoSnackbar(model.msg)
 		}

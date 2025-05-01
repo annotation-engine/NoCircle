@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.login_please_input_password
 import com.nocircle.app.generated.resources.login_please_input_username
-import com.nocircle.app.http.ApiModel
+import com.nocircle.app.http.ApiResult
 import com.nocircle.app.http.ktorClient
 import com.nocircle.compose.expends.value
 import com.nocircle.compose.material3.showNoSnackbar
@@ -62,7 +62,7 @@ class LoginViewModel(
 		if (response.status != HttpStatusCode.OK) {
 			return false
 		}
-		val model = response.body<ApiModel<Login>>()
+		val model = response.body<ApiResult<Login>>()
 		if (model.success) {
 			// 保存 token
 		} else {

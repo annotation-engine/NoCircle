@@ -27,7 +27,7 @@ val ktorClient by lazy {
 }
 
 @Serializable
-data class ApiModel<T : Any>(
+data class ApiResult<T : Any>(
 	val code: Int,
 	val msg: String,
 	val data: T? = null,

@@ -14,7 +14,7 @@ kotlin {
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_1
+			languageVersion = KotlinVersion.KOTLIN_2_2
 		}
 	}
 	
@@ -32,7 +32,7 @@ kotlin {
 	jvm("desktop") {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_1
+			languageVersion = KotlinVersion.KOTLIN_2_2
 		}
 	}
 	
@@ -51,10 +51,7 @@ kotlin {
 			implementation(compose.components.resources)
 			api(compose.components.uiToolingPreview)
 			api(compose.materialIconsExtended)
-			api(libs.androidx.lifecycle.viewmodel)
-			api(libs.androidx.lifecycle.runtime.compose)
-			api(libs.navigation.compose)
-			api(libs.bundles.ktor.client)
+			api(libs.bundles.kotlin.multiplatform)
 		}
 		desktopMain.dependencies {
 			api(compose.desktop.currentOs)
@@ -62,7 +59,8 @@ kotlin {
 		}
 	}
 	compilerOptions {
-		languageVersion = KotlinVersion.KOTLIN_2_1
+		languageVersion = KotlinVersion.KOTLIN_2_2
+		freeCompilerArgs.add("-Xcontext-parameters")
 	}
 }
 

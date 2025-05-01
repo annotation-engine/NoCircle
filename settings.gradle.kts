@@ -10,6 +10,7 @@ pluginManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
+	    mavenLocal()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -24,9 +25,11 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
+	    mavenLocal()
         mavenCentral()
     }
 }
 
 include(":no-circle-app")
 include(":no-circle-compose")
+include(":no-circle-service")
