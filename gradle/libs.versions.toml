@@ -15,7 +15,6 @@ mysql = "8.4.0"
 logback-classic = "1.5.18"
 hutool = "5.8.37"
 redisson = "3.46.0"
-coreKtx = "1.10.1"
 
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
@@ -43,8 +42,7 @@ exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kot
 mysql-connector-j = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
-redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+redisson = { group = "org.redisson", name = ",", version.ref = "redisson" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -59,32 +57,32 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 [bundles]
 kotlin-multiplatform = [
-    'androidx-lifecycle-viewmodel',
-    'androidx-lifecycle-runtime-compose',
-    'androidx-navigation-compose',
-    'ktor-client-core',
-    'ktor-client-cio',
-    'ktor-client-websockets',
-    'ktor-client-content-negotiation',
-    'ktor-serialization-kotlinx-json'
+	'androidx-lifecycle-viewmodel',
+	'androidx-lifecycle-runtime-compose',
+	'androidx-navigation-compose',
+	'ktor-client-core',
+	'ktor-client-cio',
+	'ktor-client-websockets',
+	'ktor-client-content-negotiation',
+	'ktor-serialization-kotlinx-json'
 ]
 
 ktor-server = [
-    'kotlin-reflect',
-    'ktor-server-core',
-    'ktor-server-auth',
-    'ktor-server-auth-jwt',
-    'ktor-server-content-negotiation',
-    'ktor-server-cio',
-    'ktor-server-config-yaml',
-    'ktor-server-status-pages',
-    'ktor-serialization-kotlinx-json',
-    'exposed-core',
-    'exposed-dao',
-    'exposed-jdbc',
-    'exposed-kotlin-datetime',
-    'mysql-connector-j',
-    'logback-classic',
-    'hutool-crypto',
-    'redisson'
+	'kotlin-reflect',
+	'ktor-server-core',
+	'ktor-server-auth',
+	'ktor-server-auth-jwt',
+	'ktor-server-content-negotiation',
+	'ktor-server-cio',
+	'ktor-server-config-yaml',
+	'ktor-server-status-pages',
+	'ktor-serialization-kotlinx-json',
+	'exposed-core',
+	'exposed-dao',
+	'exposed-jdbc',
+	'exposed-kotlin-datetime',
+	'mysql-connector-j',
+	'logback-classic',
+	'hutool-crypto',
+	'redisson'
 ]

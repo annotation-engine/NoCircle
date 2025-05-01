@@ -96,7 +96,7 @@ fun NoSnackbar(
 			text = visuals.message,
 			modifier = Modifier
 				.weight(1f),
-			fontSize = 15.sp,
+			fontSize = 16.sp,
 			color = contentColor,
 			lineHeight = 24.sp,
 			overflow = TextOverflow.Ellipsis,
@@ -122,7 +122,7 @@ fun NoSnackbar(
 			) {
 				Text(
 					text = visuals.actionLabel,
-					fontSize = 14.sp,
+					fontSize = 15.sp,
 					color = actionContentColor
 				)
 			}
@@ -172,5 +172,5 @@ suspend fun SnackbarHostState.showNoSnackbar(
 	prefixIcon: ImageVector? = Icons.Rounded.Info,
 	withDismissAction: Boolean = false,
 	duration: SnackbarDuration = SnackbarDuration.Short,
-	colors: NoSnackbarColors? = null
-): SnackbarResult = this.showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors))
+	colors: NoSnackbarColors? = null,
+): SnackbarResult = showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors))

@@ -110,7 +110,7 @@ fun RegisterPage(
 			
 			NoButton(
 				text = Res.string.register.value,
-				modifier = Modifier.fillMaxWidth(),
+				modifier = Modifier.fillMaxWidth()
 			) {
 				val success = viewModel.register()
 				if (success) {

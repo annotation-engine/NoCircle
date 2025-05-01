@@ -1,6 +1,6 @@
 package com.nocircle.service.plugins
 
-import com.nocircle.service.utils.LogUtils
+import com.nocircle.service.utils.Log
 import org.redisson.Redisson
 import org.redisson.api.RedissonClient
 import org.redisson.config.Config
@@ -16,7 +16,7 @@ fun configureRedis() {
 		}
 		redisson = Redisson.create(config)
 	}
-	LogUtils.info("Redis connected used for ${millis / 1_000f} seconds.")
+	Log.info("Redis connected used for ${millis / 1_000f} seconds.")
 }
 
 lateinit var redisson: RedissonClient

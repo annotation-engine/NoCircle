@@ -2,7 +2,7 @@ package com.nocircle.common.log
 
 object Log {
 	
-	private const val TAG = "NoCircle"
+	private const val TAG = "NoCircleTAG"
 	
 	fun verbose(vararg args: Any?) {
 		this.log(TAG, LogLevel.Verbose, *args)

@@ -1,6 +1,6 @@
 package com.nocircle.service.plugins
 
-import com.nocircle.service.utils.LogUtils
+import com.nocircle.service.utils.Log
 import io.ktor.server.application.*
 import io.ktor.server.config.*
 import kotlin.reflect.KClass
@@ -13,7 +13,7 @@ fun Application.configureYaml() {
 	val millis = measureTimeMillis {
 		yaml = environment.config.loadYaml<YamlConfig>()
 	}
-	LogUtils.info("Yaml loaded used for ${millis / 1_000f} seconds.")
+	Log.info("Yaml loaded used for ${millis / 1_000f} seconds.")
 }
 
 lateinit var yaml: YamlConfig

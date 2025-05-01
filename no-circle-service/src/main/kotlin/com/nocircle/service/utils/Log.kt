@@ -4,7 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.event.Level
 
-object LogUtils {
+object Log {
 	
 	private val loggers = mutableMapOf<String, Logger>()
 	private const val DEFAULT_NAME = "NoCircle"

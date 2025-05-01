@@ -26,7 +26,7 @@ inline operator fun <reified S : KtorService<T>, reified T : Any> ServiceScope.p
 	val auth = if (service.auth) {
 		" - { auth: true, roles: [${service.roles.filterNotNull().joinToString()}], optional: ${service.optional} }"
 	} else ""
-	LogUtils.info("Service: [${service.method}] - ${service.path}$auth")
+	Log.info("Service: [${service.method}] - ${service.path}$auth")
 	val build: Route.() -> Unit = {
 		route(
 			path = service.path,
@@ -62,6 +62,6 @@ private class ServiceScopeImpl(
 	override var authServiceCount = 0
 	
 	fun total() {
-		LogUtils.info("Total: $serviceCount services, $authServiceCount auth services, ${serviceCount + authServiceCount} totals.")
+		Log.info("Total: $serviceCount services, $authServiceCount auth services, ${serviceCount + authServiceCount} totals.")
 	}
 }
