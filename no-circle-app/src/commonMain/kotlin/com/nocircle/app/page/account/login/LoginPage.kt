@@ -1,11 +1,6 @@
 package com.nocircle.app.page.account.login
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -27,15 +22,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nocircle.app.AppRoute
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.login
-import com.nocircle.app.generated.resources.login_please_input_password
-import com.nocircle.app.generated.resources.login_please_input_username
-import com.nocircle.app.generated.resources.login_to_register
-import com.nocircle.app.generated.resources.register_success
-import com.nocircle.compose.expends.getAndRemoveResult
-import com.nocircle.compose.expends.not
-import com.nocircle.compose.expends.value
+import com.nocircle.app.generated.resources.*
+import com.nocircle.common.expends.getAndRemoveResult
+import com.nocircle.common.expends.not
+import com.nocircle.common.expends.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon

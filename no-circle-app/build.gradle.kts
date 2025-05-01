@@ -42,19 +42,20 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-			implementation(projects.noCircleCompose)
+		
 		}
 		commonMain.dependencies {
-			implementation(projects.noCircleCompose)
 			implementation(compose.components.resources)
+			implementation(projects.noCircleCompose)
+			implementation(projects.noCircleCommon)
 		}
 		desktopMain.dependencies {
-			implementation(projects.noCircleCompose)
+		
 		}
 	}
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_2
-		freeCompilerArgs.add("-Xcontext-parameters")
+		freeCompilerArgs.addAll("-Xcontext-parameters", "-Xexpect-actual-classes")
 	}
 }
 

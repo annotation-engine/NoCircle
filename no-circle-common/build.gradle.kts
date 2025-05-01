@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -24,7 +23,7 @@ kotlin {
 		iosSimulatorArm64()
 	).forEach { iosTarget ->
 		iosTarget.binaries.framework {
-			baseName = "NoCircleCompose"
+			baseName = "NoCircleCommon"
 			isStatic = true
 		}
 	}
@@ -39,20 +38,10 @@ kotlin {
 	sourceSets {
 		val desktopMain by getting
 		
-		androidMain.dependencies {
-			api(compose.preview)
-			api(libs.androidx.activity.compose)
-		}
 		commonMain.dependencies {
-			api(compose.runtime)
-			api(compose.foundation)
-			api(compose.material3)
-			api(compose.ui)
+			implementation(compose.runtime)
 			implementation(compose.components.resources)
-			api(compose.components.uiToolingPreview)
-			api(compose.materialIconsExtended)
-			api(libs.bundles.kotlin.multiplatform)
-			implementation(projects.noCircleCommon)
+			implementation(libs.androidx.navigation.compose)
 		}
 		desktopMain.dependencies {
 			api(compose.desktop.currentOs)
@@ -66,7 +55,7 @@ kotlin {
 }
 
 android {
-	namespace = "com.nocircle.compose"
+	namespace = "com.nocircle.common"
 	compileSdk = libs.versions.android.compileSdk.get().toInt()
 	
 	defaultConfig {
@@ -91,11 +80,7 @@ android {
 	}
 }
 
-dependencies {
-	debugImplementation(compose.uiTooling)
-}
-
 compose.resources {
-	packageOfResClass = "com.nocircle.compose.generated.resources"
+	packageOfResClass = "com.nocircle.common.generated.resources"
 	publicResClass = false
 }

@@ -1,11 +1,6 @@
 package com.nocircle.app.page.account.register
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -25,15 +20,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.register
-import com.nocircle.app.generated.resources.register_back_to_login
-import com.nocircle.app.generated.resources.register_please_confirm_password
-import com.nocircle.app.generated.resources.register_please_input_password
-import com.nocircle.app.generated.resources.register_please_input_username
-import com.nocircle.compose.expends.not
-import com.nocircle.compose.expends.setResult
-import com.nocircle.compose.expends.value
+import com.nocircle.app.generated.resources.*
+import com.nocircle.common.expends.not
+import com.nocircle.common.expends.setResult
+import com.nocircle.common.expends.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
@@ -41,7 +31,6 @@ import com.nocircle.compose.foundation.NoInput
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbar
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 
 @Composable
@@ -122,7 +111,6 @@ fun RegisterPage(
 			NoButton(
 				text = Res.string.register.value,
 				modifier = Modifier.fillMaxWidth(),
-				context = Dispatchers.IO
 			) {
 				val success = viewModel.register()
 				if (success) {

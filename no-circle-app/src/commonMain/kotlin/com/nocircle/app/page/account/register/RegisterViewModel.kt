@@ -2,25 +2,16 @@ package com.nocircle.app.page.account.register
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.register_password_length_at_least_8
-import com.nocircle.app.generated.resources.register_passwords_are_inconsistent_twice
-import com.nocircle.app.generated.resources.register_please_input_password
-import com.nocircle.app.generated.resources.register_please_input_username
-import com.nocircle.app.generated.resources.register_username_length_at_least_8
+import com.nocircle.app.generated.resources.*
 import com.nocircle.app.http.ApiResult
 import com.nocircle.app.http.ktorClient
-import com.nocircle.compose.expends.isAlphanumeric
-import com.nocircle.compose.expends.value
+import com.nocircle.common.expends.isAlphanumeric
+import com.nocircle.common.expends.value
 import com.nocircle.compose.material3.showNoSnackbar
-import io.ktor.client.call.body
-import io.ktor.client.request.forms.MultiPartFormDataContent
-import io.ktor.client.request.forms.formData
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterViewModel(

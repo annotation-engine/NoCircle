@@ -1,7 +1,7 @@
 [versions]
-android-compileSdk = "36"
+android-compileSdk = "35"
 android-minSdk = "26"
-android-targetSdk = "36"
+android-targetSdk = "35"
 kotlin = "2.2.0-Beta2"
 agp = "8.9.2"
 androidx-activity-compose = "1.10.1"
@@ -15,6 +15,7 @@ mysql = "8.4.0"
 logback-classic = "1.5.18"
 hutool = "5.8.37"
 redisson = "3.46.0"
+coreKtx = "1.10.1"
 
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
@@ -43,6 +44,7 @@ mysql-connector-j = { group = "com.mysql", name = "mysql-connector-j", version.r
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -53,6 +55,7 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 [bundles]
 kotlin-multiplatform = [

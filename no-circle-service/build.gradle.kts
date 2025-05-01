@@ -7,7 +7,7 @@ plugins {
 	alias(libs.plugins.ktor)
 }
 
-group = "com.nocircle.server"
+group = "com.nocircle.service"
 version = property("no-circle.version").toString()
 
 application {

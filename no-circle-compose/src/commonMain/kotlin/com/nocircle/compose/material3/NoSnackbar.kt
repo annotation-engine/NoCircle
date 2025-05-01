@@ -1,26 +1,12 @@
 package com.nocircle.compose.material3
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarData
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.SnackbarVisuals
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -36,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.material3.NoSnackbarColors.*
 
 @Composable
 fun NoSnackbar(
@@ -44,9 +31,43 @@ fun NoSnackbar(
 	singleLine: Boolean = true,
 	maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
 	shape: Shape = MaterialTheme.shapes.medium,
-	colors: NoSnackbarColors = NoSnackbars.PrimaryColors,
+	containerColor: Color = MaterialTheme.colorScheme.primary,
+	contentColor: Color = contentColorFor(containerColor),
+	prefixIconColor: Color = contentColorFor(containerColor),
+	actionColor: Color = MaterialTheme.colorScheme.primaryContainer,
+	actionContentColor: Color = contentColorFor(actionColor),
+	dismissActionContentColor: Color = contentColorFor(containerColor)
 ) {
 	val visuals = snackbarData.visuals as? NoSnackbarVisuals ?: return
+	val containerColor = when (visuals.colors) {
+		Primary -> MaterialTheme.colorScheme.primary
+		Secondary -> MaterialTheme.colorScheme.secondary
+		Tertiary -> MaterialTheme.colorScheme.tertiary
+		Error -> MaterialTheme.colorScheme.error
+		Surface -> MaterialTheme.colorScheme.surface
+		null -> containerColor
+	}
+	val contentColor = if (visuals.colors != null) {
+		contentColorFor(containerColor)
+	} else contentColor
+	val prefixIconColor = if (visuals.colors != null) {
+		contentColorFor(containerColor)
+	} else prefixIconColor
+	val actionColor = when (visuals.colors) {
+		Primary -> MaterialTheme.colorScheme.primaryContainer
+		Secondary -> MaterialTheme.colorScheme.secondaryContainer
+		Tertiary -> MaterialTheme.colorScheme.tertiaryContainer
+		Error -> MaterialTheme.colorScheme.errorContainer
+		Surface -> MaterialTheme.colorScheme.surfaceContainer
+		null -> actionColor
+	}
+	val actionContentColor = if (visuals.colors != null) {
+		contentColorFor(actionColor)
+	} else actionContentColor
+	val dismissActionContentColor = if (visuals.colors != null) {
+		contentColorFor(containerColor)
+	} else dismissActionContentColor
+	
 	Row(
 		modifier = modifier
 			.fillMaxWidth()
@@ -57,12 +78,7 @@ fun NoSnackbar(
 			)
 			.clip(shape)
 			.background(
-				color = colors.containerColor,
-				shape = shape
-			)
-			.border(
-				width = 2.dp,
-				color = colors.contentColor.copy(alpha = 0.6f),
+				color = containerColor,
 				shape = shape
 			)
 			.padding(16.dp),
@@ -72,7 +88,7 @@ fun NoSnackbar(
 			NoIcon(
 				icon = visuals.prefixIcon,
 				modifier = Modifier.size(24.dp),
-				tint = colors.prefixIconColor
+				tint = prefixIconColor
 			)
 			Spacer(modifier = Modifier.width(8.dp))
 		}
@@ -81,7 +97,7 @@ fun NoSnackbar(
 			modifier = Modifier
 				.weight(1f),
 			fontSize = 15.sp,
-			color = colors.contentColor,
+			color = contentColor,
 			lineHeight = 24.sp,
 			overflow = TextOverflow.Ellipsis,
 			maxLines = maxLines,
@@ -92,7 +108,7 @@ fun NoSnackbar(
 				modifier = Modifier
 					.clip(MaterialTheme.shapes.small)
 					.background(
-						color = colors.actionColor,
+						color = actionColor,
 						shape = MaterialTheme.shapes.small
 					)
 					.clickable {
@@ -107,7 +123,7 @@ fun NoSnackbar(
 				Text(
 					text = visuals.actionLabel,
 					fontSize = 14.sp,
-					color = colors.actionContentColor
+					color = actionContentColor
 				)
 			}
 		}
@@ -126,71 +142,11 @@ fun NoSnackbar(
 					.clickable {
 						snackbarData.dismiss()
 					},
-				tint = colors.dismissActionContentColor
+				tint = dismissActionContentColor
 			)
 		}
 	}
 }
-
-object NoSnackbars {
-	
-	@Composable
-	fun colors(
-		containerColor: Color = MaterialTheme.colorScheme.primary,
-		contentColor: Color = MaterialTheme.colorScheme.onPrimary,
-		prefixIconColor: Color = MaterialTheme.colorScheme.onPrimary,
-		actionColor: Color = MaterialTheme.colorScheme.primaryContainer,
-		actionContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-		dismissActionContentColor: Color = MaterialTheme.colorScheme.onPrimary,
-	): NoSnackbarColors = NoSnackbarColors(containerColor, contentColor, prefixIconColor, actionColor, actionContentColor, dismissActionContentColor)
-	
-	val PrimaryColors: NoSnackbarColors
-		@Composable
-		get() = colors()
-	
-	val SecondaryColors: NoSnackbarColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.secondary,
-			contentColor = MaterialTheme.colorScheme.onSecondary,
-			prefixIconColor = MaterialTheme.colorScheme.onSecondary,
-			actionColor = MaterialTheme.colorScheme.secondaryContainer,
-			actionContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-			dismissActionContentColor = MaterialTheme.colorScheme.onSecondary
-		)
-	
-	val TertiaryColors: NoSnackbarColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.tertiary,
-			contentColor = MaterialTheme.colorScheme.onTertiary,
-			prefixIconColor = MaterialTheme.colorScheme.onTertiary,
-			actionColor = MaterialTheme.colorScheme.tertiaryContainer,
-			actionContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-			dismissActionContentColor = MaterialTheme.colorScheme.onTertiary
-		)
-	
-	val ErrorColors: NoSnackbarColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.error,
-			contentColor = MaterialTheme.colorScheme.onError,
-			prefixIconColor = MaterialTheme.colorScheme.onError,
-			actionColor = MaterialTheme.colorScheme.errorContainer,
-			actionContentColor = MaterialTheme.colorScheme.onErrorContainer,
-			dismissActionContentColor = MaterialTheme.colorScheme.onError
-		)
-}
-
-@ConsistentCopyVisibility
-data class NoSnackbarColors internal constructor(
-	val containerColor: Color,
-	val contentColor: Color,
-	val prefixIconColor: Color,
-	val actionColor: Color,
-	val actionContentColor: Color,
-	val dismissActionContentColor: Color,
-)
 
 @ConsistentCopyVisibility
 data class NoSnackbarVisuals internal constructor(
@@ -199,7 +155,16 @@ data class NoSnackbarVisuals internal constructor(
 	val prefixIcon: ImageVector?,
 	override val withDismissAction: Boolean,
 	override val duration: SnackbarDuration,
+	val colors: NoSnackbarColors?
 ) : SnackbarVisuals
+
+enum class NoSnackbarColors {
+	Primary,
+	Secondary,
+	Tertiary,
+	Error,
+	Surface
+}
 
 suspend fun SnackbarHostState.showNoSnackbar(
 	message: String,
@@ -207,4 +172,5 @@ suspend fun SnackbarHostState.showNoSnackbar(
 	prefixIcon: ImageVector? = Icons.Rounded.Info,
 	withDismissAction: Boolean = false,
 	duration: SnackbarDuration = SnackbarDuration.Short,
-): SnackbarResult = this.showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration))
+	colors: NoSnackbarColors? = null
+): SnackbarResult = this.showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors))

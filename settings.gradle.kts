@@ -32,4 +32,5 @@ dependencyResolutionManagement {
 
 include(":no-circle-app")
 include(":no-circle-compose")
+include(":no-circle-common")
 include(":no-circle-service")
