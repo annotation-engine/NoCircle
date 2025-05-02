@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.nocircle.app.page.account.login.LoginPage
-import com.nocircle.app.page.account.register.RegisterPage
-import com.nocircle.app.page.guide.GuidePage
-import com.nocircle.app.page.main.MainPage
+import com.nocircle.app.pages.account.login.LoginPage
+import com.nocircle.app.pages.account.register.RegisterPage
+import com.nocircle.app.pages.guide.GuidePage
+import com.nocircle.app.pages.main.MainPage
 import com.nocircle.app.theme.NoMaterialTheme
 
 @Composable

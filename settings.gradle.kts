@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 rootProject.name = "NoCircle"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
@@ -33,4 +35,4 @@ dependencyResolutionManagement {
 include(":no-circle-app")
 include(":no-circle-compose")
 include(":no-circle-common")
-include(":no-circle-service")
+include(":no-circle-server")
