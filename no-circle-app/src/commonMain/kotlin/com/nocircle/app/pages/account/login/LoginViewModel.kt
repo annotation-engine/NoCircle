@@ -6,16 +6,11 @@ import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.global_network_connection_error
 import com.nocircle.app.generated.resources.login_please_input_password
 import com.nocircle.app.generated.resources.login_please_input_username
-import com.nocircle.app.http.ktorClient
+import com.nocircle.app.http.api.UserApi
 import com.nocircle.app.utils.ConfigUtils
-import com.nocircle.common.expends.safePost
 import com.nocircle.compose.material3.NoSnackbarColors
 import com.nocircle.compose.material3.showNoSnackbar
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.serialization.Serializable
 
 class LoginViewModel(
 	private val hostState: SnackbarHostState,
@@ -48,14 +43,7 @@ class LoginViewModel(
 			hostState.showNoSnackbar(Res.string.login_please_input_password)
 			return false
 		}
-		val result = ktorClient.safePost<Login>("user/login") {
-			contentType(ContentType.MultiPart.FormData)
-			val parts = formData {
-				append("username", username)
-				append("password", password)
-			}
-			setBody(MultiPartFormDataContent(parts))
-		}
+		val result = UserApi.login(username, password)
 		if (result == null) {
 			hostState.showNoSnackbar(Res.string.global_network_connection_error, colors = NoSnackbarColors.Error)
 			return false
@@ -67,9 +55,4 @@ class LoginViewModel(
 		}
 		return result.success
 	}
-	
-	@Serializable
-	private data class Login(
-		val token: String,
-	)
 }

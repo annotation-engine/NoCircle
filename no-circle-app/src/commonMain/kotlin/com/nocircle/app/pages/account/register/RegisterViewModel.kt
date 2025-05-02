@@ -3,14 +3,10 @@ package com.nocircle.app.pages.account.register
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import com.nocircle.app.generated.resources.*
-import com.nocircle.app.http.ktorClient
+import com.nocircle.app.http.api.UserApi
 import com.nocircle.common.expends.isAlphanumeric
-import com.nocircle.common.expends.safePost
 import com.nocircle.compose.material3.NoSnackbarColors
 import com.nocircle.compose.material3.showNoSnackbar
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterViewModel(
@@ -70,14 +66,7 @@ class RegisterViewModel(
 			return false
 		}
 		
-		val result = ktorClient.safePost<Unit>("user/register") {
-			contentType(ContentType.MultiPart.FormData)
-			val parts = formData {
-				append("username", username)
-				append("password", password)
-			}
-			setBody(MultiPartFormDataContent(parts))
-		}
+		val result = UserApi.register(username, password)
 		if (result == null) {
 			hostState.showNoSnackbar(Res.string.global_network_connection_error, colors = NoSnackbarColors.Error)
 			return false
