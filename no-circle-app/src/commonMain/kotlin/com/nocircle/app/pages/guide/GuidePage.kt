@@ -33,15 +33,15 @@ fun GuidePage(
 	var offsetYTarget by remember { mutableStateOf(100.dp) }
 	var alphaTarget by remember { mutableStateOf(0f) }
 	var scaleTarget by remember { mutableStateOf(1f) }
-	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1200)) }
+	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
 	LaunchedEffect(Unit) {
 		offsetYTarget = (-200).dp
 		alphaTarget = 1f
-		delay(1500)
-		alphaSpec = tween(durationMillis = 500)
+		delay(1000)
+		alphaSpec = tween(durationMillis = 400)
 		scaleTarget = 0.5f
 		alphaTarget = 0f
-		delay(500)
+		delay(400)
 		val token = ConfigUtils.getValue<String>("token")
 		if (token != null) {
 			navController.navigate(route = NoRoute.MAIN, finish = true)
@@ -58,7 +58,7 @@ fun GuidePage(
 		) {
 			val offsetY by animateDpAsState(
 				targetValue = offsetYTarget,
-				animationSpec = tween(durationMillis = 1200)
+				animationSpec = tween(durationMillis = 1000)
 			)
 			val alpha by animateFloatAsState(
 				targetValue = alphaTarget,
@@ -66,7 +66,7 @@ fun GuidePage(
 			)
 			val scale by animateFloatAsState(
 				targetValue = scaleTarget,
-				animationSpec = tween(durationMillis = 500)
+				animationSpec = tween(durationMillis = 400)
 			)
 			Image(
 				imageVector = NoIcons.NoLogo,

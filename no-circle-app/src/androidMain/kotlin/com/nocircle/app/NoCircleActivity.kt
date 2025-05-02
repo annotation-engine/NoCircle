@@ -12,6 +12,7 @@ class NoCircleActivity : ComponentActivity() {
 		enableEdgeToEdge()
 		
 		setContent {
+			KoinModules()
 			App()
 		}
 	}

@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -17,14 +16,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nocircle.common.expends.value
+import com.nocircle.common.material3.NoSnackbarColors.*
+import com.nocircle.common.material3.NoSnackbarVisuals
 import com.nocircle.compose.foundation.NoIcon
-import com.nocircle.compose.material3.NoSnackbarColors.*
-import org.jetbrains.compose.resources.StringResource
 
 @Composable
 fun NoSnackbar(
@@ -88,7 +85,7 @@ fun NoSnackbar(
 	) {
 		if (visuals.prefixIcon != null) {
 			NoIcon(
-				icon = visuals.prefixIcon,
+				icon = visuals.prefixIcon!!,
 				modifier = Modifier.size(24.dp),
 				tint = prefixIconColor
 			)
@@ -123,7 +120,7 @@ fun NoSnackbar(
 				contentAlignment = Alignment.Center
 			) {
 				Text(
-					text = visuals.actionLabel,
+					text = visuals.actionLabel!!,
 					fontSize = 15.sp,
 					color = actionContentColor
 				)
@@ -149,39 +146,3 @@ fun NoSnackbar(
 		}
 	}
 }
-
-@ConsistentCopyVisibility
-data class NoSnackbarVisuals internal constructor(
-	override val message: String,
-	override val actionLabel: String?,
-	val prefixIcon: ImageVector?,
-	override val withDismissAction: Boolean,
-	override val duration: SnackbarDuration,
-	val colors: NoSnackbarColors?
-) : SnackbarVisuals
-
-enum class NoSnackbarColors {
-	Primary,
-	Secondary,
-	Tertiary,
-	Error,
-	Surface
-}
-
-suspend fun SnackbarHostState.showNoSnackbar(
-	message: String,
-	actionLabel: String? = null,
-	prefixIcon: ImageVector? = Icons.Rounded.Info,
-	withDismissAction: Boolean = false,
-	duration: SnackbarDuration = SnackbarDuration.Short,
-	colors: NoSnackbarColors? = null,
-): SnackbarResult = showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors))
-
-suspend fun SnackbarHostState.showNoSnackbar(
-	message: StringResource,
-	actionLabel: String? = null,
-	prefixIcon: ImageVector? = Icons.Rounded.Info,
-	withDismissAction: Boolean = false,
-	duration: SnackbarDuration = SnackbarDuration.Short,
-	colors: NoSnackbarColors? = null,
-): SnackbarResult = this.showNoSnackbar(message.value(), actionLabel, prefixIcon, withDismissAction, duration, colors)

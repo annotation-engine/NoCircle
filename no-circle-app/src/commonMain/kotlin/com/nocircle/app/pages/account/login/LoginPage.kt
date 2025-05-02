@@ -27,29 +27,31 @@ import com.nocircle.common.expends.getResult
 import com.nocircle.common.expends.navigate
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.value
+import com.nocircle.common.material3.showNoSnackbar
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoInput
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbar
-import com.nocircle.compose.material3.showNoSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LoginPage(
 	navController: NavController,
-	hostState: SnackbarHostState = remember { SnackbarHostState() },
-	viewModel: LoginViewModel = remember { LoginViewModel(hostState) },
+	viewModel: LoginViewModel = koinViewModel()
 ) {
+	val hostState = remember { SnackbarHostState() }
 	LaunchedEffect(Unit) {
 		val username = navController.getResult<String>("username")
 		if (username != null) {
 			viewModel.updateUsername(username)
-			hostState.showNoSnackbar(Res.string.register_success.value())
+			hostState.showNoSnackbar(Res.string.register_success)
 		}
+		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
 		snackbarHost = {

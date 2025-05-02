@@ -4,6 +4,7 @@
 	<string name="login_please_input_username">请输入用户名</string>
 	<string name="login_please_input_password">请输入密码</string>
 	<string name="login_to_register">去注册</string>
+	<string name="login_success">登录成功</string>
 	
 	<string name="register">注册</string>
 	<string name="register_please_input_username">请输入用户名</string>

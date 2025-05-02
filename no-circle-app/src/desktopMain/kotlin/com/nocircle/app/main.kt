@@ -25,6 +25,7 @@ fun main() = application {
 			window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
 			window.minimumSize = Dimension(450, 700)
 		}
+		KoinModules()
 		App()
 	}
 }

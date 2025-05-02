@@ -1,7 +1,7 @@
 package com.nocircle.app.pages.main
 
-import androidx.lifecycle.ViewModel
+import com.nocircle.common.viewmodel.NoViewModel
 
-class MainViewModel : ViewModel() {
+class MainViewModel : NoViewModel() {
 
 }

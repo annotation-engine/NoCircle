@@ -18,6 +18,7 @@ redisson = "3.46.0"
 ksp = "2.2.0-Beta2-2.0.1"
 room = "2.7.1"
 sqlite = "2.5.0"
+koin = "4.0.4"
 
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
@@ -50,6 +51,8 @@ mysql-connector-j = { group = "com.mysql", name = "mysql-connector-j", version.r
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -75,7 +78,9 @@ kotlin-multiplatform = [
 	'ktor-serialization-kotlinx-json',
 	'room-runtime',
 	'room-paging',
-	'sqlite-bundled'
+	'sqlite-bundled',
+	'koin-core',
+	'koin-compose-viewmodel'
 ]
 
 ktor-server = [

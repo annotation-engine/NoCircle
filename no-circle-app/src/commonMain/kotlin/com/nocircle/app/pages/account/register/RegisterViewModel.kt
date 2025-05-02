@@ -1,17 +1,13 @@
 package com.nocircle.app.pages.account.register
 
-import androidx.compose.material3.SnackbarHostState
-import androidx.lifecycle.ViewModel
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.http.api.UserApi
 import com.nocircle.common.expends.isAlphanumeric
-import com.nocircle.compose.material3.NoSnackbarColors
-import com.nocircle.compose.material3.showNoSnackbar
+import com.nocircle.common.material3.NoSnackbarColors
+import com.nocircle.common.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class RegisterViewModel(
-	private val hostState: SnackbarHostState,
-) : ViewModel() {
+class RegisterViewModel : NoViewModel() {
 	
 	val username = MutableStateFlow("lijiawei")
 	
@@ -46,33 +42,33 @@ class RegisterViewModel(
 		val password = this.password.value
 		val confirmPassword = this.confirmPassword.value
 		if (username.isEmpty()) {
-			hostState.showNoSnackbar(Res.string.register_please_input_username)
+			showNoSnackbar(Res.string.register_please_input_password)
 			return false
 		}
 		if (username.length < 8) {
-			hostState.showNoSnackbar(Res.string.register_username_length_at_least_8)
+			showNoSnackbar(Res.string.register_username_length_at_least_8)
 			return false
 		}
 		if (password.isEmpty()) {
-			hostState.showNoSnackbar(Res.string.register_please_input_password)
+			showNoSnackbar(Res.string.register_please_input_password)
 			return false
 		}
 		if (password.length < 8) {
-			hostState.showNoSnackbar(Res.string.register_password_length_at_least_8)
+			showNoSnackbar(Res.string.register_password_length_at_least_8)
 			return false
 		}
 		if (password != confirmPassword) {
-			hostState.showNoSnackbar(Res.string.register_passwords_are_inconsistent_twice)
+			showNoSnackbar(Res.string.register_passwords_are_inconsistent_twice)
 			return false
 		}
 		
 		val result = UserApi.register(username, password)
 		if (result == null) {
-			hostState.showNoSnackbar(Res.string.global_network_connection_error, colors = NoSnackbarColors.Error)
+			showNoSnackbar(Res.string.global_network_connection_error, colors = NoSnackbarColors.Error)
 			return false
 		}
 		if (result.failure) {
-			hostState.showNoSnackbar(result.msg)
+			showNoSnackbar(result.msg, colors = NoSnackbarColors.Error)
 		}
 		return result.success
 	}

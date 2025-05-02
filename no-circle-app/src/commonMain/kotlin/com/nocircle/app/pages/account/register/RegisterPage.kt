@@ -13,6 +13,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.popBackStack
 import com.nocircle.common.expends.value
+import com.nocircle.common.material3.showNoSnackbar
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
@@ -32,13 +34,17 @@ import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RegisterPage(
 	navController: NavController,
-	hostState: SnackbarHostState = remember { SnackbarHostState() },
-	viewModel: RegisterViewModel = remember { RegisterViewModel(hostState) },
+	viewModel: RegisterViewModel = koinViewModel()
 ) {
+	val hostState = remember { SnackbarHostState() }
+	LaunchedEffect(Unit) {
+		viewModel.snackbarCollect(hostState::showNoSnackbar)
+	}
 	NoScaffold(
 		snackbarHost = {
 			SnackbarHost(hostState) {
