@@ -7,7 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.register_success
+import com.nocircle.app.generated.resources.login_success
 import com.nocircle.common.material3.showNoSnackbar
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbar
@@ -20,7 +20,7 @@ fun MainPage(
 ) {
 	val hostState = remember { SnackbarHostState() }
 	LaunchedEffect(Unit) {
-		hostState.showNoSnackbar(Res.string.register_success)
+		hostState.showNoSnackbar(Res.string.login_success)
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
