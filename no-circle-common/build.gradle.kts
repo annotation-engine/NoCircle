@@ -38,14 +38,24 @@ kotlin {
 	sourceSets {
 		val desktopMain by getting
 		
+		androidMain.dependencies {
+			implementation(compose.preview)
+			implementation(libs.androidx.activity.compose)
+		}
+		
 		commonMain.dependencies {
 			implementation(compose.runtime)
+			implementation(compose.foundation)
+			implementation(compose.material3)
+			implementation(compose.ui)
+			implementation(compose.components.uiToolingPreview)
 			implementation(compose.components.resources)
-			implementation(libs.androidx.navigation.compose)
+			implementation(compose.materialIconsExtended)
+			implementation(libs.bundles.kotlin.multiplatform)
 		}
 		desktopMain.dependencies {
-			api(compose.desktop.currentOs)
-			api(libs.kotlinx.coroutines.swing)
+			implementation(compose.desktop.currentOs)
+			implementation(libs.kotlinx.coroutines.swing)
 		}
 	}
 	compilerOptions {
@@ -78,6 +88,10 @@ android {
 	buildFeatures {
 		compose = true
 	}
+}
+
+dependencies {
+	debugImplementation(compose.uiTooling)
 }
 
 compose.resources {

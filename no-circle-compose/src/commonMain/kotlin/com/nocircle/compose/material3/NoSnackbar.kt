@@ -21,8 +21,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nocircle.common.expends.value
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoSnackbarColors.*
+import org.jetbrains.compose.resources.StringResource
 
 @Composable
 fun NoSnackbar(
@@ -174,3 +176,12 @@ suspend fun SnackbarHostState.showNoSnackbar(
 	duration: SnackbarDuration = SnackbarDuration.Short,
 	colors: NoSnackbarColors? = null,
 ): SnackbarResult = showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors))
+
+suspend fun SnackbarHostState.showNoSnackbar(
+	message: StringResource,
+	actionLabel: String? = null,
+	prefixIcon: ImageVector? = Icons.Rounded.Info,
+	withDismissAction: Boolean = false,
+	duration: SnackbarDuration = SnackbarDuration.Short,
+	colors: NoSnackbarColors? = null,
+): SnackbarResult = this.showNoSnackbar(message.value(), actionLabel, prefixIcon, withDismissAction, duration, colors)

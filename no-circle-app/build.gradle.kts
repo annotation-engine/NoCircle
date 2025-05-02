@@ -8,9 +8,12 @@ plugins {
 	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.multiplatform)
 	alias(libs.plugins.kotlin.serialization)
+	alias(libs.plugins.ksp)
+	alias(libs.plugins.room)
 }
 
-val noCircleVersion = property("no-circle.version").toString()
+val noCircleVersionName = property("no-circle.version-name").toString()
+val noCircleVersionCode = property("no-circle.version-code").toString().toInt()
 
 kotlin {
 	androidTarget {
@@ -42,15 +45,29 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-		
-		}
-		commonMain.dependencies {
-			implementation(compose.components.resources)
 			implementation(projects.noCircleCompose)
 			implementation(projects.noCircleCommon)
+			implementation(compose.preview)
+			implementation(libs.androidx.activity.compose)
+		}
+		commonMain.dependencies {
+			implementation(projects.noCircleCompose)
+			implementation(projects.noCircleCommon)
+			implementation(compose.runtime)
+			implementation(compose.foundation)
+			implementation(compose.material3)
+			implementation(compose.ui)
+			implementation(compose.components.uiToolingPreview)
+			implementation(compose.components.resources)
+			implementation(compose.materialIconsExtended)
+			implementation(libs.bundles.kotlin.multiplatform)
 		}
 		desktopMain.dependencies {
-		
+			implementation(projects.noCircleCompose)
+			implementation(projects.noCircleCommon)
+			implementation(compose.desktop.currentOs)
+			implementation(libs.kotlinx.coroutines.swing)
+			implementation(libs.bundles.room)
 		}
 	}
 	compilerOptions {
@@ -67,8 +84,8 @@ android {
 		applicationId = "com.nocircle.app"
 		minSdk = libs.versions.android.minSdk.get().toInt()
 		targetSdk = libs.versions.android.targetSdk.get().toInt()
-		versionCode = 1
-		versionName = noCircleVersion
+		versionCode = noCircleVersionCode
+		versionName = noCircleVersionName
 	}
 	packaging {
 		resources {
@@ -91,6 +108,11 @@ android {
 
 dependencies {
 	debugImplementation(compose.uiTooling)
+	kspCommonMainMetadata(libs.room.compiler)
+}
+
+room {
+	schemaDirectory("$projectDir/schemas")
 }
 
 compose.desktop {
@@ -100,7 +122,7 @@ compose.desktop {
 		nativeDistributions {
 			targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
 			packageName = "com.nocircle.app"
-			packageVersion = noCircleVersion
+			packageVersion = noCircleVersionName
 		}
 	}
 }

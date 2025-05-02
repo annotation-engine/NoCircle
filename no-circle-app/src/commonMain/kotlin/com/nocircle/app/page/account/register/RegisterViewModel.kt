@@ -3,12 +3,11 @@ package com.nocircle.app.page.account.register
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import com.nocircle.app.generated.resources.*
-import com.nocircle.app.http.ApiResult
 import com.nocircle.app.http.ktorClient
 import com.nocircle.common.expends.isAlphanumeric
-import com.nocircle.common.expends.value
+import com.nocircle.common.expends.safePost
+import com.nocircle.compose.material3.NoSnackbarColors
 import com.nocircle.compose.material3.showNoSnackbar
-import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
@@ -51,27 +50,27 @@ class RegisterViewModel(
 		val password = this.password.value
 		val confirmPassword = this.confirmPassword.value
 		if (username.isEmpty()) {
-			hostState.showNoSnackbar(Res.string.register_please_input_username.value())
+			hostState.showNoSnackbar(Res.string.register_please_input_username)
 			return false
 		}
 		if (username.length < 8) {
-			hostState.showNoSnackbar(Res.string.register_username_length_at_least_8.value())
+			hostState.showNoSnackbar(Res.string.register_username_length_at_least_8)
 			return false
 		}
 		if (password.isEmpty()) {
-			hostState.showNoSnackbar(Res.string.register_please_input_password.value())
+			hostState.showNoSnackbar(Res.string.register_please_input_password)
 			return false
 		}
 		if (password.length < 8) {
-			hostState.showNoSnackbar(Res.string.register_password_length_at_least_8.value())
+			hostState.showNoSnackbar(Res.string.register_password_length_at_least_8)
 			return false
 		}
 		if (password != confirmPassword) {
-			hostState.showNoSnackbar(Res.string.register_passwords_are_inconsistent_twice.value())
+			hostState.showNoSnackbar(Res.string.register_passwords_are_inconsistent_twice)
 			return false
 		}
 		
-		val response = ktorClient.post("user/register") {
+		val result = ktorClient.safePost<Unit>("/user/register") {
 			contentType(ContentType.MultiPart.FormData)
 			val parts = formData {
 				append("username", username)
@@ -79,13 +78,13 @@ class RegisterViewModel(
 			}
 			setBody(MultiPartFormDataContent(parts))
 		}
-		if (response.status != HttpStatusCode.OK) {
+		if (result == null) {
+			hostState.showNoSnackbar(Res.string.global_network_connection_error, colors = NoSnackbarColors.Error)
 			return false
 		}
-		val model = response.body<ApiResult<Nothing>>()
-		if (!model.success) {
-			hostState.showNoSnackbar(model.msg)
+		if (result.failure) {
+			hostState.showNoSnackbar(result.msg)
 		}
-		return model.success
+		return result.success
 	}
 }

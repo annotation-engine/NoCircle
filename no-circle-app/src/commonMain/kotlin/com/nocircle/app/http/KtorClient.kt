@@ -1,11 +1,10 @@
 package com.nocircle.app.http
 
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.Serializable
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 val ktorClient by lazy {
@@ -24,14 +23,4 @@ val ktorClient by lazy {
 			})
 		}
 	}
-}
-
-@Serializable
-data class ApiResult<T : Any>(
-	val code: Int,
-	val msg: String,
-	val data: T? = null,
-) {
-	
-	val success by lazy { this.code == 0 }
 }

@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -40,23 +39,25 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-			api(compose.preview)
-			api(libs.androidx.activity.compose)
+			implementation(projects.noCircleCommon)
+			implementation(compose.preview)
+			implementation(libs.androidx.activity.compose)
 		}
 		commonMain.dependencies {
-			api(compose.runtime)
-			api(compose.foundation)
-			api(compose.material3)
-			api(compose.ui)
-			implementation(compose.components.resources)
-			api(compose.components.uiToolingPreview)
-			api(compose.materialIconsExtended)
-			api(libs.bundles.kotlin.multiplatform)
 			implementation(projects.noCircleCommon)
+			implementation(compose.runtime)
+			implementation(compose.foundation)
+			implementation(compose.material3)
+			implementation(compose.ui)
+			implementation(compose.components.uiToolingPreview)
+			implementation(compose.components.resources)
+			implementation(compose.materialIconsExtended)
+			implementation(libs.bundles.kotlin.multiplatform)
 		}
 		desktopMain.dependencies {
-			api(compose.desktop.currentOs)
-			api(libs.kotlinx.coroutines.swing)
+			implementation(projects.noCircleCommon)
+			implementation(compose.desktop.currentOs)
+			implementation(libs.kotlinx.coroutines.swing)
 		}
 	}
 	compilerOptions {
