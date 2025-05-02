@@ -72,10 +72,7 @@ kotlin-multiplatform = [
 	'ktor-client-cio',
 	'ktor-client-websockets',
 	'ktor-client-content-negotiation',
-	'ktor-serialization-kotlinx-json'
-]
-
-room = [
+	'ktor-serialization-kotlinx-json',
 	'room-runtime',
 	'room-paging',
 	'sqlite-bundled'

@@ -2,6 +2,7 @@ package com.nocircle.app.page.account.login
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
+import com.nocircle.app.database.ConfigDao
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.global_network_connection_error
 import com.nocircle.app.generated.resources.login_please_input_password
@@ -60,7 +61,7 @@ class LoginViewModel(
 			return false
 		}
 		if (result.success) {
-			// 保存数据
+			ConfigDao.setValue("token", result.data!!.token)
 		} else {
 			hostState.showNoSnackbar(result.msg)
 		}

@@ -31,6 +31,7 @@ kotlin {
 		iosTarget.binaries.framework {
 			baseName = "NoCircleApp"
 			isStatic = true
+			linkerOpts += "-lsqlite3"
 		}
 	}
 	
@@ -67,7 +68,6 @@ kotlin {
 			implementation(projects.noCircleCommon)
 			implementation(compose.desktop.currentOs)
 			implementation(libs.kotlinx.coroutines.swing)
-			implementation(libs.bundles.room)
 		}
 	}
 	compilerOptions {
@@ -109,6 +109,11 @@ android {
 dependencies {
 	debugImplementation(compose.uiTooling)
 	kspCommonMainMetadata(libs.room.compiler)
+	add("kspAndroid", libs.room.compiler)
+	add("kspDesktop", libs.room.compiler)
+	add("kspIosX64", libs.room.compiler)
+	add("kspIosArm64", libs.room.compiler)
+	add("kspIosSimulatorArm64", libs.room.compiler)
 }
 
 room {

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
-import com.nocircle.common.expends.setResult
+import com.nocircle.common.expends.popBackStack
 import com.nocircle.common.expends.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
@@ -115,8 +115,7 @@ fun RegisterPage(
 				val success = viewModel.register()
 				if (success) {
 					launch(Dispatchers.Main) {
-						navController.setResult("username", username.value)
-						navController.popBackStack()
+						navController.popBackStack("username" to username.value)
 					}
 				}
 			}

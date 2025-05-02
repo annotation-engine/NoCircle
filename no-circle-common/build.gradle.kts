@@ -7,6 +7,8 @@ plugins {
 	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.multiplatform)
 	alias(libs.plugins.kotlin.serialization)
+	alias(libs.plugins.ksp)
+	alias(libs.plugins.room)
 }
 
 kotlin {
@@ -25,6 +27,7 @@ kotlin {
 		iosTarget.binaries.framework {
 			baseName = "NoCircleCommon"
 			isStatic = true
+			linkerOpts += "-lsqlite3"
 		}
 	}
 	
@@ -92,6 +95,11 @@ android {
 
 dependencies {
 	debugImplementation(compose.uiTooling)
+	kspCommonMainMetadata(libs.room.compiler)
+}
+
+room {
+	schemaDirectory("$projectDir/schemas")
 }
 
 compose.resources {

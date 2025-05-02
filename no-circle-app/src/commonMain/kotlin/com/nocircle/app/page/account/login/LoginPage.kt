@@ -21,9 +21,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.nocircle.app.AppRoute
+import com.nocircle.app.NoRoute
 import com.nocircle.app.generated.resources.*
-import com.nocircle.common.expends.getAndRemoveResult
+import com.nocircle.common.expends.getResult
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.value
 import com.nocircle.compose.foundation.NoButton
@@ -44,7 +44,7 @@ fun LoginPage(
 	viewModel: LoginViewModel = remember { LoginViewModel(hostState) },
 ) {
 	LaunchedEffect(Unit) {
-		val username = navController.getAndRemoveResult<String>("username")
+		val username = navController.getResult<String>("username")
 		if (username != null) {
 			viewModel.updateUsername(username)
 			hostState.showNoSnackbar(Res.string.register_success.value())
@@ -108,7 +108,12 @@ fun LoginPage(
 				val success = viewModel.login()
 				if (success) {
 					launch(Dispatchers.Main) {
-						navController.navigate(AppRoute.MAIN)
+						navController.navigate(NoRoute.MAIN) {
+							popUpTo(navController.currentDestination?.route!!) {
+								inclusive = true
+							}
+							launchSingleTop = true
+						}
 					}
 				}
 			}
@@ -118,7 +123,7 @@ fun LoginPage(
 				modifier = Modifier.fillMaxWidth(),
 				colors = NoButtons.PrimaryContainerColors
 			) {
-				navController.navigate(AppRoute.ACCOUNT_REGISTER)
+				navController.navigate(NoRoute.ACCOUNT_REGISTER)
 			}
 			Spacer(modifier = Modifier.height(24.dp))
 		}
