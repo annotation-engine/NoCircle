@@ -2,6 +2,9 @@ package com.nocircle.server.services.user
 
 import com.nocircle.server.models.ApiResult
 import com.nocircle.server.models.Code
+import com.nocircle.server.plugins.RedisPrefix
+import com.nocircle.server.plugins.redisson
+import com.nocircle.server.plugins.yaml
 import com.nocircle.server.services.KtorService
 import com.nocircle.server.tables.User
 import com.nocircle.server.tables.UserTable
@@ -15,7 +18,11 @@ import io.ktor.server.util.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import kotlin.time.toJavaDuration
 
+/**
+ * 用户登录服务
+ */
 object UserLoginService : KtorService<UserLoginService.UserLogin> {
 	
 	override val path = "/user/login"
@@ -33,14 +40,12 @@ object UserLoginService : KtorService<UserLoginService.UserLogin> {
 				.singleOrNull() ?: return@newSuspendedTransaction null
 			User.wrapRow(row)
 		}
-		if (user == null) {
-			return ApiResult.failure("用户名或密码错误", Code.User.Login.USERNAME_OR_PASSWORD_ERROR)
-		}
-		val verify = PasswordUtils.verity(password, user.password)
-		if (!verify) {
+		if (user == null || !PasswordUtils.verity(password, user.password)) {
 			return ApiResult.failure("用户名或密码错误", Code.User.Login.USERNAME_OR_PASSWORD_ERROR)
 		}
 		val token = JWTUtils.generate(user.id.value, user.username)
+		val bucket = redisson.getBucket<String>("${RedisPrefix.USER_TOKEN}${user.id}")
+		bucket.set(token, yaml.jwt.timeout.toJavaDuration())
 		val data = UserLogin(token)
 		return ApiResult.success(data, "登录成功")
 	}
