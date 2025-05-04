@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.nocircle.app.LocalNavController
 import com.nocircle.app.generated.resources.*
+import com.nocircle.common.expends.noPopBackStack
 import com.nocircle.common.expends.not
-import com.nocircle.common.expends.popBackStack
 import com.nocircle.common.expends.value
 import com.nocircle.common.material3.showNoSnackbar
 import com.nocircle.compose.foundation.NoButton
@@ -38,8 +38,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RegisterPage(
-	navController: NavController,
-	viewModel: RegisterViewModel = koinViewModel()
+	viewModel: RegisterViewModel = koinViewModel(),
 ) {
 	val hostState = remember { SnackbarHostState() }
 	LaunchedEffect(Unit) {
@@ -114,6 +113,7 @@ fun RegisterPage(
 			)
 			Spacer(modifier = Modifier.height(120.dp))
 			
+			val navController = LocalNavController.current
 			NoButton(
 				text = Res.string.register.value,
 				modifier = Modifier.fillMaxWidth()
@@ -121,7 +121,7 @@ fun RegisterPage(
 				val success = viewModel.register()
 				if (success) {
 					launch(Dispatchers.Main) {
-						navController.popBackStack("username" to username.value)
+						navController.noPopBackStack("username" to username.value)
 					}
 				}
 			}
@@ -133,6 +133,7 @@ fun RegisterPage(
 			) {
 				navController.popBackStack()
 			}
+			Spacer(modifier = Modifier.height(100.dp))
 		}
 	}
 }

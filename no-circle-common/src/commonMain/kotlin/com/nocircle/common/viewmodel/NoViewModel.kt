@@ -20,7 +20,7 @@ abstract class NoViewModel : ViewModel() {
 		this.snackbarVisualsSharedFlow.collect(collector)
 	}
 	
-	protected suspend fun showNoSnackbar(
+	suspend fun showNoSnackbar(
 		message: String,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = Icons.Rounded.Info,
@@ -31,7 +31,7 @@ abstract class NoViewModel : ViewModel() {
 		this.snackbarVisualsSharedFlow.emit(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors))
 	}
 	
-	protected suspend fun showNoSnackbar(
+	suspend fun showNoSnackbar(
 		message: StringResource,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = Icons.Rounded.Info,

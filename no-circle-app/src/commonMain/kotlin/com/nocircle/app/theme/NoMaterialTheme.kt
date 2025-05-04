@@ -14,7 +14,7 @@ import com.nocircle.app.theme.colors.getColorScheme
 
 @Composable
 fun NoMaterialTheme(
-	content: @Composable () -> Unit
+	content: @Composable () -> Unit,
 ) {
 	val darkTheme = isSystemInDarkTheme()
 	LaunchedEffect(Unit) {

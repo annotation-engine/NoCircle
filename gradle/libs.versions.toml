@@ -5,10 +5,12 @@ android-targetSdk = "35"
 kotlin = "2.2.0-Beta2"
 agp = "8.9.2"
 androidx-activity-compose = "1.10.1"
-lifecycle = "2.9.0-alpha07"
 compose-multiplatform = "1.8.0-rc01"
 kotlinx-coroutines = "1.10.2"
+room = "2.7.1"
+sqlite = "2.5.0"
 navigation-compose = "2.9.0-alpha17"
+koin = "4.1.0-Beta8"
 ktor = "3.1.2"
 exposed = "0.61.0"
 mysql = "8.4.0"
@@ -16,25 +18,25 @@ logback-classic = "1.5.18"
 hutool = "5.8.37"
 redisson = "3.46.0"
 ksp = "2.2.0-Beta2-2.0.1"
-room = "2.7.1"
-sqlite = "2.5.0"
-koin = "4.0.4"
 
 [libraries]
-kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+# Kotlin Multiplatform
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
-androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
-androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+
+# Ktor Server
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 ktor-server-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-auth = { group = "io.ktor", name = "ktor-server-auth-jvm", version.ref = "ktor" }
 ktor-server-auth-jwt = { group = "io.ktor", name = "ktor-server-auth-jwt-jvm", version.ref = "ktor" }
@@ -51,8 +53,6 @@ mysql-connector-j = { group = "com.mysql", name = "mysql-connector-j", version.r
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
-koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
-koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -68,8 +68,6 @@ room = { id = "androidx.room", version.ref = "room" }
 
 [bundles]
 kotlin-multiplatform = [
-	'androidx-lifecycle-viewmodel',
-	'androidx-lifecycle-runtime-compose',
 	'androidx-navigation-compose',
 	'ktor-client-core',
 	'ktor-client-cio',

@@ -1,6 +1,8 @@
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
 	alias(libs.plugins.android.application)
@@ -12,8 +14,15 @@ plugins {
 	alias(libs.plugins.room)
 }
 
-val noCircleVersionName = property("no-circle.version-name").toString()
-val noCircleVersionCode = property("no-circle.version-code").toString().toInt()
+val noCircleVersionName = property("no-circle.version.name").toString()
+val noCircleVersionCode = property("no-circle.version.code").toString().toInt()
+val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").map {
+	it.trim().also {
+		check(it in arrayOf("x64", "arm64", "simulatorArm64")) {
+			"iosTargets 只允许是：x64, arm64, simulatorArm64 的，多个用 ‘,’ 分割"
+		}
+	}
+}
 
 kotlin {
 	androidTarget {
@@ -23,12 +32,15 @@ kotlin {
 		}
 	}
 	
-	listOf(
-		iosX64(),
-		iosArm64(),
-		iosSimulatorArm64()
-	).forEach { iosTarget ->
-		iosTarget.binaries.framework {
+	val iosTargets = noCircleIOSTargets.map {
+		when (it) {
+			"x64" -> iosX64()
+			"arm64" -> iosArm64()
+			else -> iosSimulatorArm64()
+		}
+	}
+	iosTargets.forEach {
+		it.binaries.framework {
 			baseName = "NoCircleApp"
 			isStatic = true
 			linkerOpts += "-lsqlite3"
@@ -69,6 +81,9 @@ kotlin {
 			implementation(compose.desktop.currentOs)
 			implementation(libs.kotlinx.coroutines.swing)
 		}
+		commonMain.configure {
+			kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+		}
 	}
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_2
@@ -108,12 +123,13 @@ android {
 
 dependencies {
 	debugImplementation(compose.uiTooling)
-	kspCommonMainMetadata(libs.room.compiler)
+	add("kspCommonMainMetadata", libs.room.compiler)
 	add("kspAndroid", libs.room.compiler)
 	add("kspDesktop", libs.room.compiler)
-	add("kspIosX64", libs.room.compiler)
-	add("kspIosArm64", libs.room.compiler)
-	add("kspIosSimulatorArm64", libs.room.compiler)
+	
+	noCircleIOSTargets.forEach {
+		add("kspIos${it.uppercaseFirstChar()}", libs.room.compiler)
+	}
 }
 
 room {

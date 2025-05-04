@@ -5,10 +5,19 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -17,25 +26,27 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.nocircle.app.NoRoute
+import com.nocircle.app.LocalNavController
+import com.nocircle.app.NoRoutes
 import com.nocircle.app.utils.ConfigUtils
-import com.nocircle.common.expends.navigate
+import com.nocircle.common.expends.noNavigate
 import com.nocircle.compose.icon.NoIcons
 import com.nocircle.compose.icon.NoLogo
 import com.nocircle.compose.material3.NoScaffold
 import kotlinx.coroutines.delay
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun GuidePage(
-	navController: NavController
+	viewModel: GuideViewModel = koinViewModel(),
 ) {
-	var offsetYTarget by remember { mutableStateOf(100.dp) }
+	var offsetYTarget by remember { mutableStateOf(50.dp) }
 	var alphaTarget by remember { mutableStateOf(0f) }
 	var scaleTarget by remember { mutableStateOf(1f) }
 	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
+	val navController = LocalNavController.current
 	LaunchedEffect(Unit) {
-		offsetYTarget = (-200).dp
+		offsetYTarget = (-100).dp
 		alphaTarget = 1f
 		delay(1000)
 		alphaSpec = tween(durationMillis = 400)
@@ -44,9 +55,9 @@ fun GuidePage(
 		delay(400)
 		val token = ConfigUtils.getValue<String>("token")
 		if (token != null) {
-			navController.navigate(route = NoRoute.MAIN, finish = true)
+			navController.noNavigate(route = NoRoutes.Main, finish = true)
 		} else {
-			navController.navigate(route = NoRoute.ACCOUNT_LOGIN, finish = true)
+			navController.noNavigate(route = NoRoutes.AccountLogin, finish = true)
 		}
 	}
 	NoScaffold {

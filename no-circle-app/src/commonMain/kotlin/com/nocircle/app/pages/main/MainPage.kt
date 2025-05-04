@@ -1,5 +1,6 @@
 package com.nocircle.app.pages.main
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -15,8 +16,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainPage(
-	navController: NavController,
-	viewModel: MainViewModel = koinViewModel()
+	viewModel: MainViewModel = koinViewModel(),
 ) {
 	val hostState = remember { SnackbarHostState() }
 	LaunchedEffect(Unit) {
@@ -30,6 +30,8 @@ fun MainPage(
 			}
 		}
 	) {
-	
+		Column {
+			
+		}
 	}
 }

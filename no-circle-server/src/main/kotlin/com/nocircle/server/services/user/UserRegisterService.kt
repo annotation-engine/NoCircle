@@ -1,8 +1,11 @@
 package com.nocircle.server.services.user
 
+import com.nocircle.server.annotations.Schedule
+import com.nocircle.server.annotations.ServiceSchedule
 import com.nocircle.server.models.ApiResult
 import com.nocircle.server.models.Code
-import com.nocircle.server.services.KtorService
+import com.nocircle.server.services.NoParameters
+import com.nocircle.server.services.NoService
 import com.nocircle.server.tables.UserTable
 import com.nocircle.server.tables.isLogicExists
 import com.nocircle.server.utils.PasswordUtils
@@ -18,17 +21,24 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 /**
  * 用户注册服务
  */
-object UserRegisterService : KtorService<Unit> {
+@ServiceSchedule(schedule = Schedule.Release)
+object UserRegisterService : NoService<Unit> {
 	
 	override val path = "/user/register"
 	
 	override val method = HttpMethod.Post
 	
-	context(call: RoutingCall)
-	override suspend fun service(): ApiResult<Unit> {
+	override suspend fun receiver(call: RoutingCall): NoParameters? {
 		val parameters = call.receiveParameters()
-		val username = parameters.getOrFail("username")
-		val password = parameters.getOrFail("password")
+		return NoParameters.create(
+			"username" to parameters.getOrFail("username"),
+			"password" to parameters.getOrFail("password")
+		)
+	}
+	
+	override suspend fun service(parameters: NoParameters): ApiResult<Unit> {
+		val username: String = parameters["username"]
+		val password: String = parameters["password"]
 		val success = newSuspendedTransaction {
 			val empty = UserTable.selectAll()
 				.where { UserTable.username eq username and UserTable.isLogicExists }

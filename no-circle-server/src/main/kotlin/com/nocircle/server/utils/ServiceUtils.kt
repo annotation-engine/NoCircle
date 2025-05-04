@@ -1,10 +1,13 @@
 package com.nocircle.server.utils
 
-import com.nocircle.server.services.KtorService
+import com.nocircle.server.annotations.Schedule
+import com.nocircle.server.annotations.ServiceSchedule
+import com.nocircle.server.services.NoService
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlin.reflect.full.findAnnotation
 
 fun Application.services(scope: ServiceScope.() -> Unit) {
 	val configuration: Routing.() -> Unit = {
@@ -22,11 +25,12 @@ sealed interface ServiceScope {
 	var authServiceCount: Int
 }
 
-inline operator fun <reified S : KtorService<T>, reified T : Any> ServiceScope.plusAssign(service: S) {
+inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plusAssign(service: S) {
 	val auth = if (service.auth) {
 		" - { auth: true, roles: [${service.roles.filterNotNull().joinToString()}], optional: ${service.optional} }"
 	} else ""
-	Log.info("Service: [${service.method}] - ${service.path}$auth")
+	val schedule = S::class.findAnnotation<ServiceSchedule>()?.schedule ?: Schedule.Developing
+	Log.info("Service: [${service.method}] - ${service.path}$auth${if (schedule != Schedule.Release) " - [${schedule.name.uppercase()}]!" else ""}")
 	val build: Route.() -> Unit = {
 		route(
 			path = service.path,
@@ -34,7 +38,8 @@ inline operator fun <reified S : KtorService<T>, reified T : Any> ServiceScope.p
 		) {
 			handle {
 				with(call) {
-					val result = service.service()
+					val parameters = service.receiver(this)
+					val result = if (parameters == null) service.service() else service.service(parameters)
 					call.respond(result)
 				}
 			}

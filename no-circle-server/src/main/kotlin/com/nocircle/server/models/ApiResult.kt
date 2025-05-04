@@ -4,7 +4,7 @@ import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiResult<T : Any>(
+data class ApiResult<out T : Any>(
 	val code: Int,
 	val msg: String,
 	val data: T?
@@ -26,8 +26,8 @@ data class ApiResult<T : Any>(
 			code: Int = -1,
 		): ApiResult<T> = ApiResult(code, msg, null)
 		
-		fun <T : Any> httpStatus(
+		fun httpStatus(
 			status: HttpStatusCode,
-		): ApiResult<T> = ApiResult(status.value, status.description, null)
+		): ApiResult<Unit> = ApiResult(status.value, status.description, null)
 	}
 }

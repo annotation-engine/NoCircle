@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.nocircle.service"
-version = property("no-circle.version-name").toString()
+version = property("no-circle.version.name").toString()
 
 application {
 	mainClass = "io.ktor.server.cio.EngineMain"

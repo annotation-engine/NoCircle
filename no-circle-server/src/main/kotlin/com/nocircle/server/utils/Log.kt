@@ -6,7 +6,8 @@ import org.slf4j.event.Level
 
 object Log {
 	
-	private val loggers = mutableMapOf<String, Logger>()
+	private val loggerCaches = mutableMapOf<String, Logger>()
+	
 	private const val DEFAULT_NAME = "NoCircle"
 	
 	fun trace(vararg args: Any?, name: String = DEFAULT_NAME) {
@@ -30,7 +31,7 @@ object Log {
 	}
 	
 	private fun logs(args: Array<out Any?>, name: String, level: Level) {
-		val logger = loggers.getOrPut(name) { LoggerFactory.getLogger(name) }
+		val logger = loggerCaches.getOrPut(name) { LoggerFactory.getLogger(name) }
 		logger.atLevel(level).log(args.joinToString())
 	}
 }

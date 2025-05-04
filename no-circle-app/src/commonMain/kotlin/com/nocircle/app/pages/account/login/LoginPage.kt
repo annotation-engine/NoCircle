@@ -1,6 +1,11 @@
 package com.nocircle.app.pages.account.login
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -20,11 +25,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.nocircle.app.NoRoute
-import com.nocircle.app.generated.resources.*
+import com.nocircle.app.LocalNavController
+import com.nocircle.app.NoRoutes
+import com.nocircle.app.generated.resources.Res
+import com.nocircle.app.generated.resources.login
+import com.nocircle.app.generated.resources.login_please_input_password
+import com.nocircle.app.generated.resources.login_please_input_username
+import com.nocircle.app.generated.resources.login_to_register
+import com.nocircle.app.generated.resources.register_success
+import com.nocircle.common.expends.backRoute
 import com.nocircle.common.expends.getResult
-import com.nocircle.common.expends.navigate
+import com.nocircle.common.expends.noNavigate
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.value
 import com.nocircle.common.material3.showNoSnackbar
@@ -41,15 +52,17 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LoginPage(
-	navController: NavController,
-	viewModel: LoginViewModel = koinViewModel()
+	viewModel: LoginViewModel = koinViewModel(),
 ) {
 	val hostState = remember { SnackbarHostState() }
+	val navController = LocalNavController.current
 	LaunchedEffect(Unit) {
-		val username = navController.getResult<String>("username")
-		if (username != null) {
-			viewModel.updateUsername(username)
-			hostState.showNoSnackbar(Res.string.register_success)
+		if (navController.backRoute == NoRoutes.AccountRegister::class) {
+			val username = navController.getResult<String>("username")
+			if (username != null) {
+				viewModel.updateUsername(username)
+				hostState.showNoSnackbar(Res.string.register_success)
+			}
 		}
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
@@ -58,20 +71,14 @@ fun LoginPage(
 			SnackbarHost(hostState) {
 				NoSnackbar(it)
 			}
-		}
-	) {
+		}) {
 		val verticalScroll = rememberScrollState()
 		Column(
-			modifier = Modifier
-				.fillMaxSize()
-				.verticalScroll(verticalScroll)
-				.padding(it)
-				.padding(horizontal = 40.dp)
+			modifier = Modifier.fillMaxSize().verticalScroll(verticalScroll).padding(it).padding(horizontal = 40.dp)
 		) {
 			Spacer(modifier = Modifier.height(100.dp))
 			Text(
-				text = Res.string.login.value,
-				style = MaterialTheme.typography.displayLarge
+				text = Res.string.login.value, style = MaterialTheme.typography.displayLarge
 			)
 			Spacer(modifier = Modifier.height(40.dp))
 			
@@ -80,8 +87,7 @@ fun LoginPage(
 				value = username.value,
 				onValueChange = viewModel::updateUsername,
 				placeholder = Res.string.login_please_input_username.value,
-				leadingIcon = { NoIcon(Icons.Outlined.AccountBox) }
-			)
+				leadingIcon = { NoIcon(Icons.Outlined.AccountBox) })
 			Spacer(modifier = Modifier.height(24.dp))
 			
 			val password = viewModel.password.collectAsState()
@@ -93,8 +99,7 @@ fun LoginPage(
 				leadingIcon = { NoIcon(Icons.Outlined.Lock) },
 				trailingIcon = {
 					NoIcon(
-						icon = if (showPassword.value) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,
-						tint = MaterialTheme.colorScheme.primary
+						icon = if (showPassword.value) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff, tint = MaterialTheme.colorScheme.primary
 					) {
 						viewModel.showPassword.not()
 					}
@@ -104,26 +109,22 @@ fun LoginPage(
 			Spacer(modifier = Modifier.height(100.dp))
 			
 			NoButton(
-				text = Res.string.login.value,
-				modifier = Modifier.fillMaxWidth(),
-				context = Dispatchers.IO
+				text = Res.string.login.value, modifier = Modifier.fillMaxWidth(), context = Dispatchers.IO
 			) {
 				val success = viewModel.login()
 				if (success) {
 					launch(Dispatchers.Main) {
-						navController.navigate(route = NoRoute.MAIN, finish = true)
+						navController.noNavigate(route = NoRoutes.Main, finish = true)
 					}
 				}
 			}
 			Spacer(modifier = Modifier.height(24.dp))
 			NoButton(
-				text = Res.string.login_to_register.value,
-				modifier = Modifier.fillMaxWidth(),
-				colors = NoButtons.PrimaryContainerColors
+				text = Res.string.login_to_register.value, modifier = Modifier.fillMaxWidth(), colors = NoButtons.PrimaryContainerColors
 			) {
-				navController.navigate(NoRoute.ACCOUNT_REGISTER)
+				navController.noNavigate(route = NoRoutes.AccountRegister)
 			}
-			Spacer(modifier = Modifier.height(24.dp))
+			Spacer(modifier = Modifier.height(100.dp))
 		}
 	}
 }

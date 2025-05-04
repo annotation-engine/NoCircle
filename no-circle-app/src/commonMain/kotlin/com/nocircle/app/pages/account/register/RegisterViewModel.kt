@@ -1,10 +1,14 @@
 package com.nocircle.app.pages.account.register
 
 import com.nocircle.app.generated.resources.*
-import com.nocircle.app.http.api.UserApi
+import com.nocircle.app.http.ktorClient
 import com.nocircle.common.expends.isAlphanumeric
+import com.nocircle.common.expends.safePost
 import com.nocircle.common.material3.NoSnackbarColors
 import com.nocircle.common.viewmodel.NoViewModel
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterViewModel : NoViewModel() {
@@ -61,15 +65,14 @@ class RegisterViewModel : NoViewModel() {
 			showNoSnackbar(Res.string.register_passwords_are_inconsistent_twice)
 			return false
 		}
-		
-		val result = UserApi.register(username, password)
-		if (result == null) {
-			showNoSnackbar(Res.string.global_network_connection_error, colors = NoSnackbarColors.Error)
-			return false
-		}
-		if (result.failure) {
-			showNoSnackbar(result.msg, colors = NoSnackbarColors.Error)
-		}
+		val result = ktorClient.safePost<Unit>("user/register") {
+			contentType(ContentType.MultiPart.FormData)
+			val parts = formData {
+				append("username", username)
+				append("password", password)
+			}
+			setBody(MultiPartFormDataContent(parts))
+		} ?: return false
 		return result.success
 	}
 }

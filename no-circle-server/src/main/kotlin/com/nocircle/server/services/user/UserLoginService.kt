@@ -1,11 +1,14 @@
 package com.nocircle.server.services.user
 
+import com.nocircle.server.annotations.Schedule
+import com.nocircle.server.annotations.ServiceSchedule
 import com.nocircle.server.models.ApiResult
 import com.nocircle.server.models.Code
 import com.nocircle.server.plugins.RedisPrefix
 import com.nocircle.server.plugins.redisson
 import com.nocircle.server.plugins.yaml
-import com.nocircle.server.services.KtorService
+import com.nocircle.server.services.NoParameters
+import com.nocircle.server.services.NoService
 import com.nocircle.server.tables.User
 import com.nocircle.server.tables.UserTable
 import com.nocircle.server.tables.isLogicExists
@@ -23,17 +26,24 @@ import kotlin.time.toJavaDuration
 /**
  * 用户登录服务
  */
-object UserLoginService : KtorService<UserLoginService.UserLogin> {
+@ServiceSchedule(schedule = Schedule.Release)
+object UserLoginService : NoService<UserLoginService.UserLogin> {
 	
 	override val path = "/user/login"
 	
 	override val method = HttpMethod.Post
 	
-	context(call: RoutingCall)
-	override suspend fun service(): ApiResult<UserLogin> {
+	override suspend fun receiver(call: RoutingCall): NoParameters {
 		val parameters = call.receiveParameters()
-		val username = parameters.getOrFail("username")
-		val password = parameters.getOrFail("password")
+		return NoParameters.create(
+			"username" to parameters.getOrFail("username"),
+			"password" to parameters.getOrFail("password")
+		)
+	}
+	
+	override suspend fun service(parameters: NoParameters): ApiResult<UserLogin> {
+		val username: String = parameters["username"]
+		val password: String = parameters["password"]
 		val user = newSuspendedTransaction {
 			val row = UserTable.select(UserTable.id, UserTable.username, UserTable.password)
 				.where { UserTable.username eq username and UserTable.isLogicExists }

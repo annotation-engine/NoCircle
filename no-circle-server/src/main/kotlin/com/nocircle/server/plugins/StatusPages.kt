@@ -8,16 +8,11 @@ import io.ktor.server.response.*
 
 fun Application.configureStatusPages() {
 	install(StatusPages) {
-		status(
-			HttpStatusCode.BadRequest,
-			HttpStatusCode.Unauthorized,
-			HttpStatusCode.PaymentRequired,
-			HttpStatusCode.Forbidden,
-			HttpStatusCode.NotFound,
-			HttpStatusCode.MethodNotAllowed,
-			HttpStatusCode.InternalServerError
-		) {
-			call.respond(ApiResult.httpStatus<Nothing>(it))
+		val status = HttpStatusCode.allStatusCodes.filterNot {
+			it in HttpStatusCode.OK .. HttpStatusCode.MultiStatus
+		}.toTypedArray()
+		status(*status) {
+			call.respond(ApiResult.httpStatus(it))
 		}
 	}
 }
