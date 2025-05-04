@@ -1,5 +1,8 @@
 package com.nocircle.app
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import com.nocircle.app.pages.account.login.LoginPage
@@ -12,7 +15,34 @@ import kotlinx.serialization.Serializable
 @Composable
 fun NoNavHost() {
 	val navController = LocalNavController.current
-	NavHost(navController, NoRoutes.Guide) {
+	NavHost(
+		navController = navController,
+		startDestination = NoRoutes.Guide,
+		enterTransition = {
+			slideInHorizontally(
+				initialOffsetX = { it }, // 从右进来
+				animationSpec = tween(300)
+			)
+		},
+		exitTransition = {
+			slideOutHorizontally(
+				targetOffsetX = { -it }, // 向左退出
+				animationSpec = tween(300)
+			)
+		},
+		popEnterTransition = {
+			slideInHorizontally(
+				initialOffsetX = { -it }, // 从左进来（回退）
+				animationSpec = tween(300)
+			)
+		},
+		popExitTransition = {
+			slideOutHorizontally(
+				targetOffsetX = { it }, // 向右退出（回退）
+				animationSpec = tween(300)
+			)
+		}
+	) {
 		noComposable<NoRoutes.Guide> {
 			GuidePage()
 		}

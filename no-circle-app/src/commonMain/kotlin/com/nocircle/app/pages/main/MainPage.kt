@@ -33,3 +33,13 @@ fun MainPage() {
 		}
 	}
 }
+
+@Composable
+private fun BottomBar() {
+
+}
+
+@Composable
+private fun LeftBar() {
+
+}
