@@ -59,13 +59,8 @@ kotlin {
 		}
 		commonMain.dependencies {
 			implementation(compose.runtime)
-			implementation(compose.foundation)
-			implementation(compose.material3)
-			implementation(compose.ui)
-			implementation(compose.components.uiToolingPreview)
 			implementation(compose.components.resources)
-			implementation(compose.materialIconsExtended)
-			implementation(libs.bundles.kotlin.multiplatform)
+			implementation(libs.bundles.common)
 		}
 		sourceSets.commonMain {
 			kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
@@ -108,7 +103,6 @@ android {
 }
 
 dependencies {
-	debugImplementation(compose.uiTooling)
 	add("kspCommonMainMetadata", libs.room.compiler)
 	add("kspAndroid", libs.room.compiler)
 	add("kspDesktop", libs.room.compiler)

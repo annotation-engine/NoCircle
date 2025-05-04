@@ -6,7 +6,7 @@ import com.nocircle.app.generated.resources.login_please_input_username
 import com.nocircle.app.http.ktorClient
 import com.nocircle.app.utils.ConfigUtils
 import com.nocircle.common.expends.safePost
-import com.nocircle.common.viewmodel.NoViewModel
+import com.nocircle.compose.viewmodel.NoViewModel
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*

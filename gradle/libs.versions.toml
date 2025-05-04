@@ -24,6 +24,7 @@ ksp = "2.2.0-Beta2-2.0.1"
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+material3-window-size-clazz = { group = "org.jetbrains.compose.material3", name = "material3-window-size-class", version.ref = "compose-multiplatform" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
@@ -32,7 +33,6 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"
 koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
-ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 
 # Ktor Server
@@ -67,21 +67,32 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 
 [bundles]
-kotlin-multiplatform = [
+app = [
 	'androidx-navigation-compose',
+	'material3-window-size-clazz',
+	'koin-core',
+	'koin-compose-viewmodel',
 	'ktor-client-core',
 	'ktor-client-cio',
-	'ktor-client-websockets',
 	'ktor-client-content-negotiation',
 	'ktor-serialization-kotlinx-json',
 	'room-runtime',
 	'room-paging',
-	'sqlite-bundled',
-	'koin-core',
+]
+
+compose = [
 	'koin-compose-viewmodel'
 ]
 
-ktor-server = [
+common = [
+	'androidx-navigation-compose',
+	'ktor-client-core',
+	'room-runtime',
+	'sqlite-bundled',
+	'material3-window-size-clazz',
+]
+
+server = [
 	'kotlin-reflect',
 	'ktor-server-core',
 	'ktor-server-auth',

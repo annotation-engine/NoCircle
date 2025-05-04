@@ -6,6 +6,7 @@ import com.nocircle.server.models.ApiResult
 import com.nocircle.server.models.Code
 import com.nocircle.server.services.NoParameters
 import com.nocircle.server.services.NoService
+import com.nocircle.server.services.noParameters
 import com.nocircle.server.tables.UserTable
 import com.nocircle.server.tables.isLogicExists
 import com.nocircle.server.utils.PasswordUtils
@@ -28,17 +29,15 @@ object UserRegisterService : NoService<Unit> {
 	
 	override val method = HttpMethod.Post
 	
-	override suspend fun receiver(call: RoutingCall): NoParameters? {
+	override suspend fun receive(call: RoutingCall) = noParameters {
 		val parameters = call.receiveParameters()
-		return NoParameters.create(
-			"username" to parameters.getOrFail("username"),
-			"password" to parameters.getOrFail("password")
-		)
+		this["username"] = parameters.getOrFail("username")
+		this["password"] = parameters.getOrFail("password")
 	}
 	
-	override suspend fun service(parameters: NoParameters): ApiResult<Unit> {
-		val username: String = parameters["username"]
-		val password: String = parameters["password"]
+	override suspend fun execute(parameters: NoParameters): ApiResult<Unit> {
+		val username: String by parameters
+		val password: String by parameters
 		val success = newSuspendedTransaction {
 			val empty = UserTable.selectAll()
 				.where { UserTable.username eq username and UserTable.isLogicExists }

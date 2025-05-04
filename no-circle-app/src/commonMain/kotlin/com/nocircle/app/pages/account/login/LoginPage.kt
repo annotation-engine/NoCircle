@@ -1,11 +1,6 @@
 package com.nocircle.app.pages.account.login
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -27,33 +22,23 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.LocalNavController
 import com.nocircle.app.NoRoutes
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.login
-import com.nocircle.app.generated.resources.login_please_input_password
-import com.nocircle.app.generated.resources.login_please_input_username
-import com.nocircle.app.generated.resources.login_to_register
-import com.nocircle.app.generated.resources.register_success
-import com.nocircle.common.expends.backRoute
-import com.nocircle.common.expends.getResult
-import com.nocircle.common.expends.noNavigate
-import com.nocircle.common.expends.not
-import com.nocircle.common.expends.value
-import com.nocircle.common.material3.showNoSnackbar
+import com.nocircle.app.generated.resources.*
+import com.nocircle.common.expends.*
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoInput
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbar
+import com.nocircle.compose.material3.showNoSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun LoginPage(
-	viewModel: LoginViewModel = koinViewModel(),
-) {
+fun LoginPage() {
+	val viewModel = koinViewModel<LoginViewModel>()
 	val hostState = remember { SnackbarHostState() }
 	val navController = LocalNavController.current
 	LaunchedEffect(Unit) {

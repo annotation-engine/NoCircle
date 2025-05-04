@@ -1,16 +1,16 @@
-package com.nocircle.common.viewmodel
+package com.nocircle.compose.viewmodel
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
-import com.nocircle.common.expends.value
-import com.nocircle.common.material3.NoSnackbarColors
-import com.nocircle.common.material3.NoSnackbarVisuals
+import com.nocircle.compose.material3.NoSnackbarColors
+import com.nocircle.compose.material3.NoSnackbarVisuals
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getString
 
 abstract class NoViewModel : ViewModel() {
 	
@@ -39,6 +39,6 @@ abstract class NoViewModel : ViewModel() {
 		duration: SnackbarDuration = SnackbarDuration.Short,
 		colors: NoSnackbarColors? = null,
 	) {
-		this.snackbarVisualsSharedFlow.emit(NoSnackbarVisuals(message.value(), actionLabel, prefixIcon, withDismissAction, duration, colors))
+		this.snackbarVisualsSharedFlow.emit(NoSnackbarVisuals(getString(message), actionLabel, prefixIcon, withDismissAction, duration, colors))
 	}
 }

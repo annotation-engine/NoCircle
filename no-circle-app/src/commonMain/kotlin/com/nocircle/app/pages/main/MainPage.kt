@@ -6,18 +6,16 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.navigation.NavController
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.login_success
-import com.nocircle.common.material3.showNoSnackbar
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbar
+import com.nocircle.compose.material3.showNoSnackbar
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MainPage(
-	viewModel: MainViewModel = koinViewModel(),
-) {
+fun MainPage() {
+	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
 	LaunchedEffect(Unit) {
 		hostState.showNoSnackbar(Res.string.login_success)
@@ -31,7 +29,7 @@ fun MainPage(
 		}
 	) {
 		Column {
-			
+		
 		}
 	}
 }

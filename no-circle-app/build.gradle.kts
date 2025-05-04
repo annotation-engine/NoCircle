@@ -73,7 +73,7 @@ kotlin {
 			implementation(compose.components.uiToolingPreview)
 			implementation(compose.components.resources)
 			implementation(compose.materialIconsExtended)
-			implementation(libs.bundles.kotlin.multiplatform)
+			implementation(libs.bundles.app)
 		}
 		desktopMain.dependencies {
 			implementation(projects.noCircleCompose)

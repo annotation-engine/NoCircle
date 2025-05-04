@@ -1,7 +1,6 @@
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
 	alias(libs.plugins.android.library)
@@ -9,8 +8,6 @@ plugins {
 	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.multiplatform)
 	alias(libs.plugins.kotlin.serialization)
-	alias(libs.plugins.ksp)
-	alias(libs.plugins.room)
 }
 
 val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").map {
@@ -59,7 +56,6 @@ kotlin {
 			implementation(libs.androidx.activity.compose)
 		}
 		commonMain.dependencies {
-			implementation(projects.noCircleCommon)
 			implementation(compose.runtime)
 			implementation(compose.foundation)
 			implementation(compose.material3)
@@ -67,7 +63,7 @@ kotlin {
 			implementation(compose.components.uiToolingPreview)
 			implementation(compose.components.resources)
 			implementation(compose.materialIconsExtended)
-			implementation(libs.bundles.kotlin.multiplatform)
+			implementation(libs.bundles.compose)
 		}
 		sourceSets.commonMain {
 			kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
@@ -112,17 +108,6 @@ android {
 
 dependencies {
 	debugImplementation(compose.uiTooling)
-	add("kspCommonMainMetadata", libs.room.compiler)
-	add("kspAndroid", libs.room.compiler)
-	add("kspDesktop", libs.room.compiler)
-	
-	noCircleIOSTargets.forEach {
-		add("kspIos${it.uppercaseFirstChar()}", libs.room.compiler)
-	}
-}
-
-room {
-	schemaDirectory("$projectDir/schemas")
 }
 
 compose.resources {

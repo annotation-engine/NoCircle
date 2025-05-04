@@ -44,4 +44,7 @@ object NoRoutes {
 	
 	@Serializable
 	data object Main
+	
+	@Serializable
+	data object Settings
 }

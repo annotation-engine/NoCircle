@@ -4,8 +4,7 @@ import com.nocircle.app.generated.resources.*
 import com.nocircle.app.http.ktorClient
 import com.nocircle.common.expends.isAlphanumeric
 import com.nocircle.common.expends.safePost
-import com.nocircle.common.material3.NoSnackbarColors
-import com.nocircle.common.viewmodel.NoViewModel
+import com.nocircle.compose.viewmodel.NoViewModel
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*

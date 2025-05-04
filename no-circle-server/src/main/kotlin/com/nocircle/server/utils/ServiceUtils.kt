@@ -3,6 +3,7 @@ package com.nocircle.server.utils
 import com.nocircle.server.annotations.Schedule
 import com.nocircle.server.annotations.ServiceSchedule
 import com.nocircle.server.services.NoService
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -37,11 +38,9 @@ inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plu
 			method = service.method
 		) {
 			handle {
-				with(call) {
-					val parameters = service.receiver(this)
-					val result = if (parameters == null) service.service() else service.service(parameters)
-					call.respond(result)
-				}
+				val parameters = service.receive(call)
+				val result = if (parameters != null) service.execute(parameters) else service.execute()
+				call.respond(HttpStatusCode.OK, result)
 			}
 		}
 	}

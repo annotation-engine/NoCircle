@@ -8,6 +8,7 @@ import com.nocircle.server.plugins.redisson
 import com.nocircle.server.plugins.userPrincipal
 import com.nocircle.server.services.NoParameters
 import com.nocircle.server.services.NoService
+import com.nocircle.server.services.noParameters
 import io.ktor.http.*
 import io.ktor.server.routing.*
 
@@ -23,13 +24,12 @@ object UserLogoutService : NoService<Unit> {
 	
 	override val auth = true
 	
-	override suspend fun receiver(call: RoutingCall): NoParameters {
-		val userId = call.userPrincipal.userId
-		return NoParameters.create("userId" to userId)
+	override suspend fun receive(call: RoutingCall) = noParameters {
+		this["userId"] = call.userPrincipal.userId
 	}
 	
-	override suspend fun service(parameters: NoParameters): ApiResult<Unit> {
-		val userId: Int = parameters["userId"]
+	override suspend fun execute(parameters: NoParameters): ApiResult<Unit> {
+		val userId: Int by parameters
 		val bucket = redisson.getBucket<String>("${RedisPrefix.USER_TOKEN}$userId")
 		bucket.delete()
 		return ApiResult.success("登出成功，请重新登录")
