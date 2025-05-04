@@ -1,7 +1,7 @@
 package com.nocircle.server.plugins
 
 import com.nocircle.server.tables.UserTable
-import com.nocircle.server.utils.Log
+import com.nocircle.server.utils.NoLog
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -21,5 +21,5 @@ fun configureMysql() {
 			)
 		}
 	}
-	Log.info("Mysql connected used for ${millis / 1_000f} seconds.")
+	NoLog.info("Mysql connected used for ${millis / 1_000f} seconds.")
 }

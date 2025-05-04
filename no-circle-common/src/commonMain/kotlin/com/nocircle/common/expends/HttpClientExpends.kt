@@ -1,6 +1,6 @@
 package com.nocircle.common.expends
 
-import com.nocircle.common.log.Log
+import com.nocircle.common.log.NoLog
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -60,7 +60,7 @@ suspend fun <R : Any> HttpClient.safeRequest(
 } catch (e: CancellationException) {
 	throw e
 } catch (e: Exception) {
-	Log.error(e)
+	NoLog.error(e)
 	null
 }
 

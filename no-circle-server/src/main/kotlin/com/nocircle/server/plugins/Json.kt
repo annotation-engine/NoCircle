@@ -9,7 +9,7 @@ fun Application.configureJson() {
 	install(ContentNegotiation) {
 		json(
 			json = Json {
-				prettyPrint = true
+				prettyPrint = false
 				ignoreUnknownKeys = true
 			}
 		)

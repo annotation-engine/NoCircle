@@ -2,7 +2,7 @@ package com.nocircle.common.device
 
 actual object NoDevice {
 	
-	actual val name by lazy {
+	actual val Name by lazy {
 		val osName = System.getProperty("os.name").lowercase()
 		when {
 			osName.contains("win") -> DeviceName.Windows
@@ -12,5 +12,5 @@ actual object NoDevice {
 		}
 	}
 	
-	actual val type = DeviceType.Desktop
+	actual val Type = DeviceType.Desktop
 }

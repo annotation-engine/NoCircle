@@ -2,9 +2,9 @@ package com.nocircle.common.device
 
 expect object NoDevice {
 	
-	val name: DeviceName
+	val Name: DeviceName
 	
-	val type: DeviceType
+	val Type: DeviceType
 }
 
 enum class DeviceName {

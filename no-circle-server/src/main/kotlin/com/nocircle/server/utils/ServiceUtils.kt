@@ -31,7 +31,7 @@ inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plu
 		" - { auth: true, roles: [${service.roles.filterNotNull().joinToString()}], optional: ${service.optional} }"
 	} else ""
 	val schedule = S::class.findAnnotation<ServiceSchedule>()?.schedule ?: Schedule.Developing
-	Log.info("Service: [${service.method}] - ${service.path}$auth${if (schedule != Schedule.Release) " - [${schedule.name.uppercase()}]!" else ""}")
+	NoLog.info("Service: [${service.method}] - ${service.path}$auth${if (schedule != Schedule.Release) " - [${schedule.name.uppercase()}]!" else ""}")
 	val build: Route.() -> Unit = {
 		route(
 			path = service.path,
@@ -66,6 +66,6 @@ private class ServiceScopeImpl(
 	override var authServiceCount = 0
 	
 	fun total() {
-		Log.info("Total: $serviceCount services, $authServiceCount auth services, ${serviceCount + authServiceCount} totals.")
+		NoLog.info("Total: $serviceCount services, $authServiceCount auth services, ${serviceCount + authServiceCount} totals.")
 	}
 }

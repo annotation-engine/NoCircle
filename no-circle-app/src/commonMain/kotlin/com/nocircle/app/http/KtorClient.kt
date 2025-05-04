@@ -1,27 +1,28 @@
 package com.nocircle.app.http
 
 import com.nocircle.app.utils.ConfigUtils
-import com.nocircle.common.expends.CurrentDevice
-import com.nocircle.common.expends.Device
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.request.bearerAuth
-import io.ktor.serialization.kotlinx.json.json
+import com.nocircle.common.device.DeviceName.Android
+import com.nocircle.common.device.NoDevice
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+
+private val NoBaseUrl by lazy {
+	when (NoDevice.Name) {
+		Android -> "http://10.0.2.2:8080/api/"
+		else -> "http://127.0.0.1:8080/api/"
+	}
+}
 
 val ktorClient by lazy {
 	HttpClient(CIO) {
 		defaultRequest {
-			url(
-				when (CurrentDevice) {
-					Device.Android -> "http://10.0.2.2:8080/api/"
-					Device.IOS -> "http://127.0.0.1:8080/api/"
-					Device.Desktop -> "http://127.0.0.1:8080/api/"
-				}
-			)
+			url(NoBaseUrl)
 			runBlocking {
 				ConfigUtils.getValue<String>("token")?.let {
 					bearerAuth(it)

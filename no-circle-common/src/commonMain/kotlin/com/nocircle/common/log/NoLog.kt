@@ -1,6 +1,6 @@
 package com.nocircle.common.log
 
-object Log {
+object NoLog {
 	
 	private const val TAG = "NoCircleTAG"
 	
@@ -53,7 +53,7 @@ object Log {
 	}
 }
 
-internal expect fun Log.log(tag: String, level: LogLevel, vararg args: Any?)
+internal expect fun NoLog.log(tag: String, level: LogLevel, vararg args: Any?)
 
 internal enum class LogLevel {
 	Verbose,
