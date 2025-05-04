@@ -28,7 +28,7 @@ object UserLogoutService : NoService<Unit> {
 		this["userId"] = call.userPrincipal.userId
 	}
 	
-	override suspend fun execute(parameters: NoParameters): ApiResult<Unit> {
+	override suspend fun process(parameters: NoParameters): ApiResult<Unit> {
 		val userId: Int by parameters
 		val bucket = redisson.getBucket<String>("${RedisPrefix.USER_TOKEN}$userId")
 		bucket.delete()

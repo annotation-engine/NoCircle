@@ -66,12 +66,18 @@ class RegisterViewModel : NoViewModel() {
 		}
 		val result = ktorClient.safePost<Unit>("user/register") {
 			contentType(ContentType.MultiPart.FormData)
-			val parts = formData {
+			val parameters = parameters {
 				append("username", username)
 				append("password", password)
 			}
-			setBody(MultiPartFormDataContent(parts))
-		} ?: return false
+			setBody(FormDataContent(parameters))
+		} ?: let {
+			showNoErrorSnackbar(Res.string.global_network_connect_error)
+			return false
+		}
+		if (result.failure) {
+			showNoErrorSnackbar(result.msg)
+		}
 		return result.success
 	}
 }

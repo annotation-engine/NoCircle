@@ -21,9 +21,7 @@ sealed interface ServiceScope {
 	
 	val route: Route
 	
-	var serviceCount: Int
-	
-	var authServiceCount: Int
+	val scheduleTotal: MutableMap<Any, Int>
 }
 
 inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plusAssign(service: S) {
@@ -31,7 +29,8 @@ inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plu
 		" - { auth: true, roles: [${service.roles.filterNotNull().joinToString()}], optional: ${service.optional} }"
 	} else ""
 	val schedule = S::class.findAnnotation<ServiceSchedule>()?.schedule ?: Schedule.Developing
-	NoLog.info("Service: [${service.method}] - ${service.path}$auth${if (schedule != Schedule.Release) " - [${schedule.name.uppercase()}]!" else ""}")
+	scheduleTotal[schedule] = scheduleTotal[schedule]?.let { it + 1 } ?: 1
+	NoLog.info("Service: [${service.method}] - ${service.path}$auth${if (schedule != Schedule.Release) " - ![${schedule.name.uppercase()}]!" else ""}")
 	val build: Route.() -> Unit = {
 		route(
 			path = service.path,
@@ -39,13 +38,12 @@ inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plu
 		) {
 			handle {
 				val parameters = service.receive(call)
-				val result = if (parameters != null) service.execute(parameters) else service.execute()
+				val result = if (parameters != null) service.process(parameters) else service.process()
 				call.respond(HttpStatusCode.OK, result)
 			}
 		}
 	}
 	if (service.auth) {
-		this.authServiceCount++
 		route.authenticate(
 			configurations = service.roles,
 			optional = service.optional
@@ -53,7 +51,6 @@ inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plu
 			route.build()
 		}
 	} else {
-		this.serviceCount++
 		route.build()
 	}
 }
@@ -62,10 +59,13 @@ private class ServiceScopeImpl(
 	override val route: Route
 ) : ServiceScope {
 	
-	override var serviceCount = 0
-	override var authServiceCount = 0
+	override val scheduleTotal = mutableMapOf<Any, Int>()
+	
+	private fun getCount(key: Any): Int {
+		return scheduleTotal[key] ?: 0
+	}
 	
 	fun total() {
-		NoLog.info("Total: $serviceCount services, $authServiceCount auth services, ${serviceCount + authServiceCount} totals.")
+		NoLog.info("[TOTAL] ${scheduleTotal.values.sum()} [RELEASE] ${getCount(Schedule.Release)} [DEVELOPING] ${getCount(Schedule.Developing)} [DESIGNING] ${getCount(Schedule.Designing)}")
 	}
 }

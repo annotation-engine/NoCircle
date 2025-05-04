@@ -1,6 +1,7 @@
 package com.nocircle.app.pages.account.login
 
 import com.nocircle.app.generated.resources.Res
+import com.nocircle.app.generated.resources.global_network_connect_error
 import com.nocircle.app.generated.resources.login_please_input_password
 import com.nocircle.app.generated.resources.login_please_input_username
 import com.nocircle.app.http.ktorClient
@@ -44,14 +45,19 @@ class LoginViewModel() : NoViewModel() {
 		}
 		val result = ktorClient.safePost<Login>("user/login") {
 			contentType(ContentType.MultiPart.FormData)
-			val parts = formData {
+			val parameters = parameters {
 				append("username", username)
 				append("password", password)
 			}
-			setBody(MultiPartFormDataContent(parts))
-		} ?: return false
+			setBody(FormDataContent(parameters))
+		} ?: let {
+			showNoErrorSnackbar(Res.string.global_network_connect_error)
+			return false
+		}
 		if (result.success) {
 			ConfigUtils.setValue("token", result.data!!.token)
+		} else {
+			showNoErrorSnackbar(result.msg)
 		}
 		return result.success
 	}

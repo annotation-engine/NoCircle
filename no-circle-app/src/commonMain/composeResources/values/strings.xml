@@ -1,10 +1,15 @@
 <resources>
+	<!-- 全局 -->
+	<string name="global_network_connect_error">网络连接异常</string>
+	
+	<!-- 登录页 -->
 	<string name="login">登录</string>
 	<string name="login_please_input_username">请输入用户名</string>
 	<string name="login_please_input_password">请输入密码</string>
 	<string name="login_to_register">去注册</string>
 	<string name="login_success">登录成功</string>
 	
+	<!-- 注册页 -->
 	<string name="register">注册</string>
 	<string name="register_please_input_username">请输入用户名</string>
 	<string name="register_please_input_password">请输入密码</string>

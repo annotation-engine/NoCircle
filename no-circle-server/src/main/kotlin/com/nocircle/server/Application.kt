@@ -14,7 +14,7 @@ fun Application.module() {
 	configureMysql()
 	configureRedis()
 	configureSecurity()
-	configureCallLogging()
+	configureLogging()
 	configureStatusPages()
 	configureServices()
 }

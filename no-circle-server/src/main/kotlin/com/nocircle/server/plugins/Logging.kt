@@ -4,26 +4,29 @@ import com.nocircle.server.utils.NoLog
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.calllogging.*
+import io.ktor.server.request.*
+import io.ktor.utils.io.*
 import org.slf4j.event.Level
 
-fun Application.configureCallLogging() {
+@OptIn(InternalAPI::class)
+fun Application.configureLogging() {
 	install(CallLogging) {
 		level = Level.INFO
-		filter { _ -> true }
+		logger = NoLog.NoCircleLogger
+		filter { it.request.uri.startsWith("/api") }
 	}
 	install(ResponseLogging)
 }
 
-private val ResponseLogging = createApplicationPlugin("LoggingResponsePlugin") {
+private val ResponseLogging = createApplicationPlugin("NoLogging") {
 	onCallRespond { _, value ->
-		NoLog.info {
-			when (value) {
-				is TextContent -> "Response [Text] - ${value.contentLength} length - ${value.text}"
-				is OutgoingContent.ByteArrayContent -> "Response [ByteArray] - ${value.contentLength} length - ${value.bytes().toString(Charsets.UTF_8)}"
-				is OutgoingContent.ReadChannelContent -> "Response [ReadChannel] - ${value.contentLength} length"
-				is String -> "Response [String] - ${value.length} - $value"
-				else -> "Response [${value::class.simpleName ?: "Unknown"}] - $value"
-			}
+		val message = when (value) {
+			is TextContent -> "[Text] - ${value.contentLength} length\n${value.text}"
+			is OutgoingContent.ByteArrayContent -> "[ByteArray] - ${value.contentLength} length - ${value.bytes().toString(Charsets.UTF_8)}"
+			is OutgoingContent.ReadChannelContent -> "[ReadChannel] - ${value.contentLength} length"
+			is String -> "[String] - ${value.length} - $value"
+			else -> return@onCallRespond
 		}
+		NoLog.info("Response $message")
 	}
 }

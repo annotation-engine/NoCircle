@@ -35,7 +35,7 @@ object UserRegisterService : NoService<Unit> {
 		this["password"] = parameters.getOrFail("password")
 	}
 	
-	override suspend fun execute(parameters: NoParameters): ApiResult<Unit> {
+	override suspend fun process(parameters: NoParameters): ApiResult<Unit> {
 		val username: String by parameters
 		val password: String by parameters
 		val success = newSuspendedTransaction {

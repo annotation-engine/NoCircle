@@ -6,58 +6,54 @@ import org.slf4j.event.Level
 
 object NoLog {
 	
-	private val loggerCaches = mutableMapOf<String, Logger>()
+	val NoCircleLogger: Logger = LoggerFactory.getLogger("NoCircle")
 	
-	private const val DEFAULT_NAME = "NoCircle"
-	
-	fun trace(vararg args: Any?, name: String = DEFAULT_NAME) {
-		logs(args, name, Level.TRACE)
+	fun trace(vararg args: Any?) {
+		logs(args, Level.TRACE)
 	}
 	
-	fun trace(name: String = DEFAULT_NAME, provider: () -> Any?) {
-		logs(name, Level.TRACE, provider)
+	fun trace(provider: () -> Any?) {
+		logs(Level.TRACE, provider)
 	}
 	
-	fun debug(vararg args: Any?, name: String = DEFAULT_NAME) {
-		logs(args, name, Level.DEBUG)
+	fun debug(vararg args: Any?) {
+		logs(args, Level.DEBUG)
 	}
 	
-	fun debug(name: String = DEFAULT_NAME, provider: () -> Any?) {
-		logs(name, Level.DEBUG, provider)
+	fun debug(provider: () -> Any?) {
+		logs(Level.DEBUG, provider)
 	}
 	
-	fun info(vararg args: Any?, name: String = DEFAULT_NAME) {
-		logs(args, name, Level.INFO)
+	fun info(vararg args: Any?) {
+		logs(args, Level.INFO)
 	}
 	
-	fun info(name: String = DEFAULT_NAME, provider: () -> Any?) {
-		logs(name, Level.INFO, provider)
+	fun info(provider: () -> Any?) {
+		logs(Level.INFO, provider)
 	}
 	
-	fun warn(vararg args: Any?, name: String = DEFAULT_NAME) {
-		logs(args, name, Level.WARN)
+	fun warn(vararg args: Any?) {
+		logs(args, Level.WARN)
 	}
 	
-	fun warn(name: String = DEFAULT_NAME, provider: () -> Any?) {
-		logs(name, Level.WARN, provider)
+	fun warn(provider: () -> Any?) {
+		logs(Level.WARN, provider)
 	}
 	
-	fun error(vararg args: Any?, name: String = DEFAULT_NAME) {
-		logs(args, name, Level.ERROR)
+	fun error(vararg args: Any?) {
+		logs(args, Level.ERROR)
 	}
 	
-	fun error(name: String = DEFAULT_NAME, provider: () -> Any?) {
-		logs(name, Level.ERROR, provider)
+	fun error(provider: () -> Any?) {
+		logs(Level.ERROR, provider)
 	}
 	
 	@Suppress("NOTHING_TO_INLINE")
-	private inline fun logs(args: Array<out Any?>, name: String, level: Level) {
-		val logger = loggerCaches.getOrPut(name) { LoggerFactory.getLogger(name) }
-		logger.atLevel(level).log(args.joinToString())
+	private inline fun logs(args: Array<out Any?>, level: Level) {
+		NoCircleLogger.atLevel(level).log(args.joinToString())
 	}
 	
-	private inline fun logs(name: String, level: Level, provider: () -> Any?) {
-		val logger = loggerCaches.getOrPut(name) { LoggerFactory.getLogger(name) }
-		logger.atLevel(level).log(provider().toString())
+	private inline fun logs(level: Level, provider: () -> Any?) {
+		NoCircleLogger.atLevel(level).log(provider().toString())
 	}
 }

@@ -41,4 +41,24 @@ abstract class NoViewModel : ViewModel() {
 	) {
 		this.snackbarVisualsSharedFlow.emit(NoSnackbarVisuals(getString(message), actionLabel, prefixIcon, withDismissAction, duration, colors))
 	}
+	
+	suspend fun showNoErrorSnackbar(
+		message: String,
+		actionLabel: String? = null,
+		prefixIcon: ImageVector? = Icons.Rounded.Info,
+		withDismissAction: Boolean = false,
+		duration: SnackbarDuration = SnackbarDuration.Short,
+	) {
+		this.snackbarVisualsSharedFlow.emit(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors = NoSnackbarColors.Error))
+	}
+	
+	suspend fun showNoErrorSnackbar(
+		message: StringResource,
+		actionLabel: String? = null,
+		prefixIcon: ImageVector? = Icons.Rounded.Info,
+		withDismissAction: Boolean = false,
+		duration: SnackbarDuration = SnackbarDuration.Short,
+	) {
+		this.snackbarVisualsSharedFlow.emit(NoSnackbarVisuals(getString(message), actionLabel, prefixIcon, withDismissAction, duration, colors = NoSnackbarColors.Error))
+	}
 }

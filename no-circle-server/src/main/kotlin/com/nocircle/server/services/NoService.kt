@@ -19,12 +19,12 @@ interface NoService<out R : Any> {
 	
 	suspend fun receive(call: RoutingCall): NoParameters? = null
 	
-	suspend fun execute(parameters: NoParameters): ApiResult<R> = error("请实现 suspend fun service(parameters: NoParameters): ApiResult<R>")
+	suspend fun process(parameters: NoParameters): ApiResult<R> = error("请实现 suspend fun service(parameters: NoParameters): ApiResult<R>")
 	
-	suspend fun execute(): ApiResult<R> = error("请实现 suspend fun service(): ApiResult<R>")
+	suspend fun process(): ApiResult<R> = error("请实现 suspend fun service(): ApiResult<R>")
 }
 
-class NoParameters() {
+class NoParameters {
 	
 	private val parameters = mutableMapOf<String, Any?>()
 	

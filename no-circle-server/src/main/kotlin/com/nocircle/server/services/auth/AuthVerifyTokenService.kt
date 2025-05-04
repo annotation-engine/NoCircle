@@ -22,7 +22,7 @@ object AuthVerifyTokenService : NoService<Boolean> {
 		this["token"] = call.receiveParameters().getOrFail("token")
 	}
 	
-	override suspend fun execute(parameters: NoParameters): ApiResult<Boolean> {
+	override suspend fun process(parameters: NoParameters): ApiResult<Boolean> {
 		return ApiResult.success("验证成功")
 	}
 }
