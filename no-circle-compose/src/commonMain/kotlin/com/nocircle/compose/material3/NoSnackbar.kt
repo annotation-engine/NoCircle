@@ -33,28 +33,24 @@ fun NoSnackbar(
 	singleLine: Boolean = true,
 	maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
 	shape: Shape = MaterialTheme.shapes.medium,
-	containerColor: Color = MaterialTheme.colorScheme.primary,
+	containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
 	contentColor: Color = contentColorFor(containerColor),
 	prefixIconColor: Color = contentColorFor(containerColor),
-	actionColor: Color = MaterialTheme.colorScheme.primaryContainer,
+	actionColor: Color = MaterialTheme.colorScheme.secondary,
 	actionContentColor: Color = contentColorFor(actionColor),
 	dismissActionContentColor: Color = contentColorFor(containerColor),
 ) {
 	val visuals = snackbarData.visuals as? NoSnackbarVisuals ?: return
 	val containerColor = when (visuals.colors) {
-		Primary -> MaterialTheme.colorScheme.primary
-		Secondary -> MaterialTheme.colorScheme.secondary
-		Tertiary -> MaterialTheme.colorScheme.tertiary
-		Error -> MaterialTheme.colorScheme.error
-		Surface -> MaterialTheme.colorScheme.surface
+		Primary -> MaterialTheme.colorScheme.primaryContainer
+		Secondary -> MaterialTheme.colorScheme.secondaryContainer
+		Tertiary -> MaterialTheme.colorScheme.tertiaryContainer
+		Error -> MaterialTheme.colorScheme.errorContainer
+		Surface -> MaterialTheme.colorScheme.surfaceContainer
 		null -> containerColor
 	}
-	val contentColor = if (visuals.colors != null) {
-		contentColorFor(containerColor)
-	} else contentColor
-	val prefixIconColor = if (visuals.colors != null) {
-		contentColorFor(containerColor)
-	} else prefixIconColor
+	val contentColor = visuals.colors?.let { contentColorFor(containerColor) } ?: contentColor
+	val prefixIconColor = visuals.colors?.let { contentColorFor(containerColor) } ?: prefixIconColor
 	val actionColor = when (visuals.colors) {
 		Primary -> MaterialTheme.colorScheme.primaryContainer
 		Secondary -> MaterialTheme.colorScheme.secondaryContainer
@@ -63,13 +59,8 @@ fun NoSnackbar(
 		Surface -> MaterialTheme.colorScheme.surfaceContainer
 		null -> actionColor
 	}
-	val actionContentColor = if (visuals.colors != null) {
-		contentColorFor(actionColor)
-	} else actionContentColor
-	val dismissActionContentColor = if (visuals.colors != null) {
-		contentColorFor(containerColor)
-	} else dismissActionContentColor
-	
+	val actionContentColor = visuals.colors?.let { contentColorFor(actionColor) } ?: actionContentColor
+	val dismissActionContentColor = visuals.colors?.let { contentColorFor(actionColor) } ?: dismissActionContentColor
 	Row(
 		modifier = modifier
 			.fillMaxWidth()

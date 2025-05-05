@@ -115,6 +115,8 @@ private fun CompactMainPage(
 	}
 }
 
+private val ItemSpacing = 12.dp
+
 @Composable
 private fun BottomBar(
 	mainRoute: MainRoute,
@@ -123,15 +125,25 @@ private fun BottomBar(
 	Box(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(vertical = 12.dp, horizontal = 16.dp)
-			.height(60.dp)
+			.padding(12.dp)
+			.height(52.dp)
 	) {
 		val density = LocalDensity.current
-		var sliderWidth by remember { mutableStateOf(Dp.Unspecified) }
-		if (sliderWidth != Dp.Unspecified) {
-			val offsetX by animateDpAsState(
-				targetValue = sliderWidth * MainRoute.entries.indexOf(mainRoute)
-			)
+		var width by remember { mutableStateOf(Dp.Unspecified) }
+		if (width != Dp.Unspecified) {
+			val sliderWidth by remember(width) {
+				derivedStateOf {
+					val size = MainRoute.entries.size
+					(width - ItemSpacing * (size - 1)) / size
+				}
+			}
+			val offsetXTarget by remember(sliderWidth, mainRoute) {
+				derivedStateOf {
+					val size = MainRoute.entries.size
+					(sliderWidth + ItemSpacing) * MainRoute.entries.indexOf(mainRoute)
+				}
+			}
+			val offsetX by animateDpAsState(offsetXTarget)
 			Box(
 				modifier = Modifier
 					.offset(x = offsetX)
@@ -145,10 +157,10 @@ private fun BottomBar(
 			modifier = Modifier
 				.fillMaxSize()
 				.onGloballyPositioned {
-					sliderWidth = with(density) { (it.size.width / MainRoute.entries.size).toDp() }
+					width = with(density) { it.size.width.toDp() }
 				}
 		) {
-			MainRoute.entries.forEach {
+			MainRoute.entries.forEachIndexed { index, it ->
 				val color by animateColorAsState(
 					targetValue = if (it == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
 				)
@@ -167,14 +179,17 @@ private fun BottomBar(
 						icon = it.icon,
 						tint = color,
 						modifier = Modifier
-							.size(24.dp)
+							.size(26.dp)
 					)
-					Spacer(modifier = Modifier.width(8.dp))
+					Spacer(modifier = Modifier.width(ItemSpacing))
 					Text(
 						text = it.title.value,
 						color = color,
 						style = MaterialTheme.typography.titleMedium,
 					)
+				}
+				if (index < MainRoute.entries.lastIndex) {
+					Spacer(modifier = Modifier.width(ItemSpacing))
 				}
 			}
 		}
