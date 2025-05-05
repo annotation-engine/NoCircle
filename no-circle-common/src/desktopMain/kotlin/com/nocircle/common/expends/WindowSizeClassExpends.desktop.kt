@@ -3,10 +3,9 @@
 package com.nocircle.common.expends
 
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 
 @Composable
 @ExperimentalMaterial3WindowSizeClassApi
-actual inline fun calculateWindowSizeClass(): WindowSizeClass = calculateWindowSizeClass()
+actual inline fun calculateWindowSize(): WindowSize = calculateWindowSizeClass()

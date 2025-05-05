@@ -4,7 +4,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.nocircle.app.pages.account.login.LoginPage
 import com.nocircle.app.pages.account.register.RegisterPage
 import com.nocircle.app.pages.guide.GuidePage
@@ -78,3 +82,16 @@ object NoRoutes {
 	@Serializable
 	data object Settings
 }
+
+@Composable
+fun NavControllerProvider(
+	content: @Composable () -> Unit
+) {
+	val navController = rememberNavController()
+	CompositionLocalProvider(
+		LocalNavController provides navController,
+		content = content
+	)
+}
+
+val LocalNavController = compositionLocalOf<NavHostController> { error("NoLocalNavController") }

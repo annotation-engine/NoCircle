@@ -70,6 +70,7 @@ room = { id = "androidx.room", version.ref = "room" }
 
 [bundles]
 app = [
+	'kotlin-reflect',
 	'androidx-navigation-compose',
 	'material3-window-size-clazz',
 	'koin-core',
@@ -79,14 +80,16 @@ app = [
 	'ktor-client-content-negotiation',
 	'ktor-serialization-kotlinx-json',
 	'room-runtime',
-	'room-paging',
+	'room-paging'
 ]
 
 compose = [
+	'kotlin-reflect',
 	'koin-compose-viewmodel'
 ]
 
 common = [
+	'kotlin-reflect',
 	'androidx-navigation-compose',
 	'ktor-client-core',
 	'room-runtime',

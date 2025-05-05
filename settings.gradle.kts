@@ -12,7 +12,6 @@ pluginManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-	    mavenLocal()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -27,7 +26,6 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-	    mavenLocal()
         mavenCentral()
     }
 }

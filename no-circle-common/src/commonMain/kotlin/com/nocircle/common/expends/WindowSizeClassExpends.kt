@@ -2,24 +2,54 @@
 
 package com.nocircle.common.expends
 
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 
-@Composable
-@ExperimentalMaterial3WindowSizeClassApi
-expect inline fun calculateWindowSizeClass(): WindowSizeClass
+typealias WindowSize = WindowSizeClass
+typealias WindowWidthSize = WindowWidthSizeClass
+typealias WindowHeightSize = WindowHeightSizeClass
 
 @Composable
-@ExperimentalMaterial3WindowSizeClassApi
-inline fun calculateWindowWidthSizeClass(): WindowWidthSizeClass {
-	return calculateWindowSizeClass().widthSizeClass
+expect inline fun calculateWindowSize(): WindowSize
+
+@Composable
+inline fun calculateWindowWidthSize(): WindowWidthSize {
+	return calculateWindowSize().widthSizeClass
 }
 
 @Composable
-@ExperimentalMaterial3WindowSizeClassApi
-inline fun calculateWindowHeightSizeClass(): WindowHeightSizeClass {
-	return calculateWindowSizeClass().heightSizeClass
+inline fun calculateWindowHeightSize(): WindowHeightSize {
+	return calculateWindowSize().heightSizeClass
+}
+
+object WindowWidthSizes {
+	
+	inline val isCompact: Boolean
+		@Composable
+		get() = calculateWindowWidthSize() == WindowWidthSize.Compact
+	
+	inline val isMedium: Boolean
+		@Composable
+		get() = calculateWindowWidthSize() == WindowWidthSize.Medium
+	
+	inline val isExpended: Boolean
+		@Composable
+		get() = calculateWindowWidthSize() == WindowWidthSize.Expanded
+}
+
+object WindowHeightSizes {
+	
+	inline val isCompact: Boolean
+		@Composable
+		get() = calculateWindowHeightSize() == WindowHeightSize.Compact
+	
+	inline val isMedium: Boolean
+		@Composable
+		get() = calculateWindowHeightSize() == WindowHeightSize.Medium
+	
+	inline val isExpended: Boolean
+		@Composable
+		get() = calculateWindowHeightSize() == WindowHeightSize.Expanded
 }

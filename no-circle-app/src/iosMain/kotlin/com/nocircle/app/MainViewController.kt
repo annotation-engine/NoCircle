@@ -3,4 +3,8 @@ package com.nocircle.app
 import androidx.compose.ui.window.ComposeUIViewController
 
 @Suppress("unused", "FunctionName")
-fun MainViewController() = ComposeUIViewController { NoApp() }
+fun MainViewController() = ComposeUIViewController {
+	NavControllerProvider {
+		NoApp()
+	}
+}

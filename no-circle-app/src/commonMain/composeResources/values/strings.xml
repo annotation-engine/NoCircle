@@ -19,4 +19,8 @@
 	<string name="register_password_length_at_least_8">用户名至少是8位</string>
 	<string name="register_passwords_are_inconsistent_twice">两次密码不一致</string>
 	<string name="register_success">注册成功，请前往登录</string>
+	
+	<!-- 主页 -->
+	<string name="main_home">主页</string>
+	<string name="main_person">我的</string>
 </resources>

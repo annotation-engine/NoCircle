@@ -1,16 +1,8 @@
 package com.nocircle.common.expends
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
-import androidx.navigation.NavDeepLink
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
+import androidx.navigation.*
 import androidx.navigation.compose.composable
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
@@ -38,10 +30,13 @@ private const val BACK_ROUTE = "NO_CIRCLE_BACK_ROUTE"
 private const val LAST_ROUTE = "NO_CIRCLE_LAST_ROUTE"
 
 val NavController.backRoute: KClass<*>?
-	get() = this.getResult<String>(BACK_ROUTE)?.let { noRouteMap[it] }
+	get() = this.getResult<String>(BACK_ROUTE)?.let { recordRouteMap[it] }
 
 val NavController.lastRoute: KClass<*>?
-	get() = this.getResult<String>(LAST_ROUTE)?.let { noRouteMap[it] }
+	get() = this.getResult<String>(LAST_ROUTE)?.let { recordRouteMap[it] }
+
+val NavController.currentRoute: KClass<*>?
+	get() = this.currentDestination?.route?.let { recordRouteMap[it] }
 
 fun <R : Any> NavController.noNavigate(
 	route: R,
@@ -88,10 +83,10 @@ fun NavController.noPopBackStack(vararg data: Pair<String, Any?>) {
 	this.popBackStack()
 }
 
-private val noRouteMap = mutableMapOf<String, KClass<out Any>>()
+private val recordRouteMap = mutableMapOf<String, KClass<out Any>>()
 
-fun <T : Any> saveNoRouteKClass(kClass: KClass<T>) {
-	noRouteMap[kClass.qualifiedName!!] = kClass
+fun <T : Any> recordRoute(kClass: KClass<T>) {
+	recordRouteMap[kClass.qualifiedName!!] = kClass
 }
 
 inline fun <reified T : Any> NavGraphBuilder.noComposable(
@@ -104,7 +99,7 @@ inline fun <reified T : Any> NavGraphBuilder.noComposable(
 	noinline sizeTransform: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)? = null,
 	noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {
-	saveNoRouteKClass(T::class)
+	recordRoute(T::class)
 	this.composable<T>(
 		typeMap,
 		deepLinks,

@@ -1,10 +1,6 @@
 package com.nocircle.app
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.nocircle.app.pages.account.login.LoginViewModel
 import com.nocircle.app.pages.account.register.RegisterViewModel
 import com.nocircle.app.pages.guide.GuideViewModel
@@ -29,14 +25,7 @@ fun NoApp() {
 		}
 	) {
 		NoMaterialTheme {
-			val navController = rememberNavController()
-			CompositionLocalProvider(
-				LocalNavController provides navController
-			) {
-				NoNavHost()
-			}
+			NoNavHost()
 		}
 	}
 }
-
-val LocalNavController = compositionLocalOf<NavHostController> { error("NoLocalNavController") }

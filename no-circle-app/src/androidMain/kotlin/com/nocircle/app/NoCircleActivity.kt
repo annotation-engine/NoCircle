@@ -10,7 +10,11 @@ class NoCircleActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		Globals.setActivity(this)
-		setContent { NoApp() }
+		setContent {
+			NavControllerProvider {
+				NoApp()
+			}
+		}
 	}
 	
 	override fun onDestroy() {
