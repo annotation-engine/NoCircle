@@ -101,13 +101,13 @@ inline fun <reified T : Any> NavGraphBuilder.noComposable(
 ) {
 	recordRoute(T::class)
 	this.composable<T>(
-		typeMap,
-		deepLinks,
-		enterTransition,
-		exitTransition,
-		popEnterTransition,
-		popExitTransition,
-		sizeTransform,
-		content
+		typeMap = typeMap,
+		deepLinks = deepLinks,
+		enterTransition = enterTransition,
+		exitTransition = exitTransition,
+		popEnterTransition = popEnterTransition,
+		popExitTransition = popExitTransition,
+		sizeTransform = sizeTransform,
+		content = content
 	)
 }

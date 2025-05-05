@@ -13,6 +13,7 @@ import com.nocircle.app.pages.account.login.LoginPage
 import com.nocircle.app.pages.account.register.RegisterPage
 import com.nocircle.app.pages.guide.GuidePage
 import com.nocircle.app.pages.main.MainPage
+import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.common.expends.noComposable
 import kotlinx.serialization.Serializable
 
@@ -22,46 +23,16 @@ fun NoNavHost() {
 	NavHost(
 		navController = navController,
 		startDestination = NoRoutes.Guide,
-		enterTransition = {
-			slideInHorizontally(
-				initialOffsetX = { it }, // 从右进来
-				animationSpec = tween(300)
-			)
-		},
-		exitTransition = {
-			slideOutHorizontally(
-				targetOffsetX = { -it }, // 向左退出
-				animationSpec = tween(300)
-			)
-		},
-		popEnterTransition = {
-			slideInHorizontally(
-				initialOffsetX = { -it }, // 从左进来（回退）
-				animationSpec = tween(300)
-			)
-		},
-		popExitTransition = {
-			slideOutHorizontally(
-				targetOffsetX = { it }, // 向右退出（回退）
-				animationSpec = tween(300)
-			)
-		}
+		enterTransition = { EnterTransition },
+		exitTransition = { ExitTransition },
+		popEnterTransition = { PopEnterTransition },
+		popExitTransition = { PopExitTransition }
 	) {
-		noComposable<NoRoutes.Guide> {
-			GuidePage()
-		}
-		
-		noComposable<NoRoutes.AccountLogin> {
-			LoginPage()
-		}
-		
-		noComposable<NoRoutes.AccountRegister> {
-			RegisterPage()
-		}
-		
-		noComposable<NoRoutes.Main> {
-			MainPage()
-		}
+		noComposable<NoRoutes.Guide> { GuidePage() }
+		noComposable<NoRoutes.AccountLogin> { LoginPage() }
+		noComposable<NoRoutes.AccountRegister> { RegisterPage() }
+		noComposable<NoRoutes.Main> { MainPage() }
+		noComposable<NoRoutes.Settings> { SettingsPage() }
 	}
 }
 
@@ -82,6 +53,26 @@ object NoRoutes {
 	@Serializable
 	data object Settings
 }
+
+private val EnterTransition = slideInHorizontally(
+	initialOffsetX = { it },
+	animationSpec = tween(300)
+)
+
+private val ExitTransition = slideOutHorizontally(
+	targetOffsetX = { -it },
+	animationSpec = tween(300)
+)
+
+private val PopEnterTransition = slideInHorizontally(
+	initialOffsetX = { -it },
+	animationSpec = tween(300)
+)
+
+private val PopExitTransition = slideOutHorizontally(
+	targetOffsetX = { it },
+	animationSpec = tween(300)
+)
 
 @Composable
 fun NavControllerProvider(
