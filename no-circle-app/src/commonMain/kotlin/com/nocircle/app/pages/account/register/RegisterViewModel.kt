@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterViewModel : NoViewModel() {
 	
-	val username = MutableStateFlow("lijiawei")
+	val username = MutableStateFlow("")
 	
-	val password = MutableStateFlow("12345678")
+	val password = MutableStateFlow("")
 	
-	val confirmPassword = MutableStateFlow("12345678")
+	val confirmPassword = MutableStateFlow("")
 	
 	val showPassword = MutableStateFlow(false)
 	

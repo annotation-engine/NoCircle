@@ -2,10 +2,20 @@ package com.nocircle.common.room
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import java.io.File
+import com.nocircle.common.device.DeviceName
+import com.nocircle.common.device.NoDevice
+import java.nio.file.Paths
+import kotlin.io.path.absolutePathString
 
 actual inline fun <reified T : RoomDatabase> getDatabaseBuilder(dbName: String): RoomDatabase.Builder<T> {
 	val dbName = if (dbName.endsWith(".db")) dbName else "$dbName.db"
-	val dbFile = File(System.getProperty("java.io.tmpdir"), dbName)
-	return Room.databaseBuilder(dbFile.absolutePath)
+	val appName = "NoCircle"
+	val paths = when (NoDevice.Name) {
+		DeviceName.MacOS -> Paths.get(System.getProperty("user.home"), "Library", "Application Support", appName, "data")
+		DeviceName.Linux -> Paths.get(System.getProperty("user.home"), ".local", "share", appName)
+		DeviceName.Windows -> Paths.get(System.getenv("LOCALAPPDATA"), appName, "data")
+		else -> error("Unknown device.")
+	}
+	val absolutePath = paths.resolve(dbName).absolutePathString()
+	return Room.databaseBuilder(absolutePath)
 }
