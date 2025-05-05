@@ -46,7 +46,7 @@ fun GuidePage() {
 		if (verify) {
 			navController.noNavigate(route = NoRoutes.Main, finish = true)
 		} else {
-			navController.noNavigate(route = NoRoutes.AccountLogin, finish = true)
+			navController.noNavigate(route = NoRoutes.Login, finish = true)
 		}
 	}
 	NoScaffold {

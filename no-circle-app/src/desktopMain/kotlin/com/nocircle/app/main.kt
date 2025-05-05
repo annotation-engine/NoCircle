@@ -73,8 +73,8 @@ fun main() {
 
 private val WindowSize400x600Routes = arrayOf(
 	NoRoutes.Guide::class,
-	NoRoutes.AccountLogin::class,
-	NoRoutes.AccountRegister::class
+	NoRoutes.Login::class,
+	NoRoutes.Register::class
 )
 
 private val screenSize by lazy { Toolkit.getDefaultToolkit().screenSize }

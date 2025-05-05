@@ -42,7 +42,7 @@ fun LoginPage() {
 	val hostState = remember { SnackbarHostState() }
 	val navController = LocalNavController.current
 	LaunchedEffect(Unit) {
-		if (navController.backRoute == NoRoutes.AccountRegister::class) {
+		if (navController.backRoute == NoRoutes.Register::class) {
 			val username = navController.getResult<String>("username")
 			if (username != null) {
 				viewModel.updateUsername(username)
@@ -107,7 +107,7 @@ fun LoginPage() {
 			NoButton(
 				text = Res.string.login_to_register.value, modifier = Modifier.fillMaxWidth(), colors = NoButtons.PrimaryContainerColors
 			) {
-				navController.noNavigate(route = NoRoutes.AccountRegister)
+				navController.noNavigate(route = NoRoutes.Register)
 			}
 			Spacer(modifier = Modifier.height(100.dp))
 		}

@@ -29,8 +29,8 @@ fun NoNavHost() {
 		popExitTransition = { PopExitTransition }
 	) {
 		noComposable<NoRoutes.Guide> { GuidePage() }
-		noComposable<NoRoutes.AccountLogin> { LoginPage() }
-		noComposable<NoRoutes.AccountRegister> { RegisterPage() }
+		noComposable<NoRoutes.Login> { LoginPage() }
+		noComposable<NoRoutes.Register> { RegisterPage() }
 		noComposable<NoRoutes.Main> { MainPage() }
 		noComposable<NoRoutes.Settings> { SettingsPage() }
 	}
@@ -42,10 +42,10 @@ object NoRoutes {
 	data object Guide
 	
 	@Serializable
-	data object AccountLogin
+	data object Login
 	
 	@Serializable
-	data object AccountRegister
+	data object Register
 	
 	@Serializable
 	data object Main
