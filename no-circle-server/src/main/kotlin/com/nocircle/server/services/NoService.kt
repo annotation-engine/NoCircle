@@ -17,14 +17,16 @@ interface NoService<out R : Any> {
 	
 	val roles get() = arrayOf<String?>(null)
 	
-	suspend fun receive(call: RoutingCall): NoParameters? = null
+	suspend fun receive(call: RoutingCall): NoParameters
 	
-	suspend fun process(parameters: NoParameters): ApiResult<R> = error("请实现 suspend fun service(parameters: NoParameters): ApiResult<R>")
-	
-	suspend fun process(): ApiResult<R> = error("请实现 suspend fun service(): ApiResult<R>")
+	suspend fun process(parameters: NoParameters): ApiResult<R>
 }
 
 class NoParameters {
+	
+	companion object {
+		val None = NoParameters()
+	}
 	
 	private val parameters = mutableMapOf<String, Any?>()
 	

@@ -38,7 +38,7 @@ inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plu
 		) {
 			handle {
 				val parameters = service.receive(call)
-				val result = if (parameters != null) service.process(parameters) else service.process()
+				val result = service.process(parameters)
 				call.respond(HttpStatusCode.OK, result)
 			}
 		}

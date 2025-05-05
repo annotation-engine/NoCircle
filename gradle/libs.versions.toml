@@ -6,7 +6,7 @@ kotlin = "2.2.0-Beta2"
 agp = "8.9.2"
 androidx-activity-compose = "1.10.1"
 compose-multiplatform = "1.8.0-rc01"
-kotlinx-coroutines = "1.10.2"
+kotlinx-coroutines-swing = "1.10.2"
 room = "2.7.1"
 sqlite = "2.5.0"
 navigation-compose = "2.9.0-alpha17"
@@ -21,7 +21,7 @@ ksp = "2.2.0-Beta2-2.0.1"
 
 [libraries]
 # Kotlin Multiplatform
-kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines-swing" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 material3-window-size-clazz = { group = "org.jetbrains.compose.material3", name = "material3-window-size-class", version.ref = "compose-multiplatform" }
@@ -44,7 +44,6 @@ ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-conte
 ktor-server-cio = { group = "io.ktor", name = "ktor-server-cio-jvm", version.ref = "ktor" }
 ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml-jvm", version.ref = "ktor" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages-jvm", version.ref = "ktor" }
-ktor-server-call-logging = { group = "io.ktor", name = "ktor-server-call-logging", version.ref = "ktor" }
 exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
 exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
 exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
@@ -93,6 +92,7 @@ common = [
 	'room-runtime',
 	'sqlite-bundled',
 	'material3-window-size-clazz',
+	'ktor-serialization-kotlinx-json'
 ]
 
 server = [
@@ -105,7 +105,6 @@ server = [
 	'ktor-server-config-yaml',
 	'ktor-server-status-pages',
 	'ktor-serialization-kotlinx-json',
-	'ktor-server-call-logging',
 	'exposed-core',
 	'exposed-dao',
 	'exposed-jdbc',

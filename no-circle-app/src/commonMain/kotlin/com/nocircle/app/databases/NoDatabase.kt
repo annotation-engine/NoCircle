@@ -14,17 +14,10 @@ abstract class NoDatabase : RoomDatabase() {
 		
 		val INSTANCE by lazy { getRoomDatabase<NoDatabase>("no_circle") }
 	}
-	
-	abstract val configDao: ConfigDao
 }
 
-@Suppress("KotlinNoActualForExpect", "NO_ACTUAL_FOR_EXPECT")
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect object NoDatabaseConstructor : RoomDatabaseConstructor<NoDatabase> {
 	
 	override fun initialize(): NoDatabase
-}
-
-object NoDaos {
-	
-	val config by lazy { NoDatabase.INSTANCE.configDao }
 }

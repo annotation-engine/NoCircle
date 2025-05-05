@@ -5,7 +5,7 @@ import com.nocircle.app.generated.resources.global_network_connect_error
 import com.nocircle.app.generated.resources.login_please_input_password
 import com.nocircle.app.generated.resources.login_please_input_username
 import com.nocircle.app.http.ktorClient
-import com.nocircle.app.utils.ConfigUtils
+import com.nocircle.common.config.Config
 import com.nocircle.common.expends.safePost
 import com.nocircle.compose.viewmodel.NoViewModel
 import io.ktor.client.request.*
@@ -55,7 +55,7 @@ class LoginViewModel() : NoViewModel() {
 			return false
 		}
 		if (result.success) {
-			ConfigUtils.setValue("token", result.data!!.token)
+			Config["token"] = result.data!!.token
 		} else {
 			showNoErrorSnackbar(result.msg)
 		}

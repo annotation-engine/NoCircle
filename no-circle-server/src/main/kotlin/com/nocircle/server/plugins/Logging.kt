@@ -3,30 +3,51 @@ package com.nocircle.server.plugins
 import com.nocircle.server.utils.NoLog
 import io.ktor.http.content.*
 import io.ktor.server.application.*
-import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.request.*
-import io.ktor.utils.io.*
-import org.slf4j.event.Level
+import io.ktor.util.*
+import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(InternalAPI::class)
 fun Application.configureLogging() {
-	install(CallLogging) {
-		level = Level.INFO
-		logger = NoLog.NoCircleLogger
-		filter { it.request.uri.startsWith("/api") }
-	}
-	install(ResponseLogging)
+	install(NoLogging)
 }
 
-private val ResponseLogging = createApplicationPlugin("NoLogging") {
-	onCallRespond { _, value ->
+private val RequestTimeKey = AttributeKey<Long>("RequestTime")
+
+private val NoLogging = createApplicationPlugin(
+	name = "NoLogging",
+	createConfiguration = ::NoLoggingConfig
+) {
+	onCall { call ->
+		call.attributes.put(RequestTimeKey, System.currentTimeMillis())
+	}
+	onCallRespond { call, value ->
+		val status = call.response.status()
+		val httpMethod = call.request.httpMethod
+		val uri = call.request.uri
 		val message = when (value) {
-			is TextContent -> "[Text] - ${value.contentLength} length\n${value.text}"
-			is OutgoingContent.ByteArrayContent -> "[ByteArray] - ${value.contentLength} length - ${value.bytes().toString(Charsets.UTF_8)}"
-			is OutgoingContent.ReadChannelContent -> "[ReadChannel] - ${value.contentLength} length"
-			is String -> "[String] - ${value.length} - $value"
+			is TextContent -> "[Text]\n${value.text}"
+			is OutgoingContent.ByteArrayContent -> "[ByteArray]\n${value.bytes().toString(Charsets.UTF_8)}"
+			is OutgoingContent.ReadChannelContent -> "[ReadChannel]"
+			is String -> "[String]\n$value"
 			else -> return@onCallRespond
 		}
-		NoLog.info("Response $message")
+		val duration = System.currentTimeMillis() - call.attributes[RequestTimeKey]
+		call.attributes.remove(RequestTimeKey)
+		NoLog.buildInfo {
+			append(status)
+			append(": ")
+			append(httpMethod)
+			append(" - ")
+			append(uri)
+			append(" in ${duration.milliseconds} - ")
+			append("Response: ")
+			append(message)
+		}
 	}
 }
+
+// 200 OK: POST - /api/auth/verifyToken in 40ms
+
+private data class NoLoggingConfig(
+	val responseBody: Boolean = true
+)
