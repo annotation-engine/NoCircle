@@ -4,6 +4,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
+import com.nocircle.common.log.NoLog
 import java.nio.file.Paths
 import kotlin.io.path.absolutePathString
 
@@ -17,5 +18,6 @@ actual inline fun <reified T : RoomDatabase> getDatabaseBuilder(dbName: String):
 		else -> error("Unknown device.")
 	}
 	val absolutePath = paths.resolve(dbName).absolutePathString()
+	NoLog.info(absolutePath)
 	return Room.databaseBuilder(absolutePath)
 }

@@ -12,7 +12,7 @@ fun Application.configureStatusPages() {
 			it in HttpStatusCode.OK .. HttpStatusCode.MultiStatus
 		}.toTypedArray()
 		status(*status) {
-			call.respond(ApiResult.httpStatus(it))
+			call.respond(HttpStatusCode.OK, ApiResult.httpStatus(it))
 		}
 	}
 }

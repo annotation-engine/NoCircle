@@ -48,7 +48,7 @@ inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plu
 			configurations = service.roles,
 			optional = service.optional
 		) {
-			route.build()
+			this.build()
 		}
 	} else {
 		route.build()

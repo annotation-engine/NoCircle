@@ -38,8 +38,8 @@ internal interface ConfigDao {
 	suspend fun query(key: String): ConfigEntity?
 	
 	@Query("DELETE FROM ConfigEntity WHERE `key` = :key")
-	suspend fun clear(key: String)
+	suspend fun delete(key: String): Int
 	
 	@Query("DELETE FROM ConfigEntity")
-	suspend fun clearAll()
+	suspend fun deleteAll(): Int
 }

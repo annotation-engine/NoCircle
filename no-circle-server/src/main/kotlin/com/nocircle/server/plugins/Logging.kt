@@ -8,7 +8,9 @@ import io.ktor.util.*
 import kotlin.time.Duration.Companion.milliseconds
 
 fun Application.configureLogging() {
-	install(NoLogging)
+	install(NoLogging) {
+		this.responseBody = true
+	}
 }
 
 private val RequestTimeKey = AttributeKey<Long>("RequestTime")
@@ -46,8 +48,6 @@ private val NoLogging = createApplicationPlugin(
 	}
 }
 
-// 200 OK: POST - /api/auth/verifyToken in 40ms
-
 private data class NoLoggingConfig(
-	val responseBody: Boolean = true
+	var responseBody: Boolean = true
 )

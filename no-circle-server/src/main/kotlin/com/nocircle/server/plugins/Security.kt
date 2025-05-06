@@ -2,6 +2,7 @@ package com.nocircle.server.plugins
 
 import com.auth0.jwt.JWT
 import com.nocircle.server.utils.JWTUtils
+import com.nocircle.server.utils.NoLog
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*

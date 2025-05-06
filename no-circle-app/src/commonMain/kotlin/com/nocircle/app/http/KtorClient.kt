@@ -1,9 +1,8 @@
 package com.nocircle.app.http
 
-import com.nocircle.common.config.Config
+import com.nocircle.common.config.getConfigOrNull
 import com.nocircle.common.device.DeviceName.Android
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.log.NoLog
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
@@ -25,10 +24,8 @@ val ktorClient by lazy {
 		defaultRequest {
 			url(NoBaseUrl)
 			runBlocking {
-				val token: String? = Config["token"]
-				NoLog.info(token)
-				if (token != null) {
-					bearerAuth(token)
+				getConfigOrNull<String>("token")?.let {
+					bearerAuth(it)
 				}
 			}
 		}
