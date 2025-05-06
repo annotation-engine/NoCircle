@@ -35,6 +35,7 @@ fun GuidePage() {
 	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
 	val navController = LocalNavController.current
 	LaunchedEffect(Unit) {
+		delay(200)
 		offsetYTarget = (-100).dp
 		alphaTarget = 1f
 		delay(1000)
@@ -79,7 +80,7 @@ fun GuidePage() {
 					.background(MaterialTheme.colorScheme.primary, CircleShape)
 					.scale(1.5f)
 					.clip(CircleShape),
-				colorFilter = ColorFilter.tint(Color.White)
+				colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
 			)
 		}
 	}

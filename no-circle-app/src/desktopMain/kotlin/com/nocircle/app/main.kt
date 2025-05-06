@@ -3,6 +3,7 @@ package com.nocircle.app
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -10,9 +11,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.nocircle.app.theme.NoMaterialTheme
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.expends.currentRoute
+import java.awt.Color
 import java.awt.Dimension
 import java.awt.Toolkit
 
@@ -44,8 +47,8 @@ fun main() {
 					window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
 					window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
 				}
+				window.minimumSize = Dimension(400, 600)
 			}
-			window.minimumSize = Dimension(400, 600)
 			NavControllerProvider {
 				val navController = LocalNavController.current
 				LaunchedEffect(Unit) {
@@ -65,7 +68,13 @@ fun main() {
 						}
 					}
 				}
-				NoApp()
+				NoMaterialTheme {
+					val surface = MaterialTheme.colorScheme.surface
+					LaunchedEffect(surface) {
+						window.background = surface.let { Color(it.red, it.green, it.blue) }
+					}
+					NoApp()
+				}
 			}
 		}
 	}

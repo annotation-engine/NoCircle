@@ -3,6 +3,7 @@ package com.nocircle.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.nocircle.app.theme.NoMaterialTheme
 import com.nocircle.common.utils.Globals
 
 class NoCircleActivity : ComponentActivity() {
@@ -12,7 +13,9 @@ class NoCircleActivity : ComponentActivity() {
 		Globals.setActivity(this)
 		setContent {
 			NavControllerProvider {
-				NoApp()
+				NoMaterialTheme {
+					NoApp()
+				}
 			}
 		}
 	}

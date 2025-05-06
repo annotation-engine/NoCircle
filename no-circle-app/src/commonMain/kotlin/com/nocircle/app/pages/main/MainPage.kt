@@ -5,7 +5,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Person
@@ -115,7 +114,7 @@ private fun CompactMainPage(
 	}
 }
 
-private val ItemSpacing = 12.dp
+private val HorizontalItemSpacing = 12.dp
 
 @Composable
 private fun BottomBar(
@@ -126,7 +125,7 @@ private fun BottomBar(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(12.dp)
-			.height(52.dp)
+			.height(48.dp)
 	) {
 		val density = LocalDensity.current
 		var width by remember { mutableStateOf(Dp.Unspecified) }
@@ -134,13 +133,13 @@ private fun BottomBar(
 			val sliderWidth by remember(width) {
 				derivedStateOf {
 					val size = MainRoute.entries.size
-					(width - ItemSpacing * (size - 1)) / size
+					(width - HorizontalItemSpacing * (size - 1)) / size
 				}
 			}
 			val offsetXTarget by remember(sliderWidth, mainRoute) {
 				derivedStateOf {
 					val size = MainRoute.entries.size
-					(sliderWidth + ItemSpacing) * MainRoute.entries.indexOf(mainRoute)
+					(sliderWidth + HorizontalItemSpacing) * MainRoute.entries.indexOf(mainRoute)
 				}
 			}
 			val offsetX by animateDpAsState(offsetXTarget)
@@ -149,7 +148,7 @@ private fun BottomBar(
 					.offset(x = offsetX)
 					.width(sliderWidth)
 					.fillMaxHeight()
-					.clip(CircleShape)
+					.clip(MaterialTheme.shapes.small)
 					.background(MaterialTheme.colorScheme.primary)
 			)
 		}
@@ -162,16 +161,14 @@ private fun BottomBar(
 		) {
 			MainRoute.entries.forEachIndexed { index, it ->
 				val color by animateColorAsState(
-					targetValue = if (it == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
+					targetValue = if (it == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
 				)
 				Row(
 					modifier = Modifier
 						.weight(1f)
 						.fillMaxHeight()
-						.clip(CircleShape)
-						.clickable {
-							onMainRouteChange(it)
-						},
+						.clip(MaterialTheme.shapes.small)
+						.clickable { onMainRouteChange(it) },
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.Center
 				) {
@@ -179,17 +176,17 @@ private fun BottomBar(
 						icon = it.icon,
 						tint = color,
 						modifier = Modifier
-							.size(26.dp)
+							.size(24.dp)
 					)
-					Spacer(modifier = Modifier.width(ItemSpacing))
+					Spacer(modifier = Modifier.width(8.dp))
 					Text(
 						text = it.title.value,
 						color = color,
-						style = MaterialTheme.typography.titleMedium,
+						style = MaterialTheme.typography.titleSmall,
 					)
 				}
 				if (index < MainRoute.entries.lastIndex) {
-					Spacer(modifier = Modifier.width(ItemSpacing))
+					Spacer(modifier = Modifier.width(HorizontalItemSpacing))
 				}
 			}
 		}
@@ -201,5 +198,103 @@ private fun MediumMainPage(
 	mainRoute: MainRoute,
 	onMainRouteChange: (MainRoute) -> Unit
 ) {
+	Row(
+		modifier = Modifier
+			.fillMaxSize()
+			.background(MaterialTheme.colorScheme.surfaceContainer),
+		verticalAlignment = Alignment.CenterVertically,
+	) {
+		LeftCenterBar(
+			mainRoute = mainRoute,
+			onMainRouteChange = onMainRouteChange
+		)
+		Column(
+			modifier = Modifier
+				.weight(1f)
+				.fillMaxHeight()
+				.background(MaterialTheme.colorScheme.surface)
+		) {
+			when (mainRoute) {
+				MainRoute.Home -> HomePage()
+				MainRoute.Person -> PersonPage()
+			}
+		}
+	}
+}
 
+private val VerticalItemSpacing = 8.dp
+
+@Composable
+private fun LeftCenterBar(
+	mainRoute: MainRoute,
+	onMainRouteChange: (MainRoute) -> Unit
+) {
+	Box(
+		modifier = Modifier
+			.padding(horizontal = 8.dp)
+			.width(52.dp)
+	) {
+		var height by remember { mutableStateOf(Dp.Unspecified) }
+		if (height != Dp.Unspecified) {
+			val sliderHeight by remember(height) {
+				derivedStateOf {
+					val size = MainRoute.entries.size
+					(height - VerticalItemSpacing * (size - 1)) / size
+				}
+			}
+			val offsetYTarget by remember(sliderHeight, mainRoute) {
+				derivedStateOf {
+					val size = MainRoute.entries.size
+					(sliderHeight + VerticalItemSpacing) * MainRoute.entries.indexOf(mainRoute)
+				}
+			}
+			val offsetY by animateDpAsState(offsetYTarget)
+			Box(
+				modifier = Modifier
+					.offset(y = offsetY)
+					.fillMaxWidth()
+					.height(sliderHeight)
+					.clip(MaterialTheme.shapes.small)
+					.background(MaterialTheme.colorScheme.primary)
+			)
+		}
+		val density = LocalDensity.current
+		Column(
+			modifier = Modifier
+				.fillMaxWidth()
+				.onGloballyPositioned {
+					height = with(density) { it.size.height.toDp() }
+				}
+		) {
+			MainRoute.entries.forEachIndexed { index, it ->
+				val color by animateColorAsState(
+					targetValue = if (it == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+				)
+				Column(
+					modifier = Modifier
+						.fillMaxWidth()
+						.clip(MaterialTheme.shapes.medium)
+						.clickable { onMainRouteChange(it) }
+						.padding(vertical = 6.dp),
+					horizontalAlignment = Alignment.CenterHorizontally
+				) {
+					NoIcon(
+						icon = it.icon,
+						tint = color,
+						modifier = Modifier
+							.size(24.dp)
+					)
+					Spacer(modifier = Modifier.height(4.dp))
+					Text(
+						text = it.title.value,
+						color = color,
+						style = MaterialTheme.typography.titleSmall,
+					)
+				}
+				if (index < MainRoute.entries.lastIndex) {
+					Spacer(modifier = Modifier.height(VerticalItemSpacing))
+				}
+			}
+		}
+	}
 }

@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -65,10 +64,6 @@ fun NoSnackbar(
 		modifier = modifier
 			.fillMaxWidth()
 			.padding(24.dp)
-			.shadow(
-				elevation = 2.dp,
-				shape = shape
-			)
 			.clip(shape)
 			.background(
 				color = containerColor,
@@ -79,7 +74,7 @@ fun NoSnackbar(
 	) {
 		if (visuals.prefixIcon != null) {
 			NoIcon(
-				icon = visuals.prefixIcon!!,
+				icon = visuals.prefixIcon,
 				modifier = Modifier.size(24.dp),
 				tint = prefixIconColor
 			)
@@ -114,7 +109,7 @@ fun NoSnackbar(
 				contentAlignment = Alignment.Center
 			) {
 				Text(
-					text = visuals.actionLabel!!,
+					text = visuals.actionLabel,
 					fontSize = 15.sp,
 					color = actionContentColor
 				)
