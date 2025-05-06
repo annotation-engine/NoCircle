@@ -275,7 +275,7 @@ private fun LeftCenterBar(
 						.fillMaxWidth()
 						.clip(MaterialTheme.shapes.medium)
 						.clickable { onMainRouteChange(it) }
-						.padding(vertical = 6.dp),
+						.padding(vertical = 4.dp),
 					horizontalAlignment = Alignment.CenterHorizontally
 				) {
 					NoIcon(
@@ -284,7 +284,7 @@ private fun LeftCenterBar(
 						modifier = Modifier
 							.size(24.dp)
 					)
-					Spacer(modifier = Modifier.height(4.dp))
+					Spacer(modifier = Modifier.height(2.dp))
 					Text(
 						text = it.title.value,
 						color = color,
