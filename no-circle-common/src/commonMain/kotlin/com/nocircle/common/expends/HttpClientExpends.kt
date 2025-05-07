@@ -1,5 +1,6 @@
 package com.nocircle.common.expends
 
+import com.nocircle.common.config.getConfigOrNull
 import com.nocircle.common.log.NoLog
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -11,48 +12,61 @@ import kotlinx.serialization.Serializable
 
 suspend inline fun <reified R : Any> HttpClient.safeGet(
 	urlString: String,
+	auth: Boolean = true,
 	noinline block: HttpRequestBuilder.() -> Unit = {}
-): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Get, typeInfo<ApiResult<R>>(), block)
+): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Get, auth, typeInfo<ApiResult<R>>(), block)
 
 suspend inline fun <reified R : Any> HttpClient.safePost(
 	urlString: String,
+	auth: Boolean = true,
 	noinline block: HttpRequestBuilder.() -> Unit = {}
-): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Post, typeInfo<ApiResult<R>>(), block)
+): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Post, auth, typeInfo<ApiResult<R>>(), block)
 
 suspend inline fun <reified R : Any> HttpClient.safePut(
 	urlString: String,
+	auth: Boolean = true,
 	noinline block: HttpRequestBuilder.() -> Unit = {}
-): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Put, typeInfo<ApiResult<R>>(), block)
+): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Put, auth, typeInfo<ApiResult<R>>(), block)
 
 suspend inline fun <reified R : Any> HttpClient.safeDelete(
 	urlString: String,
+	auth: Boolean = true,
 	noinline block: HttpRequestBuilder.() -> Unit = {}
-): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Delete, typeInfo<ApiResult<R>>(), block)
+): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Delete, auth, typeInfo<ApiResult<R>>(), block)
 
 suspend inline fun <reified R : Any> HttpClient.safePatch(
 	urlString: String,
+	auth: Boolean = true,
 	noinline block: HttpRequestBuilder.() -> Unit = {}
-): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Patch, typeInfo<ApiResult<R>>(), block)
+): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Patch, auth, typeInfo<ApiResult<R>>(), block)
 
 suspend inline fun <reified R : Any> HttpClient.safeHead(
 	urlString: String,
+	auth: Boolean = true,
 	noinline block: HttpRequestBuilder.() -> Unit = {}
-): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Head, typeInfo<ApiResult<R>>(), block)
+): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Head, auth, typeInfo<ApiResult<R>>(), block)
 
 suspend inline fun <reified R : Any> HttpClient.safeOptions(
 	urlString: String,
+	auth: Boolean = true,
 	noinline block: HttpRequestBuilder.() -> Unit = {}
-): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Options, typeInfo<ApiResult<R>>(), block)
+): ApiResult<R>? = this.safeRequest(urlString, HttpMethod.Options, auth, typeInfo<ApiResult<R>>(), block)
 
 suspend fun <R : Any> HttpClient.safeRequest(
 	urlString: String,
 	method: HttpMethod,
+	auth: Boolean,
 	typeInfo: TypeInfo,
 	block: HttpRequestBuilder.() -> Unit
 ): ApiResult<R>? = try {
 	val builder = HttpRequestBuilder().apply(block)
 	builder.url(urlString)
 	builder.method = method
+	if (auth) {
+		getConfigOrNull<String>("token")?.let {
+			builder.bearerAuth(it)
+		}
+	}
 	val response = this.request(builder)
 	if (response.status.isSuccess()) {
 		response.body(typeInfo)

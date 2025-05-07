@@ -22,5 +22,6 @@
 	
 	<!-- 主页 -->
 	<string name="main_home">主页</string>
+	<string name="main_message">消息</string>
 	<string name="main_person">我的</string>
 </resources>

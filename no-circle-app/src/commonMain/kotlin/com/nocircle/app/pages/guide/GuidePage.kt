@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.LocalNavController
@@ -35,16 +34,15 @@ fun GuidePage() {
 	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
 	val navController = LocalNavController.current
 	LaunchedEffect(Unit) {
-		delay(200)
+		delay(300)
 		offsetYTarget = (-100).dp
 		alphaTarget = 1f
-		delay(1000)
-		alphaSpec = tween(durationMillis = 400)
-		scaleTarget = 0.5f
+		delay(1100)
+		alphaSpec = tween(durationMillis = 250)
+		scaleTarget = 0.8f
 		alphaTarget = 0f
-		delay(400)
-		val verify = viewModel.verifyToken()
-		if (verify) {
+		delay(250)
+		if (viewModel.verifyToken()) {
 			navController.noNavigate(route = NoRoutes.Main, finish = true)
 		} else {
 			navController.noNavigate(route = NoRoutes.Login, finish = true)
@@ -76,7 +74,7 @@ fun GuidePage() {
 					.offset(y = offsetY)
 					.alpha(alpha)
 					.scale(scale)
-					.size(150.dp)
+					.size(140.dp)
 					.background(MaterialTheme.colorScheme.primary, CircleShape)
 					.scale(1.5f)
 					.clip(CircleShape),

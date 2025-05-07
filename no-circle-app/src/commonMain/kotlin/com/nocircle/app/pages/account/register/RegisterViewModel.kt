@@ -64,7 +64,7 @@ class RegisterViewModel : NoViewModel() {
 			showNoSnackbar(Res.string.register_passwords_are_inconsistent_twice)
 			return false
 		}
-		val result = ktorClient.safePost<Unit>("user/register") {
+		val result = ktorClient.safePost<Unit>("user/register", auth = false) {
 			contentType(ContentType.MultiPart.FormData)
 			val parameters = parameters {
 				append("username", username)

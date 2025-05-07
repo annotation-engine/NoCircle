@@ -1,15 +1,12 @@
 package com.nocircle.app.http
 
-import com.nocircle.common.config.getConfigOrNull
 import com.nocircle.common.device.DeviceName.Android
 import com.nocircle.common.device.NoDevice
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 private val NoBaseUrl by lazy {
@@ -23,11 +20,6 @@ val ktorClient by lazy {
 	HttpClient(CIO) {
 		defaultRequest {
 			url(NoBaseUrl)
-			runBlocking {
-				getConfigOrNull<String>("token")?.let {
-					bearerAuth(it)
-				}
-			}
 		}
 		engine {
 			requestTimeout = 10_000L

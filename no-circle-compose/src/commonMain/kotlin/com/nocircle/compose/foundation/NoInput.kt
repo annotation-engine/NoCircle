@@ -58,7 +58,7 @@ fun NoInput(
 			.height(56.dp)
 			.shadow(
 				elevation = shadowElevation,
-				shape = MaterialTheme.shapes.medium,
+				shape = MaterialTheme.shapes.small,
 				ambientColor = DefaultShadowColor.copy(alpha = 0.6f),
 				spotColor = DefaultShadowColor.copy(alpha = 0.6f)
 			),
@@ -95,7 +95,7 @@ fun NoInput(
 		keyboardActions = keyboardActions,
 		singleLine = true,
 		interactionSource = interactionSource,
-		shape = MaterialTheme.shapes.medium,
+		shape = MaterialTheme.shapes.small,
 		colors = OutlinedTextFieldDefaults.colors(
 			focusedBorderColor = focusedColor,
 			unfocusedBorderColor = unfocusedColor,

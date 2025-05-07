@@ -5,14 +5,15 @@ android-targetSdk = "35"
 kotlin = "2.2.0-Beta2"
 agp = "8.9.2"
 androidx-activity-compose = "1.10.1"
-compose-multiplatform = "1.8.0-rc01"
+compose-multiplatform = "1.8.0"
 kotlinx-coroutines-swing = "1.10.2"
 room = "2.7.1"
 sqlite = "2.5.0"
-navigation-compose = "2.9.0-alpha17"
+navigation-compose = "2.9.0-beta01"
 koin = "4.1.0-Beta8"
-ktor = "3.1.2"
+ktor = "3.1.3"
 exposed = "0.61.0"
+coil3 = "3.2.0-rc02"
 mysql = "8.4.0"
 logback-classic = "1.5.18"
 hutool = "5.8.37"
@@ -25,6 +26,8 @@ kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-co
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 material3-window-size-clazz = { group = "org.jetbrains.compose.material3", name = "material3-window-size-class", version.ref = "compose-multiplatform" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
+coil-network-ktor3 = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil3" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
@@ -85,7 +88,9 @@ app = [
 
 compose = [
 	'kotlin-reflect',
-	'koin-compose-viewmodel'
+	'koin-compose-viewmodel',
+	'coil-compose',
+	'coil-network-ktor3'
 ]
 
 common = [

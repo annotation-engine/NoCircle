@@ -31,7 +31,7 @@ fun NoSnackbar(
 	modifier: Modifier = Modifier,
 	singleLine: Boolean = true,
 	maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
-	shape: Shape = MaterialTheme.shapes.medium,
+	shape: Shape = MaterialTheme.shapes.small,
 	containerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
 	contentColor: Color = contentColorFor(containerColor),
 	prefixIconColor: Color = contentColorFor(containerColor),

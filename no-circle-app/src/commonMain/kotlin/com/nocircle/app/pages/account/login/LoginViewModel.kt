@@ -12,29 +12,34 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.Serializable
 
 class LoginViewModel() : NoViewModel() {
 	
-	val username = MutableStateFlow("")
-	val password = MutableStateFlow("")
+	private val _username = MutableStateFlow("")
+	val username = _username.asStateFlow()
+	
+	private val _password = MutableStateFlow("")
+	val password = _password.asStateFlow()
+	
 	val showPassword = MutableStateFlow(false)
 	
 	fun updateUsername(value: String) {
 		if (value.length <= 20) {
-			this.username.value = value
+			this._username.value = value
 		}
 	}
 	
 	fun updatePassword(value: String) {
 		if (value.length <= 20) {
-			this.password.value = value
+			this._password.value = value
 		}
 	}
 	
 	suspend fun login(): Boolean {
-		val username = this.username.value
-		val password = this.password.value
+		val username = this._username.value
+		val password = this._password.value
 		if (username.isEmpty()) {
 			showNoSnackbar(Res.string.login_please_input_username)
 			return false
@@ -43,7 +48,7 @@ class LoginViewModel() : NoViewModel() {
 			showNoSnackbar(Res.string.login_please_input_password)
 			return false
 		}
-		val result = ktorClient.safePost<Login>("user/login") {
+		val result = ktorClient.safePost<Login>("user/login", auth = false) {
 			contentType(ContentType.MultiPart.FormData)
 			val parameters = parameters {
 				append("username", username)

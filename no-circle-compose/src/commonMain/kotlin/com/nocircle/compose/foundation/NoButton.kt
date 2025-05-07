@@ -55,11 +55,11 @@ fun NoButton(
 			.height(56.dp)
 			.shadow(
 				elevation = shadowElevation,
-				shape = MaterialTheme.shapes.medium,
+				shape = MaterialTheme.shapes.small,
 				ambientColor = DefaultShadowColor.copy(alpha = 0.6f),
 				spotColor = DefaultShadowColor.copy(alpha = 0.6f)
 			),
-		shape = MaterialTheme.shapes.medium,
+		shape = MaterialTheme.shapes.small,
 		colors = ButtonDefaults.buttonColors(
 			containerColor = colors.containerColor,
 			contentColor = colors.contentColor,

@@ -11,6 +11,9 @@ object UserTable : BaseTable("tb_user") {
 	
 	val nickname = varchar("nickname", 20)
 		.nullable()
+	
+	val avatarUrl = varchar("avatar_url", 255)
+		.nullable()
 }
 
 class User(id: IntEntityID) : IntEntity(id) {
@@ -20,4 +23,8 @@ class User(id: IntEntityID) : IntEntity(id) {
 	var username by UserTable.username
 	
 	var password by UserTable.password
+	
+	val nickname by UserTable.nickname
+	
+	val avatarUrl by UserTable.avatarUrl
 }

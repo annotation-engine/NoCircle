@@ -9,13 +9,9 @@ import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -30,7 +26,7 @@ import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoInput
 import com.nocircle.compose.material3.NoScaffold
-import com.nocircle.compose.material3.NoSnackbar
+import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,11 +40,7 @@ fun RegisterPage() {
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
-		snackbarHost = {
-			SnackbarHost(hostState) {
-				NoSnackbar(it)
-			}
-		}
+		snackbarHost = { NoSnackbarHost(hostState) }
 	) {
 		val verticalScroll = rememberScrollState()
 		Column(
@@ -65,19 +57,19 @@ fun RegisterPage() {
 			)
 			Spacer(modifier = Modifier.height(40.dp))
 			
-			val username = viewModel.username.collectAsState()
+			val username by viewModel.username.collectAsState()
 			NoInput(
-				value = username.value,
+				value = username,
 				onValueChange = viewModel::updateUsername,
 				placeholder = Res.string.register_please_input_username.value,
 				leadingIcon = { NoIcon(Icons.Outlined.AccountBox) }
 			)
 			Spacer(modifier = Modifier.height(24.dp))
 			
-			val password = viewModel.password.collectAsState()
+			val password by viewModel.password.collectAsState()
 			val showPassword = viewModel.showPassword.collectAsState()
 			NoInput(
-				value = password.value,
+				value = password,
 				onValueChange = viewModel::updatePassword,
 				placeholder = Res.string.register_please_input_password.value,
 				leadingIcon = { NoIcon(Icons.Outlined.Lock) },
@@ -120,7 +112,7 @@ fun RegisterPage() {
 				val success = viewModel.register()
 				if (success) {
 					launch(Dispatchers.Main) {
-						navController.noPopBackStack("username" to username.value)
+						navController.noPopBackStack("username" to username)
 					}
 				}
 			}
@@ -128,7 +120,7 @@ fun RegisterPage() {
 			NoButton(
 				text = Res.string.register_back_to_login.value,
 				modifier = Modifier.fillMaxWidth(),
-				colors = NoButtons.PrimaryContainerColors
+				colors = NoButtons.SecondaryContainerColors
 			) {
 				navController.popBackStack()
 			}

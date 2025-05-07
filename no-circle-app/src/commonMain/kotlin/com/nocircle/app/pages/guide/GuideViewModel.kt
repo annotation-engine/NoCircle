@@ -7,7 +7,7 @@ import com.nocircle.compose.viewmodel.NoViewModel
 class GuideViewModel : NoViewModel() {
 	
 	suspend fun verifyToken(): Boolean {
-		val result = ktorClient.safePost<String>("auth/verifyToken") ?: return false
-		return result.success
+		val result = ktorClient.safePost<String>("auth/verifyToken")
+		return result?.success ?: false
 	}
 }
