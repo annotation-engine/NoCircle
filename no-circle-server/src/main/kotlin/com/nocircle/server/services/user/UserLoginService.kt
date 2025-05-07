@@ -10,9 +10,9 @@ import com.nocircle.server.plugins.yaml
 import com.nocircle.server.services.NoParameters
 import com.nocircle.server.services.NoService
 import com.nocircle.server.services.noParameters
-import com.nocircle.server.tables.User
-import com.nocircle.server.tables.UserTable
 import com.nocircle.server.tables.isLogicExists
+import com.nocircle.server.tables.user.User
+import com.nocircle.server.tables.user.Users
 import com.nocircle.server.utils.JWTUtils
 import com.nocircle.server.utils.PasswordUtils
 import io.ktor.http.*
@@ -44,8 +44,8 @@ object UserLoginService : NoService<UserLoginService.UserLogin> {
 		val username: String by parameters
 		val password: String by parameters
 		val user = newSuspendedTransaction {
-			val row = UserTable.select(UserTable.id, UserTable.username, UserTable.password)
-				.where { UserTable.username eq username and UserTable.isLogicExists }
+			val row = Users.select(Users.id, Users.username, Users.password)
+				.where { Users.username eq username and Users.isLogicExists }
 				.singleOrNull() ?: return@newSuspendedTransaction null
 			User.wrapRow(row)
 		}

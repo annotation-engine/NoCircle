@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.message.MessagePage
@@ -135,7 +136,6 @@ private fun BottomBar(
 			}
 			val offsetXTarget by remember(sliderWidth, mainRoute) {
 				derivedStateOf {
-					val size = MainRoute.entries.size
 					(sliderWidth + HorizontalItemSpacing) * MainRoute.entries.indexOf(mainRoute)
 				}
 			}
@@ -156,7 +156,7 @@ private fun BottomBar(
 					width = with(density) { it.size.width.toDp() }
 				}
 		) {
-			MainRoute.entries.forEachIndexed { index, it ->
+			MainRoute.entries.fastForEachIndexed { index, it ->
 				val color by animateColorAsState(
 					targetValue = if (it == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
 				)
@@ -239,7 +239,6 @@ private fun LeftCenterBar(
 			}
 			val offsetYTarget by remember(sliderHeight, mainRoute) {
 				derivedStateOf {
-					val size = MainRoute.entries.size
 					(sliderHeight + VerticalItemSpacing) * MainRoute.entries.indexOf(mainRoute)
 				}
 			}
@@ -261,7 +260,7 @@ private fun LeftCenterBar(
 					height = with(density) { it.size.height.toDp() }
 				}
 		) {
-			MainRoute.entries.forEachIndexed { index, it ->
+			MainRoute.entries.fastForEachIndexed { index, it ->
 				val color by animateColorAsState(
 					targetValue = if (it == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
 				)

@@ -8,7 +8,7 @@ import com.nocircle.server.services.NoService
 import io.ktor.http.*
 import io.ktor.server.routing.*
 
-@ServiceSchedule(Schedule.Developing)
+@ServiceSchedule(Schedule.Release)
 object AuthVerifyTokenService : NoService<Boolean> {
 	
 	override val path = "/auth/verifyToken"

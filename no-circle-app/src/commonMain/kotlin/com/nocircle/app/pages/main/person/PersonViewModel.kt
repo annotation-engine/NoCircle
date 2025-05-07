@@ -31,6 +31,7 @@ class PersonViewModel : NoViewModel() {
 	data class UserDetail(
 		val username: String,
 		val nickname: String?,
-		val avatarUrl: String?
+		val avatarUrl: String?,
+		val labels: List<Pair<String, String>>
 	)
 }

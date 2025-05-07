@@ -1,9 +1,11 @@
-package com.nocircle.server.tables
+package com.nocircle.server.tables.user
 
+import com.nocircle.server.tables.BaseTable
+import com.nocircle.server.tables.IntEntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 
-object UserTable : BaseTable("tb_user") {
+object Users : BaseTable("tb_user") {
 	
 	val username = varchar("username", 20)
 	
@@ -18,13 +20,13 @@ object UserTable : BaseTable("tb_user") {
 
 class User(id: IntEntityID) : IntEntity(id) {
 	
-	companion object : IntEntityClass<User>(UserTable)
+	companion object : IntEntityClass<User>(Users)
 	
-	var username by UserTable.username
+	var username by Users.username
 	
-	var password by UserTable.password
+	var password by Users.password
 	
-	val nickname by UserTable.nickname
+	val nickname by Users.nickname
 	
-	val avatarUrl by UserTable.avatarUrl
+	val avatarUrl by Users.avatarUrl
 }

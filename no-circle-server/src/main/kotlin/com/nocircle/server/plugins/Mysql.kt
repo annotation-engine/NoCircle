@@ -1,6 +1,7 @@
 package com.nocircle.server.plugins
 
-import com.nocircle.server.tables.UserTable
+import com.nocircle.server.tables.user.UserLabels
+import com.nocircle.server.tables.user.Users
 import com.nocircle.server.utils.NoLog
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -17,7 +18,8 @@ fun configureMysql() {
 		)
 		transaction(database) {
 			SchemaUtils.create(
-				UserTable
+				Users,
+				UserLabels
 			)
 		}
 	}

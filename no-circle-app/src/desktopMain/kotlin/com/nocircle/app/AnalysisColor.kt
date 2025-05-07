@@ -1,11 +1,12 @@
 package com.nocircle.app
 
+import androidx.compose.ui.util.fastForEach
 import java.io.File
 
 fun analysisColor() {
 	val codes = File("/Users/cooder/Code/Project/NoCircle/no-circle-app/src/commonMain/kotlin/com/nocircle/app/theme/colors/Color.kt").readLines()
 	val colorSchemes = mutableMapOf<String, MutableMap<String, String>>()
-	codes.filter { it.startsWith("val") }.forEach {
+	codes.filter { it.startsWith("val") }.fastForEach {
 		val split = it.removePrefix("val ").split(" = ")
 		val name = split[0]
 		val code = split[1]
@@ -18,7 +19,7 @@ fun analysisColor() {
 			name.contains("Dark") -> "Dark" to "darkStandardContrast"
 			else -> null
 		}
-		if (key == null) return@forEach
+		if (key == null) return@fastForEach
 		val map = colorSchemes.getOrPut(key.second) { mutableMapOf() }
 		map[name.removeSuffix(key.first)] = code
 	}
