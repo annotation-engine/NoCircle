@@ -14,15 +14,15 @@ import androidx.compose.ui.window.application
 import com.nocircle.app.theme.NoMaterialTheme
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.expends.currentRoute
+import com.nocircle.common.navigation.currentRoute
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Toolkit
 
 fun main() {
 	application {
-		var widthTarget by remember { mutableStateOf(450.dp) }
-		var heightTarget by remember { mutableStateOf(650.dp) }
+		var widthTarget by remember { mutableStateOf(420.dp) }
+		var heightTarget by remember { mutableStateOf(520.dp) }
 		val width by animateDpAsState(
 			targetValue = widthTarget,
 			animationSpec = spring(stiffness = Spring.StiffnessLow)
@@ -47,34 +47,32 @@ fun main() {
 					window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
 					window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
 				}
-				window.minimumSize = Dimension(450, 650)
+				window.minimumSize = Dimension(420, 520)
 			}
-			NavControllerProvider {
-				val navController = LocalNavController.current
-				LaunchedEffect(Unit) {
-					navController.addOnDestinationChangedListener { it, _, _ ->
-						when (it.currentRoute) {
-							in WindowSize400x600Routes -> {
-								widthTarget = 450.dp
-								heightTarget = 650.dp
-								resizable = false
-							}
-							
-							else -> {
-								widthTarget = 900.dp
-								heightTarget = 700.dp
-								resizable = true
-							}
+			val navController = NoNavControllers.initAndGetRoot()
+			LaunchedEffect(Unit) {
+				navController.addOnDestinationChangedListener { it, _, _ ->
+					when (it.currentRoute) {
+						in WindowSize400x600Routes -> {
+							widthTarget = 420.dp
+							heightTarget = 520.dp
+							resizable = false
+						}
+						
+						else -> {
+							widthTarget = 800.dp
+							heightTarget = 600.dp
+							resizable = true
 						}
 					}
 				}
-				NoMaterialTheme {
-					val surface = MaterialTheme.colorScheme.surface
-					LaunchedEffect(surface) {
-						window.background = surface.let { Color(it.red, it.green, it.blue) }
-					}
-					NoApp()
+			}
+			NoMaterialTheme {
+				val surface = MaterialTheme.colorScheme.surface
+				LaunchedEffect(surface) {
+					window.background = surface.let { Color(it.red, it.green, it.blue) }
 				}
+				NoApp()
 			}
 		}
 	}

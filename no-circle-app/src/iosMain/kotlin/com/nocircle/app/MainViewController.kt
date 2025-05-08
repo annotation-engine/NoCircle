@@ -5,9 +5,7 @@ import com.nocircle.app.theme.NoMaterialTheme
 
 @Suppress("unused", "FunctionName")
 fun MainViewController() = ComposeUIViewController {
-	NavControllerProvider {
-		NoMaterialTheme {
-			NoApp()
-		}
+	NoMaterialTheme {
+		NoApp()
 	}
 }

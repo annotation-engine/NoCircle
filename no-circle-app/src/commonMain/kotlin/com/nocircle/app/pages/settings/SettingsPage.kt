@@ -1,14 +1,22 @@
 package com.nocircle.app.pages.settings
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.add
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import com.nocircle.app.LocalNavController
-import com.nocircle.common.expends.noPopBackStack
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.nocircle.app.NoNavControllers
+import com.nocircle.app.NoRoutes
+import com.nocircle.app.generated.resources.Res
+import com.nocircle.app.generated.resources.settings
+import com.nocircle.common.device.DeviceType
+import com.nocircle.common.device.NoDevice
+import com.nocircle.common.expends.WindowWidthSizes
+import com.nocircle.common.expends.value
+import com.nocircle.common.navigation.noPopBackStack
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import org.koin.compose.viewmodel.koinViewModel
@@ -21,17 +29,24 @@ fun SettingsPage() {
 		topBar = {
 			TopAppBar(
 				title = {
-					Text("Settings")
+					Text(Res.string.settings.value)
 				},
 				navigationIcon = {
-					val navController = LocalNavController.current
-					NoIcon(
-						icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
-						tint = MaterialTheme.colorScheme.onSurface
-					) {
-						navController.noPopBackStack()
+					if (WindowWidthSizes.isCompact) {
+						val navController = NoNavControllers.auto(NoRoutes.Main.Person)!!
+						NoIcon(
+							icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
+							tint = MaterialTheme.colorScheme.onSurface
+						) {
+							navController.noPopBackStack()
+						}
 					}
-				}
+				},
+				windowInsets = TopAppBarDefaults.windowInsets.add(
+					WindowInsets(
+						top = if (NoDevice.Type == DeviceType.Desktop && WindowWidthSizes.isCompact) 16.dp else Dp.Hairline
+					)
+				)
 			)
 		}
 	) {

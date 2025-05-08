@@ -12,10 +12,8 @@ class NoCircleActivity : ComponentActivity() {
 		super.onCreate(savedInstanceState)
 		Globals.setActivity(this)
 		setContent {
-			NavControllerProvider {
-				NoMaterialTheme {
-					NoApp()
-				}
+			NoMaterialTheme {
+				NoApp()
 			}
 		}
 	}

@@ -4,8 +4,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -14,12 +15,14 @@ import com.nocircle.app.pages.account.register.RegisterPage
 import com.nocircle.app.pages.guide.GuidePage
 import com.nocircle.app.pages.main.MainPage
 import com.nocircle.app.pages.settings.SettingsPage
-import com.nocircle.common.expends.noComposable
+import com.nocircle.common.expends.WindowWidthSizes
+import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.navigation.noComposable
 import kotlinx.serialization.Serializable
 
 @Composable
 fun NoAppNavHost() {
-	val navController = LocalNavController.current
+	val navController = NoNavControllers.initAndGetRoot()
 	NavHost(
 		navController = navController,
 		startDestination = NoRoutes.Guide,
@@ -48,7 +51,17 @@ object NoRoutes {
 	data object Register
 	
 	@Serializable
-	data object Main
+	data object Main {
+		
+		@Serializable
+		data object Home
+		
+		@Serializable
+		data object Message
+		
+		@Serializable
+		data object Person
+	}
 	
 	@Serializable
 	data object Settings
@@ -74,15 +87,31 @@ private val PopExitTransition = slideOutHorizontally(
 	animationSpec = tween(300)
 )
 
-@Composable
-fun NavControllerProvider(
-	content: @Composable () -> Unit
-) {
-	val navController = rememberNavController()
-	CompositionLocalProvider(
-		LocalNavController provides navController,
-		content = content
-	)
+object NoNavControllers {
+	
+	val root: NavHostController
+		get() = _root!!
+	
+	private var _root by mutableStateOf<NavHostController?>(null)
+	
+	@Composable
+	fun initAndGetRoot(): NavHostController {
+		return _root ?: rememberNavController().also { _root = it }
+	}
+	
+	private var settings by mutableStateOf<NavHostController?>(null)
+	
+	@Composable
+	fun initAndGetSettings(): NavHostController {
+		return settings ?: rememberNavController().also { settings = it }
+	}
+	
+	@Composable
+	fun auto(ifNotCompactRoute: NoRoute): NavHostController? {
+		return when {
+			WindowWidthSizes.isCompact -> root
+			ifNotCompactRoute == NoRoutes.Main.Person -> settings
+			else -> null
+		}
+	}
 }
-
-val LocalNavController = compositionLocalOf<NavHostController> { error("NoLocalNavController") }

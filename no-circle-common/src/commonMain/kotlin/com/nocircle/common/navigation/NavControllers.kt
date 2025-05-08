@@ -1,4 +1,4 @@
-package com.nocircle.common.expends
+package com.nocircle.common.navigation
 
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable

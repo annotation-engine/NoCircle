@@ -7,6 +7,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
+import androidx.compose.material.icons.automirrored.rounded.Message
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -14,32 +19,34 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.LocalNavController
+import com.nocircle.app.NoNavControllers
 import com.nocircle.app.NoRoutes
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.login_success
+import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.message.MessagePage
-import com.nocircle.app.pages.main.person.PersonPage
+import com.nocircle.app.pages.main.person.PersonPageAdapter
 import com.nocircle.common.expends.WindowWidthSizes
-import com.nocircle.common.expends.lastRoute
 import com.nocircle.common.expends.value
+import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.navigation.lastRoute
+import com.nocircle.common.navigation.noPopBackStack
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
+import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val navController = LocalNavController.current
+	val navController = NoNavControllers.root
 	LaunchedEffect(Unit) {
 		val lastRoute = navController.lastRoute
 		if (lastRoute == NoRoutes.Login::class || lastRoute == NoRoutes.Guide::class) {
@@ -73,8 +80,8 @@ fun MainPage() {
 
 @Composable
 private fun CompactMainPage(
-	mainRoute: MainRoute,
-	onMainRouteChange: (MainRoute) -> Unit
+	mainRoute: NoRoute,
+	onMainRouteChange: (NoRoute) -> Unit
 ) {
 	Column(
 		modifier = Modifier
@@ -98,8 +105,8 @@ private val HorizontalItemSpacing = 12.dp
 
 @Composable
 private fun BottomBar(
-	mainRoute: MainRoute,
-	onMainRouteChange: (MainRoute) -> Unit
+	mainRoute: NoRoute,
+	onMainRouteChange: (NoRoute) -> Unit
 ) {
 	Box(
 		modifier = Modifier
@@ -112,13 +119,13 @@ private fun BottomBar(
 		if (width != Dp.Unspecified) {
 			val sliderWidth by remember(width) {
 				derivedStateOf {
-					val size = MainRoute.entries.size
+					val size = mainRoutes.size
 					(width - HorizontalItemSpacing * (size - 1)) / size
 				}
 			}
 			val offsetXTarget by remember(sliderWidth, mainRoute) {
 				derivedStateOf {
-					(sliderWidth + HorizontalItemSpacing) * MainRoute.entries.indexOf(mainRoute)
+					(sliderWidth + HorizontalItemSpacing) * mainRoutes.indexOfFirst { it.route == mainRoute }
 				}
 			}
 			val offsetX by animateDpAsState(offsetXTarget)
@@ -138,16 +145,16 @@ private fun BottomBar(
 					width = with(density) { it.size.width.toDp() }
 				}
 		) {
-			MainRoute.entries.fastForEachIndexed { index, it ->
+			mainRoutes.forEachIndexed { index, it ->
 				val color by animateColorAsState(
-					targetValue = if (it == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+					targetValue = if (it.route == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
 				)
 				Row(
 					modifier = Modifier
 						.weight(1f)
 						.fillMaxHeight()
 						.clip(MaterialTheme.shapes.small)
-						.clickable { onMainRouteChange(it) },
+						.clickable { onMainRouteChange(it.route) },
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.Center
 				) {
@@ -164,7 +171,7 @@ private fun BottomBar(
 						style = MaterialTheme.typography.bodyMedium,
 					)
 				}
-				if (index < MainRoute.entries.lastIndex) {
+				if (index < mainRoutes.size - 1) {
 					Spacer(modifier = Modifier.width(HorizontalItemSpacing))
 				}
 			}
@@ -174,8 +181,8 @@ private fun BottomBar(
 
 @Composable
 private fun MediumMainPage(
-	mainRoute: MainRoute,
-	onMainRouteChange: (MainRoute) -> Unit
+	mainRoute: NoRoute,
+	onMainRouteChange: (NoRoute) -> Unit
 ) {
 	Row(
 		modifier = Modifier
@@ -183,7 +190,7 @@ private fun MediumMainPage(
 			.background(MaterialTheme.colorScheme.surfaceContainer),
 		verticalAlignment = Alignment.CenterVertically,
 	) {
-		LeftCenterBar(
+		LeftBar(
 			mainRoute = mainRoute,
 			onMainRouteChange = onMainRouteChange
 		)
@@ -201,73 +208,91 @@ private fun MediumMainPage(
 private val VerticalItemSpacing = 8.dp
 
 @Composable
-private fun LeftCenterBar(
-	mainRoute: MainRoute,
-	onMainRouteChange: (MainRoute) -> Unit
+private fun LeftBar(
+	mainRoute: NoRoute,
+	onMainRouteChange: (NoRoute) -> Unit
 ) {
-	Box(
+	Column(
 		modifier = Modifier
-			.padding(horizontal = 8.dp)
-			.width(56.dp)
-	) {
-		var height by remember { mutableStateOf(Dp.Unspecified) }
-		if (height != Dp.Unspecified) {
-			val sliderHeight by remember(height) {
-				derivedStateOf {
-					val size = MainRoute.entries.size
-					(height - VerticalItemSpacing * (size - 1)) / size
-				}
-			}
-			val offsetYTarget by remember(sliderHeight, mainRoute) {
-				derivedStateOf {
-					(sliderHeight + VerticalItemSpacing) * MainRoute.entries.indexOf(mainRoute)
-				}
-			}
-			val offsetY by animateDpAsState(offsetYTarget)
-			Box(
-				modifier = Modifier
-					.offset(y = offsetY)
-					.fillMaxWidth()
-					.height(sliderHeight)
-					.clip(MaterialTheme.shapes.small)
-					.background(MaterialTheme.colorScheme.primary)
+			.fillMaxHeight()
+			.padding(
+				horizontal = 8.dp,
+				vertical = 24.dp
 			)
+			.width(56.dp),
+		horizontalAlignment = Alignment.CenterHorizontally,
+	) {
+		val navController = NoNavControllers.auto(mainRoute)
+		NoIcon(
+			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
+			enabled = navController != null
+		) {
+			navController!!.noPopBackStack()
 		}
-		val density = LocalDensity.current
-		Column(
+		Spacer(modifier = Modifier.height(100.dp))
+		Box(
 			modifier = Modifier
 				.fillMaxWidth()
-				.onGloballyPositioned {
-					height = with(density) { it.size.height.toDp() }
-				}
 		) {
-			MainRoute.entries.fastForEachIndexed { index, it ->
-				val color by animateColorAsState(
-					targetValue = if (it == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
-				)
-				Column(
-					modifier = Modifier
-						.fillMaxWidth()
-						.clip(MaterialTheme.shapes.small)
-						.clickable { onMainRouteChange(it) }
-						.padding(vertical = 6.dp),
-					horizontalAlignment = Alignment.CenterHorizontally
-				) {
-					NoIcon(
-						icon = it.icon,
-						tint = color,
-						modifier = Modifier
-							.size(24.dp)
-					)
-					Spacer(modifier = Modifier.height(2.dp))
-					Text(
-						text = it.title.value,
-						color = color,
-						style = MaterialTheme.typography.bodyMedium,
-					)
+			var height by remember { mutableStateOf(Dp.Unspecified) }
+			if (height != Dp.Unspecified) {
+				val sliderHeight by remember(height) {
+					derivedStateOf {
+						val size = mainRoutes.size
+						(height - VerticalItemSpacing * (size - 1)) / size
+					}
 				}
-				if (index < MainRoute.entries.lastIndex) {
-					Spacer(modifier = Modifier.height(VerticalItemSpacing))
+				val offsetYTarget by remember(sliderHeight, mainRoute) {
+					derivedStateOf {
+						(sliderHeight + VerticalItemSpacing) * mainRoutes.indexOfFirst { it.route == mainRoute }
+					}
+				}
+				val offsetY by animateDpAsState(offsetYTarget)
+				Box(
+					modifier = Modifier
+						.offset(y = offsetY)
+						.fillMaxWidth()
+						.height(sliderHeight)
+						.clip(MaterialTheme.shapes.small)
+						.background(MaterialTheme.colorScheme.primary)
+				)
+			}
+			val density = LocalDensity.current
+			Column(
+				modifier = Modifier
+					.fillMaxWidth()
+					.onGloballyPositioned {
+						height = with(density) { it.size.height.toDp() }
+					}
+			) {
+				mainRoutes.forEachIndexed { index, it ->
+					val color by animateColorAsState(
+						targetValue = if (it.route == mainRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+					)
+					Column(
+						modifier = Modifier
+							.fillMaxWidth()
+							.clip(MaterialTheme.shapes.small)
+							.clickable { onMainRouteChange(it.route) }
+							.padding(vertical = 6.dp),
+						horizontalAlignment = Alignment.CenterHorizontally
+					) {
+						NoIcon(
+							icon = it.icon,
+							tint = color,
+							modifier = Modifier
+								.size(24.dp)
+						)
+						Spacer(modifier = Modifier.height(2.dp))
+						Text(
+							text = it.title.value,
+							color = color,
+							style = MaterialTheme.typography.bodyMedium,
+						)
+					}
+					if (index < mainRoutes.size - 1) {
+						Spacer(modifier = Modifier.height(VerticalItemSpacing))
+					}
 				}
 			}
 		}
@@ -276,23 +301,42 @@ private fun LeftCenterBar(
 
 @Composable
 private fun MainRoute(
-	mainRoute: MainRoute,
+	mainRoute: NoRoute,
 ) {
 	Crossfade(
 		targetState = mainRoute,
-		animationSpec = tween(durationMillis = 80),
-		label = "MainRouteCrossfade",
+		animationSpec = tween(durationMillis = 120),
+		label = "CompactMainRouteCrossfade",
 	) { target ->
-		Box(
-			modifier = Modifier
-				.fillMaxSize(),
-			contentAlignment = Alignment.TopCenter
-		) {
-			when (target) {
-				MainRoute.Home -> HomePage()
-				MainRoute.Message -> MessagePage()
-				MainRoute.Person -> PersonPage()
-			}
+		when (target) {
+			NoRoutes.Main.Home -> HomePage()
+			NoRoutes.Main.Message -> MessagePage()
+			NoRoutes.Main.Person -> PersonPageAdapter()
+			else -> error("不支持的路由 $target")
 		}
 	}
 }
+
+private val mainRoutes = arrayOf(
+	MainRoute(
+		route = NoRoutes.Main.Home,
+		title = Res.string.main_home,
+		icon = Icons.Rounded.Home
+	),
+	MainRoute(
+		route = NoRoutes.Main.Message,
+		title = Res.string.main_message,
+		icon = Icons.AutoMirrored.Rounded.Message
+	),
+	MainRoute(
+		route = NoRoutes.Main.Person,
+		title = Res.string.main_person,
+		icon = Icons.Rounded.Person
+	)
+)
+
+data class MainRoute(
+	val route: NoRoute,
+	val title: StringResource,
+	val icon: ImageVector
+)

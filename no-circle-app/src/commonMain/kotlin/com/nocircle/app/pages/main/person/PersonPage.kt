@@ -1,5 +1,8 @@
 package com.nocircle.app.pages.main.person
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,31 +28,69 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.LocalNavController
+import androidx.navigation.compose.NavHost
+import com.nocircle.app.NoNavControllers
 import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.*
+import com.nocircle.app.pages.settings.SettingsPage
+import com.nocircle.common.expends.WindowWidthSizes
 import com.nocircle.common.expends.hexToColor
-import com.nocircle.common.expends.noNavigate
 import com.nocircle.common.expends.value
+import com.nocircle.common.navigation.noComposable
+import com.nocircle.common.navigation.noNavigate
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun PersonPage() {
-	val verticalScrollState = rememberScrollState()
-	Column(
-		modifier = Modifier
-			.widthIn(max = 700.dp)
-			.fillMaxSize()
-			.verticalScroll(verticalScrollState)
-			.padding(horizontal = 16.dp, vertical = 32.dp)
+fun PersonPageAdapter() {
+	if (WindowWidthSizes.isCompact) {
+		PersonPage()
+	} else {
+		PersonPageNavHost()
+	}
+}
+
+@Composable
+private fun PersonPageNavHost() {
+	val navController = NoNavControllers.initAndGetSettings()
+	NavHost(
+		navController = navController,
+		startDestination = NoRoutes.Main.Person,
+		enterTransition = { EnterTransition },
+		exitTransition = { ExitTransition },
+		popEnterTransition = { EnterTransition },
+		popExitTransition = { ExitTransition },
 	) {
-		UserDetailCard()
-		Spacer(modifier = Modifier.height(16.dp))
-		UserInformationCard()
-		Spacer(modifier = Modifier.height(16.dp))
-		OptionList()
+		noComposable<NoRoutes.Main.Person> { PersonPage() }
+		noComposable<NoRoutes.Settings> { SettingsPage() }
+	}
+}
+
+private val EnterTransition = fadeIn(animationSpec = tween(120))
+private val ExitTransition = fadeOut(animationSpec = tween(120))
+
+@Composable
+private fun PersonPage() {
+	val verticalScrollState = rememberScrollState()
+	Box(
+		modifier = Modifier
+			.fillMaxSize(),
+		contentAlignment = Alignment.TopCenter
+	) {
+		Column(
+			modifier = Modifier
+				.widthIn(max = 700.dp)
+				.fillMaxSize()
+				.verticalScroll(verticalScrollState)
+				.padding(horizontal = 16.dp, vertical = 32.dp)
+		) {
+			UserDetailCard()
+			Spacer(modifier = Modifier.height(16.dp))
+			UserInformationCard()
+			Spacer(modifier = Modifier.height(16.dp))
+			OptionList()
+		}
 	}
 }
 
@@ -256,7 +297,7 @@ private fun UserInformationCard() {
 
 @Composable
 private fun OptionList() {
-	val navController = LocalNavController.current
+	val navController = NoNavControllers.auto(NoRoutes.Main.Person)!!
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
