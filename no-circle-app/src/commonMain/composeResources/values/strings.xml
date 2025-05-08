@@ -27,4 +27,10 @@
 	
 	<!-- 我的 -->
 	<string name="person_account">账号：</string>
+	<string name="person_friend_count">好友数</string>
+	<string name="person_group_count">群组数</string>
+	<string name="person_message_count">消息数</string>
+	
+	<!-- 设置 -->
+	<string name="settings">设置</string>
 </resources>

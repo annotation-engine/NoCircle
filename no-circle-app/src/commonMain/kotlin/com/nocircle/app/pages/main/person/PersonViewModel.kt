@@ -50,6 +50,6 @@ class PersonViewModel : NoViewModel() {
 	data class UserInformation(
 		val friendCount: Int,
 		val groupCount: Int,
-		val unreadMessageCount: Int
+		val messageCount: Int
 	)
 }

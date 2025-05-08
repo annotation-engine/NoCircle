@@ -29,7 +29,7 @@ object UserInformationService : NoService<UserInformationService.UserInformation
 		val data = UserInformation(
 			friendCount = 0,
 			groupCount = 0,
-			unreadMessageCount = 0
+			messageCount = 0
 		)
 		return ApiResult.success(data, "用户消息查询成功")
 	}
@@ -38,6 +38,6 @@ object UserInformationService : NoService<UserInformationService.UserInformation
 	data class UserInformation(
 		val friendCount: Int,
 		val groupCount: Int,
-		val unreadMessageCount: Int
+		val messageCount: Int
 	)
 }

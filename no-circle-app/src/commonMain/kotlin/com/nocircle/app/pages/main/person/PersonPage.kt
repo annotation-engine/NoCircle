@@ -1,11 +1,14 @@
 package com.nocircle.app.pages.main.person
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.twotone.Message
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.twotone.Group
 import androidx.compose.material.icons.twotone.Person
 import androidx.compose.material3.MaterialTheme
@@ -22,9 +25,11 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.person_account
+import com.nocircle.app.LocalNavController
+import com.nocircle.app.NoRoutes
+import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.hexToColor
+import com.nocircle.common.expends.noNavigate
 import com.nocircle.common.expends.value
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
@@ -35,7 +40,7 @@ fun PersonPage() {
 	val verticalScrollState = rememberScrollState()
 	Column(
 		modifier = Modifier
-			.widthIn(max = 600.dp)
+			.widthIn(max = 700.dp)
 			.fillMaxSize()
 			.verticalScroll(verticalScrollState)
 			.padding(horizontal = 16.dp, vertical = 32.dp)
@@ -43,6 +48,8 @@ fun PersonPage() {
 		UserDetailCard()
 		Spacer(modifier = Modifier.height(16.dp))
 		UserInformationCard()
+		Spacer(modifier = Modifier.height(16.dp))
+		OptionList()
 	}
 }
 
@@ -144,7 +151,7 @@ private fun UserInformationCard() {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
-			.height(50.dp)
+			.height(56.dp)
 	) {
 		Row(
 			modifier = Modifier
@@ -162,12 +169,12 @@ private fun UserInformationCard() {
 			NoIcon(
 				icon = Icons.TwoTone.Person,
 				modifier = Modifier
-					.size(26.dp),
+					.size(24.dp),
 				tint = MaterialTheme.colorScheme.onPrimaryContainer,
 			)
 			Spacer(modifier = Modifier.width(4.dp))
 			Text(
-				text = "好友数",
+				text = Res.string.person_friend_count.value,
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				style = MaterialTheme.typography.bodyMedium,
 			)
@@ -195,12 +202,12 @@ private fun UserInformationCard() {
 			NoIcon(
 				icon = Icons.TwoTone.Group,
 				modifier = Modifier
-					.size(26.dp),
+					.size(24.dp),
 				tint = MaterialTheme.colorScheme.onSecondaryContainer,
 			)
 			Spacer(modifier = Modifier.width(4.dp))
 			Text(
-				text = "群组数",
+				text = Res.string.person_group_count.value,
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				style = MaterialTheme.typography.bodyMedium,
 			)
@@ -228,21 +235,57 @@ private fun UserInformationCard() {
 			NoIcon(
 				icon = Icons.AutoMirrored.TwoTone.Message,
 				modifier = Modifier
-					.size(26.dp),
+					.size(24.dp),
 				tint = MaterialTheme.colorScheme.onTertiaryContainer,
 			)
 			Spacer(modifier = Modifier.width(4.dp))
 			Text(
-				text = "未读数",
+				text = Res.string.person_message_count.value,
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				style = MaterialTheme.typography.bodyMedium,
 			)
 			Spacer(modifier = Modifier.weight(1f))
 			Text(
-				text = "${userInformation?.unreadMessageCount ?: 0}",
+				text = "${userInformation?.messageCount ?: 0}",
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				style = MaterialTheme.typography.titleLarge
 			)
 		}
+	}
+}
+
+@Composable
+private fun OptionList() {
+	val navController = LocalNavController.current
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.height(56.dp)
+			.clip(MaterialTheme.shapes.small)
+			.background(
+				color = MaterialTheme.colorScheme.surfaceContainer,
+				shape = MaterialTheme.shapes.small
+			)
+			.clickable {
+				navController.noNavigate(NoRoutes.Settings)
+			}
+			.padding(horizontal = 16.dp),
+		verticalAlignment = Alignment.CenterVertically,
+	) {
+		NoIcon(
+			icon = Icons.Rounded.Settings,
+			tint = MaterialTheme.colorScheme.onTertiaryContainer
+		)
+		Spacer(modifier = Modifier.width(8.dp))
+		Text(
+			text = Res.string.settings.value,
+			color = MaterialTheme.colorScheme.onTertiaryContainer,
+			style = MaterialTheme.typography.titleMedium,
+		)
+		Spacer(modifier = Modifier.weight(1f))
+		NoIcon(
+			icon = Icons.AutoMirrored.Rounded.ArrowForwardIos,
+			tint = MaterialTheme.colorScheme.onTertiaryContainer
+		)
 	}
 }

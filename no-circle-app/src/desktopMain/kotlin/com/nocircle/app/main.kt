@@ -21,8 +21,8 @@ import java.awt.Toolkit
 
 fun main() {
 	application {
-		var widthTarget by remember { mutableStateOf(400.dp) }
-		var heightTarget by remember { mutableStateOf(600.dp) }
+		var widthTarget by remember { mutableStateOf(450.dp) }
+		var heightTarget by remember { mutableStateOf(650.dp) }
 		val width by animateDpAsState(
 			targetValue = widthTarget,
 			animationSpec = spring(stiffness = Spring.StiffnessLow)
@@ -47,7 +47,7 @@ fun main() {
 					window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
 					window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
 				}
-				window.minimumSize = Dimension(400, 600)
+				window.minimumSize = Dimension(450, 650)
 			}
 			NavControllerProvider {
 				val navController = LocalNavController.current
@@ -55,14 +55,14 @@ fun main() {
 					navController.addOnDestinationChangedListener { it, _, _ ->
 						when (it.currentRoute) {
 							in WindowSize400x600Routes -> {
-								widthTarget = 400.dp
-								heightTarget = 600.dp
+								widthTarget = 450.dp
+								heightTarget = 650.dp
 								resizable = false
 							}
 							
 							else -> {
 								widthTarget = 900.dp
-								heightTarget = 650.dp
+								heightTarget = 700.dp
 								resizable = true
 							}
 						}

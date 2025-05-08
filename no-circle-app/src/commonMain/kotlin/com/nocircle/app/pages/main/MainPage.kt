@@ -1,14 +1,12 @@
 package com.nocircle.app.pages.main
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.Message
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -16,31 +14,37 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.generated.resources.*
+import com.nocircle.app.LocalNavController
+import com.nocircle.app.NoRoutes
+import com.nocircle.app.generated.resources.Res
+import com.nocircle.app.generated.resources.login_success
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.message.MessagePage
 import com.nocircle.app.pages.main.person.PersonPage
 import com.nocircle.common.expends.WindowWidthSizes
+import com.nocircle.common.expends.lastRoute
 import com.nocircle.common.expends.value
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
-import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
+	val navController = LocalNavController.current
 	LaunchedEffect(Unit) {
-		hostState.showNoSnackbar(Res.string.login_success)
+		val lastRoute = navController.lastRoute
+		if (lastRoute == NoRoutes.Login::class || lastRoute == NoRoutes.Guide::class) {
+			viewModel.showNoSnackbar(Res.string.login_success)
+		}
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
@@ -51,41 +55,20 @@ fun MainPage() {
 				.padding(paddingValues)
 				.fillMaxSize()
 		) {
-			var mainRoute by remember { mutableStateOf(MainRoute.Home) }
+			val mainRoute by viewModel.mainRoute.collectAsState()
 			if (WindowWidthSizes.isCompact) {
 				CompactMainPage(
 					mainRoute = mainRoute,
-					onMainRouteChange = { mainRoute = it },
+					onMainRouteChange = { viewModel.mainRoute.value = it },
 				)
 			} else {
 				MediumMainPage(
 					mainRoute = mainRoute,
-					onMainRouteChange = { mainRoute = it },
+					onMainRouteChange = { viewModel.mainRoute.value = it },
 				)
 			}
 		}
 	}
-}
-
-private enum class MainRoute(
-	val title: StringResource,
-	val icon: ImageVector,
-) {
-	
-	Home(
-		title = Res.string.main_home,
-		icon = Icons.Rounded.Home,
-	),
-	
-	Message(
-		title = Res.string.main_message,
-		icon = Icons.AutoMirrored.Rounded.Message
-	),
-	
-	Person(
-		title = Res.string.main_person,
-		icon = Icons.Rounded.Person
-	)
 }
 
 @Composable
@@ -99,9 +82,8 @@ private fun CompactMainPage(
 	) {
 		Box(
 			modifier = Modifier
-				.fillMaxWidth()
-				.weight(1f),
-			contentAlignment = Alignment.TopCenter
+				.weight(1f)
+				.fillMaxHeight()
 		) {
 			MainRoute(mainRoute)
 		}
@@ -209,8 +191,7 @@ private fun MediumMainPage(
 			modifier = Modifier
 				.weight(1f)
 				.fillMaxHeight()
-				.background(MaterialTheme.colorScheme.surface),
-			contentAlignment = Alignment.TopCenter
+				.background(MaterialTheme.colorScheme.surface)
 		) {
 			MainRoute(mainRoute)
 		}
@@ -297,9 +278,21 @@ private fun LeftCenterBar(
 private fun MainRoute(
 	mainRoute: MainRoute,
 ) {
-	when (mainRoute) {
-		MainRoute.Home -> HomePage()
-		MainRoute.Message -> MessagePage()
-		MainRoute.Person -> PersonPage()
+	Crossfade(
+		targetState = mainRoute,
+		animationSpec = tween(durationMillis = 80),
+		label = "MainRouteCrossfade",
+	) { target ->
+		Box(
+			modifier = Modifier
+				.fillMaxSize(),
+			contentAlignment = Alignment.TopCenter
+		) {
+			when (target) {
+				MainRoute.Home -> HomePage()
+				MainRoute.Message -> MessagePage()
+				MainRoute.Person -> PersonPage()
+			}
+		}
 	}
 }
