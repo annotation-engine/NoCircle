@@ -46,10 +46,9 @@ inline operator fun <reified S : NoService<T>, reified T : Any> ServiceScope.plu
 	if (service.auth) {
 		route.authenticate(
 			configurations = service.roles,
-			optional = service.optional
-		) {
-			this.build()
-		}
+			optional = service.optional,
+			build = build
+		)
 	} else {
 		route.build()
 	}

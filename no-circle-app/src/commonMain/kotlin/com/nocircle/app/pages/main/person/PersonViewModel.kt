@@ -14,13 +14,17 @@ class PersonViewModel : NoViewModel() {
 	private val _userDetail = MutableStateFlow<UserDetail?>(null)
 	val userDetail = _userDetail.asStateFlow()
 	
+	private val _userInformation = MutableStateFlow<UserInformation?>(null)
+	val userInformation = _userInformation.asStateFlow()
+	
 	init {
 		viewModelScope.launch {
 			loadUserDetail()
+			loadUserInformation()
 		}
 	}
 	
-	suspend fun loadUserDetail() {
+	private suspend fun loadUserDetail() {
 		val result = ktorClient.safeGet<UserDetail>("user/detail") ?: return
 		if (result.success) {
 			_userDetail.value = result.data!!
@@ -33,5 +37,19 @@ class PersonViewModel : NoViewModel() {
 		val nickname: String?,
 		val avatarUrl: String?,
 		val labels: List<Pair<String, String>>
+	)
+	
+	private suspend fun loadUserInformation() {
+		val result = ktorClient.safeGet<UserInformation>("user/information") ?: return
+		if (result.success) {
+			_userInformation.value = result.data!!
+		}
+	}
+	
+	@Serializable
+	data class UserInformation(
+		val friendCount: Int,
+		val groupCount: Int,
+		val unreadMessageCount: Int
 	)
 }

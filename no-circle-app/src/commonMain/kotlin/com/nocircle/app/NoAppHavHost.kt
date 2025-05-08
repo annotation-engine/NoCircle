@@ -18,7 +18,7 @@ import com.nocircle.common.expends.noComposable
 import kotlinx.serialization.Serializable
 
 @Composable
-fun NoNavHost() {
+fun NoAppNavHost() {
 	val navController = LocalNavController.current
 	NavHost(
 		navController = navController,

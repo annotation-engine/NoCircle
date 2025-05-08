@@ -8,6 +8,8 @@ import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
+typealias NoRoute = Any
+
 fun <T> NavController.getData(key: String, remove: Boolean = true): T? {
 	val handle = this.previousBackStackEntry?.savedStateHandle ?: return null
 	return handle.get<T>(key).also {

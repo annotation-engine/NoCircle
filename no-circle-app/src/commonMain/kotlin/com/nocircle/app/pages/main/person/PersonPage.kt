@@ -4,6 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.Message
+import androidx.compose.material.icons.twotone.Group
+import androidx.compose.material.icons.twotone.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,15 +20,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.person_account
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.expends.value
 import com.nocircle.compose.foundation.NoAsyncImage
+import com.nocircle.compose.foundation.NoIcon
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -38,12 +41,15 @@ fun PersonPage() {
 			.padding(horizontal = 16.dp, vertical = 32.dp)
 	) {
 		UserDetailCard()
+		Spacer(modifier = Modifier.height(16.dp))
+		UserInformationCard()
 	}
 }
 
 @Composable
 private fun UserDetailCard() {
 	val viewModel = koinViewModel<PersonViewModel>()
+	val userDetail by viewModel.userDetail.collectAsState()
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -54,7 +60,6 @@ private fun UserDetailCard() {
 			.padding(24.dp)
 			.height(80.dp)
 	) {
-		val userDetail by viewModel.userDetail.collectAsState()
 		NoAsyncImage(
 			url = userDetail?.avatarUrl,
 			modifier = Modifier
@@ -67,24 +72,23 @@ private fun UserDetailCard() {
 		Column(
 			modifier = Modifier
 				.fillMaxHeight()
-				.padding(vertical = 4.dp),
+				.padding(vertical = 2.dp),
 		) {
 			Text(
 				text = userDetail?.nickname ?: "",
 				color = MaterialTheme.colorScheme.onSurface,
-				fontSize = 16.sp,
-				fontWeight = FontWeight.Bold
+				style = MaterialTheme.typography.bodyLarge,
 			)
 			Spacer(modifier = Modifier.weight(1f))
 			Text(
 				text = "${Res.string.person_account.value}${userDetail?.username}",
 				color = MaterialTheme.colorScheme.outline,
-				fontSize = 12.sp
+				style = MaterialTheme.typography.bodyMedium,
 			)
-			Spacer(modifier = Modifier.height(2.dp))
+			Spacer(modifier = Modifier.weight(1f))
 			Row(
 				modifier = Modifier
-					.height(24.dp)
+					.height(22.dp)
 					.background(
 						color = if (userDetail == null) MaterialTheme.colorScheme.surface else Color.Transparent,
 						shape = MaterialTheme.shapes.extraSmall
@@ -113,22 +117,132 @@ private fun UserDetailCard() {
 										color = remember(color) { color.hexToColor() },
 										shape = MaterialTheme.shapes.extraSmall
 									)
-									.padding(horizontal = 4.dp),
+									.padding(horizontal = 6.dp),
 								contentAlignment = Alignment.Center
 							) {
 								Text(
 									text = label,
 									color = Color.White,
-									fontSize = 12.sp
+									style = MaterialTheme.typography.labelMedium
 								)
 							}
 							if (index < labels.size - 1) {
-								Spacer(modifier = Modifier.width(4.dp))
+								Spacer(modifier = Modifier.width(6.dp))
 							}
 						}
 					}
 				}
 			}
+		}
+	}
+}
+
+@Composable
+private fun UserInformationCard() {
+	val viewModel = koinViewModel<PersonViewModel>()
+	val userInformation by viewModel.userInformation.collectAsState()
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.height(50.dp)
+	) {
+		Row(
+			modifier = Modifier
+				.weight(1f)
+				.fillMaxHeight()
+				.background(
+					color = MaterialTheme.colorScheme.primaryContainer,
+					shape = MaterialTheme.shapes.small
+				)
+				.padding(
+					horizontal = 12.dp
+				),
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			NoIcon(
+				icon = Icons.TwoTone.Person,
+				modifier = Modifier
+					.size(26.dp),
+				tint = MaterialTheme.colorScheme.onPrimaryContainer,
+			)
+			Spacer(modifier = Modifier.width(4.dp))
+			Text(
+				text = "好友数",
+				color = MaterialTheme.colorScheme.onPrimaryContainer,
+				style = MaterialTheme.typography.bodyMedium,
+			)
+			Spacer(modifier = Modifier.weight(1f))
+			Text(
+				text = "${userInformation?.friendCount ?: 0}",
+				color = MaterialTheme.colorScheme.onPrimaryContainer,
+				style = MaterialTheme.typography.titleLarge
+			)
+		}
+		Spacer(modifier = Modifier.width(16.dp))
+		Row(
+			modifier = Modifier
+				.weight(1f)
+				.fillMaxHeight()
+				.background(
+					color = MaterialTheme.colorScheme.secondaryContainer,
+					shape = MaterialTheme.shapes.small
+				)
+				.padding(
+					horizontal = 12.dp
+				),
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			NoIcon(
+				icon = Icons.TwoTone.Group,
+				modifier = Modifier
+					.size(26.dp),
+				tint = MaterialTheme.colorScheme.onSecondaryContainer,
+			)
+			Spacer(modifier = Modifier.width(4.dp))
+			Text(
+				text = "群组数",
+				color = MaterialTheme.colorScheme.onPrimaryContainer,
+				style = MaterialTheme.typography.bodyMedium,
+			)
+			Spacer(modifier = Modifier.weight(1f))
+			Text(
+				text = "${userInformation?.groupCount ?: 0}",
+				color = MaterialTheme.colorScheme.onPrimaryContainer,
+				style = MaterialTheme.typography.titleLarge
+			)
+		}
+		Spacer(modifier = Modifier.width(16.dp))
+		Row(
+			modifier = Modifier
+				.weight(1f)
+				.fillMaxHeight()
+				.background(
+					color = MaterialTheme.colorScheme.tertiaryContainer,
+					shape = MaterialTheme.shapes.small
+				)
+				.padding(
+					horizontal = 12.dp
+				),
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			NoIcon(
+				icon = Icons.AutoMirrored.TwoTone.Message,
+				modifier = Modifier
+					.size(26.dp),
+				tint = MaterialTheme.colorScheme.onTertiaryContainer,
+			)
+			Spacer(modifier = Modifier.width(4.dp))
+			Text(
+				text = "未读数",
+				color = MaterialTheme.colorScheme.onPrimaryContainer,
+				style = MaterialTheme.typography.bodyMedium,
+			)
+			Spacer(modifier = Modifier.weight(1f))
+			Text(
+				text = "${userInformation?.unreadMessageCount ?: 0}",
+				color = MaterialTheme.colorScheme.onPrimaryContainer,
+				style = MaterialTheme.typography.titleLarge
+			)
 		}
 	}
 }

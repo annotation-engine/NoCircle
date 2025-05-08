@@ -27,6 +27,6 @@ fun NoApp() {
 			modules(NoKoinModule)
 		}
 	) {
-		NoNavHost()
+		NoAppNavHost()
 	}
 }

@@ -179,7 +179,7 @@ private fun BottomBar(
 					Text(
 						text = it.title.value,
 						color = color,
-						style = MaterialTheme.typography.titleSmall,
+						style = MaterialTheme.typography.bodyMedium,
 					)
 				}
 				if (index < MainRoute.entries.lastIndex) {
@@ -282,7 +282,7 @@ private fun LeftCenterBar(
 					Text(
 						text = it.title.value,
 						color = color,
-						style = MaterialTheme.typography.titleSmall,
+						style = MaterialTheme.typography.bodyMedium,
 					)
 				}
 				if (index < MainRoute.entries.lastIndex) {
