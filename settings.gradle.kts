@@ -30,7 +30,8 @@ dependencyResolutionManagement {
     }
 }
 
-include(":no-circle-app")
-include(":no-circle-compose")
-include(":no-circle-common")
-include(":no-circle-server")
+include(":no-circle-multiplatform-app")
+include(":no-circle-multiplatform-compose")
+include(":no-circle-multiplatform-common")
+include(":no-circle-server-app")
+include(":no-circle-server-common")

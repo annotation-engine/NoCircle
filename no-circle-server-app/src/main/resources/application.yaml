@@ -1,0 +1,27 @@
+ktor:
+  application:
+    modules:
+      - com.nocircle.server.app.ApplicationKt.module
+  deployment:
+    port: 8080
+    rootPath: /api
+jwt:
+  issuer: "http://nocircle.com:8080/api"
+  audience: "NoCircle"
+  realm: "NoCircle"
+  secret: "oB25pdw7tBo6pVIqGdeiFuizxixUbFuQ"
+  timeout: "1d"
+mysql:
+  url: "jdbc:mysql://localhost:3306/no_circle"
+  user: "root"
+  driver: "com.mysql.cj.jdbc.Driver"
+  password: "1234.com"
+security:
+  algorithm: "PBKDF2WithHmacSHA256"
+  pepper: "acf9ZLSr27I7i4DRVk54l0FXz9xYsgf1"
+  saltLength: 16
+  keyLength: 256
+  iterations: 200000
+redis:
+  address: 'redis://localhost:6379'
+  database: 4

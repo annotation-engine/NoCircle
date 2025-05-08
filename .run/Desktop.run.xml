@@ -2,7 +2,7 @@
   <configuration default="false" name="Desktop" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$/no-circle-app" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/no-circle-multiplatform-app" />
       <option name="externalSystemIdString" value="GRADLE" />
       <option name="scriptParameters" value="-DmainClass=com.nocircle.app.MainKt --quiet" />
       <option name="taskDescriptions">

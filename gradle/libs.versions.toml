@@ -72,7 +72,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 
 [bundles]
-app = [
+multiplatform-app = [
 	'kotlin-reflect',
 	'androidx-navigation-compose',
 	'material3-window-size-clazz',
@@ -86,14 +86,14 @@ app = [
 	'room-paging'
 ]
 
-compose = [
+multiplatform-compose = [
 	'kotlin-reflect',
 	'koin-compose-viewmodel',
 	'coil-compose',
 	'coil-network-ktor3'
 ]
 
-common = [
+multiplatform-common = [
 	'kotlin-reflect',
 	'androidx-navigation-compose',
 	'ktor-client-core',
@@ -103,7 +103,7 @@ common = [
 	'ktor-serialization-kotlinx-json'
 ]
 
-server = [
+server-app = [
 	'kotlin-reflect',
 	'ktor-server-core',
 	'ktor-server-auth',
@@ -121,4 +121,16 @@ server = [
 	'logback-classic',
 	'hutool-crypto',
 	'redisson'
+]
+
+server-common = [
+	'kotlin-reflect',
+	'ktor-server-core',
+	'ktor-server-auth',
+	'ktor-server-auth-jwt',
+	'ktor-server-config-yaml',
+	'ktor-serialization-kotlinx-json',
+	'exposed-core',
+	'exposed-dao',
+	'exposed-kotlin-datetime'
 ]
