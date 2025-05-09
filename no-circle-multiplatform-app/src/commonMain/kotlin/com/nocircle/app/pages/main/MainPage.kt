@@ -24,7 +24,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllers
+import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.main.home.HomePage
@@ -33,8 +33,6 @@ import com.nocircle.app.pages.main.person.PersonPageAdapter
 import com.nocircle.common.expends.WindowWidthSizes
 import com.nocircle.common.expends.value
 import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.navigation.lastRoute
-import com.nocircle.common.navigation.noPopBackStack
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
@@ -46,7 +44,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val navController = NoNavControllers.root
+	val navController = NoNavControllerManagers.root
 	LaunchedEffect(Unit) {
 		val lastRoute = navController.lastRoute
 		if (lastRoute == NoRoutes.Login::class || lastRoute == NoRoutes.Guide::class) {
@@ -222,12 +220,12 @@ private fun LeftBar(
 			.width(56.dp),
 		horizontalAlignment = Alignment.CenterHorizontally,
 	) {
-		val navController = NoNavControllers.auto(mainRoute)
+		val navController = NoNavControllerManagers.auto(mainRoute)
 		NoIcon(
 			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
 			tint = MaterialTheme.colorScheme.onSurface
 		) {
-			navController?.noPopBackStack()
+			navController?.popBackStack()
 		}
 		Spacer(modifier = Modifier.height(100.dp))
 		Box(

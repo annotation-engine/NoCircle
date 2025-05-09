@@ -16,14 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllers
+import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.value
-import com.nocircle.common.navigation.backRoute
-import com.nocircle.common.navigation.getResult
-import com.nocircle.common.navigation.noNavigate
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
@@ -39,7 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun LoginPage() {
 	val viewModel = koinViewModel<LoginViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val navController = NoNavControllers.root
+	val navController = NoNavControllerManagers.root
 	LaunchedEffect(Unit) {
 		if (navController.backRoute == NoRoutes.Register::class) {
 			val username = navController.getResult<String>("username")
@@ -102,7 +99,7 @@ fun LoginPage() {
 				val success = viewModel.login()
 				if (success) {
 					launch(Dispatchers.Main) {
-						navController.noNavigate(
+						navController.navigate(
 							route = NoRoutes.Main,
 							finish = true
 						)
@@ -115,7 +112,7 @@ fun LoginPage() {
 				modifier = Modifier.fillMaxWidth(),
 				colors = NoButtons.SecondaryContainerColors
 			) {
-				navController.noNavigate(route = NoRoutes.Register)
+				navController.navigate(route = NoRoutes.Register)
 			}
 			Spacer(modifier = Modifier.height(100.dp))
 		}

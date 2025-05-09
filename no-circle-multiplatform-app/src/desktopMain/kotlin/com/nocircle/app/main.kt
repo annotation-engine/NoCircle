@@ -14,7 +14,6 @@ import androidx.compose.ui.window.application
 import com.nocircle.app.theme.NoMaterialTheme
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.navigation.currentRoute
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Toolkit
@@ -49,7 +48,7 @@ fun main() {
 				}
 				window.minimumSize = Dimension(420, 520)
 			}
-			val navController = NoNavControllers.initAndGetRoot()
+			val navController = NoNavControllerManagers.initAndGetRoot()
 			LaunchedEffect(Unit) {
 				navController.addOnDestinationChangedListener { it, _, _ ->
 					when (it.currentRoute) {

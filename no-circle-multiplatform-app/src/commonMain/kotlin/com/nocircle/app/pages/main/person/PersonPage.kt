@@ -28,16 +28,14 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import androidx.navigation.compose.NavHost
-import com.nocircle.app.NoNavControllers
+import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.common.expends.WindowWidthSizes
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.expends.value
-import com.nocircle.common.navigation.noComposable
-import com.nocircle.common.navigation.noNavigate
+import com.nocircle.common.navigation.NoNavHost
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import org.koin.compose.viewmodel.koinViewModel
@@ -53,8 +51,8 @@ fun PersonPageAdapter() {
 
 @Composable
 private fun PersonPageNavHost() {
-	val navController = NoNavControllers.initAndGetSettings()
-	NavHost(
+	val navController = NoNavControllerManagers.initAndGetSettings()
+	NoNavHost(
 		navController = navController,
 		startDestination = NoRoutes.Main.Person,
 		enterTransition = { EnterTransition },
@@ -62,8 +60,8 @@ private fun PersonPageNavHost() {
 		popEnterTransition = { EnterTransition },
 		popExitTransition = { ExitTransition },
 	) {
-		noComposable<NoRoutes.Main.Person> { PersonPage() }
-		noComposable<NoRoutes.Settings> { SettingsPage() }
+		composable<NoRoutes.Main.Person> { PersonPage() }
+		composable<NoRoutes.Settings> { SettingsPage() }
 	}
 }
 
@@ -297,7 +295,7 @@ private fun UserInformationCard() {
 
 @Composable
 private fun OptionList() {
-	val navController = NoNavControllers.auto(NoRoutes.Main.Person)!!
+	val navController = NoNavControllerManagers.auto(NoRoutes.Main.Person)!!
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -308,7 +306,7 @@ private fun OptionList() {
 				shape = MaterialTheme.shapes.small
 			)
 			.clickable {
-				navController.noNavigate(NoRoutes.Settings)
+				navController.navigate(NoRoutes.Settings)
 			}
 			.padding(horizontal = 16.dp),
 		verticalAlignment = Alignment.CenterVertically,

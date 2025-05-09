@@ -16,9 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllers
+import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
-import com.nocircle.common.navigation.noNavigate
 import com.nocircle.compose.icon.NoIcons
 import com.nocircle.compose.icon.NoLogo
 import com.nocircle.compose.material3.NoScaffold
@@ -32,7 +31,7 @@ fun GuidePage() {
 	var alphaTarget by remember { mutableStateOf(0f) }
 	var scaleTarget by remember { mutableStateOf(1f) }
 	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
-	val navController = NoNavControllers.root
+	val navController = NoNavControllerManagers.root
 	LaunchedEffect(Unit) {
 		delay(300)
 		offsetYTarget = (-100).dp
@@ -43,9 +42,9 @@ fun GuidePage() {
 		alphaTarget = 0f
 		delay(250)
 		if (viewModel.verifyToken()) {
-			navController.noNavigate(route = NoRoutes.Main, finish = true)
+			navController.navigate(route = NoRoutes.Main, finish = true)
 		} else {
-			navController.noNavigate(route = NoRoutes.Login, finish = true)
+			navController.navigate(route = NoRoutes.Login, finish = true)
 		}
 	}
 	NoScaffold {

@@ -16,11 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllers
+import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.value
-import com.nocircle.common.navigation.noPopBackStack
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
@@ -104,7 +103,7 @@ fun RegisterPage() {
 			)
 			Spacer(modifier = Modifier.height(120.dp))
 			
-			val navController = NoNavControllers.root
+			val navController = NoNavControllerManagers.root
 			NoButton(
 				text = Res.string.register.value,
 				modifier = Modifier.fillMaxWidth()
@@ -112,7 +111,7 @@ fun RegisterPage() {
 				val success = viewModel.register()
 				if (success) {
 					launch(Dispatchers.Main) {
-						navController.noPopBackStack("username" to username)
+						navController.popBackStack("username" to username)
 					}
 				}
 			}

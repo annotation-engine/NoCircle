@@ -8,7 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllers
+import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.settings
@@ -16,7 +16,6 @@ import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.expends.WindowWidthSizes
 import com.nocircle.common.expends.value
-import com.nocircle.common.navigation.noPopBackStack
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import org.koin.compose.viewmodel.koinViewModel
@@ -33,12 +32,12 @@ fun SettingsPage() {
 				},
 				navigationIcon = {
 					if (WindowWidthSizes.isCompact) {
-						val navController = NoNavControllers.auto(NoRoutes.Main.Person)!!
+						val navController = NoNavControllerManagers.auto(NoRoutes.Main.Person)!!
 						NoIcon(
 							icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
 							tint = MaterialTheme.colorScheme.onSurface
 						) {
-							navController.noPopBackStack()
+							navController.popBackStack()
 						}
 					}
 				},

@@ -1,113 +1,85 @@
 package com.nocircle.app
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.nocircle.app.pages.account.login.LoginPage
 import com.nocircle.app.pages.account.register.RegisterPage
 import com.nocircle.app.pages.guide.GuidePage
 import com.nocircle.app.pages.main.MainPage
 import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.common.expends.WindowWidthSizes
+import com.nocircle.common.navigation.NoNavHost
+import com.nocircle.common.navigation.NoNavHostController
 import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.navigation.noComposable
+import com.nocircle.common.navigation.rememberNoNavController
 import kotlinx.serialization.Serializable
 
 @Composable
 fun NoAppNavHost() {
-	val navController = NoNavControllers.initAndGetRoot()
-	NavHost(
+	val navController = NoNavControllerManagers.initAndGetRoot()
+	NoNavHost(
 		navController = navController,
-		startDestination = NoRoutes.Guide,
-		enterTransition = { EnterTransition },
-		exitTransition = { ExitTransition },
-		popEnterTransition = { PopEnterTransition },
-		popExitTransition = { PopExitTransition }
+		startDestination = NoRoutes.Guide
 	) {
-		noComposable<NoRoutes.Guide> { GuidePage() }
-		noComposable<NoRoutes.Login> { LoginPage() }
-		noComposable<NoRoutes.Register> { RegisterPage() }
-		noComposable<NoRoutes.Main> { MainPage() }
-		noComposable<NoRoutes.Settings> { SettingsPage() }
+		composable<NoRoutes.Guide> { GuidePage() }
+		composable<NoRoutes.Login> { LoginPage() }
+		composable<NoRoutes.Register> { RegisterPage() }
+		composable<NoRoutes.Main> { MainPage() }
+		composable<NoRoutes.Settings> { SettingsPage() }
 	}
 }
 
 object NoRoutes {
 	
 	@Serializable
-	data object Guide
+	data object Guide : NoRoute
 	
 	@Serializable
-	data object Login
+	data object Login : NoRoute
 	
 	@Serializable
-	data object Register
+	data object Register : NoRoute
 	
 	@Serializable
-	data object Main {
+	data object Main : NoRoute {
 		
 		@Serializable
-		data object Home
+		data object Home : NoRoute
 		
 		@Serializable
-		data object Message
+		data object Message : NoRoute
 		
 		@Serializable
-		data object Person
+		data object Person : NoRoute
 	}
 	
 	@Serializable
-	data object Settings
+	data object Settings : NoRoute
 }
 
-private val EnterTransition = slideInHorizontally(
-	initialOffsetX = { it },
-	animationSpec = tween(300)
-)
-
-private val ExitTransition = slideOutHorizontally(
-	targetOffsetX = { -it },
-	animationSpec = tween(300)
-)
-
-private val PopEnterTransition = slideInHorizontally(
-	initialOffsetX = { -it },
-	animationSpec = tween(300)
-)
-
-private val PopExitTransition = slideOutHorizontally(
-	targetOffsetX = { it },
-	animationSpec = tween(300)
-)
-
-object NoNavControllers {
+object NoNavControllerManagers {
 	
-	val root: NavHostController
+	val root: NoNavHostController
 		get() = _root!!
 	
-	private var _root by mutableStateOf<NavHostController?>(null)
+	private var _root by mutableStateOf<NoNavHostController?>(null)
 	
 	@Composable
-	fun initAndGetRoot(): NavHostController {
-		return _root ?: rememberNavController().also { _root = it }
+	fun initAndGetRoot(): NoNavHostController {
+		return _root ?: rememberNoNavController().also { _root = it }
 	}
 	
-	private var settings by mutableStateOf<NavHostController?>(null)
+	private var settings by mutableStateOf<NoNavHostController?>(null)
 	
 	@Composable
-	fun initAndGetSettings(): NavHostController {
-		return settings ?: rememberNavController().also { settings = it }
+	fun initAndGetSettings(): NoNavHostController {
+		return settings ?: rememberNoNavController().also { settings = it }
 	}
 	
 	@Composable
-	fun auto(ifNotCompactRoute: NoRoute): NavHostController? {
+	fun auto(ifNotCompactRoute: NoRoute): NoNavHostController? {
 		return when {
 			WindowWidthSizes.isCompact -> root
 			ifNotCompactRoute == NoRoutes.Main.Person -> settings
