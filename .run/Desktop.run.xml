@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="desktopRun" />
+          <option value="desktopRunHot" />
         </list>
       </option>
       <option name="vmOptions" />

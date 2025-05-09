@@ -19,6 +19,7 @@ logback-classic = "1.5.18"
 hutool = "5.8.37"
 redisson = "3.46.0"
 ksp = "2.2.0-Beta2-2.0.1"
+hot-reload = "1.0.0-alpha09"
 
 [libraries]
 # Kotlin Multiplatform
@@ -70,6 +71,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+hot-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hot-reload" }
 
 [bundles]
 multiplatform-app = [

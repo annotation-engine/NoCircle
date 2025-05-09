@@ -34,6 +34,7 @@ import com.nocircle.common.expends.WindowWidthSizes
 import com.nocircle.common.expends.value
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
@@ -221,7 +222,7 @@ private fun LeftBar(
 		horizontalAlignment = Alignment.CenterHorizontally,
 	) {
 		val navController = NoNavControllerManagers.auto(mainRoute)
-		NoIcon(
+		NoIconButton(
 			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
 			tint = MaterialTheme.colorScheme.onSurface
 		) {

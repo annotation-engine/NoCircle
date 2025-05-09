@@ -1,5 +1,6 @@
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -11,6 +12,7 @@ plugins {
 	alias(libs.plugins.kotlin.serialization)
 	alias(libs.plugins.ksp)
 	alias(libs.plugins.room)
+	alias(libs.plugins.hot.reload)
 }
 
 val noCircleVersionName = property("no-circle.version.name").toString()
@@ -87,6 +89,9 @@ kotlin {
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_2
 		freeCompilerArgs.addAll("-Xcontext-parameters", "-Xexpect-actual-classes")
+	}
+	composeCompiler {
+		featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 	}
 }
 

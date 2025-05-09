@@ -16,7 +16,7 @@ import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.expends.WindowWidthSizes
 import com.nocircle.common.expends.value
-import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -33,7 +33,7 @@ fun SettingsPage() {
 				navigationIcon = {
 					if (WindowWidthSizes.isCompact) {
 						val navController = NoNavControllerManagers.auto(NoRoutes.Main.Person)!!
-						NoIcon(
+						NoIconButton(
 							icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
 							tint = MaterialTheme.colorScheme.onSurface
 						) {

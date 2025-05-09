@@ -11,15 +11,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.twotone.Message
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.twotone.Group
 import androidx.compose.material.icons.twotone.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +38,7 @@ import com.nocircle.common.expends.value
 import com.nocircle.common.navigation.NoNavHost
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.foundation.NoIconButton
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -152,34 +153,89 @@ private fun UserDetailCard() {
 					)
 				} else {
 					val labels = userDetail!!.labels.toList()
-					if (labels.isEmpty()) {
-						// 添加标签
-					} else {
-						labels.fastForEachIndexed { index, (label, color) ->
-							Box(
-								modifier = Modifier
-									.fillMaxHeight()
-									.background(
-										color = remember(color) { color.hexToColor() },
-										shape = MaterialTheme.shapes.extraSmall
-									)
-									.padding(horizontal = 6.dp),
-								contentAlignment = Alignment.Center
-							) {
-								Text(
-									text = label,
-									color = Color.White,
-									style = MaterialTheme.typography.labelMedium
-								)
-							}
-							if (index < labels.size - 1) {
-								Spacer(modifier = Modifier.width(6.dp))
-							}
-						}
+					labels.fastForEachIndexed { index, (label, color) ->
+						Label(
+							label = label,
+							color = color,
+						)
+						Spacer(modifier = Modifier.width(6.dp))
+					}
+					if (labels.size < 5) {
+						AddLabel()
 					}
 				}
 			}
 		}
+	}
+}
+
+@Composable
+private fun Label(
+	label: String,
+	color: Any,
+) {
+	Box(
+		modifier = Modifier
+			.fillMaxHeight()
+			.background(
+				color = when (color) {
+					is String -> remember(color) { color.hexToColor() }
+					is Color -> color
+					else -> error("不支持的 color 类型")
+				},
+				shape = MaterialTheme.shapes.extraSmall
+			)
+			.padding(horizontal = 6.dp),
+		contentAlignment = Alignment.Center
+	) {
+		Text(
+			text = label,
+			color = Color.White,
+			style = MaterialTheme.typography.labelMedium
+		)
+	}
+}
+
+@Composable
+private fun AddLabel() {
+	var showDialog by remember { mutableStateOf(false) }
+	NoIconButton(
+		icon = Icons.Rounded.Add,
+		modifier = Modifier
+			.size(22.dp),
+		tint = MaterialTheme.colorScheme.outline,
+		shape = MaterialTheme.shapes.extraSmall,
+		paddingValues = PaddingValues()
+	) {
+		showDialog = true
+	}
+	SimpleAlertDialog(
+		showDialog = showDialog,
+		onDismiss = { showDialog = false }
+	)
+}
+
+@Composable
+private fun SimpleAlertDialog(
+	showDialog: Boolean,
+	onDismiss: () -> Unit
+) {
+	if (showDialog) {
+		AlertDialog(
+			onDismissRequest = onDismiss,
+			title = { Text("提示") },
+			text = { Text("你确定要执行这个操作吗？") },
+			confirmButton = {
+				TextButton(onClick = onDismiss) {
+					Text("确定")
+				}
+			},
+			dismissButton = {
+				TextButton(onClick = onDismiss) {
+					Text("取消")
+				}
+			}
+		)
 	}
 }
 

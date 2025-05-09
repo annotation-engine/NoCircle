@@ -20,10 +20,7 @@ import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.value
-import com.nocircle.compose.foundation.NoButton
-import com.nocircle.compose.foundation.NoButtons
-import com.nocircle.compose.foundation.NoIcon
-import com.nocircle.compose.foundation.NoInput
+import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
@@ -73,7 +70,7 @@ fun RegisterPage() {
 				placeholder = Res.string.register_please_input_password.value,
 				leadingIcon = { NoIcon(Icons.Outlined.Lock) },
 				trailingIcon = {
-					NoIcon(
+					NoIconButton(
 						icon = if (showPassword.value) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,
 						tint = MaterialTheme.colorScheme.primary
 					) {
@@ -92,7 +89,7 @@ fun RegisterPage() {
 				placeholder = Res.string.register_please_confirm_password.value,
 				leadingIcon = { NoIcon(Icons.Outlined.Lock) },
 				trailingIcon = {
-					NoIcon(
+					NoIconButton(
 						icon = if (showConfirmPassword.value) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,
 						tint = MaterialTheme.colorScheme.primary
 					) {

@@ -1,4 +1,4 @@
-import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -8,6 +8,7 @@ plugins {
 	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.multiplatform)
 	alias(libs.plugins.kotlin.serialization)
+	alias(libs.plugins.hot.reload)
 }
 
 val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").map {
@@ -77,6 +78,9 @@ kotlin {
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_2
 		freeCompilerArgs.addAll("-Xcontext-parameters", "-Xexpect-actual-classes")
+	}
+	composeCompiler {
+		featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 	}
 }
 
