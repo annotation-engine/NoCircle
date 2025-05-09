@@ -15,10 +15,8 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.twotone.Group
 import androidx.compose.material.icons.twotone.Person
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +37,7 @@ import com.nocircle.common.navigation.NoNavHost
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.material3.NoModalBottomSheet
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -161,7 +160,7 @@ private fun UserDetailCard() {
 						Spacer(modifier = Modifier.width(6.dp))
 					}
 					if (labels.size < 5) {
-						AddLabel()
+						EditLabel()
 					}
 				}
 			}
@@ -197,8 +196,8 @@ private fun Label(
 }
 
 @Composable
-private fun AddLabel() {
-	var showDialog by remember { mutableStateOf(false) }
+private fun EditLabel() {
+	var showModal by remember { mutableStateOf(false) }
 	NoIconButton(
 		icon = Icons.Rounded.Add,
 		modifier = Modifier
@@ -207,35 +206,14 @@ private fun AddLabel() {
 		shape = MaterialTheme.shapes.extraSmall,
 		paddingValues = PaddingValues()
 	) {
-		showDialog = true
+		showModal = true
 	}
-	SimpleAlertDialog(
-		showDialog = showDialog,
-		onDismiss = { showDialog = false }
-	)
-}
-
-@Composable
-private fun SimpleAlertDialog(
-	showDialog: Boolean,
-	onDismiss: () -> Unit
-) {
-	if (showDialog) {
-		AlertDialog(
-			onDismissRequest = onDismiss,
-			title = { Text("提示") },
-			text = { Text("你确定要执行这个操作吗？") },
-			confirmButton = {
-				TextButton(onClick = onDismiss) {
-					Text("确定")
-				}
-			},
-			dismissButton = {
-				TextButton(onClick = onDismiss) {
-					Text("取消")
-				}
-			}
-		)
+	if (showModal) {
+		NoModalBottomSheet(
+			onDismissRequest = { showModal = false },
+		) {
+			Spacer(modifier = Modifier.height(200.dp))
+		}
 	}
 }
 
