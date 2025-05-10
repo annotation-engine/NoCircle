@@ -100,6 +100,7 @@ multiplatform-common = [
 	'androidx-navigation-compose',
 	'ktor-client-core',
 	'room-runtime',
+	'room-paging',
 	'sqlite-bundled',
 	'material3-window-size-clazz',
 	'ktor-serialization-kotlinx-json'

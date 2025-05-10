@@ -2,7 +2,7 @@ package com.nocircle.app.pages.main.person
 
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.http.ktorClient
-import com.nocircle.common.expends.safeGet
+import com.nocircle.common.ktor.safeGet
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

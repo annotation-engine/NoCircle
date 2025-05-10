@@ -16,6 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -55,6 +57,7 @@ fun NoIconButton(
 					}
 				}
 			)
+			.pointerHoverIcon(PointerIcon.Default)
 			.padding(paddingValues),
 		tint = tint
 	)

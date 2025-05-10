@@ -1,5 +1,7 @@
 package com.nocircle.common.config
 
+import com.nocircle.common.room.CommonDatabase
+import com.nocircle.common.room.entity.ConfigEntity
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
@@ -10,7 +12,7 @@ suspend inline fun <reified T> setConfig(key: String, value: T) {
 
 suspend fun <T> setConfig(key: String, value: T, serializer: KSerializer<T>) {
 	val value = value?.let { Json.encodeToString(serializer, it) }
-	ConfigDatabase.INSTANCE.configDao.insert(ConfigEntity(key, value))
+	CommonDatabase.INSTANCE.configDao().insert(ConfigEntity(key, value))
 }
 
 suspend inline fun <reified T : Any> getConfig(key: String): T {
@@ -18,7 +20,7 @@ suspend inline fun <reified T : Any> getConfig(key: String): T {
 }
 
 suspend fun <T : Any> getConfig(key: String, serializer: KSerializer<T>): T {
-	val entity = ConfigDatabase.INSTANCE.configDao.query(key)!!
+	val entity = CommonDatabase.INSTANCE.configDao().query(key)!!
 	return entity.value!!.let { Json.decodeFromString(serializer, it) }
 }
 
@@ -27,14 +29,14 @@ suspend inline fun <reified T : Any> getConfigOrNull(key: String, default: T? = 
 }
 
 suspend fun <T : Any> getConfigOrNull(key: String, default: T?, serializer: KSerializer<T>): T? {
-	val entity = ConfigDatabase.INSTANCE.configDao.query(key) ?: return default
+	val entity = CommonDatabase.INSTANCE.configDao().query(key) ?: return default
 	return entity.value?.let { Json.decodeFromString(serializer, it) }
 }
 
 suspend fun deleteConfig(key: String): Int {
-	return ConfigDatabase.INSTANCE.configDao.delete(key)
+	return CommonDatabase.INSTANCE.configDao().delete(key)
 }
 
 suspend fun deleteAllConfig(): Int {
-	return ConfigDatabase.INSTANCE.configDao.deleteAll()
+	return CommonDatabase.INSTANCE.configDao().deleteAll()
 }

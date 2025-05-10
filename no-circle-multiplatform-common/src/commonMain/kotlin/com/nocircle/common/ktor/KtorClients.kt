@@ -1,4 +1,4 @@
-package com.nocircle.common.expends
+package com.nocircle.common.ktor
 
 import com.nocircle.common.config.getConfigOrNull
 import com.nocircle.common.log.NoLog
@@ -69,12 +69,12 @@ suspend fun <R : Any> HttpClient.safeRequest(
 	}
 	val response = this.request(builder)
 	if (response.status.isSuccess()) {
-		response.body(typeInfo)
+		response.body<ApiResult<R>>(typeInfo)
 	} else null
 } catch (e: CancellationException) {
 	throw e
 } catch (e: Exception) {
-	NoLog.error(e)
+	NoLog.error(e.stackTraceToString(), store = true)
 	null
 }
 
@@ -84,8 +84,5 @@ data class ApiResult<T : Any>(
 	val msg: String,
 	val data: T? = null,
 ) {
-	
-	val success by lazy { this.code == 0 }
-	
-	val failure by lazy { this.code != 0 }
+	val success get() = code == 0
 }

@@ -1,59 +1,121 @@
 package com.nocircle.common.log
 
+import com.nocircle.common.room.CommonDatabase
+import com.nocircle.common.room.entity.LogEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+
 object NoLog {
 	
 	private const val TAG = "NoCircleTAG"
 	
-	fun verbose(vararg args: Any?) {
-		this.log(TAG, LogLevel.Verbose, *args)
+	fun verbose(
+		vararg messages: Any?,
+		store: Boolean = false,
+	) {
+		this.log(TAG, LogLevel.Verbose, store, *messages)
 	}
 	
-	fun verbose(provider: () -> Any?) {
-		this.log(TAG, LogLevel.Verbose, provider())
+	fun verbose(
+		store: Boolean = false,
+		provider: () -> Any?
+	) {
+		this.log(TAG, LogLevel.Verbose, store, provider())
 	}
 	
-	fun debug(vararg args: Any?) {
-		this.log(TAG, LogLevel.Debug, *args)
+	fun debug(
+		vararg messages: Any?,
+		store: Boolean = false,
+	) {
+		this.log(TAG, LogLevel.Debug, store, *messages)
 	}
 	
-	fun debug(provider: () -> Any?) {
-		this.log(TAG, LogLevel.Debug, provider())
+	fun debug(
+		store: Boolean = false,
+		provider: () -> Any?
+	) {
+		this.log(TAG, LogLevel.Debug, store, provider())
 	}
 	
-	fun info(vararg args: Any?) {
-		this.log(TAG, LogLevel.Info, *args)
+	fun info(
+		vararg messages: Any?,
+		store: Boolean = false,
+	) {
+		this.log(TAG, LogLevel.Info, store, *messages)
 	}
 	
-	fun info(provider: () -> Any?) {
-		this.log(TAG, LogLevel.Info, provider())
+	fun info(
+		store: Boolean = false,
+		provider: () -> Any?
+	) {
+		this.log(TAG, LogLevel.Info, store, provider())
 	}
 	
-	fun warn(vararg args: Any?) {
-		this.log(TAG, LogLevel.Warn, *args)
+	fun warn(
+		vararg messages: Any?,
+		store: Boolean = false,
+	) {
+		this.log(TAG, LogLevel.Warn, store, *messages)
 	}
 	
-	fun warn(provider: () -> Any?) {
-		this.log(TAG, LogLevel.Warn, provider())
+	fun warn(
+		store: Boolean = false,
+		provider: () -> Any?
+	) {
+		this.log(TAG, LogLevel.Warn, store, provider())
 	}
 	
-	fun error(vararg args: Any?) {
-		this.log(TAG, LogLevel.Error, *args)
+	fun error(
+		vararg messages: Any?,
+		store: Boolean = false,
+	) {
+		this.log(TAG, LogLevel.Error, store, *messages)
 	}
 	
-	fun error(provider: () -> Any?) {
-		this.log(TAG, LogLevel.Error, provider())
+	fun error(
+		store: Boolean = false,
+		provider: () -> Any?
+	) {
+		this.log(TAG, LogLevel.Error, store, provider())
 	}
 	
-	fun assert(vararg args: Any?) {
-		this.log(TAG, LogLevel.Assert, *args)
+	fun assert(
+		vararg messages: Any?,
+		store: Boolean = false,
+	) {
+		this.log(TAG, LogLevel.Assert, store, *messages)
 	}
 	
-	fun assert(provider: () -> Any?) {
-		this.log(TAG, LogLevel.Assert, provider())
+	fun assert(
+		store: Boolean = false,
+		provider: () -> Any?
+	) {
+		this.log(TAG, LogLevel.Assert, store, provider())
+	}
+	
+	@OptIn(ExperimentalTime::class)
+	private fun log(tag: String, level: LogLevel, store: Boolean, vararg messages: Any?) {
+		val message = messages.joinToString()
+		this.log(tag, level, message)
+		if (store) {
+			CoroutineScope(Dispatchers.IO).launch {
+				val entity = LogEntity(
+					name = tag,
+					level = level.toString(),
+					content = message,
+					timestamp = Clock.System.now().toEpochMilliseconds()
+				)
+				CommonDatabase.INSTANCE.configLog().insert(entity)
+			}
+		}
 	}
 }
 
-internal expect fun NoLog.log(tag: String, level: LogLevel, vararg args: Any?)
+internal expect fun NoLog.log(tag: String, level: LogLevel, message: String)
 
 internal enum class LogLevel {
 	Verbose,

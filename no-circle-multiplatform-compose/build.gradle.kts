@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -78,9 +77,6 @@ kotlin {
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_2
 		freeCompilerArgs.addAll("-Xcontext-parameters", "-Xexpect-actual-classes")
-	}
-	composeCompiler {
-		featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 	}
 }
 

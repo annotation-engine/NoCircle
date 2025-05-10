@@ -2,6 +2,7 @@ package com.nocircle.app.pages.account.register
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
@@ -72,7 +73,8 @@ fun RegisterPage() {
 				trailingIcon = {
 					NoIconButton(
 						icon = if (showPassword.value) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,
-						tint = MaterialTheme.colorScheme.primary
+						tint = MaterialTheme.colorScheme.primary,
+						shape = CircleShape
 					) {
 						viewModel.showPassword.not()
 					}
@@ -91,7 +93,8 @@ fun RegisterPage() {
 				trailingIcon = {
 					NoIconButton(
 						icon = if (showConfirmPassword.value) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,
-						tint = MaterialTheme.colorScheme.primary
+						tint = MaterialTheme.colorScheme.primary,
+						shape = CircleShape
 					) {
 						viewModel.showConfirmPassword.not()
 					}

@@ -14,8 +14,8 @@ import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.settings
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.expends.WindowWidthSizes
 import com.nocircle.common.expends.value
+import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import org.koin.compose.viewmodel.koinViewModel

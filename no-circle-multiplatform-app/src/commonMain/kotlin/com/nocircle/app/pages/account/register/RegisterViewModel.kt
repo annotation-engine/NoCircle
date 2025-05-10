@@ -3,7 +3,7 @@ package com.nocircle.app.pages.account.register
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.http.ktorClient
 import com.nocircle.common.expends.isAlphanumeric
-import com.nocircle.common.expends.safePost
+import com.nocircle.common.ktor.safePost
 import com.nocircle.compose.viewmodel.NoViewModel
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
@@ -75,7 +75,7 @@ class RegisterViewModel : NoViewModel() {
 			showNoErrorSnackbar(Res.string.global_network_connect_error)
 			return false
 		}
-		if (result.failure) {
+		if (!result.success) {
 			showNoErrorSnackbar(result.msg)
 		}
 		return result.success

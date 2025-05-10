@@ -75,9 +75,6 @@ kotlin {
 		languageVersion = KotlinVersion.KOTLIN_2_2
 		freeCompilerArgs.addAll("-Xcontext-parameters", "-Xexpect-actual-classes")
 	}
-	composeCompiler {
-		featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-	}
 }
 
 android {

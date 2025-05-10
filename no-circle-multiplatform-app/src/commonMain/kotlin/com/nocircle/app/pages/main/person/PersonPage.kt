@@ -30,7 +30,7 @@ import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.settings.SettingsPage
-import com.nocircle.common.expends.WindowWidthSizes
+import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.expends.value
 import com.nocircle.common.navigation.NoNavHost

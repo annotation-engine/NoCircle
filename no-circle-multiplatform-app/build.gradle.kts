@@ -90,9 +90,6 @@ kotlin {
 		languageVersion = KotlinVersion.KOTLIN_2_2
 		freeCompilerArgs.addAll("-Xcontext-parameters", "-Xexpect-actual-classes")
 	}
-	composeCompiler {
-		featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-	}
 }
 
 android {
@@ -146,8 +143,15 @@ compose.desktop {
 		
 		nativeDistributions {
 			targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-			packageName = "com.nocircle.app"
+			packageName = "NoCircle"
 			packageVersion = noCircleVersionName
+			description = "No Circle App"
+			copyright = "© 2025 Li-Jia-Wei. All rights reserved."
+			vendor = "NoCircle"
+		}
+		buildTypes.release.proguard {
+			configurationFiles.from(project.file("proguard-rules.pro"))
+			obfuscate = true
 		}
 	}
 }

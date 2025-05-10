@@ -9,7 +9,7 @@ import com.nocircle.app.pages.account.register.RegisterPage
 import com.nocircle.app.pages.guide.GuidePage
 import com.nocircle.app.pages.main.MainPage
 import com.nocircle.app.pages.settings.SettingsPage
-import com.nocircle.common.expends.WindowWidthSizes
+import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.navigation.NoNavHost
 import com.nocircle.common.navigation.NoNavHostController
 import com.nocircle.common.navigation.NoRoute
