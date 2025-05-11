@@ -5,11 +5,6 @@
 -keep class com.nocircle.app.MainKt {
     public static void main(java.lang.String[]);
 }
-
-# ================================================================================
-# 程序配置
-# ================================================================================
-
 -keep class * implements com.nocircle.common.navigation.NoRoute { *; }
 -keep class com.nocircle.common.room.** { *; }
 -keep class com.nocircle.common.navigation.** { *; }

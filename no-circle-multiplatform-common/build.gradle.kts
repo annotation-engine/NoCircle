@@ -1,5 +1,4 @@
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -14,9 +13,9 @@ plugins {
 	alias(libs.plugins.hot.reload)
 }
 
-val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").map {
-	it.trim().also {
-		check(it in arrayOf("x64", "arm64", "simulatorArm64")) {
+val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").map { targets ->
+	targets.trim().also { target ->
+		check(target in arrayOf("x64", "arm64", "simulatorArm64")) {
 			"iosTargets 只允许是：x64, arm64, simulatorArm64 的，多个用 ‘,’ 分割"
 		}
 	}
