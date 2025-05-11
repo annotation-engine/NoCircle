@@ -85,7 +85,9 @@ multiplatform-app = [
 	'ktor-client-content-negotiation',
 	'ktor-serialization-kotlinx-json',
 	'room-runtime',
-	'room-paging'
+	'room-paging',
+	'coil-compose',
+	'coil-network-ktor3'
 ]
 
 multiplatform-compose = [

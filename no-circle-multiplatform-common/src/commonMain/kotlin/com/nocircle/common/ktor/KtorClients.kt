@@ -75,7 +75,7 @@ suspend fun <R : Any> HttpClient.safeRequest(
 	throw e
 } catch (e: Exception) {
 	NoLog.error(e.stackTraceToString(), store = true)
-	null
+	throw e
 }
 
 @Serializable

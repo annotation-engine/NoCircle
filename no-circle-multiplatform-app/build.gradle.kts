@@ -1,6 +1,5 @@
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -146,12 +145,13 @@ compose.desktop {
 			packageName = "NoCircle"
 			packageVersion = noCircleVersionName
 			description = "No Circle App"
-			copyright = "© 2025 Li-Jia-Wei. All rights reserved."
+			copyright = "© 2025 NoCirlc. All rights reserved."
 			vendor = "NoCircle"
 		}
 		buildTypes.release.proguard {
 			configurationFiles.from(project.file("proguard-rules.pro"))
 			obfuscate = true
+			optimize = true
 		}
 	}
 }

@@ -13,6 +13,8 @@ import coil3.SingletonImageLoader
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter.State
 import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 
 @Composable
 fun NoAsyncImage(
@@ -27,13 +29,16 @@ fun NoAsyncImage(
 	onError: ((State.Error) -> Unit)? = null,
 	alignment: Alignment = Alignment.Center,
 	contentScale: ContentScale = ContentScale.Fit,
-	alpha: Float = DefaultAlpha,
+	alpha: Float = NoAsyncImageDefaults.DEFAULT_ALPHA,
 	colorFilter: ColorFilter? = null,
 	filterQuality: FilterQuality = DefaultFilterQuality,
 	clipToBounds: Boolean = true,
 ) {
 	AsyncImage(
-		model = url,
+		model = ImageRequest.Builder(LocalPlatformContext.current)
+			.data(url)
+			.crossfade(true)
+			.build(),
 		contentDescription = contentDescription,
 		imageLoader = SingletonImageLoader.get(LocalPlatformContext.current),
 		modifier = modifier,
@@ -50,4 +55,9 @@ fun NoAsyncImage(
 		filterQuality = filterQuality,
 		clipToBounds = clipToBounds,
 	)
+}
+
+object NoAsyncImageDefaults {
+	
+	const val DEFAULT_ALPHA: Float = 1.0f
 }

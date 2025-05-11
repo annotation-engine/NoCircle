@@ -1,6 +1,8 @@
 package com.nocircle.app.pages.main.person
 
 import androidx.lifecycle.viewModelScope
+import com.nocircle.app.generated.resources.Res
+import com.nocircle.app.generated.resources.global_network_connect_error
 import com.nocircle.app.http.ktorClient
 import com.nocircle.common.ktor.safeGet
 import com.nocircle.compose.viewmodel.NoViewModel
@@ -40,7 +42,10 @@ class PersonViewModel : NoViewModel() {
 	)
 	
 	private suspend fun loadUserInformation() {
-		val result = ktorClient.safeGet<UserInformation>("user/information") ?: return
+		val result = ktorClient.safeGet<UserInformation>("user/information") ?: let {
+			showNoSnackbar(Res.string.global_network_connect_error)
+			return
+		}
 		if (result.success) {
 			_userInformation.value = result.data!!
 		}
