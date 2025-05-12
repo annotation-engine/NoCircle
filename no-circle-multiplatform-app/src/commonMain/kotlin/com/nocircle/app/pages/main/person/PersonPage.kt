@@ -347,18 +347,18 @@ private fun OptionList() {
 	) {
 		NoIcon(
 			icon = Icons.Rounded.Settings,
-			tint = MaterialTheme.colorScheme.onTertiaryContainer
+			tint = MaterialTheme.colorScheme.onSurface
 		)
 		Spacer(modifier = Modifier.width(8.dp))
 		Text(
 			text = Res.string.settings.value,
-			color = MaterialTheme.colorScheme.onTertiaryContainer,
+			color = MaterialTheme.colorScheme.onSurface,
 			style = MaterialTheme.typography.titleMedium,
 		)
 		Spacer(modifier = Modifier.weight(1f))
 		NoIcon(
 			icon = Icons.AutoMirrored.Rounded.ArrowForwardIos,
-			tint = MaterialTheme.colorScheme.onTertiaryContainer
+			tint = MaterialTheme.colorScheme.onSurface
 		)
 	}
 }

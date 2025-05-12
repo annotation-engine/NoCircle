@@ -3,7 +3,7 @@ package com.nocircle.app.theme.colors
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
 
-object DefaultColorSchemeGroup : ColorSchemeGroup {
+data object ColorSchemeGroup1 : ColorSchemeGroup {
 	
 	override val lightStandardContrast by lazy {
 		darkColorScheme(

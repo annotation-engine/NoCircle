@@ -12,9 +12,7 @@ class NoCircleActivity : ComponentActivity() {
 		super.onCreate(savedInstanceState)
 		Globals.setActivity(this)
 		setContent {
-			NoMaterialTheme {
-				NoApp()
-			}
+			NoApp()
 		}
 	}
 	

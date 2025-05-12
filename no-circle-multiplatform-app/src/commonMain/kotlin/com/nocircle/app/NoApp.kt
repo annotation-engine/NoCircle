@@ -7,6 +7,7 @@ import com.nocircle.app.pages.guide.GuideViewModel
 import com.nocircle.app.pages.main.MainViewModel
 import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
+import com.nocircle.app.theme.NoMaterialTheme
 import org.koin.compose.KoinApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -16,17 +17,22 @@ private val NoKoinModule = module {
 	viewModel { LoginViewModel() }
 	viewModel { RegisterViewModel() }
 	viewModel { MainViewModel() }
-	viewModel { SettingsViewModel() }
 	viewModel { PersonViewModel() }
+	single { SettingsViewModel() }
 }
 
 @Composable
-fun NoApp() {
+fun NoApp(
+	effectContent: @Composable (() -> Unit)? = null
+) {
 	KoinApplication(
 		application = {
 			modules(NoKoinModule)
 		}
 	) {
-		NoAppNavHost()
+		NoMaterialTheme {
+			NoAppNavHost()
+			effectContent?.invoke()
+		}
 	}
 }

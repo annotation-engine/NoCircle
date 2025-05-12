@@ -2,7 +2,7 @@ package com.nocircle.app.theme.colors
 
 import androidx.compose.material3.ColorScheme
 
-interface ColorSchemeGroup {
+sealed interface ColorSchemeGroup {
 	
 	val lightStandardContrast: ColorScheme
 	

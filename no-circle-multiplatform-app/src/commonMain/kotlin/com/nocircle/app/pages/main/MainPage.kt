@@ -161,13 +161,13 @@ private fun BottomBar(
 						icon = it.icon,
 						tint = color,
 						modifier = Modifier
-							.size(24.dp)
+							.size(22.dp)
 					)
 					Spacer(modifier = Modifier.width(8.dp))
 					Text(
 						text = it.title.value,
 						color = color,
-						style = MaterialTheme.typography.bodyMedium,
+						style = MaterialTheme.typography.bodySmall,
 					)
 				}
 				if (index < mainRoutes.size - 1) {
@@ -218,13 +218,13 @@ private fun LeftBar(
 				horizontal = 8.dp,
 				vertical = 32.dp
 			)
-			.width(56.dp),
+			.width(52.dp),
 		horizontalAlignment = Alignment.CenterHorizontally,
 	) {
 		val navController = NoNavControllerManagers.auto(mainRoute)
 		NoIconButton(
 			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
-			tint = MaterialTheme.colorScheme.onSurface
+			tint = MaterialTheme.colorScheme.primary
 		) {
 			navController?.popBackStack()
 		}
@@ -280,13 +280,13 @@ private fun LeftBar(
 							icon = it.icon,
 							tint = color,
 							modifier = Modifier
-								.size(24.dp)
+								.size(22.dp)
 						)
 						Spacer(modifier = Modifier.height(2.dp))
 						Text(
 							text = it.title.value,
 							color = color,
-							style = MaterialTheme.typography.bodyMedium,
+							style = MaterialTheme.typography.bodySmall,
 						)
 					}
 					if (index < mainRoutes.size - 1) {

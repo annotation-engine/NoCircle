@@ -59,31 +59,31 @@ class NoNavHostController internal constructor(
 		data: Map<String, Any?>? = null,
 		finish: Boolean = false
 	) {
-		original.currentBackStackEntry?.savedStateHandle?.let {
-			data?.forEach { (key, value) ->
-				it[key] = value
-			}
-			it[LAST_ROUTE_KEY] = original.currentDestination?.route
+		val entry = original.currentBackStackEntry ?: return
+		val handle = entry.savedStateHandle
+		data?.forEach { (key, value) ->
+			handle[key] = value
 		}
+		handle[LAST_ROUTE_KEY] = original.currentDestination?.route
 		original.navigate(route) {
 			launchSingleTop = true
 			if (finish) {
-				val currentRoute = original.currentBackStackEntry
-					?.destination?.route ?: return@navigate
-				popUpTo(currentRoute) {
-					inclusive = true
+				entry.destination.route?.let { currentRoute ->
+					popUpTo(currentRoute) {
+						inclusive = true
+					}
 				}
 			}
 		}
 	}
 	
 	fun popBackStack(vararg data: Pair<String, Any>) {
-		original.previousBackStackEntry?.savedStateHandle?.let {
-			data.forEach { (key, value) ->
-				it[key] = value
-			}
-			it[LAST_ROUTE_KEY] = original.currentDestination?.route
+		val entry = original.previousBackStackEntry ?: return
+		val handle = entry.savedStateHandle
+		data.forEach { (key, value) ->
+			handle[key] = value
 		}
+		handle[BACK_ROUTE_KEY] = original.currentDestination?.route
 		original.popBackStack()
 	}
 	

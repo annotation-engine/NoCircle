@@ -48,12 +48,12 @@ private val DefaultEnterTransition = slideInHorizontally(
 )
 
 private val DefaultExitTransition = slideOutHorizontally(
-	targetOffsetX = { -it },
+	targetOffsetX = { -it / 5 },
 	animationSpec = tween(300)
 )
 
 private val DefaultPopEnterTransition = slideInHorizontally(
-	initialOffsetX = { -it },
+	initialOffsetX = { -it / 5 },
 	animationSpec = tween(300)
 )
 

@@ -2,43 +2,35 @@ package com.nocircle.app.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
-import com.nocircle.app.generated.resources.MiSans_VF
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.theme.colors.ColorSchemeContrast
-import com.nocircle.app.theme.colors.ColorSchemeGroup
-import com.nocircle.app.theme.colors.DefaultColorSchemeGroup
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.theme.colors.getColorScheme
 import com.nocircle.app.theme.typographies.getNoTypography
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NoMaterialTheme(
 	content: @Composable () -> Unit,
 ) {
+	val settingsViewModel = koinViewModel<SettingsViewModel>()
 	val darkTheme = isSystemInDarkTheme()
 	LaunchedEffect(Unit) {
-		NoThemes.darkTheme = darkTheme
+		settingsViewModel.darkTheme.value = darkTheme
 	}
-	
-	val colorScheme = NoThemes.colorSchemeGroup.getColorScheme(
-		contrast = NoThemes.colorSchemeContrast,
+	val colorSchemeContrast by settingsViewModel.colorSchemeContrast.collectAsState()
+	val colorSchemeGroup by settingsViewModel.colorSchemeGroup.collectAsState()
+	val colorScheme = colorSchemeGroup.getColorScheme(
+		contrast = colorSchemeContrast,
 		isDark = darkTheme
 	)
-	val typography = getNoTypography(fontResource = NoThemes.fontResource)
+	val fontResource by settingsViewModel.fontResource.collectAsState()
+	val typography = getNoTypography(fontResource = fontResource)
 	MaterialTheme(
 		colorScheme = colorScheme,
 		typography = typography,
 		content = content
 	)
-}
-
-object NoThemes {
-	
-	val colorSchemeGroup by mutableStateOf<ColorSchemeGroup>(DefaultColorSchemeGroup)
-	
-	val colorSchemeContrast by mutableStateOf(ColorSchemeContrast.Standard)
-	
-	var darkTheme by mutableStateOf(false)
-	
-	var fontResource by mutableStateOf(Res.font.MiSans_VF)
 }
