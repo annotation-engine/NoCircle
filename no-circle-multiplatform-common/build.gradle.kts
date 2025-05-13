@@ -21,6 +21,8 @@ val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").
 	}
 }
 kotlin {
+	jvmToolchain(21)
+	
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
@@ -86,11 +88,6 @@ android {
 	packaging {
 		resources {
 			excludes += "/META-INF/{AL2.0,LGPL2.1}"
-		}
-	}
-	buildTypes {
-		getByName("release") {
-			isMinifyEnabled = false
 		}
 	}
 	compileOptions {

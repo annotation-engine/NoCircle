@@ -7,6 +7,8 @@ plugins {
 }
 
 kotlin {
+	jvmToolchain(21)
+	
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_2
 		jvmTarget = JvmTarget.JVM_21

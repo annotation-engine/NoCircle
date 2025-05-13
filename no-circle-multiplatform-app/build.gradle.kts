@@ -25,6 +25,8 @@ val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").
 }
 
 kotlin {
+	jvmToolchain(21)
+	
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
@@ -108,8 +110,10 @@ android {
 		}
 	}
 	buildTypes {
-		getByName("release") {
-			isMinifyEnabled = false
+		release {
+			isMinifyEnabled = true
+			isShrinkResources = true
+			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 		}
 	}
 	compileOptions {

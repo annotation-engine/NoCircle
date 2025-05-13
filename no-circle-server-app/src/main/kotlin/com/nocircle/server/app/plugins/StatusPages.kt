@@ -9,7 +9,7 @@ import io.ktor.server.response.*
 fun Application.configureStatusPages() {
 	install(StatusPages) {
 		val status = HttpStatusCode.allStatusCodes.filterNot {
-			it in HttpStatusCode.OK .. HttpStatusCode.MultiStatus
+			it == HttpStatusCode.OK
 		}.toTypedArray()
 		status(*status) {
 			call.respond(HttpStatusCode.OK, ApiResult.httpStatus(it))

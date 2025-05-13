@@ -7,30 +7,29 @@ import io.ktor.server.request.*
 import io.ktor.util.*
 import kotlin.time.Duration.Companion.milliseconds
 
-private val RequestTimeKey = AttributeKey<Long>("RequestTime")
+private val DurationTimeKey = AttributeKey<Long>("DurationTimeKey")
 
 val NoLogging = createApplicationPlugin(
 	name = "NoLogging",
 	createConfiguration = ::NoLoggingConfig
 ) {
 	onCall { call ->
-		call.attributes.put(RequestTimeKey, System.currentTimeMillis())
+		call.attributes.put(DurationTimeKey, System.currentTimeMillis())
 	}
 	onCallRespond { call, value ->
-		val status = call.response.status()
-		val httpMethod = call.request.httpMethod
-		val uri = call.request.uri
-		val duration = System.currentTimeMillis() - call.attributes[RequestTimeKey]
-		call.attributes.remove(RequestTimeKey)
 		NoLog.buildInfo {
-			append(status)
+			append(call.response.status())
 			append(": ")
-			append(httpMethod)
+			append(call.request.httpMethod)
 			append(" - ")
-			append(uri)
-			append(" in ${duration.milliseconds} - ")
+			append(call.request.uri)
+			call.attributes.getOrNull(DurationTimeKey)?.let {
+				val duration = System.currentTimeMillis() - it
+				call.attributes.remove(DurationTimeKey)
+				append(" in ${duration.milliseconds}")
+			}
 			if (this@onCallRespond.pluginConfig.responseBody) {
-				append("Response: ")
+				append(" - Response: ")
 				val message = when (value) {
 					is TextContent -> "[Text]\n${value.text}"
 					is OutgoingContent.ByteArrayContent -> "[ByteArray]\n${value.bytes().toString(Charsets.UTF_8)}"
