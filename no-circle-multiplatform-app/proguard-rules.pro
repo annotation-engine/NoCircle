@@ -6,6 +6,7 @@
     public static void main(java.lang.String[]);
 }
 -keep class * implements com.nocircle.common.navigation.NoRoute { *; }
+-keep class * implements com.nocircle.common.config.ConfigKey { *; }
 -keep class com.nocircle.common.room.** { *; }
 -keep class com.nocircle.common.navigation.** { *; }
 

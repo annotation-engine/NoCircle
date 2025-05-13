@@ -1,6 +1,7 @@
 package com.nocircle.common.ktor
 
-import com.nocircle.common.config.getConfigOrNull
+import com.nocircle.common.config.TokenConfigKey
+import com.nocircle.common.config.get
 import com.nocircle.common.log.NoLog
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -63,7 +64,7 @@ suspend fun <R : Any> HttpClient.safeRequest(
 	builder.url(urlString)
 	builder.method = method
 	if (auth) {
-		getConfigOrNull<String>("token")?.let {
+		TokenConfigKey.get()?.let {
 			builder.bearerAuth(it)
 		}
 	}

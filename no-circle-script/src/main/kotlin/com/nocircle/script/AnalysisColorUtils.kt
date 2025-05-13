@@ -1,8 +1,8 @@
-package com.nocircle.app
+package com.nocircle.script
 
 import java.io.File
 
-fun generateColorSchemeGroupCodes(path: String, name: String) {
+fun generateColorSchemeGroupCodes(path: String, name: String): String {
 	val codes = File(path).readLines()
 	val colorSchemes = mutableMapOf<String, MutableMap<String, String>>()
 	codes.filter { it.startsWith("val") }.forEach {
@@ -22,10 +22,14 @@ fun generateColorSchemeGroupCodes(path: String, name: String) {
 		val map = colorSchemes.getOrPut(key.second) { mutableMapOf() }
 		map[name.removeSuffix(key.first)] = code
 	}
-	val code = buildString {
+	return buildString {
 		append("import androidx.compose.material3.darkColorScheme\n")
-		append("import androidx.compose.ui.graphics.Color\n\n")
-		append("data object $name : ColorSchemeGroup {\n\n")
+		append("import androidx.compose.ui.graphics.Color\n")
+		val themeName = camelToSnakeCaseFull(name)
+		append("import com.nocircle.app.generated.resources.Res\n")
+		append("import com.nocircle.app.generated.resources.settings_theme_$themeName\n\n")
+		append("object ${name}ColorSchemeGroup : ColorSchemeGroup {\n\n")
+		append("\toverride val name = Res.string.settings_theme_$themeName\n\n")
 		colorSchemes.forEach { (key, value) ->
 			append("\toverride val $key by lazy {\n")
 			if (key.contains("Light")) {
@@ -41,5 +45,10 @@ fun generateColorSchemeGroupCodes(path: String, name: String) {
 		this.delete(this.length - 1, this.length)
 		append("}")
 	}
-	println(code)
+}
+
+private fun camelToSnakeCaseFull(input: String): String {
+	return input.replace(Regex("([a-z0-9])([A-Z])"), "$1_$2")
+		.replace(Regex("([A-Z])([A-Z][a-z])"), "$1_$2")
+		.lowercase()
 }

@@ -1,8 +1,14 @@
 package com.nocircle.app.theme.colors
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
+import androidx.compose.runtime.Composable
+import com.nocircle.app.generated.resources.*
+import org.jetbrains.compose.resources.StringResource
 
 sealed interface ColorSchemeGroup {
+	
+	val name: StringResource
 	
 	val lightStandardContrast: ColorScheme
 	
@@ -15,6 +21,26 @@ sealed interface ColorSchemeGroup {
 	val lightHighContrast: ColorScheme
 	
 	val darkHighContrast: ColorScheme
+	
+	companion object {
+		
+		val All by lazy {
+			listOf(
+				RedColorSchemeGroup,
+				PurpleColorSchemeGroup,
+				ModenaColorSchemeGroup,
+				BlueColorSchemeGroup,
+				LightBlueColorSchemeGroup,
+				CyanColorSchemeGroup,
+				TurquoiseColorSchemeGroup,
+				GreenColorSchemeGroup,
+				LightGreenColorSchemeGroup,
+				StoneGrayColorSchemeGroup,
+				YellowColorSchemeGroup,
+				AmberColorSchemeGroup,
+			)
+		}
+	}
 }
 
 fun ColorSchemeGroup.getColorScheme(
@@ -26,11 +52,26 @@ fun ColorSchemeGroup.getColorScheme(
 	ColorSchemeContrast.High -> if (isDark) darkHighContrast else lightHighContrast
 }
 
-enum class ColorSchemeContrast {
+enum class ColorSchemeContrast(
+	val title: StringResource,
+) {
+	Standard(Res.string.settings_contrast_standard),
+	Medium(Res.string.settings_contrast_medium),
+	High(Res.string.settings_contrast_high),
+}
+
+enum class ThemeMode(
+	val title: StringResource
+) {
+	Dark(Res.string.settings_theme_mode_dark),
+	Light(Res.string.settings_theme_mode_light),
+	System(Res.string.settings_theme_mode_system);
 	
-	Standard,
-	
-	Medium,
-	
-	High
+	val isDark: Boolean
+		@Composable
+		get() = when (this) {
+			Dark -> false
+			Light -> true
+			System -> isSystemInDarkTheme()
+		}
 }

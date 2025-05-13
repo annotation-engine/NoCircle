@@ -1,9 +1,8 @@
 package com.nocircle.app.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.nocircle.app.pages.settings.SettingsViewModel
@@ -15,22 +14,22 @@ import org.koin.compose.viewmodel.koinViewModel
 fun NoMaterialTheme(
 	content: @Composable () -> Unit,
 ) {
-	val settingsViewModel = koinViewModel<SettingsViewModel>()
-	val darkTheme = isSystemInDarkTheme()
-	LaunchedEffect(Unit) {
-		settingsViewModel.darkTheme.value = darkTheme
-	}
-	val colorSchemeContrast by settingsViewModel.colorSchemeContrast.collectAsState()
-	val colorSchemeGroup by settingsViewModel.colorSchemeGroup.collectAsState()
-	val colorScheme = colorSchemeGroup.getColorScheme(
-		contrast = colorSchemeContrast,
-		isDark = darkTheme
-	)
-	val fontResource by settingsViewModel.fontResource.collectAsState()
-	val typography = getNoTypography(fontResource = fontResource)
 	MaterialTheme(
-		colorScheme = colorScheme,
-		typography = typography,
+		colorScheme = getColorScheme(),
+		typography = getNoTypography(),
 		content = content
+	)
+}
+
+@Composable
+fun getColorScheme(): ColorScheme {
+	val viewModel = koinViewModel<SettingsViewModel>()
+	val colorSchemeContrast by viewModel.colorSchemeContrast.collectAsState()
+	val themeMode by viewModel.themeMode.collectAsState()
+	val colorSchemeGroup by viewModel.colorSchemeGroup.collectAsState()
+	val isDark = themeMode.isDark
+	return colorSchemeGroup.getColorScheme(
+		contrast = colorSchemeContrast,
+		isDark = isDark
 	)
 }

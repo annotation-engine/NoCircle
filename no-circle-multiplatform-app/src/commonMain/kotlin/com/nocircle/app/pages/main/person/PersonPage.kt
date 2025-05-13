@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
@@ -30,10 +31,10 @@ import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.settings.SettingsPage
-import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.expends.value
 import com.nocircle.common.navigation.NoNavHost
+import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
@@ -255,7 +256,7 @@ private fun UserInformationCard() {
 			Text(
 				text = "${userInformation?.friendCount ?: 0}",
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.titleLarge
+				style = MaterialTheme.typography.titleMedium
 			)
 		}
 		Spacer(modifier = Modifier.width(16.dp))
@@ -282,7 +283,7 @@ private fun UserInformationCard() {
 			Text(
 				text = Res.string.person_group_count.value,
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.bodyMedium,
+				style = MaterialTheme.typography.titleMedium,
 			)
 			Spacer(modifier = Modifier.weight(1f))
 			Text(
@@ -315,7 +316,7 @@ private fun UserInformationCard() {
 			Text(
 				text = Res.string.person_message_count.value,
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.bodyMedium,
+				style = MaterialTheme.typography.titleMedium,
 			)
 			Spacer(modifier = Modifier.weight(1f))
 			Text(
@@ -330,28 +331,41 @@ private fun UserInformationCard() {
 @Composable
 private fun OptionList() {
 	val navController = NoNavControllerManagers.auto(NoRoutes.Main.Person)!!
+	
+	Option(
+		title = Res.string.settings.value,
+		icon = Icons.Rounded.Settings,
+	) {
+		navController.navigate(NoRoutes.Settings)
+	}
+}
+
+@Composable
+private fun Option(
+	title: String,
+	icon: ImageVector,
+	onClick: () -> Unit,
+) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
-			.height(56.dp)
+			.height(60.dp)
 			.clip(MaterialTheme.shapes.small)
 			.background(
 				color = MaterialTheme.colorScheme.surfaceContainer,
 				shape = MaterialTheme.shapes.small
 			)
-			.clickable {
-				navController.navigate(NoRoutes.Settings)
-			}
+			.clickable(onClick = onClick)
 			.padding(horizontal = 16.dp),
 		verticalAlignment = Alignment.CenterVertically,
 	) {
 		NoIcon(
-			icon = Icons.Rounded.Settings,
+			icon = icon,
 			tint = MaterialTheme.colorScheme.onSurface
 		)
 		Spacer(modifier = Modifier.width(8.dp))
 		Text(
-			text = Res.string.settings.value,
+			text = title,
 			color = MaterialTheme.colorScheme.onSurface,
 			style = MaterialTheme.typography.titleMedium,
 		)

@@ -1,32 +1,45 @@
 package com.nocircle.app.pages.settings
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
+import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.material.icons.rounded.Contrast
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
+import com.nocircle.app.constants.ColorSchemeContrastConfigKey
+import com.nocircle.app.constants.ColorSchemeGroupConfigKey
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.theme.colors.ColorSchemeContrast
+import com.nocircle.app.theme.colors.ColorSchemeGroup
 import com.nocircle.app.theme.colors.getColorScheme
+import com.nocircle.common.config.set
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.expends.value
+import com.nocircle.common.windowsize.WindowWidthSize
 import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.common.windowsize.calculateWindowWidthSize
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,15 +70,19 @@ fun SettingsPage() {
 			)
 		}
 	) { paddingValues ->
+		val verticalScrollState = rememberScrollState()
+		val overscrollEffect = rememberOverscrollEffect()
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
+				.verticalScroll(verticalScrollState)
+				.overscroll(overscrollEffect)
 				.padding(paddingValues),
 			contentAlignment = Alignment.TopCenter
 		) {
 			Column(
 				modifier = Modifier
-					.widthIn(max = 700.dp)
+					.widthIn(max = 900.dp)
 					.fillMaxSize()
 					.padding(
 						horizontal = 16.dp,
@@ -76,9 +93,14 @@ fun SettingsPage() {
 					icon = Icons.Rounded.Contrast,
 					title = Res.string.settings_contrast.value
 				) {
-					ColorSchemeContrast()
+					ColorSchemeContrastOptions()
 				}
-				Spacer(Modifier.height(16.dp))
+				SettingsCard(
+					icon = Icons.Rounded.ColorLens,
+					title = Res.string.settings_theme.value
+				) {
+					ColorSchemeGroupOptions()
+				}
 			}
 		}
 	}
@@ -107,130 +129,198 @@ private fun SettingsCard(
 	}
 	Spacer(Modifier.height(16.dp))
 	content()
+	Spacer(Modifier.height(32.dp))
 }
 
 @Composable
-private fun ColorSchemeContrast() {
+private fun ColorSchemeContrastOptions() {
 	val viewModel = koinViewModel<SettingsViewModel>()
+	val currentContrast by viewModel.colorSchemeContrast.collectAsState()
+	val currentGroup by viewModel.colorSchemeGroup.collectAsState()
+	val themeMode by viewModel.themeMode.collectAsState()
+	val isDark = themeMode.isDark
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
 	) {
-		val group by viewModel.colorSchemeGroup.collectAsState()
-		val contrast by viewModel.colorSchemeContrast.collectAsState()
-		val darkTheme by viewModel.darkTheme.collectAsState()
-		val currentColorScheme = group.getColorScheme(contrast, darkTheme)
-		val colorSchemes by remember(group, darkTheme) {
-			derivedStateOf {
-				if (darkTheme) {
-					arrayOf(group.darkStandardContrast, group.darkMediumContrast, group.darkHighContrast)
-				} else {
-					arrayOf(group.lightStandardContrast, group.lightMediumContrast, group.lightHighContrast)
-				}
+		val coroutineScope = rememberCoroutineScope()
+		ColorSchemeContrast.entries.forEachIndexed { index, contrast ->
+			val colorScheme by remember(contrast, isDark) {
+				derivedStateOf { currentGroup.getColorScheme(contrast, isDark) }
+			}
+			ColorSchemeCard(
+				selected = currentContrast == contrast,
+				onClick = {
+					viewModel.colorSchemeContrast.value = contrast
+					coroutineScope.launch(Dispatchers.IO) {
+						ColorSchemeContrastConfigKey.set(contrast.name)
+					}
+				},
+				colorScheme = colorScheme,
+				name = contrast.title.value,
+				preview = Res.string.settings_contrast_preview.value
+			)
+			if (index < ColorSchemeContrast.entries.lastIndex) {
+				Spacer(modifier = Modifier.width(16.dp))
 			}
 		}
-		val contrasts = remember {
-			arrayOf(
-				Res.string.settings_contrast_standard,
-				Res.string.settings_contrast_medium,
-				Res.string.settings_contrast_high,
-			)
-		}
-		colorSchemes.forEachIndexed { index, colorScheme ->
-			MaterialTheme(
-				colorScheme = colorScheme
-			) {
-				Column(
-					modifier = Modifier
-						.weight(1f)
-						.clip(MaterialTheme.shapes.medium)
-						.background(
-							color = MaterialTheme.colorScheme.primaryContainer,
-							shape = MaterialTheme.shapes.medium
-						)
-						.clickable(
-							interactionSource = remember { MutableInteractionSource() },
-							indication = null,
-						) {
-							viewModel.colorSchemeContrast.value = ColorSchemeContrast.entries[index]
+	}
+}
+
+@Composable
+private fun ColorSchemeGroupOptions() {
+	val viewModel = koinViewModel<SettingsViewModel>()
+	val themeMode by viewModel.themeMode.collectAsState()
+	val currentGroup by viewModel.colorSchemeGroup.collectAsState()
+	val currentContrast by viewModel.colorSchemeContrast.collectAsState()
+	val size = when (calculateWindowWidthSize()) {
+		WindowWidthSize.Compact -> 2
+		WindowWidthSize.Medium -> 3
+		else -> 4
+	}
+	val allGroups = remember(size) {
+		ColorSchemeGroup.All.chunked(size)
+	}
+	val isDark = themeMode.isDark
+	val coroutineScope = rememberCoroutineScope()
+	allGroups.forEachIndexed { index, groups ->
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+		) {
+			groups.forEachIndexed { index, group ->
+				val colorScheme by remember(currentContrast, isDark) {
+					derivedStateOf { group.getColorScheme(currentContrast, isDark) }
+				}
+				ColorSchemeCard(
+					selected = currentGroup == group,
+					onClick = {
+						viewModel.colorSchemeGroup.value = group
+						coroutineScope.launch(Dispatchers.IO) {
+							ColorSchemeGroupConfigKey.set(group.toString())
 						}
-						.padding(4.dp),
-					horizontalAlignment = Alignment.CenterHorizontally,
-				) {
-					Row(
+					},
+					colorScheme = colorScheme,
+					name = group.name.value,
+					preview = Res.string.settings_theme_preview.value
+				)
+				if (index < groups.lastIndex) {
+					Spacer(modifier = Modifier.width(16.dp))
+				}
+			}
+			repeat(size - groups.size) {
+				Spacer(modifier = Modifier.width(16.dp))
+				Spacer(modifier = Modifier.weight(1f))
+			}
+		}
+		if (index < allGroups.lastIndex) {
+			Spacer(modifier = Modifier.height(16.dp))
+		}
+	}
+}
+
+@Composable
+private fun RowScope.ColorSchemeCard(
+	selected: Boolean,
+	onClick: () -> Unit,
+	colorScheme: ColorScheme,
+	name: String,
+	preview: String,
+) {
+	MaterialTheme(colorScheme) {
+		var scaleTarget by remember { mutableStateOf(1f) }
+		val scale by animateFloatAsState(scaleTarget)
+		val interactionSource = remember { MutableInteractionSource() }
+		val isHovered by interactionSource.collectIsHoveredAsState()
+		val isPressed by interactionSource.collectIsPressedAsState()
+		LaunchedEffect(isHovered, isPressed) {
+			scaleTarget = when {
+				isPressed -> 0.98f
+				isHovered -> 1.02f
+				else -> 1f
+			}
+		}
+		Column(
+			modifier = Modifier
+				.scale(scale)
+				.weight(1f)
+				.clip(MaterialTheme.shapes.large)
+				.background(
+					color = MaterialTheme.colorScheme.primaryContainer,
+					shape = MaterialTheme.shapes.large
+				)
+				.hoverable(interactionSource)
+				.clickable(
+					interactionSource = interactionSource,
+					indication = LocalIndication.current,
+					onClick = onClick
+				)
+				.padding(4.dp)
+		) {
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.height(80.dp)
+					.clip(MaterialTheme.shapes.medium)
+			) {
+				val colors = arrayOf(
+					MaterialTheme.colorScheme.primary,
+					MaterialTheme.colorScheme.primaryContainer,
+					MaterialTheme.colorScheme.secondary,
+					MaterialTheme.colorScheme.secondaryContainer,
+					MaterialTheme.colorScheme.tertiary,
+					MaterialTheme.colorScheme.tertiaryContainer,
+					MaterialTheme.colorScheme.inverseSurface,
+					MaterialTheme.colorScheme.surface,
+					MaterialTheme.colorScheme.error,
+					MaterialTheme.colorScheme.errorContainer
+				)
+				repeat(5) { col ->
+					Column(
 						modifier = Modifier
-							.fillMaxWidth()
-							.height(80.dp)
-							.clip(MaterialTheme.shapes.small)
+							.weight(1f)
+							.fillMaxHeight()
 					) {
-						val colors by remember(colorScheme) {
-							derivedStateOf {
-								arrayOf(
-									colorScheme.primary,
-									colorScheme.primaryContainer,
-									colorScheme.secondary,
-									colorScheme.secondaryContainer,
-									colorScheme.tertiary,
-									colorScheme.tertiaryContainer,
-									colorScheme.inverseSurface,
-									colorScheme.surface,
-									colorScheme.error,
-									colorScheme.errorContainer
+						repeat(2) { row ->
+							val backgroundColor = colors[col * 2 + row]
+							Box(
+								modifier = Modifier
+									.fillMaxWidth()
+									.weight(1f)
+									.background(backgroundColor),
+								contentAlignment = Alignment.Center
+							) {
+								Text(
+									text = "${preview[col]}",
+									color = contentColorFor(backgroundColor),
+									style = MaterialTheme.typography.bodyMedium
 								)
 							}
 						}
-						repeat(5) { col ->
-							Column(
-								modifier = Modifier
-									.weight(1f)
-									.fillMaxHeight()
-							) {
-								repeat(2) { row ->
-									val backgroundColor = colors[col * 2 + row]
-									Box(
-										modifier = Modifier
-											.fillMaxWidth()
-											.weight(1f)
-											.background(backgroundColor),
-										contentAlignment = Alignment.Center
-									) {
-										Text(
-											text = "${row * 5 + col}",
-											color = contentColorFor(backgroundColor),
-											style = MaterialTheme.typography.bodyLarge
-										)
-									}
-								}
-							}
-						}
 					}
-					
-					Spacer(Modifier.height(4.dp))
-					
-					Row(
-						verticalAlignment = Alignment.CenterVertically,
-					) {
-						RadioButton(
-							selected = currentColorScheme == colorScheme,
-							onClick = {
-								viewModel.colorSchemeContrast.value = ColorSchemeContrast.entries[index]
-							},
-							colors = RadioButtonDefaults.colors(
-								selectedColor = MaterialTheme.colorScheme.onPrimaryContainer,
-								unselectedColor = MaterialTheme.colorScheme.onPrimaryContainer
-							)
-						)
-						Text(
-							text = contrasts[index].value,
-							color = MaterialTheme.colorScheme.onPrimaryContainer,
-							style = MaterialTheme.typography.bodyMedium
-						)
-					}
-					
 				}
 			}
-			if (index < colorSchemes.lastIndex) {
-				Spacer(Modifier.width(16.dp))
+			Spacer(Modifier.height(4.dp))
+			
+			Row(
+				modifier = Modifier
+					.padding(8.dp),
+				verticalAlignment = Alignment.CenterVertically,
+			) {
+				Text(
+					text = name,
+					color = MaterialTheme.colorScheme.onPrimaryContainer,
+					style = MaterialTheme.typography.bodyMedium
+				)
+				
+				if (selected) {
+					Spacer(Modifier.weight(1f))
+					Text(
+						text = Res.string.settings_in_use.value,
+						color = MaterialTheme.colorScheme.onPrimaryContainer,
+						style = MaterialTheme.typography.bodyMedium
+					)
+				}
 			}
 		}
 	}
