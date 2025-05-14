@@ -2,8 +2,8 @@ package com.nocircle.server.app.tables.user
 
 import com.nocircle.server.common.tables.BaseTable
 import com.nocircle.server.common.tables.IntEntityID
-import org.jetbrains.exposed.dao.IntEntity
-import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.v1.dao.IntEntity
+import org.jetbrains.exposed.v1.dao.IntEntityClass
 
 object Users : BaseTable("tb_user") {
 	

@@ -3,9 +3,9 @@ package com.nocircle.server.app.plugins
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.utils.NoLog
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.SchemaUtils
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.system.measureTimeMillis
 
 fun configureMysql() {

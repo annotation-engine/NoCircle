@@ -14,10 +14,10 @@ import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.experimental.newSuspendedTransaction
 
 /**
  * 用户注册服务

@@ -15,9 +15,9 @@ import com.nocircle.server.common.tables.isLogicExists
 import io.ktor.http.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 @ServiceSchedule(schedule = Schedule.Designing)
 object UserDetailService : NoService<UserDetailService.UserDetail> {

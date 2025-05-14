@@ -82,7 +82,7 @@ fun SettingsPage() {
 		) {
 			Column(
 				modifier = Modifier
-					.widthIn(max = 900.dp)
+					.widthIn(max = 800.dp)
 					.fillMaxSize()
 					.padding(
 						horizontal = 16.dp,
@@ -173,11 +173,7 @@ private fun ColorSchemeGroupOptions() {
 	val themeMode by viewModel.themeMode.collectAsState()
 	val currentGroup by viewModel.colorSchemeGroup.collectAsState()
 	val currentContrast by viewModel.colorSchemeContrast.collectAsState()
-	val size = when (calculateWindowWidthSize()) {
-		WindowWidthSize.Compact -> 2
-		WindowWidthSize.Medium -> 3
-		else -> 4
-	}
+	val size = if (WindowWidthSizes.isCompact) 2 else 3
 	val allGroups = remember(size) {
 		ColorSchemeGroup.All.chunked(size)
 	}

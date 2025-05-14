@@ -1,13 +1,13 @@
 package com.nocircle.server.common.tables
 
 import kotlinx.datetime.Clock
-import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.Op
-import org.jetbrains.exposed.sql.SqlExpressionBuilder
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
+import org.jetbrains.exposed.v1.core.Op
+import org.jetbrains.exposed.v1.core.SqlExpressionBuilder
+import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
+import org.jetbrains.exposed.v1.datetime.timestamp
 
 open class BaseTable(name: String, columnName: String = "id") : IntIdTable(name, columnName) {
 	

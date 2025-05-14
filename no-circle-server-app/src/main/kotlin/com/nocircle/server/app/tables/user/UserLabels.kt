@@ -1,9 +1,9 @@
 package com.nocircle.server.app.tables.user
 
 import com.nocircle.server.common.tables.BaseTable
-import org.jetbrains.exposed.dao.IntEntity
-import org.jetbrains.exposed.dao.IntEntityClass
-import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.dao.IntEntity
+import org.jetbrains.exposed.v1.dao.IntEntityClass
 
 object UserLabels : BaseTable("tb_user_labels") {
 	

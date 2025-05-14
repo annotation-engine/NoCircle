@@ -20,8 +20,9 @@ import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.transactions.experimental.newSuspendedTransaction
 import kotlin.time.toJavaDuration
 
 /**
