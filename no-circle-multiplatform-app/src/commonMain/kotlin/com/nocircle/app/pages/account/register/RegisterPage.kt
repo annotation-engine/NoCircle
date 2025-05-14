@@ -49,7 +49,7 @@ fun RegisterPage() {
 		) {
 			Spacer(modifier = Modifier.height(100.dp))
 			Text(
-				text = Res.string.register.value,
+				text = Res.string.register.value(),
 				style = MaterialTheme.typography.displayLarge
 			)
 			Spacer(modifier = Modifier.height(40.dp))
@@ -58,7 +58,7 @@ fun RegisterPage() {
 			NoInput(
 				value = username,
 				onValueChange = viewModel::updateUsername,
-				placeholder = Res.string.register_please_input_username.value,
+				placeholder = Res.string.register_please_input_username.value(),
 				leadingIcon = { NoIcon(Icons.Outlined.AccountBox) }
 			)
 			Spacer(modifier = Modifier.height(24.dp))
@@ -68,7 +68,7 @@ fun RegisterPage() {
 			NoInput(
 				value = password,
 				onValueChange = viewModel::updatePassword,
-				placeholder = Res.string.register_please_input_password.value,
+				placeholder = Res.string.register_please_input_password.value(),
 				leadingIcon = { NoIcon(Icons.Outlined.Lock) },
 				trailingIcon = {
 					NoIconButton(
@@ -88,7 +88,7 @@ fun RegisterPage() {
 			NoInput(
 				value = confirmPassword.value,
 				onValueChange = viewModel::updateConfirmPassword,
-				placeholder = Res.string.register_please_confirm_password.value,
+				placeholder = Res.string.register_please_confirm_password.value(),
 				leadingIcon = { NoIcon(Icons.Outlined.Lock) },
 				trailingIcon = {
 					NoIconButton(
@@ -105,7 +105,7 @@ fun RegisterPage() {
 			
 			val navController = NoNavControllerManagers.root
 			NoButton(
-				text = Res.string.register.value,
+				text = Res.string.register.value(),
 				modifier = Modifier.fillMaxWidth()
 			) {
 				val success = viewModel.register()
@@ -117,7 +117,7 @@ fun RegisterPage() {
 			}
 			Spacer(modifier = Modifier.height(24.dp))
 			NoButton(
-				text = Res.string.register_back_to_login.value,
+				text = Res.string.register_back_to_login.value(),
 				modifier = Modifier.fillMaxWidth(),
 				colors = NoButtons.SecondaryContainerColors
 			) {

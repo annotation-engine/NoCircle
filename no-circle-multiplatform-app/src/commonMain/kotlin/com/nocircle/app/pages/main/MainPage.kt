@@ -165,7 +165,7 @@ private fun BottomBar(
 					)
 					Spacer(modifier = Modifier.width(8.dp))
 					Text(
-						text = it.title.value,
+						text = it.title.value(),
 						color = color,
 						style = MaterialTheme.typography.bodySmall,
 					)
@@ -284,7 +284,7 @@ private fun LeftBar(
 						)
 						Spacer(modifier = Modifier.height(2.dp))
 						Text(
-							text = it.title.value,
+							text = it.title.value(),
 							color = color,
 							style = MaterialTheme.typography.bodySmall,
 						)

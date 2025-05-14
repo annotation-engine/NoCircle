@@ -66,7 +66,7 @@ fun LoginPage() {
 			) {
 				Spacer(modifier = Modifier.height(80.dp))
 				Text(
-					text = Res.string.login.value,
+					text = Res.string.login.value(),
 					style = MaterialTheme.typography.displayLarge
 				)
 				Spacer(modifier = Modifier.height(40.dp))
@@ -75,7 +75,7 @@ fun LoginPage() {
 				NoInput(
 					value = username,
 					onValueChange = viewModel::updateUsername,
-					placeholder = Res.string.login_please_input_username.value,
+					placeholder = Res.string.login_please_input_username.value(),
 					leadingIcon = { NoIcon(Icons.Outlined.AccountBox) })
 				Spacer(modifier = Modifier.height(24.dp))
 				
@@ -84,7 +84,7 @@ fun LoginPage() {
 				NoInput(
 					value = password,
 					onValueChange = viewModel::updatePassword,
-					placeholder = Res.string.login_please_input_password.value,
+					placeholder = Res.string.login_please_input_password.value(),
 					leadingIcon = { NoIcon(Icons.Outlined.Lock) },
 					trailingIcon = {
 						NoIconButton(
@@ -102,7 +102,7 @@ fun LoginPage() {
 				Spacer(modifier = Modifier.height(40.dp))
 				
 				NoButton(
-					text = Res.string.login.value,
+					text = Res.string.login.value(),
 					modifier = Modifier.fillMaxWidth()
 				) {
 					val success = viewModel.login()
@@ -117,7 +117,7 @@ fun LoginPage() {
 				}
 				Spacer(modifier = Modifier.height(24.dp))
 				NoButton(
-					text = Res.string.login_to_register.value,
+					text = Res.string.login_to_register.value(),
 					modifier = Modifier.fillMaxWidth(),
 					colors = NoButtons.SecondaryContainerColors
 				) {

@@ -5,10 +5,11 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 
-val StringResource.value: String
-	@Composable
-	get() = stringResource(this)
+@Composable
+fun StringResource.value(
+	vararg formatArgs: Any
+): String = stringResource(this, *formatArgs)
 
-suspend fun StringResource.value(): String {
-	return getString(this)
-}
+suspend fun StringResource.string(
+	vararg formatArgs: Any,
+): String = getString(this, *formatArgs)

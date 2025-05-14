@@ -34,6 +34,8 @@
 	<!-- 设置 -->
 	<string name="settings">设置</string>
 	<string name="settings_in_use">使用中</string>
+	<string name="settings_single_line">单行显示</string>
+	<string name="settings_multi_line">全部显示 (%1$d)</string>
 	<string name="settings_contrast">对比度</string>
 	<string name="settings_contrast_standard">标准对比度</string>
 	<string name="settings_contrast_medium">中对比度</string>

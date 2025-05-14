@@ -62,7 +62,7 @@ fun SettingsPage() {
 		topBar = {
 			TopAppBar(
 				title = {
-					Text(Res.string.settings.value)
+					Text(Res.string.settings.value())
 				},
 				navigationIcon = {
 					if (WindowWidthSizes.isCompact) {
@@ -119,7 +119,7 @@ private fun ColorSchemeContrastOptions() {
 	val isDark = themeMode.isDark
 	SettingsOptions(
 		icon = Icons.Rounded.Contrast,
-		title = Res.string.settings_contrast.value,
+		title = Res.string.settings_contrast.value(),
 		items = ColorSchemeContrast.entries,
 		current = currentContrast
 	) { contrast ->
@@ -130,8 +130,8 @@ private fun ColorSchemeContrastOptions() {
 		ColorSchemeCard(
 			selected = currentContrast == contrast,
 			colorScheme = colorScheme,
-			name = contrast.title.value,
-			preview = Res.string.settings_contrast_preview.value
+			name = contrast.title.value(),
+			preview = Res.string.settings_contrast_preview.value()
 		) {
 			viewModel.colorSchemeContrast.value = contrast
 			coroutineScope.launch(Dispatchers.IO) {
@@ -153,7 +153,7 @@ private fun ColorSchemeGroupOptions() {
 	val currentContrast by viewModel.colorSchemeContrast.collectAsState()
 	SettingsOptions(
 		icon = Icons.Rounded.ColorLens,
-		title = Res.string.settings_theme.value,
+		title = Res.string.settings_theme.value(),
 		items = ColorSchemeGroup.All,
 		current = currentGroup
 	) { group ->
@@ -164,8 +164,8 @@ private fun ColorSchemeGroupOptions() {
 		ColorSchemeCard(
 			selected = currentGroup == group,
 			colorScheme = colorScheme,
-			name = group.name.value,
-			preview = Res.string.settings_theme_preview.value
+			name = group.name.value(),
+			preview = Res.string.settings_theme_preview.value()
 		) {
 			viewModel.colorSchemeGroup.value = group
 			coroutineScope.launch(Dispatchers.IO) {
@@ -203,7 +203,7 @@ private fun ThemeModeOptions() {
 	
 	SettingsOptions(
 		icon = Icons.Rounded.DarkMode,
-		title = Res.string.settings_theme_mode.value,
+		title = Res.string.settings_theme_mode.value(),
 		current = currentMode,
 		items = ThemeMode.entries
 	) { mode ->
@@ -216,8 +216,8 @@ private fun ThemeModeOptions() {
 			ColorSchemeCard(
 				selected = currentMode == mode,
 				colorScheme = colorScheme,
-				name = mode.title.value,
-				preview = Res.string.settings_theme_mode_preview.value
+				name = mode.title.value(),
+				preview = Res.string.settings_theme_mode_preview.value()
 			) {
 				viewModel.themeMode.value = mode
 				coroutineScope.launch(Dispatchers.IO) {
@@ -260,8 +260,8 @@ private fun ThemeModeOptions() {
 					ColorSchemeCard(
 						selected = currentMode == mode,
 						colorScheme = colorScheme,
-						name = mode.title.value,
-						preview = Res.string.settings_theme_mode_preview.value,
+						name = mode.title.value(),
+						preview = Res.string.settings_theme_mode_preview.value(),
 						modifier = Modifier.clip(shape)
 					)
 				}
@@ -321,7 +321,7 @@ private fun <T : Any> SettingsOptions(
 				verticalAlignment = Alignment.CenterVertically,
 			) {
 				Text(
-					text = if (singleLine) "显示全部" else "单行显示",
+					text = if (singleLine) Res.string.settings_multi_line.value(items.size) else Res.string.settings_single_line.value(),
 					color = MaterialTheme.colorScheme.primary,
 					style = MaterialTheme.typography.bodyMedium
 				)
@@ -466,7 +466,7 @@ private fun ColorSchemeCard(
 				if (selected) {
 					Spacer(Modifier.weight(1f))
 					Text(
-						text = Res.string.settings_in_use.value,
+						text = Res.string.settings_in_use.value(),
 						color = MaterialTheme.colorScheme.onPrimaryContainer,
 						style = MaterialTheme.typography.bodyMedium
 					)

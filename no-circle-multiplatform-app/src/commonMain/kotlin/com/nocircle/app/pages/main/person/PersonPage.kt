@@ -128,7 +128,7 @@ private fun UserDetailCard() {
 			)
 			Spacer(modifier = Modifier.weight(1f))
 			Text(
-				text = "${Res.string.person_account.value}${userDetail?.username}",
+				text = "${Res.string.person_account.value()}${userDetail?.username}",
 				color = MaterialTheme.colorScheme.outline,
 				style = MaterialTheme.typography.bodyMedium,
 			)
@@ -248,7 +248,7 @@ private fun UserInformationCard() {
 			)
 			Spacer(modifier = Modifier.width(4.dp))
 			Text(
-				text = Res.string.person_friend_count.value,
+				text = Res.string.person_friend_count.value(),
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				style = MaterialTheme.typography.bodyMedium,
 			)
@@ -281,7 +281,7 @@ private fun UserInformationCard() {
 			)
 			Spacer(modifier = Modifier.width(4.dp))
 			Text(
-				text = Res.string.person_group_count.value,
+				text = Res.string.person_group_count.value(),
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				style = MaterialTheme.typography.titleMedium,
 			)
@@ -314,7 +314,7 @@ private fun UserInformationCard() {
 			)
 			Spacer(modifier = Modifier.width(4.dp))
 			Text(
-				text = Res.string.person_message_count.value,
+				text = Res.string.person_message_count.value(),
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
 				style = MaterialTheme.typography.titleMedium,
 			)
@@ -333,7 +333,7 @@ private fun OptionList() {
 	val navController = NoNavControllerManagers.auto(NoRoutes.Main.Person)!!
 	
 	Option(
-		title = Res.string.settings.value,
+		title = Res.string.settings.value(),
 		icon = Icons.Rounded.Settings,
 	) {
 		navController.navigate(NoRoutes.Settings)
