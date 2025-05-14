@@ -63,15 +63,15 @@ enum class ColorSchemeContrast(
 enum class ThemeMode(
 	val title: StringResource
 ) {
-	Dark(Res.string.settings_theme_mode_dark),
 	Light(Res.string.settings_theme_mode_light),
+	Dark(Res.string.settings_theme_mode_dark),
 	System(Res.string.settings_theme_mode_system);
 	
 	val isDark: Boolean
 		@Composable
 		get() = when (this) {
-			Dark -> false
-			Light -> true
+			Light -> false
+			Dark -> true
 			System -> isSystemInDarkTheme()
 		}
 }

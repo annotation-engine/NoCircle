@@ -6,4 +6,4 @@ object ColorSchemeContrastConfigKey : ConfigKey<String>
 
 object ColorSchemeGroupConfigKey : ConfigKey<String>
 
-object ColorSchemeDarkModeConfigKey : ConfigKey<String>
+object ColorSchemeThemeModeConfigKey : ConfigKey<String>

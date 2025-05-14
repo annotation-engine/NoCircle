@@ -96,7 +96,7 @@ private enum class WindowConfig(
 	Other(
 		size = DpSize(800.dp, 600.dp),
 		resize = true,
-		minSize = DpSize(720.dp, 540.dp)
+		minSize = DpSize(600.dp, 540.dp)
 	)
 }
 

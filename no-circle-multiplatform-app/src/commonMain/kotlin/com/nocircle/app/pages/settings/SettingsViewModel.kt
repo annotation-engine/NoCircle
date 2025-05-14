@@ -1,8 +1,10 @@
 package com.nocircle.app.pages.settings
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.constants.ColorSchemeContrastConfigKey
-import com.nocircle.app.constants.ColorSchemeDarkModeConfigKey
+import com.nocircle.app.constants.ColorSchemeThemeModeConfigKey
 import com.nocircle.app.constants.ColorSchemeGroupConfigKey
 import com.nocircle.app.generated.resources.MiSans_VF
 import com.nocircle.app.generated.resources.Res
@@ -27,11 +29,17 @@ class SettingsViewModel : NoViewModel() {
 	
 	val fontResource = MutableStateFlow(Res.font.MiSans_VF)
 	
+	val colorSchemeCardWidth = MutableStateFlow(Dp.Unspecified)
+	
+	val themeModeSystemPercent = Animatable(0f)
+	
+	val themeModeSystemFlag = MutableStateFlow(false)
+	
 	init {
 		viewModelScope.launch(Dispatchers.IO) {
 			initContrast()
 			initGroup()
-			initDarkMode()
+			initThemeMode()
 		}
 	}
 	
@@ -51,8 +59,8 @@ class SettingsViewModel : NoViewModel() {
 		}
 	}
 	
-	private suspend fun initDarkMode() {
-		ColorSchemeDarkModeConfigKey.get()?.let { name ->
+	private suspend fun initThemeMode() {
+		ColorSchemeThemeModeConfigKey.get()?.let { name ->
 			ThemeMode.entries.find { it.name == name }
 		}?.let {
 			themeMode.value = it
