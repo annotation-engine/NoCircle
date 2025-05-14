@@ -242,8 +242,6 @@ private fun UserInformationCard() {
 		) {
 			NoIcon(
 				icon = Icons.TwoTone.Person,
-				modifier = Modifier
-					.size(24.dp),
 				tint = MaterialTheme.colorScheme.onPrimaryContainer,
 			)
 			Spacer(modifier = Modifier.width(4.dp))
@@ -275,21 +273,19 @@ private fun UserInformationCard() {
 		) {
 			NoIcon(
 				icon = Icons.TwoTone.Group,
-				modifier = Modifier
-					.size(24.dp),
 				tint = MaterialTheme.colorScheme.onSecondaryContainer,
 			)
 			Spacer(modifier = Modifier.width(4.dp))
 			Text(
 				text = Res.string.person_group_count.value(),
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.titleMedium,
+				style = MaterialTheme.typography.bodyMedium,
 			)
 			Spacer(modifier = Modifier.weight(1f))
 			Text(
 				text = "${userInformation?.groupCount ?: 0}",
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.titleLarge
+				style = MaterialTheme.typography.titleMedium
 			)
 		}
 		Spacer(modifier = Modifier.width(16.dp))
@@ -308,21 +304,19 @@ private fun UserInformationCard() {
 		) {
 			NoIcon(
 				icon = Icons.AutoMirrored.TwoTone.Message,
-				modifier = Modifier
-					.size(24.dp),
 				tint = MaterialTheme.colorScheme.onTertiaryContainer,
 			)
 			Spacer(modifier = Modifier.width(4.dp))
 			Text(
 				text = Res.string.person_message_count.value(),
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.titleMedium,
+				style = MaterialTheme.typography.bodyMedium,
 			)
 			Spacer(modifier = Modifier.weight(1f))
 			Text(
 				text = "${userInformation?.messageCount ?: 0}",
 				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.titleLarge
+				style = MaterialTheme.typography.titleMedium
 			)
 		}
 	}

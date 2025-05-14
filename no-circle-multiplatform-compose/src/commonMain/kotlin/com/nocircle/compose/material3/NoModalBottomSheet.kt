@@ -26,10 +26,10 @@ fun NoModalBottomSheet(
 			.padding(12.dp),
 		containerColor = containerColor,
 		contentColor = contentColor,
-		shape = MaterialTheme.shapes.large,
+		shape = MaterialTheme.shapes.extraLarge,
 		tonalElevation = tonalElevation,
 		dragHandle = {},
-		contentWindowInsets = { WindowInsets(16.dp, 16.dp, 16.dp, 16.dp) },
+		contentWindowInsets = { WindowInsets(20.dp, 20.dp, 20.dp, 20.dp) },
 		content = content,
 	)
 }

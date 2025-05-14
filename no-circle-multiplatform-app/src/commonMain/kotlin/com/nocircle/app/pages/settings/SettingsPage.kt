@@ -97,7 +97,10 @@ fun SettingsPage() {
 				modifier = Modifier
 					.widthIn(max = 840.dp)
 					.fillMaxSize()
-					.padding(16.dp),
+					.padding(
+						horizontal = 4.dp,
+						vertical = 16.dp
+					),
 			) {
 				ColorSchemeContrastOptions()
 				ThemeModeOptions()
@@ -492,21 +495,25 @@ private fun <T> SingleLineOptions(
 	val viewModel = koinViewModel<SettingsViewModel>()
 	val cardWidth by viewModel.colorSchemeCardWidth.collectAsState()
 	val lazyListState = rememberLazyListState()
+	val scrollOffset = with(density) { (-6).dp.roundToPx() }
 	LaunchedEffect(Unit) {
-		lazyListState.scrollToItem(items.indexOf(current))
+		lazyListState.scrollToItem(items.indexOf(current), scrollOffset = scrollOffset)
 	}
 	LazyRow(
 		modifier = Modifier
 			.fillMaxWidth()
 			.onGloballyPositioned {
 				viewModel.colorSchemeCardWidth.value = with(density) {
-					(it.size.width.toDp() - IntervalDp * (displayCount - 1)) / displayCount
+					(it.size.width.toDp() - 12.dp - IntervalDp * (displayCount - 1)) / displayCount
 				}
 			},
 		state = lazyListState
 	) {
 		itemsIndexed(items) { index, item ->
 			if (cardWidth == Dp.Unspecified) return@itemsIndexed
+			if (index == 0) {
+				Spacer(modifier = Modifier.width(6.dp))
+			}
 			Box(
 				modifier = Modifier
 					.width(cardWidth)
@@ -515,6 +522,8 @@ private fun <T> SingleLineOptions(
 			}
 			if (index < items.lastIndex) {
 				Spacer(modifier = Modifier.width(IntervalDp))
+			} else {
+				Spacer(modifier = Modifier.width(6.dp))
 			}
 		}
 	}
@@ -543,6 +552,7 @@ private fun <T> MultiLineOptions(
 				modifier = Modifier
 					.fillMaxWidth()
 			) {
+				Spacer(modifier = Modifier.width(6.dp))
 				items.forEachIndexed { index, item ->
 					Box(
 						modifier = Modifier.width(cardWidth)
@@ -553,6 +563,7 @@ private fun <T> MultiLineOptions(
 						Spacer(modifier = Modifier.width(IntervalDp))
 					}
 				}
+				Spacer(modifier = Modifier.width(6.dp))
 			}
 			if (index < allItems.lastIndex) {
 				Spacer(modifier = Modifier.height(IntervalDp))
