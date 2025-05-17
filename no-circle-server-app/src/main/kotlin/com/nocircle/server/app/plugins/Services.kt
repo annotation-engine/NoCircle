@@ -13,6 +13,5 @@ fun Application.configureServices() {
 		this += UserRegisterService
 		this += UserLogoutService
 		this += UserDetailService
-		this += UserInformationService
 	}
 }

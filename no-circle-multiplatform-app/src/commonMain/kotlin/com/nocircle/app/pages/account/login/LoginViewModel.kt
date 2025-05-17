@@ -1,17 +1,15 @@
 package com.nocircle.app.pages.account.login
 
+import com.nocircle.app.api.impl.userApi
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.global_network_connect_error
 import com.nocircle.app.generated.resources.login_please_input_password
 import com.nocircle.app.generated.resources.login_please_input_username
-import com.nocircle.app.http.ktorClient
+import com.nocircle.app.ktorfitx.ktorfitx
+import com.nocircle.app.ktorfitx.success
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.set
-import com.nocircle.common.ktor.safePost
 import com.nocircle.compose.viewmodel.NoViewModel
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.Serializable
@@ -49,14 +47,7 @@ class LoginViewModel() : NoViewModel() {
 			showNoSnackbar(Res.string.login_please_input_password)
 			return false
 		}
-		val result = ktorClient.safePost<Login>("user/login", auth = false) {
-			contentType(ContentType.MultiPart.FormData)
-			val parameters = parameters {
-				append("username", username)
-				append("password", password)
-			}
-			setBody(FormDataContent(parameters))
-		} ?: let {
+		val result = ktorfitx.userApi.login(username, password) ?: let {
 			showNoErrorSnackbar(Res.string.global_network_connect_error)
 			return false
 		}

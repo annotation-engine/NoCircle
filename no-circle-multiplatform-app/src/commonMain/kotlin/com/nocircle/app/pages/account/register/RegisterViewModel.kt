@@ -1,13 +1,11 @@
 package com.nocircle.app.pages.account.register
 
+import com.nocircle.app.api.impl.userApi
 import com.nocircle.app.generated.resources.*
-import com.nocircle.app.http.ktorClient
+import com.nocircle.app.ktorfitx.ktorfitx
+import com.nocircle.app.ktorfitx.success
 import com.nocircle.common.expends.isAlphanumeric
-import com.nocircle.common.ktor.safePost
 import com.nocircle.compose.viewmodel.NoViewModel
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterViewModel : NoViewModel() {
@@ -64,14 +62,7 @@ class RegisterViewModel : NoViewModel() {
 			showNoSnackbar(Res.string.register_passwords_are_inconsistent_twice)
 			return false
 		}
-		val result = ktorClient.safePost<Unit>("user/register", auth = false) {
-			contentType(ContentType.MultiPart.FormData)
-			val parameters = parameters {
-				append("username", username)
-				append("password", password)
-			}
-			setBody(FormDataContent(parameters))
-		} ?: let {
+		val result = ktorfitx.userApi.register(username, password) ?: let {
 			showNoErrorSnackbar(Res.string.global_network_connect_error)
 			return false
 		}

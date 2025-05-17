@@ -10,11 +10,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
-import androidx.compose.material.icons.automirrored.twotone.Message
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.twotone.Group
-import androidx.compose.material.icons.twotone.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -29,7 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoRoutes
-import com.nocircle.app.generated.resources.*
+import com.nocircle.app.generated.resources.Res
+import com.nocircle.app.generated.resources.person_account
+import com.nocircle.app.generated.resources.settings
 import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.expends.value
@@ -85,8 +84,6 @@ private fun PersonPage() {
 				.padding(horizontal = 16.dp, vertical = 32.dp)
 		) {
 			UserDetailCard()
-			Spacer(modifier = Modifier.height(16.dp))
-			UserInformationCard()
 			Spacer(modifier = Modifier.height(16.dp))
 			OptionList()
 		}
@@ -214,110 +211,6 @@ private fun EditLabel() {
 			onDismissRequest = { showModal = false },
 		) {
 			Spacer(modifier = Modifier.height(200.dp))
-		}
-	}
-}
-
-@Composable
-private fun UserInformationCard() {
-	val viewModel = koinViewModel<PersonViewModel>()
-	val userInformation by viewModel.userInformation.collectAsState()
-	Row(
-		modifier = Modifier
-			.fillMaxWidth()
-			.height(56.dp)
-	) {
-		Row(
-			modifier = Modifier
-				.weight(1f)
-				.fillMaxHeight()
-				.background(
-					color = MaterialTheme.colorScheme.primaryContainer,
-					shape = MaterialTheme.shapes.small
-				)
-				.padding(
-					horizontal = 12.dp
-				),
-			verticalAlignment = Alignment.CenterVertically,
-		) {
-			NoIcon(
-				icon = Icons.TwoTone.Person,
-				tint = MaterialTheme.colorScheme.onPrimaryContainer,
-			)
-			Spacer(modifier = Modifier.width(4.dp))
-			Text(
-				text = Res.string.person_friend_count.value(),
-				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.bodyMedium,
-			)
-			Spacer(modifier = Modifier.weight(1f))
-			Text(
-				text = "${userInformation?.friendCount ?: 0}",
-				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.titleMedium
-			)
-		}
-		Spacer(modifier = Modifier.width(16.dp))
-		Row(
-			modifier = Modifier
-				.weight(1f)
-				.fillMaxHeight()
-				.background(
-					color = MaterialTheme.colorScheme.secondaryContainer,
-					shape = MaterialTheme.shapes.small
-				)
-				.padding(
-					horizontal = 12.dp
-				),
-			verticalAlignment = Alignment.CenterVertically,
-		) {
-			NoIcon(
-				icon = Icons.TwoTone.Group,
-				tint = MaterialTheme.colorScheme.onSecondaryContainer,
-			)
-			Spacer(modifier = Modifier.width(4.dp))
-			Text(
-				text = Res.string.person_group_count.value(),
-				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.bodyMedium,
-			)
-			Spacer(modifier = Modifier.weight(1f))
-			Text(
-				text = "${userInformation?.groupCount ?: 0}",
-				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.titleMedium
-			)
-		}
-		Spacer(modifier = Modifier.width(16.dp))
-		Row(
-			modifier = Modifier
-				.weight(1f)
-				.fillMaxHeight()
-				.background(
-					color = MaterialTheme.colorScheme.tertiaryContainer,
-					shape = MaterialTheme.shapes.small
-				)
-				.padding(
-					horizontal = 12.dp
-				),
-			verticalAlignment = Alignment.CenterVertically,
-		) {
-			NoIcon(
-				icon = Icons.AutoMirrored.TwoTone.Message,
-				tint = MaterialTheme.colorScheme.onTertiaryContainer,
-			)
-			Spacer(modifier = Modifier.width(4.dp))
-			Text(
-				text = Res.string.person_message_count.value(),
-				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.bodyMedium,
-			)
-			Spacer(modifier = Modifier.weight(1f))
-			Text(
-				text = "${userInformation?.messageCount ?: 0}",
-				color = MaterialTheme.colorScheme.onPrimaryContainer,
-				style = MaterialTheme.typography.titleMedium
-			)
 		}
 	}
 }
