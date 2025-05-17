@@ -30,4 +30,3 @@ internal expect object CommonDatabaseConstructor : RoomDatabaseConstructor<Commo
 	
 	override fun initialize(): CommonDatabase
 }
-

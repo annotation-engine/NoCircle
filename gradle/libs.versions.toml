@@ -2,8 +2,8 @@
 android-compileSdk = "35"
 android-minSdk = "26"
 android-targetSdk = "35"
-kotlin = "2.2.0-Beta2"
-agp = "8.9.2"
+kotlin = "2.1.21"
+agp = "8.7.3"
 androidx-activity-compose = "1.10.1"
 compose-multiplatform = "1.8.0"
 kotlinx-coroutines-swing = "1.10.2"
@@ -12,14 +12,15 @@ sqlite = "2.5.1"
 navigation-compose = "2.9.0-beta01"
 koin = "4.1.0-Beta11"
 ktor = "3.1.3"
+ktorfitx = "3.1.3-2.4.0"
 exposed = "1.0.0-beta-1"
 coil3 = "3.2.0"
 mysql = "8.4.0"
 logback-classic = "1.5.18"
 hutool = "5.8.38"
 redisson = "3.46.0"
-ksp = "2.2.0-Beta2-2.0.1"
-hot-reload = "1.0.0-alpha09"
+ksp = "2.1.21-2.0.1"
+hot-reload = "1.0.0-alpha10"
 
 [libraries]
 # Kotlin Multiplatform
@@ -38,6 +39,8 @@ koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmo
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktorfitx-api = { group = "cn.vividcode.multiplatform", name = "ktorfitx-api", version.ref = "ktorfitx" }
+ktorfitx-ksp = { group = "cn.vividcode.multiplatform", name = "ktorfitx-ksp", version.ref = "ktorfitx" }
 
 # Ktor Server
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
@@ -87,7 +90,8 @@ multiplatform-app = [
 	'room-runtime',
 	'room-paging',
 	'coil-compose',
-	'coil-network-ktor3'
+	'coil-network-ktor3',
+	'ktorfitx-api'
 ]
 
 multiplatform-compose = [

@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
@@ -16,13 +15,6 @@ plugins {
 
 val noCircleVersionName = property("no-circle.version.name").toString()
 val noCircleVersionCode = property("no-circle.version.code").toString().toInt()
-val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").map { targets ->
-	targets.trim().also { target ->
-		check(target in arrayOf("x64", "arm64", "simulatorArm64")) {
-			"iosTargets 只允许是：x64, arm64, simulatorArm64 的，多个用 ‘,’ 分割"
-		}
-	}
-}
 
 kotlin {
 	jvmToolchain(21)
@@ -30,18 +22,15 @@ kotlin {
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_2
+			languageVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
-	val iosTargets = noCircleIOSTargets.map {
-		when (it) {
-			"x64" -> iosX64()
-			"arm64" -> iosArm64()
-			else -> iosSimulatorArm64()
-		}
-	}
-	iosTargets.forEach {
+	listOf(
+		iosX64(),
+		iosArm64(),
+		iosSimulatorArm64(),
+	).forEach {
 		it.binaries.framework {
 			baseName = "NoCircleApp"
 			isStatic = true
@@ -52,7 +41,7 @@ kotlin {
 	jvm("desktop") {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_2
+			languageVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
@@ -83,13 +72,13 @@ kotlin {
 			implementation(compose.desktop.currentOs)
 			implementation(libs.kotlinx.coroutines.swing)
 		}
-		commonMain.configure {
-			kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-		}
+	}
+	sourceSets.commonMain {
+		kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 	}
 	compilerOptions {
-		languageVersion = KotlinVersion.KOTLIN_2_2
-		freeCompilerArgs.addAll("-Xcontext-parameters", "-Xexpect-actual-classes")
+		languageVersion = KotlinVersion.KOTLIN_2_1
+		freeCompilerArgs.addAll("-Xexpect-actual-classes")
 	}
 }
 
@@ -127,12 +116,28 @@ android {
 
 dependencies {
 	debugImplementation(compose.uiTooling)
-	add("kspCommonMainMetadata", libs.room.compiler)
+	kspCommonMainMetadata(libs.ktorfitx.ksp)
 	add("kspAndroid", libs.room.compiler)
 	add("kspDesktop", libs.room.compiler)
+	add("kspIosX64", libs.room.compiler)
+	add("kspIosArm64", libs.room.compiler)
+	add("kspIosSimulatorArm64", libs.room.compiler)
+}
+
+afterEvaluate {
 	
-	noCircleIOSTargets.forEach {
-		add("kspIos${it.uppercaseFirstChar()}", libs.room.compiler)
+	val taskNames = listOf(
+		"kspDebugKotlinAndroid",
+		"kspReleaseKotlinAndroid",
+		"kspKotlinDesktop",
+		"kspKotlinIosX64",
+		"kspKotlinIosArm64",
+		"kspKotlinIosSimulatorArm64",
+	)
+	taskNames.forEach {
+		tasks.named(it) {
+			dependsOn("kspCommonMainKotlinMetadata")
+		}
 	}
 }
 

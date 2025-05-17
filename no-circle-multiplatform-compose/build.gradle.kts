@@ -10,31 +10,21 @@ plugins {
 	alias(libs.plugins.hot.reload)
 }
 
-val noCircleIOSTargets = property("no-circle.iosTargets").toString().split(",").map { targets ->
-	targets.trim().also { target ->
-		check(target in arrayOf("x64", "arm64", "simulatorArm64")) {
-			"iosTargets 只允许是：x64, arm64, simulatorArm64 的，多个用 ‘,’ 分割"
-		}
-	}
-}
 kotlin {
 	jvmToolchain(21)
 	
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_2
+			languageVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
-	val iosTargets = noCircleIOSTargets.map {
-		when (it) {
-			"x64" -> iosX64()
-			"arm64" -> iosArm64()
-			else -> iosSimulatorArm64()
-		}
-	}
-	iosTargets.forEach {
+	listOf(
+		iosX64(),
+		iosArm64(),
+		iosSimulatorArm64(),
+	).forEach {
 		it.binaries.framework {
 			baseName = "NoCircleCompose"
 			isStatic = true
@@ -45,7 +35,7 @@ kotlin {
 	jvm("desktop") {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_2
+			languageVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
@@ -77,8 +67,8 @@ kotlin {
 		}
 	}
 	compilerOptions {
-		languageVersion = KotlinVersion.KOTLIN_2_2
-		freeCompilerArgs.addAll("-Xcontext-parameters", "-Xexpect-actual-classes")
+		languageVersion = KotlinVersion.KOTLIN_2_1
+		freeCompilerArgs.addAll("-Xexpect-actual-classes")
 	}
 }
 
