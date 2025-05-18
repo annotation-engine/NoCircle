@@ -3,7 +3,11 @@ package com.nocircle.app.theme.colors
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import com.nocircle.app.generated.resources.*
+import com.nocircle.app.theme.colors.ColorSchemeContrast.*
 import org.jetbrains.compose.resources.StringResource
 
 sealed interface ColorSchemeGroup {
@@ -43,15 +47,6 @@ sealed interface ColorSchemeGroup {
 	}
 }
 
-fun ColorSchemeGroup.getColorScheme(
-	contrast: ColorSchemeContrast,
-	isDark: Boolean
-): ColorScheme = when (contrast) {
-	ColorSchemeContrast.Standard -> if (isDark) darkStandardContrast else lightStandardContrast
-	ColorSchemeContrast.Medium -> if (isDark) darkMediumContrast else lightMediumContrast
-	ColorSchemeContrast.High -> if (isDark) darkHighContrast else lightHighContrast
-}
-
 enum class ColorSchemeContrast(
 	val title: StringResource,
 ) {
@@ -67,6 +62,11 @@ enum class ThemeMode(
 	Dark(Res.string.settings_theme_mode_dark),
 	System(Res.string.settings_theme_mode_system);
 	
+	companion object {
+		
+		fun getThemeMode(isDark: Boolean) = if (isDark) Dark else Light
+	}
+	
 	val isDark: Boolean
 		@Composable
 		get() = when (this) {
@@ -74,4 +74,37 @@ enum class ThemeMode(
 			Dark -> true
 			System -> isSystemInDarkTheme()
 		}
+}
+
+data class ColorSchemeAttribute(
+	val group: ColorSchemeGroup,
+	val contrast: ColorSchemeContrast,
+	val themeMode: ThemeMode
+) {
+	
+	@Composable
+	fun getColorScheme(
+		group: ColorSchemeGroup = this.group,
+		contrast: ColorSchemeContrast = this.contrast,
+		themeMode: ThemeMode = this.themeMode
+	): State<ColorScheme> {
+		val isDark = themeMode.isDark
+		return remember(group, contrast, isDark) {
+			derivedStateOf {
+				if (isDark) {
+					when (contrast) {
+						Standard -> group.darkStandardContrast
+						Medium -> group.darkMediumContrast
+						High -> group.darkHighContrast
+					}
+				} else {
+					when (contrast) {
+						Standard -> group.lightStandardContrast
+						Medium -> group.lightMediumContrast
+						High -> group.lightHighContrast
+					}
+				}
+			}
+		}
+	}
 }

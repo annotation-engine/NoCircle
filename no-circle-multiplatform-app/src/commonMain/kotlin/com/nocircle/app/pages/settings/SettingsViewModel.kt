@@ -4,14 +4,11 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.constants.ColorSchemeContrastConfigKey
-import com.nocircle.app.constants.ColorSchemeThemeModeConfigKey
 import com.nocircle.app.constants.ColorSchemeGroupConfigKey
+import com.nocircle.app.constants.ColorSchemeThemeModeConfigKey
 import com.nocircle.app.generated.resources.MiSans_VF
 import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.theme.colors.BlueColorSchemeGroup
-import com.nocircle.app.theme.colors.ColorSchemeContrast
-import com.nocircle.app.theme.colors.ColorSchemeGroup
-import com.nocircle.app.theme.colors.ThemeMode
+import com.nocircle.app.theme.colors.*
 import com.nocircle.common.config.get
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,11 +18,7 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel : NoViewModel() {
 	
-	val colorSchemeContrast = MutableStateFlow(ColorSchemeContrast.Standard)
-	
-	val colorSchemeGroup = MutableStateFlow<ColorSchemeGroup>(BlueColorSchemeGroup)
-	
-	val themeMode = MutableStateFlow(ThemeMode.System)
+	val colorSchemeAttribute = MutableStateFlow(ColorSchemeAttribute(BlueColorSchemeGroup, ColorSchemeContrast.Standard, ThemeMode.System))
 	
 	val fontResource = MutableStateFlow(Res.font.MiSans_VF)
 	
@@ -37,33 +30,20 @@ class SettingsViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch(Dispatchers.IO) {
-			initContrast()
-			initGroup()
-			initThemeMode()
+			initValue()
 		}
 	}
 	
-	private suspend fun initContrast() {
-		ColorSchemeContrastConfigKey.get().let { name ->
+	private suspend fun initValue() {
+		val contrast = ColorSchemeContrastConfigKey.get().let { name ->
 			ColorSchemeContrast.entries.find { it.name == name }
-		}?.let {
-			colorSchemeContrast.value = it
-		}
-	}
-	
-	private suspend fun initGroup() {
-		ColorSchemeGroupConfigKey.get()?.let { name ->
+		} ?: ColorSchemeContrast.Standard
+		val group = ColorSchemeGroupConfigKey.get()?.let { name ->
 			ColorSchemeGroup.All.find { it.toString() == name }
-		}?.let {
-			colorSchemeGroup.value = it
-		}
-	}
-	
-	private suspend fun initThemeMode() {
-		ColorSchemeThemeModeConfigKey.get()?.let { name ->
+		} ?: BlueColorSchemeGroup
+		val themeMode = ColorSchemeThemeModeConfigKey.get()?.let { name ->
 			ThemeMode.entries.find { it.name == name }
-		}?.let {
-			themeMode.value = it
-		}
+		} ?: ThemeMode.System
+		colorSchemeAttribute.value = colorSchemeAttribute.value.copy(group, contrast, themeMode)
 	}
 }

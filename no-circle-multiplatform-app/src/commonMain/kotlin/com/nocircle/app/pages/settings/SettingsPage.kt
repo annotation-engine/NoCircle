@@ -38,7 +38,6 @@ import com.nocircle.app.generated.resources.*
 import com.nocircle.app.theme.colors.ColorSchemeContrast
 import com.nocircle.app.theme.colors.ColorSchemeGroup
 import com.nocircle.app.theme.colors.ThemeMode
-import com.nocircle.app.theme.colors.getColorScheme
 import com.nocircle.common.config.set
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
@@ -116,29 +115,28 @@ fun SettingsPage() {
 @Composable
 private fun ColorSchemeContrastOptions() {
 	val viewModel = koinViewModel<SettingsViewModel>()
-	val currentContrast by viewModel.colorSchemeContrast.collectAsState()
-	val currentGroup by viewModel.colorSchemeGroup.collectAsState()
-	val themeMode by viewModel.themeMode.collectAsState()
-	val isDark = themeMode.isDark
+	val attribute by viewModel.colorSchemeAttribute.collectAsState()
 	SettingsOptions(
 		icon = Icons.Rounded.Contrast,
 		title = Res.string.settings_contrast.value(),
 		items = ColorSchemeContrast.entries,
-		current = currentContrast
+		current = attribute.contrast
 	) { contrast ->
-		val colorScheme by remember(contrast, isDark) {
-			derivedStateOf { currentGroup.getColorScheme(contrast, isDark) }
-		}
+		val colorScheme by attribute.getColorScheme(contrast = contrast)
 		val coroutineScope = rememberCoroutineScope()
 		ColorSchemeCard(
-			selected = currentContrast == contrast,
+			selected = attribute.contrast == contrast,
 			colorScheme = colorScheme,
 			name = contrast.title.value(),
 			preview = Res.string.settings_contrast_preview.value()
 		) {
-			viewModel.colorSchemeContrast.value = contrast
-			coroutineScope.launch(Dispatchers.IO) {
-				ColorSchemeContrastConfigKey.set(contrast.name)
+			if (attribute.contrast != contrast) {
+				viewModel.colorSchemeAttribute.value = attribute.copy(
+					contrast = contrast
+				)
+				coroutineScope.launch(Dispatchers.IO) {
+					ColorSchemeContrastConfigKey.set(contrast.name)
+				}
 			}
 		}
 	}
@@ -150,29 +148,28 @@ private fun ColorSchemeContrastOptions() {
 @Composable
 private fun ColorSchemeGroupOptions() {
 	val viewModel = koinViewModel<SettingsViewModel>()
-	val themeMode by viewModel.themeMode.collectAsState()
-	val isDark = themeMode.isDark
-	val currentGroup by viewModel.colorSchemeGroup.collectAsState()
-	val currentContrast by viewModel.colorSchemeContrast.collectAsState()
+	val attribute by viewModel.colorSchemeAttribute.collectAsState()
 	SettingsOptions(
 		icon = Icons.Rounded.ColorLens,
 		title = Res.string.settings_theme.value(),
 		items = ColorSchemeGroup.All,
-		current = currentGroup
+		current = attribute.group
 	) { group ->
-		val colorScheme by remember(currentContrast, isDark) {
-			derivedStateOf { group.getColorScheme(currentContrast, isDark) }
-		}
+		val colorScheme by attribute.getColorScheme(group)
 		val coroutineScope = rememberCoroutineScope()
 		ColorSchemeCard(
-			selected = currentGroup == group,
+			selected = attribute.group == group,
 			colorScheme = colorScheme,
 			name = group.name.value(),
 			preview = Res.string.settings_theme_preview.value()
 		) {
-			viewModel.colorSchemeGroup.value = group
-			coroutineScope.launch(Dispatchers.IO) {
-				ColorSchemeGroupConfigKey.set(group.toString())
+			if (attribute.group != group) {
+				viewModel.colorSchemeAttribute.value = attribute.copy(
+					group = group
+				)
+				coroutineScope.launch(Dispatchers.IO) {
+					ColorSchemeGroupConfigKey.set(group.toString())
+				}
 			}
 		}
 	}
@@ -184,18 +181,12 @@ private fun ColorSchemeGroupOptions() {
 @Composable
 private fun ThemeModeOptions() {
 	val viewModel = koinViewModel<SettingsViewModel>()
-	val currentGroup by viewModel.colorSchemeGroup.collectAsState()
-	val currentContrast by viewModel.colorSchemeContrast.collectAsState()
-	val currentMode by viewModel.themeMode.collectAsState()
-	val themeModeSystrmPercent = viewModel.themeModeSystemPercent
+	val themeModeSystemPercent = viewModel.themeModeSystemPercent
 	val themeModeSystemFlag by viewModel.themeModeSystemFlag.collectAsState()
 	LaunchedEffect(Unit) {
 		while (true) {
-			themeModeSystrmPercent.animateTo(
-				targetValue = 0f,
-				animationSpec = snap()
-			)
-			themeModeSystrmPercent.animateTo(
+			themeModeSystemPercent.snapTo(0f)
+			themeModeSystemPercent.animateTo(
 				targetValue = 1f,
 				animationSpec = tween(durationMillis = 1500, easing = FastOutSlowInEasing)
 			)
@@ -204,47 +195,46 @@ private fun ThemeModeOptions() {
 		}
 	}
 	
+	val attribute by viewModel.colorSchemeAttribute.collectAsState()
 	SettingsOptions(
 		icon = Icons.Rounded.DarkMode,
 		title = Res.string.settings_theme_mode.value(),
-		current = currentMode,
+		current = attribute.themeMode,
 		items = ThemeMode.entries
-	) { mode ->
+	) { themeMode ->
 		val coroutineScope = rememberCoroutineScope()
-		if (mode != ThemeMode.System) {
-			val isDark = mode.isDark
-			val colorScheme by remember(currentContrast, isDark) {
-				derivedStateOf { currentGroup.getColorScheme(currentContrast, isDark) }
-			}
-			ColorSchemeCard(
-				selected = currentMode == mode,
-				colorScheme = colorScheme,
-				name = mode.title.value(),
-				preview = Res.string.settings_theme_mode_preview.value()
-			) {
-				viewModel.themeMode.value = mode
+		val onClick: () -> Unit = {
+			if (attribute.themeMode != themeMode) {
+				viewModel.colorSchemeAttribute.value = attribute.copy(
+					themeMode = themeMode
+				)
 				coroutineScope.launch(Dispatchers.IO) {
-					ColorSchemeThemeModeConfigKey.set(mode.name)
+					ColorSchemeThemeModeConfigKey.set(themeMode.name)
 				}
 			}
+		}
+		if (themeMode != ThemeMode.System) {
+			val colorScheme by attribute.getColorScheme(themeMode = themeMode)
+			ColorSchemeCard(
+				selected = attribute.themeMode == themeMode,
+				colorScheme = colorScheme,
+				name = themeMode.title.value(),
+				preview = Res.string.settings_theme_mode_preview.value(),
+				onClick = onClick
+			)
 		} else {
 			Box(
 				modifier = Modifier
 					.clip(MaterialTheme.shapes.large)
-					.clickable {
-						viewModel.themeMode.value = mode
-						coroutineScope.launch(Dispatchers.IO) {
-							ColorSchemeThemeModeConfigKey.set(mode.name)
-						}
-					}
+					.clickable(onClick = onClick)
 			) {
-				var booleans by remember { mutableStateOf(arrayOf(true, false)) }
+				val booleans by remember { mutableStateOf(arrayOf(true, false)) }
 				booleans.forEach { isDark ->
-					val shape by remember(themeModeSystrmPercent.value) {
+					val shape by remember(themeModeSystemPercent.value) {
 						derivedStateOf {
 							GenericShape { size, _ ->
-								moveTo(size.width * themeModeSystrmPercent.value, 0f)
-								lineTo(size.width * themeModeSystrmPercent.value, size.height)
+								moveTo(size.width * themeModeSystemPercent.value, 0f)
+								lineTo(size.width * themeModeSystemPercent.value, size.height)
 								if (isDark) {
 									lineTo(size.width, size.height)
 									lineTo(size.width, 0f)
@@ -256,14 +246,12 @@ private fun ThemeModeOptions() {
 							}
 						}
 					}
-					val isDark = if (themeModeSystemFlag) isDark else !isDark
-					val colorScheme by remember(currentContrast, isDark) {
-						derivedStateOf { currentGroup.getColorScheme(currentContrast, isDark) }
-					}
+					val themeMode = ThemeMode.getThemeMode(if (themeModeSystemFlag) isDark else !isDark)
+					val colorScheme by attribute.getColorScheme(themeMode = themeMode)
 					ColorSchemeCard(
-						selected = currentMode == mode,
+						selected = attribute.themeMode == ThemeMode.System,
 						colorScheme = colorScheme,
-						name = mode.title.value(),
+						name = ThemeMode.System.title.value(),
 						preview = Res.string.settings_theme_mode_preview.value(),
 						modifier = Modifier.clip(shape)
 					)
