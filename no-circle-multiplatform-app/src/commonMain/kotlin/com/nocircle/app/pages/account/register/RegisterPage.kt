@@ -103,7 +103,7 @@ fun RegisterPage() {
 			)
 			Spacer(modifier = Modifier.height(120.dp))
 			
-			val navController = NoNavControllerManagers.root
+			val navController = NoNavControllerManagers.get()
 			NoButton(
 				text = Res.string.register.value(),
 				modifier = Modifier.fillMaxWidth()

@@ -7,6 +7,7 @@ import com.nocircle.app.pages.guide.GuideViewModel
 import com.nocircle.app.pages.main.MainViewModel
 import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
+import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
 import org.koin.compose.KoinApplication
 import org.koin.core.module.dsl.viewModel
@@ -18,7 +19,8 @@ private val NoKoinModule = module {
 	viewModel { RegisterViewModel() }
 	viewModel { MainViewModel() }
 	viewModel { PersonViewModel() }
-	single { SettingsViewModel() }
+	viewModel { SettingsViewModel() }
+	single { AppearanceViewModel() }
 }
 
 @Composable

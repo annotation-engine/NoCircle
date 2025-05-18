@@ -4,12 +4,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.MaterialTheme
@@ -20,22 +18,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.NoNavControllerManagers
+import com.nocircle.app.NoNavHost
 import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.person_account
 import com.nocircle.app.generated.resources.settings
 import com.nocircle.app.pages.settings.SettingsPage
+import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.expends.value
 import com.nocircle.common.navigation.NoNavHost
 import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.compose.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
-import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoModalBottomSheet
 import org.koin.compose.viewmodel.koinViewModel
@@ -51,7 +50,7 @@ fun PersonPageAdapter() {
 
 @Composable
 private fun PersonPageNavHost() {
-	val navController = NoNavControllerManagers.initAndGetSettings()
+	val navController = NoNavControllerManagers.get(NoNavHost.Person)
 	NoNavHost(
 		navController = navController,
 		startDestination = NoRoutes.Main.Person,
@@ -62,6 +61,7 @@ private fun PersonPageNavHost() {
 	) {
 		composable<NoRoutes.Main.Person> { PersonPage() }
 		composable<NoRoutes.Settings> { SettingsPage() }
+		composable<NoRoutes.Settings.Appearance> { AppearancePage() }
 	}
 }
 
@@ -78,7 +78,7 @@ private fun PersonPage() {
 	) {
 		Column(
 			modifier = Modifier
-				.widthIn(max = 700.dp)
+				.widthIn(max = 840.dp)
 				.fillMaxSize()
 				.verticalScroll(verticalScrollState)
 				.padding(horizontal = 16.dp, vertical = 32.dp)
@@ -217,49 +217,11 @@ private fun EditLabel() {
 
 @Composable
 private fun OptionList() {
-	val navController = NoNavControllerManagers.auto(NoRoutes.Main.Person)!!
-	
-	Option(
+	val navController = NoNavControllerManagers.get(NoNavHost.Person)
+	NoOption(
 		title = Res.string.settings.value(),
 		icon = Icons.Rounded.Settings,
 	) {
 		navController.navigate(NoRoutes.Settings)
-	}
-}
-
-@Composable
-private fun Option(
-	title: String,
-	icon: ImageVector,
-	onClick: () -> Unit,
-) {
-	Row(
-		modifier = Modifier
-			.fillMaxWidth()
-			.height(60.dp)
-			.clip(MaterialTheme.shapes.small)
-			.background(
-				color = MaterialTheme.colorScheme.surfaceContainer,
-				shape = MaterialTheme.shapes.small
-			)
-			.clickable(onClick = onClick)
-			.padding(horizontal = 16.dp),
-		verticalAlignment = Alignment.CenterVertically,
-	) {
-		NoIcon(
-			icon = icon,
-			tint = MaterialTheme.colorScheme.onSurface
-		)
-		Spacer(modifier = Modifier.width(8.dp))
-		Text(
-			text = title,
-			color = MaterialTheme.colorScheme.onSurface,
-			style = MaterialTheme.typography.titleMedium,
-		)
-		Spacer(modifier = Modifier.weight(1f))
-		NoIcon(
-			icon = Icons.AutoMirrored.Rounded.ArrowForwardIos,
-			tint = MaterialTheme.colorScheme.onSurface
-		)
 	}
 }

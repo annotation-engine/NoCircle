@@ -27,9 +27,9 @@ fun generateColorSchemeGroupCodes(path: String, name: String): String {
 		append("import androidx.compose.ui.graphics.Color\n")
 		val themeName = camelToSnakeCaseFull(name)
 		append("import com.nocircle.app.generated.resources.Res\n")
-		append("import com.nocircle.app.generated.resources.settings_theme_$themeName\n\n")
+		append("import com.nocircle.app.generated.resources.appearance_theme_$themeName\n\n")
 		append("object ${name}ColorSchemeGroup : ColorSchemeGroup {\n\n")
-		append("\toverride val name = Res.string.settings_theme_$themeName\n\n")
+		append("\toverride val name = Res.string.appearance_theme_$themeName\n\n")
 		colorSchemes.forEach { (key, value) ->
 			append("\toverride val $key by lazy {\n")
 			if (key.contains("Light")) {

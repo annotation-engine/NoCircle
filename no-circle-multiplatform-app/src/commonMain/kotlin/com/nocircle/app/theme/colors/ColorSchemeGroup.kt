@@ -50,17 +50,17 @@ sealed interface ColorSchemeGroup {
 enum class ColorSchemeContrast(
 	val title: StringResource,
 ) {
-	Standard(Res.string.settings_contrast_standard),
-	Medium(Res.string.settings_contrast_medium),
-	High(Res.string.settings_contrast_high),
+	Standard(Res.string.appearance_contrast_standard),
+	Medium(Res.string.appearance_contrast_medium),
+	High(Res.string.appearance_contrast_high),
 }
 
 enum class ThemeMode(
 	val title: StringResource
 ) {
-	Light(Res.string.settings_theme_mode_light),
-	Dark(Res.string.settings_theme_mode_dark),
-	System(Res.string.settings_theme_mode_system);
+	Light(Res.string.appearance_theme_mode_light),
+	Dark(Res.string.appearance_theme_mode_dark),
+	System(Res.string.appearance_theme_mode_system);
 	
 	companion object {
 		

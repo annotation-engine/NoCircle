@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
-import com.nocircle.app.pages.settings.SettingsViewModel
+import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.typographies.getNoTypography
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -15,7 +15,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun NoMaterialTheme(
 	content: @Composable () -> Unit,
 ) {
-	val viewModel = koinViewModel<SettingsViewModel>()
+	val viewModel = koinViewModel<AppearanceViewModel>()
 	val attribute by viewModel.colorSchemeAttribute.collectAsState()
 	val colorScheme by attribute.getColorScheme()
 	MaterialTheme(

@@ -36,7 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun LoginPage() {
 	val viewModel = koinViewModel<LoginViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val navController = NoNavControllerManagers.root
+	val navController = NoNavControllerManagers.get()
 	LaunchedEffect(Unit) {
 		if (navController.backRoute == NoRoutes.Register::class) {
 			val username = navController.getResult<String>("username")

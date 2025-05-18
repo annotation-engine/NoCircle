@@ -8,13 +8,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
-import com.nocircle.app.pages.settings.SettingsViewModel
+import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import org.jetbrains.compose.resources.Font
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun getNoTypography(): Typography = with(MaterialTheme.typography) {
-	val viewModel = koinViewModel<SettingsViewModel>()
+	val viewModel = koinViewModel<AppearanceViewModel>()
 	val fontResource by viewModel.fontResource.collectAsState()
 	val fontFamily = FontFamily(
 		fonts = (100 .. 900 step 100).map { weight ->

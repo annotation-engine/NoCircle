@@ -31,7 +31,7 @@ fun GuidePage() {
 	var alphaTarget by remember { mutableStateOf(0f) }
 	var scaleTarget by remember { mutableStateOf(1f) }
 	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
-	val navController = NoNavControllerManagers.root
+	val navController = NoNavControllerManagers.get()
 	LaunchedEffect(Unit) {
 		delay(300)
 		offsetYTarget = (-100).dp

@@ -3,11 +3,11 @@ package com.nocircle.app.theme.colors
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
 import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.settings_theme_green
+import com.nocircle.app.generated.resources.appearance_theme_green
 
 data object GreenColorSchemeGroup : ColorSchemeGroup {
 
-	override val name = Res.string.settings_theme_green
+	override val name = Res.string.appearance_theme_green
 
 	override val lightStandardContrast by lazy {
 		darkColorScheme(

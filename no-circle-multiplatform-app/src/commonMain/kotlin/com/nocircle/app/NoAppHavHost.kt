@@ -1,24 +1,22 @@
 package com.nocircle.app
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.nocircle.app.pages.account.login.LoginPage
 import com.nocircle.app.pages.account.register.RegisterPage
 import com.nocircle.app.pages.guide.GuidePage
 import com.nocircle.app.pages.main.MainPage
 import com.nocircle.app.pages.settings.SettingsPage
-import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.common.navigation.NoNavHost
 import com.nocircle.common.navigation.NoNavHostController
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.navigation.rememberNoNavController
+import com.nocircle.common.windowsize.WindowWidthSizes
 import kotlinx.serialization.Serializable
 
 @Composable
 fun NoAppNavHost() {
-	val navController = NoNavControllerManagers.initAndGetRoot()
+	val navController = NoNavControllerManagers.get()
 	NoNavHost(
 		navController = navController,
 		startDestination = NoRoutes.Guide
@@ -28,6 +26,7 @@ fun NoAppNavHost() {
 		composable<NoRoutes.Register> { RegisterPage() }
 		composable<NoRoutes.Main> { MainPage() }
 		composable<NoRoutes.Settings> { SettingsPage() }
+		composable<NoRoutes.Settings.Appearance> { AppearancePage() }
 	}
 }
 
@@ -56,34 +55,31 @@ object NoRoutes {
 	}
 	
 	@Serializable
-	data object Settings : NoRoute
+	data object Settings : NoRoute {
+		
+		@Serializable
+		data object Appearance : NoRoute
+	}
 }
 
 object NoNavControllerManagers {
 	
-	val root: NoNavHostController
-		get() = _root!!
-	
-	private var _root by mutableStateOf<NoNavHostController?>(null)
+	private val controllers = mutableMapOf<NoNavHost, NoNavHostController>()
 	
 	@Composable
-	fun initAndGetRoot(): NoNavHostController {
-		return _root ?: rememberNoNavController().also { _root = it }
-	}
-	
-	private var settings by mutableStateOf<NoNavHostController?>(null)
-	
-	@Composable
-	fun initAndGetSettings(): NoNavHostController {
-		return settings ?: rememberNoNavController().also { settings = it }
-	}
-	
-	@Composable
-	fun auto(ifNotCompactRoute: NoRoute): NoNavHostController? {
-		return when {
-			WindowWidthSizes.isCompact -> root
-			ifNotCompactRoute == NoRoutes.Main.Person -> settings
-			else -> null
+	fun get(
+		navHost: NoNavHost = NoNavHost.Root,
+		moreNavHost: NoNavHost = navHost
+	): NoNavHostController {
+		val navHost = if (WindowWidthSizes.isCompact) navHost else moreNavHost
+		return controllers.getOrPut(navHost) {
+			rememberNoNavController()
 		}
 	}
+}
+
+enum class NoNavHost {
+	Root,
+	Person,
+	Other
 }

@@ -60,10 +60,10 @@ fun main() {
 					minSize.height.value.toInt()
 				)
 			}
-			val navController = NoNavControllerManagers.initAndGetRoot()
+			val navController = NoNavControllerManagers.get()
 			LaunchedEffect(Unit) {
-				navController.addOnDestinationChangedListener { it, _, _ ->
-					val currentRoute = it.currentRoute
+				navController.addOnDestinationChangedListener { controller, _, _ ->
+					val currentRoute = controller.currentRoute
 					val config = WindowConfig.entries.find { it.routes != null && currentRoute in it.routes } ?: WindowConfig.Other
 					widthTarget = config.size.width
 					heightTarget = config.size.height
