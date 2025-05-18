@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
 import androidx.compose.ui.graphics.painter.Painter
@@ -13,6 +12,7 @@ import coil3.SingletonImageLoader
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter.State
 import coil3.compose.LocalPlatformContext
+import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
@@ -38,6 +38,8 @@ fun NoAsyncImage(
 		model = ImageRequest.Builder(LocalPlatformContext.current)
 			.data(url)
 			.crossfade(true)
+			.diskCachePolicy(CachePolicy.ENABLED)
+			.memoryCachePolicy(CachePolicy.ENABLED)
 			.build(),
 		contentDescription = contentDescription,
 		imageLoader = SingletonImageLoader.get(LocalPlatformContext.current),

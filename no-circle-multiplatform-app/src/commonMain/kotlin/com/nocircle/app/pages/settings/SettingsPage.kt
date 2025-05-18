@@ -48,6 +48,8 @@ import com.nocircle.common.windowsize.calculateWindowWidthSize
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
+import com.nocircle.compose.material3.NoTopAppBar
+import com.nocircle.compose.material3.NoTopAppBarDefaults
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
@@ -59,28 +61,25 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SettingsPage() {
 	NoScaffold(
 		topBar = {
-			TopAppBar(
-				title = {
-					Text(Res.string.settings.value())
-				},
+			NoTopAppBar(
+				title = { Text(Res.string.settings.value()) },
 				navigationIcon = {
 					if (WindowWidthSizes.isCompact) {
 						val navController = NoNavControllerManagers.auto(NoRoutes.Main.Person)!!
 						NoIconButton(
-							icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
-							tint = MaterialTheme.colorScheme.onSurface
+							icon = Icons.AutoMirrored.Rounded.ArrowBackIos
 						) {
 							navController.popBackStack()
 						}
 					}
 				},
-				windowInsets = TopAppBarDefaults.windowInsets.add(
-					WindowInsets(
+				windowInsets = NoTopAppBarDefaults.windowInsets.add(
+					insets = WindowInsets(
 						top = if (NoDevice.Type == DeviceType.Desktop && WindowWidthSizes.isCompact) 16.dp else Dp.Hairline
 					)
 				)
 			)
-		}
+		},
 	) { paddingValues ->
 		val verticalScrollState = rememberScrollState()
 		val overscrollEffect = rememberOverscrollEffect()
