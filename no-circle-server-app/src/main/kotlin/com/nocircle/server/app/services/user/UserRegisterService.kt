@@ -1,11 +1,8 @@
 package com.nocircle.server.app.services.user
 
-import com.nocircle.server.app.codes.Code
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.app.utils.PasswordUtils
-import com.nocircle.server.common.annotations.Schedule
-import com.nocircle.server.common.annotations.ServiceSchedule
-import com.nocircle.server.common.models.ApiResult
+import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
 import com.nocircle.server.common.services.noParameters
@@ -22,7 +19,6 @@ import org.jetbrains.exposed.v1.jdbc.transactions.experimental.newSuspendedTrans
 /**
  * 用户注册服务
  */
-@ServiceSchedule(schedule = Schedule.Release)
 object UserRegisterService : NoService<Unit> {
 	
 	override val path = "/user/register"
@@ -52,7 +48,7 @@ object UserRegisterService : NoService<Unit> {
 		return if (success) {
 			ApiResult.success("用户注册成功，前往登录")
 		} else {
-			ApiResult.failure("用户已经存在，请前往登录", Code.User.Register.USERNAME_OR_PASSWORD_ERROR)
+			ApiResult.failure("用户已经存在，请前往登录")
 		}
 	}
 }

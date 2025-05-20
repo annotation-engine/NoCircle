@@ -20,17 +20,23 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.NoNavControllerManagers
-import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.*
+import com.nocircle.app.pages.account.register.RegisterRoute
+import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.value
+import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+
+@Serializable
+data object LoginRoute : NoRoute
 
 @Composable
 fun LoginPage() {
@@ -38,7 +44,7 @@ fun LoginPage() {
 	val hostState = remember { SnackbarHostState() }
 	val navController = NoNavControllerManagers.get()
 	LaunchedEffect(Unit) {
-		if (navController.backRoute == NoRoutes.Register::class) {
+		if (navController.backRoute == RegisterRoute::class) {
 			val username = navController.getResult<String>("username")
 			if (username != null) {
 				viewModel.updateUsername(username)
@@ -109,7 +115,7 @@ fun LoginPage() {
 					if (success) {
 						launch(Dispatchers.Main) {
 							navController.navigate(
-								route = NoRoutes.Main,
+								route = MainRoute,
 								finish = true
 							)
 						}
@@ -121,7 +127,7 @@ fun LoginPage() {
 					modifier = Modifier.fillMaxWidth(),
 					colors = NoButtons.SecondaryContainerColors
 				) {
-					navController.navigate(route = NoRoutes.Register)
+					navController.navigate(route = RegisterRoute)
 				}
 				Spacer(modifier = Modifier.height(80.dp))
 			}

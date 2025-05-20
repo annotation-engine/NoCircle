@@ -21,7 +21,7 @@ interface UserApi {
 	
 	@BearerAuth
 	@GET("detail")
-	suspend fun getDetail(): ResultBody<UserDetailVO>?
+	suspend fun queryDetail(): ResultBody<UserDetailVO>?
 }
 
 @Serializable
@@ -33,6 +33,5 @@ data class LoginVO(
 data class UserDetailVO(
 	val username: String,
 	val nickname: String?,
-	val avatarUrl: String?,
-	val labels: List<Pair<String, String>>
+	val avatarUrl: String?
 )

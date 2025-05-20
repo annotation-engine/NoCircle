@@ -17,12 +17,18 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.NoNavControllerManagers
-import com.nocircle.app.NoRoutes
+import com.nocircle.app.pages.account.login.LoginRoute
+import com.nocircle.app.pages.main.MainRoute
+import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.icon.NoIcons
 import com.nocircle.compose.icon.NoLogo
 import com.nocircle.compose.material3.NoScaffold
 import kotlinx.coroutines.delay
+import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+
+@Serializable
+data object GuideRoute : NoRoute
 
 @Composable
 fun GuidePage() {
@@ -42,9 +48,9 @@ fun GuidePage() {
 		alphaTarget = 0f
 		delay(250)
 		if (viewModel.verifyToken()) {
-			navController.navigate(route = NoRoutes.Main, finish = true)
+			navController.navigate(route = MainRoute, finish = true)
 		} else {
-			navController.navigate(route = NoRoutes.Login, finish = true)
+			navController.navigate(route = LoginRoute, finish = true)
 		}
 	}
 	NoScaffold {

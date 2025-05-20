@@ -12,6 +12,9 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
+import com.nocircle.app.pages.account.login.LoginRoute
+import com.nocircle.app.pages.account.register.RegisterRoute
+import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.navigation.NoRoute
@@ -89,7 +92,7 @@ private enum class WindowConfig(
 ) {
 	Size440x540(
 		size = DpSize(440.dp, 540.dp),
-		routes = arrayOf(NoRoutes.Guide::class, NoRoutes.Login::class, NoRoutes.Register::class),
+		routes = arrayOf(GuideRoute::class, LoginRoute::class, RegisterRoute::class),
 		resize = false,
 		minSize = DpSize(440.dp, 540.dp)
 	),

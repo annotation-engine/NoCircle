@@ -65,4 +65,9 @@
 	<string name="appearance_theme_orange">谷秋橙</string>
 	<string name="appearance_theme_dark_orange">山晚橙</string>
 	<string name="appearance_theme_preview">主题色预览</string>
+	
+	<string name="logout">退出登录</string>
+	<string name="logout_hint">您确定要退出当前账号吗？</string>
+	<string name="logout_hint_confirm">确认</string>
+	<string name="logout_hint_cancel">取消</string>
 </resources>

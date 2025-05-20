@@ -23,12 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.NoNavHost
-import com.nocircle.app.NoRoutes
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.person_account
 import com.nocircle.app.generated.resources.settings
+import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.app.pages.settings.SettingsPage
+import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
+import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.expends.value
 import com.nocircle.common.navigation.NoNavHost
@@ -53,15 +55,15 @@ private fun PersonPageNavHost() {
 	val navController = NoNavControllerManagers.get(NoNavHost.Person)
 	NoNavHost(
 		navController = navController,
-		startDestination = NoRoutes.Main.Person,
+		startDestination = MainRoute,
 		enterTransition = { EnterTransition },
 		exitTransition = { ExitTransition },
 		popEnterTransition = { EnterTransition },
 		popExitTransition = { ExitTransition },
 	) {
-		composable<NoRoutes.Main.Person> { PersonPage() }
-		composable<NoRoutes.Settings> { SettingsPage() }
-		composable<NoRoutes.Settings.Appearance> { AppearancePage() }
+		composable<MainRoute> { PersonPage() }
+		composable<SettingsRoute> { SettingsPage() }
+		composable<AppearanceRoute> { AppearancePage() }
 	}
 }
 
@@ -93,7 +95,6 @@ private fun PersonPage() {
 @Composable
 private fun UserDetailCard() {
 	val viewModel = koinViewModel<PersonViewModel>()
-	val userDetail by viewModel.userDetail.collectAsState()
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -104,6 +105,7 @@ private fun UserDetailCard() {
 			.padding(24.dp)
 			.height(80.dp)
 	) {
+		val userDetail by viewModel.userDetail.collectAsState()
 		NoAsyncImage(
 			url = userDetail?.avatarUrl,
 			modifier = Modifier
@@ -138,26 +140,16 @@ private fun UserDetailCard() {
 						shape = MaterialTheme.shapes.extraSmall
 					)
 			) {
-				if (userDetail == null) {
-					Box(
-						modifier = Modifier
-							.fillMaxHeight()
-							.width(80.dp)
-							.background(
-								color = MaterialTheme.colorScheme.surface,
-								shape = MaterialTheme.shapes.extraSmall
-							)
-					)
-				} else {
-					val labels = userDetail!!.labels.toList()
-					labels.fastForEachIndexed { index, (label, color) ->
+				val labels by viewModel.labels.collectAsState()
+				if (labels != null) {
+					labels!!.fastForEachIndexed { index, label ->
 						Label(
-							label = label,
-							color = color,
+							label = label.label,
+							color = label.color,
 						)
 						Spacer(modifier = Modifier.width(6.dp))
 					}
-					if (labels.size < 5) {
+					if (labels!!.size < 5) {
 						EditLabel()
 					}
 				}
@@ -222,6 +214,6 @@ private fun OptionList() {
 		title = Res.string.settings.value(),
 		icon = Icons.Rounded.Settings,
 	) {
-		navController.navigate(NoRoutes.Settings)
+		navController.navigate(SettingsRoute)
 	}
 }

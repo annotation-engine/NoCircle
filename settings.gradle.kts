@@ -1,20 +1,20 @@
 @file:Suppress("UnstableApiUsage")
 
-rootProject.name = "NoCircle"
+rootProject.name = "no-circle"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
-    repositories {
-        google {
-            mavenContent {
-                includeGroupAndSubgroups("androidx")
-                includeGroupAndSubgroups("com.android")
-                includeGroupAndSubgroups("com.google")
-            }
-        }
-        mavenCentral()
-        gradlePluginPortal()
-    }
+	repositories {
+		google {
+			mavenContent {
+				includeGroupAndSubgroups("androidx")
+				includeGroupAndSubgroups("com.android")
+				includeGroupAndSubgroups("com.google")
+			}
+		}
+		mavenCentral()
+		gradlePluginPortal()
+	}
 }
 
 plugins {
@@ -22,16 +22,16 @@ plugins {
 }
 
 dependencyResolutionManagement {
-    repositories {
-        google {
-            mavenContent {
-                includeGroupAndSubgroups("androidx")
-                includeGroupAndSubgroups("com.android")
-                includeGroupAndSubgroups("com.google")
-            }
-        }
-        mavenCentral()
-    }
+	repositories {
+		google {
+			mavenContent {
+				includeGroupAndSubgroups("androidx")
+				includeGroupAndSubgroups("com.android")
+				includeGroupAndSubgroups("com.google")
+			}
+		}
+		mavenCentral()
+	}
 }
 
 include(":no-circle-multiplatform-app")

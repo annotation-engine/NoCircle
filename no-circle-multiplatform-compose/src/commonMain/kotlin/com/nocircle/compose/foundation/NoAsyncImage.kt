@@ -33,14 +33,54 @@ fun NoAsyncImage(
 	colorFilter: ColorFilter? = null,
 	filterQuality: FilterQuality = DefaultFilterQuality,
 	clipToBounds: Boolean = true,
+	crossfade: Boolean = true,
+	diskCachePolicy: CachePolicy = CachePolicy.ENABLED,
+	memoryCachePolicy: CachePolicy = CachePolicy.ENABLED,
 ) {
 	AsyncImage(
 		model = ImageRequest.Builder(LocalPlatformContext.current)
 			.data(url)
-			.crossfade(true)
-			.diskCachePolicy(CachePolicy.ENABLED)
-			.memoryCachePolicy(CachePolicy.ENABLED)
+			.crossfade(crossfade)
+			.diskCachePolicy(diskCachePolicy)
+			.memoryCachePolicy(memoryCachePolicy)
 			.build(),
+		contentDescription = contentDescription,
+		modifier = modifier,
+		placeholder = placeholder,
+		error = error,
+		fallback = fallback,
+		onLoading = onLoading,
+		onSuccess = onSuccess,
+		onError = onError,
+		alignment = alignment,
+		contentScale = contentScale,
+		alpha = alpha,
+		colorFilter = colorFilter,
+		filterQuality = filterQuality,
+		clipToBounds = clipToBounds,
+	)
+}
+
+@Composable
+fun NoAsyncImage(
+	request: ImageRequest,
+	modifier: Modifier = Modifier,
+	contentDescription: String? = null,
+	placeholder: Painter? = null,
+	error: Painter? = null,
+	fallback: Painter? = error,
+	onLoading: ((State.Loading) -> Unit)? = null,
+	onSuccess: ((State.Success) -> Unit)? = null,
+	onError: ((State.Error) -> Unit)? = null,
+	alignment: Alignment = Alignment.Center,
+	contentScale: ContentScale = ContentScale.Fit,
+	alpha: Float = NoAsyncImageDefaults.DEFAULT_ALPHA,
+	colorFilter: ColorFilter? = null,
+	filterQuality: FilterQuality = DefaultFilterQuality,
+	clipToBounds: Boolean = true,
+) {
+	AsyncImage(
+		model = request,
 		contentDescription = contentDescription,
 		imageLoader = SingletonImageLoader.get(LocalPlatformContext.current),
 		modifier = modifier,

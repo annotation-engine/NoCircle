@@ -21,13 +21,18 @@ import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
 import com.nocircle.common.expends.value
+import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+
+@Serializable
+data object RegisterRoute : NoRoute
 
 @Composable
 fun RegisterPage() {

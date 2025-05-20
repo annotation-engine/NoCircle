@@ -52,7 +52,7 @@ kotlin {
 			implementation(projects.noCircleMultiplatformCompose)
 			implementation(projects.noCircleMultiplatformCommon)
 			implementation(compose.preview)
-			implementation(libs.androidx.activity.compose)
+			implementation(libs.bundles.multiplatform.app.android)
 		}
 		commonMain.dependencies {
 			implementation(projects.noCircleMultiplatformCompose)
@@ -70,7 +70,12 @@ kotlin {
 			implementation(projects.noCircleMultiplatformCompose)
 			implementation(projects.noCircleMultiplatformCommon)
 			implementation(compose.desktop.currentOs)
-			implementation(libs.kotlinx.coroutines.swing)
+			implementation(libs.bundles.multiplatform.app.desktop)
+		}
+		iosMain.dependencies {
+			implementation(projects.noCircleMultiplatformCompose)
+			implementation(projects.noCircleMultiplatformCommon)
+			implementation(libs.bundles.multiplatform.app.ios)
 		}
 	}
 	sourceSets.commonMain {

@@ -1,6 +1,7 @@
 package com.nocircle.server.common.services
 
-import com.nocircle.server.common.models.ApiResult
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.model.principal
 import io.ktor.http.*
 import io.ktor.server.routing.*
 import kotlin.reflect.KProperty
@@ -17,7 +18,11 @@ interface NoService<out R : Any> {
 	
 	val roles get() = arrayOf<String?>(null)
 	
-	suspend fun receive(call: RoutingCall): NoParameters
+	suspend fun receive(call: RoutingCall): NoParameters {
+		return if (auth) {
+			noParameters(call) {}
+		} else NoParameters.None
+	}
 	
 	suspend fun process(parameters: NoParameters): ApiResult<R>
 }
@@ -46,5 +51,11 @@ class NoParameters {
 }
 
 inline fun noParameters(
+	call: RoutingCall? = null,
 	block: NoParameters.() -> Unit
-): NoParameters = NoParameters().apply(block)
+): NoParameters = NoParameters().apply {
+	if (call != null) {
+		this["userId"] = call.principal.userId
+	}
+	block()
+}

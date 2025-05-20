@@ -1,4 +1,4 @@
-package com.nocircle.server.common.models
+package com.nocircle.server.common.model
 
 import io.ktor.http.*
 import kotlinx.serialization.Serializable

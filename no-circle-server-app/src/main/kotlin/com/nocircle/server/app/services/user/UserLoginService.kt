@@ -1,6 +1,5 @@
 package com.nocircle.server.app.services.user
 
-import com.nocircle.server.app.codes.Code
 import com.nocircle.server.app.plugins.RedisPrefix
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.app.plugins.yaml
@@ -8,9 +7,7 @@ import com.nocircle.server.app.tables.user.User
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
-import com.nocircle.server.common.annotations.Schedule
-import com.nocircle.server.common.annotations.ServiceSchedule
-import com.nocircle.server.common.models.ApiResult
+import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
 import com.nocircle.server.common.services.noParameters
@@ -28,7 +25,6 @@ import kotlin.time.toJavaDuration
 /**
  * 用户登录服务
  */
-@ServiceSchedule(schedule = Schedule.Release)
 object UserLoginService : NoService<UserLoginService.UserLogin> {
 	
 	override val path = "/user/login"
@@ -51,7 +47,7 @@ object UserLoginService : NoService<UserLoginService.UserLogin> {
 			User.wrapRow(row)
 		}
 		if (user == null || !PasswordUtils.verity(password, user.password)) {
-			return ApiResult.failure("用户名或密码错误", Code.User.Login.USERNAME_OR_PASSWORD_ERROR)
+			return ApiResult.failure("用户名或密码错误")
 		}
 		val token = JWTUtils.generate(user.id.value, user.username)
 		val bucket = redisson.getBucket<String>("${RedisPrefix.USER_TOKEN}${user.id}")

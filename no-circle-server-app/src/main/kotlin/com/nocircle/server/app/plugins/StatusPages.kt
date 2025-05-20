@@ -1,6 +1,6 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.common.models.ApiResult
+import com.nocircle.server.common.model.ApiResult
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*

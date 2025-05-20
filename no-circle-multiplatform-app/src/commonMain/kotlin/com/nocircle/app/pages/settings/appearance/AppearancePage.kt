@@ -42,6 +42,7 @@ import com.nocircle.common.config.set
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.expends.value
+import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSize
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.windowsize.calculateWindowWidthSize
@@ -54,7 +55,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+
+@Serializable
+data object AppearanceRoute : NoRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
