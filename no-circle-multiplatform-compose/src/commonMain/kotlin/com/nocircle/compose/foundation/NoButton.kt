@@ -29,6 +29,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun NoButton(
 	text: String,
 	modifier: Modifier = Modifier,
+	enabled: Boolean = true,
 	fontSize: TextUnit = 18.sp,
 	letterSpacing: TextUnit = TextUnit.Unspecified,
 	fontWeight: FontWeight? = null,
@@ -59,6 +60,7 @@ fun NoButton(
 				ambientColor = DefaultShadowColor.copy(alpha = 0.6f),
 				spotColor = DefaultShadowColor.copy(alpha = 0.6f)
 			),
+		enabled = enabled,
 		shape = MaterialTheme.shapes.small,
 		colors = ButtonDefaults.buttonColors(
 			containerColor = colors.containerColor,
@@ -152,6 +154,24 @@ object NoButtons {
 			contentColor = MaterialTheme.colorScheme.onErrorContainer,
 			disabledContentColor = MaterialTheme.colorScheme.errorContainer.copy(0.8f),
 			disabledContainerColor = MaterialTheme.colorScheme.onErrorContainer.copy(0.8f)
+		)
+	
+	val SurfaceColors: NoButtonColors
+		@Composable
+		get() = colors(
+			containerColor = MaterialTheme.colorScheme.surface,
+			contentColor = MaterialTheme.colorScheme.onSurface,
+			disabledContentColor = MaterialTheme.colorScheme.surface.copy(0.8f),
+			disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+		)
+	
+	val SurfaceContainerColors: NoButtonColors
+		@Composable
+		get() = colors(
+			containerColor = MaterialTheme.colorScheme.surfaceContainer,
+			contentColor = MaterialTheme.colorScheme.onSurface,
+			disabledContentColor = MaterialTheme.colorScheme.surfaceContainer.copy(0.8f),
+			disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
 		)
 }
 

@@ -10,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -32,13 +33,13 @@ import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.common.expends.hexToColor
-import com.nocircle.common.expends.value
 import com.nocircle.common.navigation.NoNavHost
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.compose.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoModalBottomSheet
+import com.nocircle.compose.resources.value
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -185,6 +186,7 @@ private fun Label(
 	}
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EditLabel() {
 	var showModal by remember { mutableStateOf(false) }

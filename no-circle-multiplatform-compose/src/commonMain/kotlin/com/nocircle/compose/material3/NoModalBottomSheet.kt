@@ -15,21 +15,24 @@ import androidx.compose.ui.unit.dp
 fun NoModalBottomSheet(
 	onDismissRequest: () -> Unit,
 	modifier: Modifier = Modifier,
+	sheetState: SheetState = rememberModalBottomSheetState(),
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),
-	tonalElevation: Dp = 100.dp,
+	tonalElevation: Dp = 0.dp,
+	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) },
 	content: @Composable ColumnScope.() -> Unit
 ) {
 	ModalBottomSheet(
 		onDismissRequest = onDismissRequest,
 		modifier = modifier
 			.padding(12.dp),
+		sheetState = sheetState,
 		containerColor = containerColor,
 		contentColor = contentColor,
 		shape = MaterialTheme.shapes.extraLarge,
 		tonalElevation = tonalElevation,
 		dragHandle = {},
-		contentWindowInsets = { WindowInsets(20.dp, 20.dp, 20.dp, 20.dp) },
+		contentWindowInsets = contentWindowInsets,
 		content = content,
 	)
 }

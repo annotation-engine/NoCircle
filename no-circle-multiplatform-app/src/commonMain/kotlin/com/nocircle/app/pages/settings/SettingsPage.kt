@@ -23,19 +23,22 @@ import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.appearance
 import com.nocircle.app.generated.resources.logout
 import com.nocircle.app.generated.resources.settings
+import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.expends.value
+import com.nocircle.common.navigation.NoPopStackCount
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.compose.NoAlertModalBottomSheet
 import com.nocircle.compose.compose.NoOption
 import com.nocircle.compose.foundation.NoIconButton
-import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.material3.NoTopAppBarDefaults
+import com.nocircle.compose.resources.value
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
 data object SettingsRoute : NoRoute
@@ -95,15 +98,28 @@ fun SettingsPage() {
 	}
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Logout() {
 	var showLogoutModal by remember { mutableStateOf(false) }
 	if (showLogoutModal) {
-		NoModalBottomSheet(
+		val viewModel = koinViewModel<SettingsViewModel>()
+		val controller = NoNavControllerManagers.get()
+		NoAlertModalBottomSheet(
+			title = {
+				Text("确定要退出登录吗？")
+			},
+			content = {
+				Text("退出登录后会跳转到登录页，您需要重新登录")
+			},
 			onDismissRequest = { showLogoutModal = false },
-		) {
-		
-		}
+			onConfirm = {
+				val success = viewModel.logout()
+				if (success) {
+					controller.navigate(LoginRoute, popStackCount = NoPopStackCount.All)
+				}
+			}
+		)
 	}
 	Box(
 		modifier = Modifier
@@ -120,7 +136,7 @@ private fun Logout() {
 	) {
 		Text(
 			text = Res.string.logout.value(),
-			style = MaterialTheme.typography.bodyLarge,
+			style = MaterialTheme.typography.titleMedium,
 			color = MaterialTheme.colorScheme.onError
 		)
 	}

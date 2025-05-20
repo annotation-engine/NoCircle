@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
-import com.nocircle.common.expends.value
+import com.nocircle.compose.resources.value
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold

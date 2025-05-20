@@ -41,7 +41,7 @@ import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.config.set
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.expends.value
+import com.nocircle.compose.resources.value
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSize
 import com.nocircle.common.windowsize.WindowWidthSizes

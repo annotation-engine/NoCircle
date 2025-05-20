@@ -1,4 +1,4 @@
-package com.nocircle.common.expends
+package com.nocircle.compose.resources
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.StringResource

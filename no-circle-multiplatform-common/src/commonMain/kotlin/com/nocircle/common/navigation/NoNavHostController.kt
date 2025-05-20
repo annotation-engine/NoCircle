@@ -57,7 +57,7 @@ class NoNavHostController internal constructor(
 	fun <R : NoRoute> navigate(
 		route: R,
 		data: Map<String, Any?>? = null,
-		finish: Boolean = false
+		popStackCount: Int = NoPopStackCount.None,
 	) {
 		val entry = original.currentBackStackEntry ?: return
 		val handle = entry.savedStateHandle
@@ -67,11 +67,17 @@ class NoNavHostController internal constructor(
 		handle[LAST_ROUTE_KEY] = original.currentDestination?.route
 		original.navigate(route) {
 			launchSingleTop = true
-			if (finish) {
+			if (popStackCount > 0) {
 				entry.destination.route?.let { currentRoute ->
 					popUpTo(currentRoute) {
 						inclusive = true
 					}
+				}
+				
+				repeat(popStackCount - 1) {
+					if (original.previousBackStackEntry != null) {
+						original.popBackStack()
+					} else return@navigate
 				}
 			}
 		}
@@ -113,4 +119,14 @@ fun rememberNoNavController(): NoNavHostController {
 			NoNavHostController(navController)
 		}
 	}
+}
+
+@Suppress("ConstPropertyName")
+object NoPopStackCount {
+	
+	const val None = 0
+	
+	const val One = 1
+	
+	const val All = Int.MAX_VALUE
 }

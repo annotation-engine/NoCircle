@@ -20,6 +20,10 @@ interface UserApi {
 	): ResultBody<Unit>?
 	
 	@BearerAuth
+	@POST("logout")
+	suspend fun logout(): ResultBody<Unit>?
+	
+	@BearerAuth
 	@GET("detail")
 	suspend fun queryDetail(): ResultBody<UserDetailVO>?
 }

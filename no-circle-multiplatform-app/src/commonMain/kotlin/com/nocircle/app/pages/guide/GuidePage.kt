@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.MainRoute
+import com.nocircle.common.navigation.NoPopStackCount
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.icon.NoIcons
 import com.nocircle.compose.icon.NoLogo
@@ -48,9 +49,9 @@ fun GuidePage() {
 		alphaTarget = 0f
 		delay(250)
 		if (viewModel.verifyToken()) {
-			navController.navigate(route = MainRoute, finish = true)
+			navController.navigate(route = MainRoute, popStackCount = NoPopStackCount.One)
 		} else {
-			navController.navigate(route = LoginRoute, finish = true)
+			navController.navigate(route = LoginRoute, popStackCount = NoPopStackCount.One)
 		}
 	}
 	NoScaffold {

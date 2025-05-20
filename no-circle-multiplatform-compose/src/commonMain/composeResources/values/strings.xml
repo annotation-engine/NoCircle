@@ -1,0 +1,5 @@
+<resources>
+	<!-- 全局 -->
+	<string name="alert_modal_bottom_sheet_confirm">确定</string>
+	<string name="alert_modal_bottom_sheet_cancel">取消</string>
+</resources>

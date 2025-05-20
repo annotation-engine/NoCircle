@@ -33,7 +33,7 @@ import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.message.MessagePage
 import com.nocircle.app.pages.main.person.PersonPageAdapter
-import com.nocircle.common.expends.value
+import com.nocircle.compose.resources.value
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoIcon
