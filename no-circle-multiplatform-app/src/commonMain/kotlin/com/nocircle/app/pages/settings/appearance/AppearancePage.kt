@@ -29,19 +29,18 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllerManagers
-import com.nocircle.app.NoNavHost
 import com.nocircle.app.constants.ColorSchemeContrastConfigKey
 import com.nocircle.app.constants.ColorSchemeGroupConfigKey
 import com.nocircle.app.constants.ColorSchemeThemeModeConfigKey
 import com.nocircle.app.generated.resources.*
+import com.nocircle.app.pages.main.person.PersonNavHostKey
 import com.nocircle.app.theme.colors.ColorSchemeContrast
 import com.nocircle.app.theme.colors.ColorSchemeGroup
 import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.config.set
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
-import com.nocircle.compose.resources.value
+import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSize
 import com.nocircle.common.windowsize.WindowWidthSizes
@@ -51,6 +50,7 @@ import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.material3.NoTopAppBarDefaults
+import com.nocircle.compose.resources.value
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
@@ -70,7 +70,7 @@ fun AppearancePage() {
 				title = { Text(Res.string.appearance.value()) },
 				navigationIcon = {
 					if (WindowWidthSizes.isCompact) {
-						val navController = NoNavControllerManagers.get(NoNavHost.Person)
+						val navController = NoNavControllerManager.get(PersonNavHostKey)
 						NoIconButton(
 							icon = Icons.AutoMirrored.Rounded.ArrowBackIos
 						) {

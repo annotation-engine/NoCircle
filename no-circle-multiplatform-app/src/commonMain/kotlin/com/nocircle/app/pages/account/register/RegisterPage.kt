@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
+import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.compose.resources.value
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.foundation.*
@@ -108,7 +108,7 @@ fun RegisterPage() {
 			)
 			Spacer(modifier = Modifier.height(120.dp))
 			
-			val navController = NoNavControllerManagers.get()
+			val navController = NoNavControllerManager.get()
 			NoButton(
 				text = Res.string.register.value(),
 				modifier = Modifier.fillMaxWidth()

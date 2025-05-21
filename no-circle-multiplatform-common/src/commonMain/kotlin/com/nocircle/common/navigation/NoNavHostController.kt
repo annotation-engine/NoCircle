@@ -15,12 +15,12 @@ class NoNavHostController internal constructor(
 	
 	companion object {
 		
-		private val BACK_ROUTE_KEY = "BACK_ROUTE_${(0 .. Int.MAX_VALUE).random()}"
-		private val LAST_ROUTE_KEY = "LAST_ROUTE_${(0 .. Int.MAX_VALUE).random()}"
+		private const val FROM_ROUTE_KEY = "FROM_ROUTE"
+		private const val RESULT_ROUTE_KEY = "RESULT_ROUTE"
 		
 		internal val navControllerCacheMap = mutableMapOf<NavController, NoNavHostController>()
 		
-		val AllRouteKClasses = mutableMapOf<String, KClass<out NoRoute>>()
+		val recordRoutes = mutableMapOf<String, KClass<out NoRoute>>()
 	}
 	
 	fun <T> getData(key: String, remove: Boolean = true): T? {
@@ -39,45 +39,58 @@ class NoNavHostController internal constructor(
 		}
 	}
 	
-	val backRoute: KClass<out NoRoute>?
-		get() = this.getResult<String>(BACK_ROUTE_KEY)?.let {
-			AllRouteKClasses[it]
-		}
+	val resultRoute: KClass<out NoRoute>?
+		get() = this.getResult<String>(RESULT_ROUTE_KEY)?.let { recordRoutes[it] }
 	
-	val lastRoute: KClass<out NoRoute>?
-		get() = this.getData<String>(LAST_ROUTE_KEY)?.let {
-			AllRouteKClasses[it]
-		}
+	val fromRoute: KClass<out NoRoute>?
+		get() = this.getData<String>(FROM_ROUTE_KEY)?.let { recordRoutes[it] }
 	
 	val currentRoute: KClass<out NoRoute>?
-		get() = original.currentDestination?.route?.let {
-			AllRouteKClasses[it]
-		}
+		get() = original.currentDestination?.route?.let { recordRoutes[it] }
 	
 	fun <R : NoRoute> navigate(
 		route: R,
 		data: Map<String, Any?>? = null,
-		popStackCount: Int = NoPopStackCount.None,
+		popup: NoPopUp = NoPopUp.None,
+		singleTop: Boolean = true,
 	) {
 		val entry = original.currentBackStackEntry ?: return
 		val handle = entry.savedStateHandle
 		data?.forEach { (key, value) ->
+			checkKey(key)
 			handle[key] = value
 		}
-		handle[LAST_ROUTE_KEY] = original.currentDestination?.route
-		original.navigate(route) {
-			launchSingleTop = true
-			if (popStackCount > 0) {
-				entry.destination.route?.let { currentRoute ->
-					popUpTo(currentRoute) {
-						inclusive = true
+		handle[FROM_ROUTE_KEY] = original.currentDestination?.route
+		
+		when (popup) {
+			NoPopUp.None -> {
+				original.navigate(route) {
+					this.launchSingleTop = singleTop
+				}
+			}
+			
+			NoPopUp.Current -> {
+				val currentRoute = this.currentRoute
+				original.navigate(route) {
+					this.launchSingleTop = singleTop
+					currentRoute?.let {
+						popUpTo(it) {
+							this.inclusive = true
+						}
 					}
 				}
-				
-				repeat(popStackCount - 1) {
-					if (original.previousBackStackEntry != null) {
-						original.popBackStack()
-					} else return@navigate
+			}
+			
+			NoPopUp.All -> {
+				original.navigate(route) {
+					this.launchSingleTop = singleTop
+					popUpTo(0) {
+						this.inclusive = true
+					}
+				}
+				val key = NoNavControllerManager.findKey(this)
+				if (key == RootNavHost) {
+					NoNavControllerManager.removeAllExpectForRoot()
 				}
 			}
 		}
@@ -87,9 +100,10 @@ class NoNavHostController internal constructor(
 		val entry = original.previousBackStackEntry ?: return
 		val handle = entry.savedStateHandle
 		data.forEach { (key, value) ->
+			checkKey(key)
 			handle[key] = value
 		}
-		handle[BACK_ROUTE_KEY] = original.currentDestination?.route
+		handle[RESULT_ROUTE_KEY] = original.currentDestination?.route
 		original.popBackStack()
 	}
 	
@@ -109,6 +123,18 @@ class NoNavHostController internal constructor(
 		
 		fun onDestinationChanged(controller: NoNavHostController, destination: NavDestination, arguments: SavedState?)
 	}
+	
+	private fun checkKey(key: String) {
+		check(key != RESULT_ROUTE_KEY && key != FROM_ROUTE_KEY) {
+			"不允许使用 $RESULT_ROUTE_KEY 和 $FROM_ROUTE_KEY"
+		}
+	}
+}
+
+enum class NoPopUp {
+	None,
+	Current,
+	All
 }
 
 @Composable
@@ -119,14 +145,4 @@ fun rememberNoNavController(): NoNavHostController {
 			NoNavHostController(navController)
 		}
 	}
-}
-
-@Suppress("ConstPropertyName")
-object NoPopStackCount {
-	
-	const val None = 0
-	
-	const val One = 1
-	
-	const val All = Int.MAX_VALUE
 }

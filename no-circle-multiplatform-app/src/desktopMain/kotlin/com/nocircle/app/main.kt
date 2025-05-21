@@ -17,6 +17,7 @@ import com.nocircle.app.pages.account.register.RegisterRoute
 import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
+import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoRoute
 import java.awt.Color
 import java.awt.Dimension
@@ -63,7 +64,7 @@ fun main() {
 					minSize.height.value.toInt()
 				)
 			}
-			val navController = NoNavControllerManagers.get()
+			val navController = NoNavControllerManager.get()
 			LaunchedEffect(Unit) {
 				navController.addOnDestinationChangedListener { controller, _, _ ->
 					val currentRoute = controller.currentRoute

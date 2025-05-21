@@ -76,7 +76,7 @@ class NoNavGraphBuilder(
 		noinline sizeTransform: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)? = null,
 		noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 	) {
-		NoNavHostController.AllRouteKClasses[T::class.qualifiedName!!] = T::class
+		NoNavHostController.recordRoutes[T::class.qualifiedName!!] = T::class
 		original.composable<T>(
 			typeMap = typeMap,
 			deepLinks = deepLinks,

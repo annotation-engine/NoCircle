@@ -22,8 +22,6 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.NoNavControllerManagers
-import com.nocircle.app.NoNavHost
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.person_account
 import com.nocircle.app.generated.resources.settings
@@ -33,7 +31,9 @@ import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.common.expends.hexToColor
+import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoNavHost
+import com.nocircle.common.navigation.NoNavHostKey
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.compose.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
@@ -51,9 +51,11 @@ fun PersonPageAdapter() {
 	}
 }
 
+data object PersonNavHostKey : NoNavHostKey
+
 @Composable
 private fun PersonPageNavHost() {
-	val navController = NoNavControllerManagers.get(NoNavHost.Person)
+	val navController = NoNavControllerManager.get(PersonNavHostKey)
 	NoNavHost(
 		navController = navController,
 		startDestination = MainRoute,
@@ -211,7 +213,7 @@ private fun EditLabel() {
 
 @Composable
 private fun OptionList() {
-	val navController = NoNavControllerManagers.get(NoNavHost.Person)
+	val navController = NoNavControllerManager.get(PersonNavHostKey)
 	NoOption(
 		title = Res.string.settings.value(),
 		icon = Icons.Rounded.Settings,

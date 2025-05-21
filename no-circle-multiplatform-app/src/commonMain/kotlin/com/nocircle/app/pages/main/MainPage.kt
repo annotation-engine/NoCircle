@@ -25,15 +25,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.NoNavControllerManagers
-import com.nocircle.app.NoNavHost
 import com.nocircle.app.generated.resources.*
-import com.nocircle.app.pages.account.login.LoginRoute
-import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.message.MessagePage
+import com.nocircle.app.pages.main.person.PersonNavHostKey
 import com.nocircle.app.pages.main.person.PersonPageAdapter
-import com.nocircle.compose.resources.value
+import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoIcon
@@ -41,6 +38,7 @@ import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
+import com.nocircle.compose.resources.value
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -52,11 +50,10 @@ data object MainRoute : NoRoute
 fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val navController = NoNavControllerManagers.get()
+	val controller = NoNavControllerManager.get()
 	LaunchedEffect(Unit) {
-		val lastRoute = navController.lastRoute
-		if (lastRoute == LoginRoute::class || lastRoute == GuideRoute::class) {
-			viewModel.showNoSnackbar(Res.string.login_success)
+		if (controller.resultRoute == null) {
+			hostState.showNoSnackbar(Res.string.login_success)
 		}
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
@@ -228,10 +225,10 @@ private fun LeftBar(
 			.width(52.dp),
 		horizontalAlignment = Alignment.CenterHorizontally,
 	) {
-		val navController = NoNavControllerManagers.get(
+		val navController = NoNavControllerManager.get(
 			moreNavHost = when (subPage) {
-				MainSubPage.Person -> NoNavHost.Person
-				else -> NoNavHost.Other
+				MainSubPage.Person -> PersonNavHostKey
+				else -> PersonNavHostKey
 			}
 		)
 		NoIconButton(

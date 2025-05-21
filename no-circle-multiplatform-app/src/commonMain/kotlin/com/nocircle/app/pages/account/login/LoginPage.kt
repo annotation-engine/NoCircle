@@ -19,12 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllerManagers
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.register.RegisterRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.expends.not
-import com.nocircle.common.navigation.NoPopStackCount
+import com.nocircle.common.navigation.NoNavControllerManager
+import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
@@ -43,9 +43,9 @@ data object LoginRoute : NoRoute
 fun LoginPage() {
 	val viewModel = koinViewModel<LoginViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val navController = NoNavControllerManagers.get()
+	val navController = NoNavControllerManager.get()
 	LaunchedEffect(Unit) {
-		if (navController.backRoute == RegisterRoute::class) {
+		if (navController.resultRoute == RegisterRoute::class) {
 			val username = navController.getResult<String>("username")
 			if (username != null) {
 				viewModel.updateUsername(username)
@@ -117,7 +117,7 @@ fun LoginPage() {
 						launch(Dispatchers.Main) {
 							navController.navigate(
 								route = MainRoute,
-								popStackCount = NoPopStackCount.One
+								popup = NoPopUp.All
 							)
 						}
 					}

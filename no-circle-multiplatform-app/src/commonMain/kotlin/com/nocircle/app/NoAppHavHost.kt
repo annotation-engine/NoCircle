@@ -13,14 +13,12 @@ import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
+import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoNavHost
-import com.nocircle.common.navigation.NoNavHostController
-import com.nocircle.common.navigation.rememberNoNavController
-import com.nocircle.common.windowsize.WindowWidthSizes
 
 @Composable
 fun NoAppNavHost() {
-	val navController = NoNavControllerManagers.get()
+	val navController = NoNavControllerManager.get()
 	NoNavHost(
 		navController = navController,
 		startDestination = GuideRoute
@@ -32,25 +30,4 @@ fun NoAppNavHost() {
 		composable<SettingsRoute> { SettingsPage() }
 		composable<AppearanceRoute> { AppearancePage() }
 	}
-}
-
-object NoNavControllerManagers {
-	
-	private val controllers = mutableMapOf<NoNavHost, NoNavHostController>()
-	
-	@Composable
-	fun get(
-		moreNavHost: NoNavHost = NoNavHost.Root
-	): NoNavHostController {
-		val navHost = if (WindowWidthSizes.isCompact) NoNavHost.Root else moreNavHost
-		return controllers.getOrPut(navHost) {
-			rememberNoNavController()
-		}
-	}
-}
-
-enum class NoNavHost {
-	Root,
-	Person,
-	Other
 }

@@ -17,17 +17,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllerManagers
-import com.nocircle.app.NoNavHost
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.appearance
 import com.nocircle.app.generated.resources.logout
 import com.nocircle.app.generated.resources.settings
 import com.nocircle.app.pages.account.login.LoginRoute
+import com.nocircle.app.pages.main.person.PersonNavHostKey
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.navigation.NoPopStackCount
+import com.nocircle.common.navigation.NoNavControllerManager
+import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.compose.NoAlertModalBottomSheet
@@ -46,7 +46,7 @@ data object SettingsRoute : NoRoute
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsPage() {
-	val navController = NoNavControllerManagers.get(NoNavHost.Person)
+	val navController = NoNavControllerManager.get(PersonNavHostKey)
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
@@ -104,7 +104,7 @@ private fun Logout() {
 	var showLogoutModal by remember { mutableStateOf(false) }
 	if (showLogoutModal) {
 		val viewModel = koinViewModel<SettingsViewModel>()
-		val controller = NoNavControllerManagers.get()
+		val controller = NoNavControllerManager.get()
 		NoAlertModalBottomSheet(
 			title = {
 				Text("确定要退出登录吗？")
@@ -116,7 +116,7 @@ private fun Logout() {
 			onConfirm = {
 				val success = viewModel.logout()
 				if (success) {
-					controller.navigate(LoginRoute, popStackCount = NoPopStackCount.All)
+					controller.navigate(LoginRoute, popup = NoPopUp.All)
 				}
 			}
 		)
