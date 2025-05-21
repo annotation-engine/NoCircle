@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
 import androidx.compose.material.icons.rounded.Cookie
+import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,10 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.appearance
-import com.nocircle.app.generated.resources.logout
-import com.nocircle.app.generated.resources.settings
+import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.person.PersonNavHostKey
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
@@ -32,6 +30,8 @@ import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.compose.NoAlertModalBottomSheet
 import com.nocircle.compose.compose.NoOption
+import com.nocircle.compose.foundation.NoButtons
+import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
@@ -107,10 +107,19 @@ private fun Logout() {
 		val controller = NoNavControllerManager.get()
 		NoAlertModalBottomSheet(
 			title = {
-				Text("确定要退出登录吗？")
+				NoIcon(
+					icon = Icons.Rounded.Warning,
+					tint = MaterialTheme.colorScheme.error
+				)
+				Spacer(Modifier.width(8.dp))
+				Text(
+					text = Res.string.settings_logout_title.value(),
+				)
 			},
 			content = {
-				Text("退出登录后会跳转到登录页，您需要重新登录")
+				Text(
+					text = Res.string.settings_logout_content.value(),
+				)
 			},
 			onDismissRequest = { showLogoutModal = false },
 			onConfirm = {
@@ -118,7 +127,8 @@ private fun Logout() {
 				if (success) {
 					controller.navigate(LoginRoute, popup = NoPopUp.All)
 				}
-			}
+			},
+			confirmColors = NoButtons.ErrorColors
 		)
 	}
 	Box(
@@ -135,8 +145,8 @@ private fun Logout() {
 		contentAlignment = Alignment.Center
 	) {
 		Text(
-			text = Res.string.logout.value(),
-			style = MaterialTheme.typography.titleMedium,
+			text = Res.string.settings_logout.value(),
+			style = MaterialTheme.typography.bodyLarge,
 			color = MaterialTheme.colorScheme.onError
 		)
 	}

@@ -22,7 +22,8 @@
 	
 	<!-- 主页 -->
 	<string name="main_home">主页</string>
-	<string name="main_message">消息</string>
+	<string name="main_friend">好友</string>
+	<string name="main_group">群组</string>
 	<string name="main_person">我的</string>
 	
 	<!-- 我的 -->
@@ -33,6 +34,9 @@
 	
 	<!-- 设置 -->
 	<string name="settings">设置</string>
+	<string name="settings_logout">退出登录</string>
+	<string name="settings_logout_title">您确定要退出当前账号吗？</string>
+	<string name="settings_logout_content">退出当前账号后，您需要重新登录</string>
 	
 	<!-- 外观 -->
 	<string name="appearance">外观</string>
@@ -65,9 +69,4 @@
 	<string name="appearance_theme_orange">谷秋橙</string>
 	<string name="appearance_theme_dark_orange">山晚橙</string>
 	<string name="appearance_theme_preview">主题色预览</string>
-	
-	<string name="logout">退出登录</string>
-	<string name="logout_hint">您确定要退出当前账号吗？</string>
-	<string name="logout_hint_confirm">确认</string>
-	<string name="logout_hint_cancel">取消</string>
 </resources>

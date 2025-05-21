@@ -42,7 +42,7 @@ fun NoOption(
 		Text(
 			text = title,
 			color = MaterialTheme.colorScheme.onSurface,
-			style = MaterialTheme.typography.titleMedium,
+			style = MaterialTheme.typography.bodyLarge,
 		)
 		Spacer(modifier = Modifier.weight(1f))
 		NoIcon(

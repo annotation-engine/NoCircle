@@ -5,11 +5,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nocircle.compose.foundation.NoButton
+import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.generated.resources.Res
 import com.nocircle.compose.generated.resources.alert_modal_bottom_sheet_cancel
@@ -21,8 +23,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoAlertModalBottomSheet(
-	title: @Composable () -> Unit,
-	content: @Composable () -> Unit,
+	title: @Composable RowScope.() -> Unit,
+	content: @Composable RowScope.() -> Unit,
 	onDismissRequest: () -> Unit,
 	onConfirm: suspend () -> Unit,
 	modifier: Modifier = Modifier,
@@ -33,7 +35,9 @@ fun NoAlertModalBottomSheet(
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),
 	tonalElevation: Dp = 0.dp,
-	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) }
+	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) },
+	confirmColors: NoButtonColors = NoButtons.PrimaryColors,
+	cancelColors: NoButtonColors = NoButtons.SurfaceContainerColors,
 ) {
 	NoModalBottomSheet(
 		onDismissRequest = onDismissRequest,
@@ -48,16 +52,24 @@ fun NoAlertModalBottomSheet(
 			LocalTextStyle provides MaterialTheme.typography.titleLarge,
 			LocalContentColor provides MaterialTheme.colorScheme.onSurface
 		) {
-			title()
+			Row(
+				verticalAlignment = Alignment.CenterVertically,
+			) {
+				title()
+			}
 		}
-		Spacer(modifier = Modifier.height(16.dp))
+		Spacer(modifier = Modifier.height(32.dp))
 		CompositionLocalProvider(
 			LocalTextStyle provides MaterialTheme.typography.bodyLarge,
 			LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
 		) {
-			content()
+			Row(
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				content()
+			}
 		}
-		Spacer(modifier = Modifier.height(16.dp))
+		Spacer(modifier = Modifier.height(32.dp))
 		val coroutineScope = rememberCoroutineScope()
 		Row(
 			modifier = Modifier
@@ -67,7 +79,7 @@ fun NoAlertModalBottomSheet(
 				text = cancelText,
 				modifier = Modifier
 					.weight(1f),
-				colors = NoButtons.SurfaceContainerColors
+				colors = cancelColors
 			) {
 				coroutineScope.launch {
 					onCancel()
@@ -79,7 +91,8 @@ fun NoAlertModalBottomSheet(
 			NoButton(
 				text = confirmText,
 				modifier = Modifier
-					.weight(1f)
+					.weight(1f),
+				colors = confirmColors
 			) {
 				coroutineScope.launch {
 					onConfirm()

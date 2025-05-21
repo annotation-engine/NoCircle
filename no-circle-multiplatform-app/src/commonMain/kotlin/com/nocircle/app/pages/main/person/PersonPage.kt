@@ -43,18 +43,18 @@ import com.nocircle.compose.resources.value
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun PersonPageAdapter() {
+fun PersonPage() {
 	if (WindowWidthSizes.isCompact) {
-		PersonPage()
+		PersonPageCompat()
 	} else {
-		PersonPageNavHost()
+		PersonPageMedium()
 	}
 }
 
 data object PersonNavHostKey : NoNavHostKey
 
 @Composable
-private fun PersonPageNavHost() {
+private fun PersonPageMedium() {
 	val navController = NoNavControllerManager.get(PersonNavHostKey)
 	NoNavHost(
 		navController = navController,
@@ -64,7 +64,7 @@ private fun PersonPageNavHost() {
 		popEnterTransition = { EnterTransition },
 		popExitTransition = { ExitTransition },
 	) {
-		composable<MainRoute> { PersonPage() }
+		composable<MainRoute> { PersonPageCompat() }
 		composable<SettingsRoute> { SettingsPage() }
 		composable<AppearanceRoute> { AppearancePage() }
 	}
@@ -74,7 +74,7 @@ private val EnterTransition = fadeIn(animationSpec = tween(120))
 private val ExitTransition = fadeOut(animationSpec = tween(120))
 
 @Composable
-private fun PersonPage() {
+private fun PersonPageCompat() {
 	val verticalScrollState = rememberScrollState()
 	Box(
 		modifier = Modifier

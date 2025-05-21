@@ -9,9 +9,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material.icons.automirrored.rounded.Message
+import androidx.compose.material.icons.rounded.Group
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Person2
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -26,10 +27,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.generated.resources.*
+import com.nocircle.app.pages.main.friend.FriendPage
+import com.nocircle.app.pages.main.group.GroupPage
 import com.nocircle.app.pages.main.home.HomePage
-import com.nocircle.app.pages.main.message.MessagePage
 import com.nocircle.app.pages.main.person.PersonNavHostKey
-import com.nocircle.app.pages.main.person.PersonPageAdapter
+import com.nocircle.app.pages.main.person.PersonPage
 import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
@@ -215,15 +217,14 @@ private fun LeftBar(
 	subPage: MainSubPage,
 	onSubPageChange: (MainSubPage) -> Unit
 ) {
-	Column(
+	Box(
 		modifier = Modifier
+			.width(68.dp)
 			.fillMaxHeight()
 			.padding(
 				horizontal = 8.dp,
 				vertical = 32.dp
 			)
-			.width(52.dp),
-		horizontalAlignment = Alignment.CenterHorizontally,
 	) {
 		val navController = NoNavControllerManager.get(
 			moreNavHost = when (subPage) {
@@ -233,14 +234,17 @@ private fun LeftBar(
 		)
 		NoIconButton(
 			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
+			modifier = Modifier
+				.align(Alignment.TopCenter),
 			tint = MaterialTheme.colorScheme.primary
 		) {
 			navController.popBackStack()
 		}
-		Spacer(modifier = Modifier.height(100.dp))
+		
 		Box(
 			modifier = Modifier
 				.fillMaxWidth()
+				.align(Alignment.Center)
 		) {
 			var height by remember { mutableStateOf(Dp.Unspecified) }
 			if (height != Dp.Unspecified) {
@@ -318,8 +322,9 @@ private fun MainRoute(
 	) { target ->
 		when (target) {
 			MainSubPage.Home -> HomePage()
-			MainSubPage.Message -> MessagePage()
-			MainSubPage.Person -> PersonPageAdapter()
+			MainSubPage.Friend -> FriendPage()
+			MainSubPage.Group -> GroupPage()
+			MainSubPage.Person -> PersonPage()
 		}
 	}
 }
@@ -334,9 +339,14 @@ enum class MainSubPage(
 		icon = Icons.Rounded.Home
 	),
 	
-	Message(
-		title = Res.string.main_message,
-		icon = Icons.AutoMirrored.Rounded.Message
+	Friend(
+		title = Res.string.main_friend,
+		icon = Icons.Rounded.Person2
+	),
+	
+	Group(
+		title = Res.string.main_group,
+		icon = Icons.Rounded.Group
 	),
 	
 	Person(

@@ -16,10 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -30,9 +28,7 @@ fun NoButton(
 	text: String,
 	modifier: Modifier = Modifier,
 	enabled: Boolean = true,
-	fontSize: TextUnit = 18.sp,
-	letterSpacing: TextUnit = TextUnit.Unspecified,
-	fontWeight: FontWeight? = null,
+	style: TextStyle = MaterialTheme.typography.bodyLarge,
 	colors: NoButtonColors = NoButtonDefaults.DefaultButtonColors,
 	context: CoroutineContext = EmptyCoroutineContext,
 	onClick: (suspend CoroutineScope.() -> Unit)? = null,
@@ -72,9 +68,7 @@ fun NoButton(
 	) {
 		Text(
 			text = text,
-			fontSize = fontSize,
-			fontWeight = fontWeight,
-			letterSpacing = letterSpacing
+			style = style
 		)
 	}
 }

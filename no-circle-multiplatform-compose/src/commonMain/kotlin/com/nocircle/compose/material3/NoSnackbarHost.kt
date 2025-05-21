@@ -54,7 +54,7 @@ private fun SnackbarDuration.toMillis(
 	val original = when (this) {
 		SnackbarDuration.Indefinite -> Long.MAX_VALUE
 		SnackbarDuration.Long -> 8_000L
-		SnackbarDuration.Short -> 2_500L
+		SnackbarDuration.Short -> 2_000L
 	}
 	if (accessibilityManager == null) {
 		return original
