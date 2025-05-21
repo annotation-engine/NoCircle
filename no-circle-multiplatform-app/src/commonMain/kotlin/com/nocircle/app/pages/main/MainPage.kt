@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.generated.resources.*
-import com.nocircle.app.pages.main.friend.FriendPage
-import com.nocircle.app.pages.main.group.GroupPage
+import com.nocircle.app.pages.main.friends.FriendsPage
+import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.person.PersonNavHostKey
 import com.nocircle.app.pages.main.person.PersonPage
@@ -37,6 +37,7 @@ import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.foundation.layout.autoPadding
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
@@ -64,8 +65,8 @@ fun MainPage() {
 	) { paddingValues ->
 		Box(
 			modifier = Modifier
-				.padding(paddingValues)
 				.fillMaxSize()
+				.autoPadding(paddingValues)
 		) {
 			val subPage by viewModel.mainSubPage.collectAsState()
 			if (WindowWidthSizes.isCompact) {
@@ -116,6 +117,7 @@ private fun BottomBar(
 	Box(
 		modifier = Modifier
 			.fillMaxWidth()
+			.windowInsetsPadding(WindowInsets.navigationBars)
 			.padding(12.dp)
 			.height(48.dp)
 	) {
@@ -210,7 +212,7 @@ private fun MediumMainPage(
 	}
 }
 
-private val VerticalItemSpacing = 8.dp
+private val VerticalItemSpacing = 12.dp
 
 @Composable
 private fun LeftBar(
@@ -222,7 +224,7 @@ private fun LeftBar(
 			.width(68.dp)
 			.fillMaxHeight()
 			.padding(
-				horizontal = 8.dp,
+				horizontal = 6.dp,
 				vertical = 32.dp
 			)
 	) {
@@ -235,8 +237,10 @@ private fun LeftBar(
 		NoIconButton(
 			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
 			modifier = Modifier
+				.size(48.dp)
 				.align(Alignment.TopCenter),
-			tint = MaterialTheme.colorScheme.primary
+			tint = MaterialTheme.colorScheme.primary,
+			paddingValues = PaddingValues(10.dp),
 		) {
 			navController.popBackStack()
 		}
@@ -284,9 +288,10 @@ private fun LeftBar(
 					Column(
 						modifier = Modifier
 							.fillMaxWidth()
+							.height(56.dp)
 							.clip(MaterialTheme.shapes.small)
-							.clickable { onSubPageChange(it) }
-							.padding(vertical = 6.dp),
+							.clickable { onSubPageChange(it) },
+						verticalArrangement = Arrangement.Center,
 						horizontalAlignment = Alignment.CenterHorizontally
 					) {
 						NoIcon(
@@ -322,8 +327,8 @@ private fun MainRoute(
 	) { target ->
 		when (target) {
 			MainSubPage.Home -> HomePage()
-			MainSubPage.Friend -> FriendPage()
-			MainSubPage.Group -> GroupPage()
+			MainSubPage.Friends -> FriendsPage()
+			MainSubPage.Groups -> GroupsPage()
 			MainSubPage.Person -> PersonPage()
 		}
 	}
@@ -333,22 +338,18 @@ enum class MainSubPage(
 	val title: StringResource,
 	val icon: ImageVector
 ) {
-	
 	Home(
 		title = Res.string.main_home,
 		icon = Icons.Rounded.Home
 	),
-	
-	Friend(
-		title = Res.string.main_friend,
+	Friends(
+		title = Res.string.main_friends,
 		icon = Icons.Rounded.Person2
 	),
-	
-	Group(
-		title = Res.string.main_group,
+	Groups(
+		title = Res.string.main_groups,
 		icon = Icons.Rounded.Group
 	),
-	
 	Person(
 		title = Res.string.main_person,
 		icon = Icons.Rounded.Person

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.person_account
+import com.nocircle.app.generated.resources.person_settings_subtitle
 import com.nocircle.app.generated.resources.settings
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.app.pages.settings.SettingsPage
@@ -130,7 +131,7 @@ private fun UserDetailCard() {
 			)
 			Spacer(modifier = Modifier.weight(1f))
 			Text(
-				text = "${Res.string.person_account.value()}${userDetail?.username}",
+				text = Res.string.person_account.value(userDetail?.username ?: ""),
 				color = MaterialTheme.colorScheme.outline,
 				style = MaterialTheme.typography.bodyMedium,
 			)
@@ -216,6 +217,7 @@ private fun OptionList() {
 	val navController = NoNavControllerManager.get(PersonNavHostKey)
 	NoOption(
 		title = Res.string.settings.value(),
+		subtitle = Res.string.person_settings_subtitle.value(),
 		icon = Icons.Rounded.Settings,
 	) {
 		navController.navigate(SettingsRoute)

@@ -16,14 +16,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.person.PersonNavHostKey
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
-import com.nocircle.common.device.DeviceType
-import com.nocircle.common.device.NoDevice
 import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
@@ -33,9 +30,9 @@ import com.nocircle.compose.compose.NoOption
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.foundation.layout.autoPadding
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
-import com.nocircle.compose.material3.NoTopAppBarDefaults
 import com.nocircle.compose.resources.value
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
@@ -59,12 +56,7 @@ fun SettingsPage() {
 							navController.popBackStack()
 						}
 					}
-				},
-				windowInsets = NoTopAppBarDefaults.windowInsets.add(
-					insets = WindowInsets(
-						top = if (NoDevice.Type == DeviceType.Desktop && WindowWidthSizes.isCompact) 16.dp else Dp.Hairline
-					)
-				)
+				}
 			)
 		},
 	) { paddingValues ->
@@ -72,8 +64,8 @@ fun SettingsPage() {
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
-				.verticalScroll(verticalScrollState)
-				.padding(paddingValues),
+				.autoPadding(paddingValues)
+				.verticalScroll(verticalScrollState),
 			contentAlignment = Alignment.TopCenter
 		) {
 			Column(
@@ -87,6 +79,7 @@ fun SettingsPage() {
 			) {
 				NoOption(
 					title = Res.string.appearance.value(),
+					subtitle = Res.string.settings_appearance_subtitle.value(),
 					icon = Icons.Rounded.Cookie
 				) {
 					navController.navigate(AppearanceRoute)

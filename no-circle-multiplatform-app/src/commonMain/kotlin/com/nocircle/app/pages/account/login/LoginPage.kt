@@ -27,6 +27,7 @@ import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.foundation.*
+import com.nocircle.compose.foundation.layout.autoPadding
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
@@ -56,22 +57,22 @@ fun LoginPage() {
 	}
 	NoScaffold(
 		snackbarHost = { NoSnackbarHost(hostState) }
-	) {
+	) { paddingValues ->
 		val verticalScroll = rememberScrollState()
 		Box(
 			modifier = Modifier
-				.fillMaxSize(),
+				.fillMaxSize()
+				.autoPadding(paddingValues)
+				.verticalScroll(verticalScroll),
 			contentAlignment = Alignment.TopCenter
 		) {
 			Column(
 				modifier = Modifier
 					.widthIn(max = 550.dp)
 					.fillMaxSize()
-					.verticalScroll(verticalScroll)
-					.padding(it)
 					.padding(horizontal = 40.dp)
 			) {
-				Spacer(modifier = Modifier.height(80.dp))
+				Spacer(modifier = Modifier.height(60.dp))
 				Text(
 					text = Res.string.login.value(),
 					style = MaterialTheme.typography.displayLarge
@@ -104,9 +105,9 @@ fun LoginPage() {
 					visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation()
 				)
 				
-				Spacer(modifier = Modifier.height(40.dp))
+				Spacer(modifier = Modifier.height(36.dp))
 				HorizontalDivider()
-				Spacer(modifier = Modifier.height(40.dp))
+				Spacer(modifier = Modifier.height(36.dp))
 				
 				NoButton(
 					text = Res.string.login.value(),
@@ -130,7 +131,7 @@ fun LoginPage() {
 				) {
 					navController.navigate(route = RegisterRoute)
 				}
-				Spacer(modifier = Modifier.height(80.dp))
+				Spacer(modifier = Modifier.height(60.dp))
 			}
 		}
 	}

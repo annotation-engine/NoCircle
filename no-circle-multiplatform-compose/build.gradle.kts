@@ -56,6 +56,7 @@ kotlin {
 			implementation(compose.components.resources)
 			implementation(compose.materialIconsExtended)
 			implementation(libs.bundles.multiplatform.compose)
+			implementation(projects.noCircleMultiplatformCommon)
 		}
 		sourceSets.commonMain {
 			kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")

@@ -3,13 +3,13 @@ package com.nocircle.compose.material3
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.LocalNoIconTintColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,9 +19,17 @@ fun NoTopAppBar(
 	modifier: Modifier = Modifier,
 	navigationIcon: @Composable (() -> Unit)? = null,
 	actions: @Composable (RowScope.() -> Unit)? = null,
-	windowInsets: WindowInsets = NoTopAppBarDefaults.windowInsets,
 	colors: NoTopAppBarColors = NoTopAppBarDefaults.topAppBarColors
 ) {
+	val paddingValues = NoTopAppBarDefaults.windowInsets.asPaddingValues()
+	val isCompat = WindowWidthSizes.isCompact
+	val windowInsets by remember(paddingValues, isCompat) {
+		derivedStateOf {
+			WindowInsets(
+				top = paddingValues.calculateTopPadding() / if (isCompat) 1 else 2
+			)
+		}
+	}
 	Row(
 		modifier = modifier
 			.shadow(

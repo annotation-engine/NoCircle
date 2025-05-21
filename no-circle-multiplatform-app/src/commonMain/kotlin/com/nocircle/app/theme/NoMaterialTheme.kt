@@ -4,10 +4,12 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
+import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.app.theme.typographies.getNoTypography
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -17,6 +19,10 @@ fun NoMaterialTheme(
 ) {
 	val viewModel = koinViewModel<AppearanceViewModel>()
 	val attribute by viewModel.colorSchemeAttribute.collectAsState()
+	val isDark = attribute.themeMode.isDark
+	LaunchedEffect(isDark) {
+		onDarkModeChanged(isDark)
+	}
 	val colorScheme by attribute.getColorScheme()
 	MaterialTheme(
 		colorScheme = animateColorSchemeTransition(colorScheme),
@@ -24,6 +30,8 @@ fun NoMaterialTheme(
 		content = content,
 	)
 }
+
+expect fun onDarkModeChanged(isDarkTheme: Boolean)
 
 @Composable
 fun animateColorSchemeTransition(target: ColorScheme): ColorScheme {

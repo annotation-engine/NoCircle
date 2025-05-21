@@ -1,0 +1,64 @@
+<resources>
+	<string name="global_network_connect_error">Network connection error</string>
+	
+	<string name="login">Sign In</string>
+	<string name="login_please_input_username">Enter your username</string>
+	<string name="login_please_input_password">Enter your password</string>
+	<string name="login_to_register">Create an account</string>
+	<string name="login_success">Signed in successfully</string>
+	
+	<string name="register">Sign Up</string>
+	<string name="register_please_input_username">Choose a username</string>
+	<string name="register_please_input_password">Create a password</string>
+	<string name="register_please_confirm_password">Confirm your password</string>
+	<string name="register_back_to_login">Back to sign in</string>
+	<string name="register_username_length_at_least_8">Username must be at least 8 characters</string>
+	<string name="register_password_length_at_least_8">Password must be at least 8 characters</string>
+	<string name="register_passwords_are_inconsistent_twice">Passwords don’t match</string>
+	<string name="register_success">Registration successful. Please sign in</string>
+	
+	<string name="main_home">Home</string>
+	<string name="main_friends">Friends</string>
+	<string name="main_groups">Groups</string>
+	<string name="main_person">Profile</string>
+	
+	<string name="person_account">Account: %1$d</string>
+	<string name="person_settings_subtitle">Appearance, Sign Out</string>
+	
+	<string name="settings">Settings</string>
+	<string name="settings_appearance_subtitle">Contrast, theme mode, color theme</string>
+	<string name="settings_logout">Sign Out</string>
+	<string name="settings_logout_title">Are you sure you want to sign out?</string>
+	<string name="settings_logout_content">You’ll need to sign in again after signing out</string>
+	
+	<string name="appearance">Appearance</string>
+	<string name="appearance_in_use">In use</string>
+	<string name="appearance_single_line">Single line</string>
+	<string name="appearance_multi_line">Show all (%1$d)</string>
+	<string name="appearance_contrast">Contrast</string>
+	<string name="appearance_contrast_standard">Standard</string>
+	<string name="appearance_contrast_medium">Medium</string>
+	<string name="appearance_contrast_high">High</string>
+	<string name="appearance_contrast_preview">Preview contrast</string>
+	<string name="appearance_theme_mode">Theme Mode</string>
+	<string name="appearance_theme_mode_light">Light</string>
+	<string name="appearance_theme_mode_dark">Dark</string>
+	<string name="appearance_theme_mode_system">System default</string>
+	<string name="appearance_theme_mode_preview">Preview theme mode</string>
+	<string name="appearance_theme">Color Theme</string>
+	<string name="appearance_theme_red">Sunset Red</string>
+	<string name="appearance_theme_purple">Twilight Purple</string>
+	<string name="appearance_theme_modena">Midnight Plum</string>
+	<string name="appearance_theme_blue">Sky Blue</string>
+	<string name="appearance_theme_light_blue">Morning Mist</string>
+	<string name="appearance_theme_cyan">River Cyan</string>
+	<string name="appearance_theme_turquoise">Lake Turquoise</string>
+	<string name="appearance_theme_green">Forest Green</string>
+	<string name="appearance_theme_light_green">Spring Green</string>
+	<string name="appearance_theme_stone_gray">Stone Gray</string>
+	<string name="appearance_theme_yellow">Warm Yellow</string>
+	<string name="appearance_theme_amber">Amber Gold</string>
+	<string name="appearance_theme_orange">Autumn Orange</string>
+	<string name="appearance_theme_dark_orange">Burnt Orange</string>
+	<string name="appearance_theme_preview">Preview theme color</string>
+</resources>

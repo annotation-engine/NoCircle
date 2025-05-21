@@ -1,0 +1,4 @@
+<resources>
+	<string name="alert_modal_bottom_sheet_confirm">Confirm</string>
+	<string name="alert_modal_bottom_sheet_cancel">Cancel</string>
+</resources>

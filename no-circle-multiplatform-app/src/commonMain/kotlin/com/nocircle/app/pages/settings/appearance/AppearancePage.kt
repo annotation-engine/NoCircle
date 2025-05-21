@@ -38,8 +38,6 @@ import com.nocircle.app.theme.colors.ColorSchemeContrast
 import com.nocircle.app.theme.colors.ColorSchemeGroup
 import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.config.set
-import com.nocircle.common.device.DeviceType
-import com.nocircle.common.device.NoDevice
 import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSize
@@ -47,9 +45,9 @@ import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.windowsize.calculateWindowWidthSize
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.foundation.layout.autoPadding
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
-import com.nocircle.compose.material3.NoTopAppBarDefaults
 import com.nocircle.compose.resources.value
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -77,12 +75,7 @@ fun AppearancePage() {
 							navController.popBackStack()
 						}
 					}
-				},
-				windowInsets = NoTopAppBarDefaults.windowInsets.add(
-					insets = WindowInsets(
-						top = if (NoDevice.Type == DeviceType.Desktop && WindowWidthSizes.isCompact) 16.dp else Dp.Hairline
-					)
-				)
+				}
 			)
 		},
 	) { paddingValues ->
@@ -91,9 +84,9 @@ fun AppearancePage() {
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
+				.autoPadding(paddingValues)
 				.verticalScroll(verticalScrollState)
-				.overscroll(overscrollEffect)
-				.padding(paddingValues),
+				.overscroll(overscrollEffect),
 			contentAlignment = Alignment.TopCenter
 		) {
 			Column(

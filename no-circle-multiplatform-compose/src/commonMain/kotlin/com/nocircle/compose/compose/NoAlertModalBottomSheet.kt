@@ -46,7 +46,7 @@ fun NoAlertModalBottomSheet(
 		containerColor = containerColor,
 		contentColor = contentColor,
 		tonalElevation = tonalElevation,
-		contentWindowInsets = contentWindowInsets,
+		contentWindowInsets = contentWindowInsets
 	) {
 		CompositionLocalProvider(
 			LocalTextStyle provides MaterialTheme.typography.titleLarge,

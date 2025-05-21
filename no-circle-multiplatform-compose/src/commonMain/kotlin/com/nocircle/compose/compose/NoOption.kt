@@ -12,12 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nocircle.compose.foundation.NoIcon
 
 @Composable
 fun NoOption(
 	title: String,
+	subtitle: String? = null,
 	icon: ImageVector,
 	onClick: () -> Unit,
 ) {
@@ -44,10 +47,23 @@ fun NoOption(
 			color = MaterialTheme.colorScheme.onSurface,
 			style = MaterialTheme.typography.bodyLarge,
 		)
-		Spacer(modifier = Modifier.weight(1f))
+		if (subtitle != null) {
+			Text(
+				text = subtitle,
+				modifier = Modifier
+					.weight(1f)
+					.padding(horizontal = 16.dp),
+				color = MaterialTheme.colorScheme.outline,
+				style = MaterialTheme.typography.bodyMedium,
+				overflow = TextOverflow.Ellipsis,
+				maxLines = 1,
+				textAlign = TextAlign.End,
+			)
+		}
 		NoIcon(
 			icon = Icons.AutoMirrored.Rounded.ArrowForwardIos,
-			tint = MaterialTheme.colorScheme.onSurface
+			modifier = Modifier.size(20.dp),
+			tint = MaterialTheme.colorScheme.outline
 		)
 	}
 }
