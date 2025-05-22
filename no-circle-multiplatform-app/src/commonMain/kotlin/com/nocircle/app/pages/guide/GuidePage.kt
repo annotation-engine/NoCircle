@@ -19,12 +19,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NavRoot
-import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.MainRoute
+import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.navigation.navigate
 import com.nocircle.compose.icon.NoIcons
 import com.nocircle.compose.icon.NoLogo
 import com.nocircle.compose.material3.NoScaffold
@@ -42,7 +42,7 @@ fun GuidePage() {
 	var alphaTarget by remember { mutableStateOf(0f) }
 	var scaleTarget by remember { mutableStateOf(1f) }
 	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
-	val navController = NoNavControllerManager[NavRoot]
+	val controller = LocalNavController.current
 	LaunchedEffect(Unit) {
 		delay(300)
 		offsetYTarget = (-100).dp
@@ -53,7 +53,7 @@ fun GuidePage() {
 		alphaTarget = 0f
 		delay(250)
 		val verify = viewModel.verifyToken()
-		navController.navigate(
+		controller.navigate(
 			route = if (verify) MainRoute else LoginRoute,
 			popup = NoPopUp.Current
 		)

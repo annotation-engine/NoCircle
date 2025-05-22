@@ -19,14 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NavRoot
-import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.register.RegisterRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.expends.not
-import com.nocircle.common.navigation.NoPopUp
-import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.navigation.*
+import com.nocircle.common.windowsize.WindowHeightSizes
+import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
@@ -44,10 +43,10 @@ data object LoginRoute : NoRoute
 fun LoginPage() {
 	val viewModel = koinViewModel<LoginViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val navController = NoNavControllerManager[NavRoot]
+	val controller = LocalNavController.current
 	LaunchedEffect(Unit) {
-		if (navController.resultRoute == RegisterRoute::class) {
-			val username = navController.getResult<String>("username")
+		if (controller.resultRoute == RegisterRoute::class) {
+			val username = controller.getResult<String>("username")
 			if (username != null) {
 				viewModel.updateUsername(username)
 				hostState.showNoSnackbar(Res.string.register_success)
@@ -59,12 +58,12 @@ fun LoginPage() {
 		snackbarHost = { NoSnackbarHost(hostState) }
 	) { paddingValues ->
 		val verticalScroll = rememberScrollState()
+		val isCompat = WindowHeightSizes.isCompact || WindowWidthSizes.isCompact
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
-				.padding(top = paddingValues.calculateTopPadding())
 				.verticalScroll(verticalScroll),
-			contentAlignment = Alignment.TopCenter
+			contentAlignment = if (isCompat) Alignment.TopCenter else Alignment.Center
 		) {
 			Column(
 				modifier = Modifier
@@ -72,7 +71,7 @@ fun LoginPage() {
 					.fillMaxSize()
 					.padding(horizontal = 40.dp)
 			) {
-				Spacer(modifier = Modifier.height(60.dp))
+				Spacer(modifier = Modifier.height(80.dp))
 				Text(
 					text = Res.string.login.value(),
 					style = MaterialTheme.typography.displayLarge
@@ -116,7 +115,7 @@ fun LoginPage() {
 					val success = viewModel.login()
 					if (success) {
 						launch(Dispatchers.Main) {
-							navController.navigate(
+							controller.navigate(
 								route = MainRoute,
 								popup = NoPopUp.All
 							)
@@ -129,9 +128,9 @@ fun LoginPage() {
 					modifier = Modifier.fillMaxWidth(),
 					colors = NoButtons.SecondaryContainerColors
 				) {
-					navController.navigate(route = RegisterRoute)
+					controller.navigate(route = RegisterRoute)
 				}
-				Spacer(modifier = Modifier.height(60.dp))
+				Spacer(modifier = Modifier.height(80.dp))
 			}
 		}
 	}

@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class MainViewModel : NoViewModel() {
 	
 	val mainSubRoute = MutableStateFlow(MainSubRoute.Home)
+	
+	val isLeftNavigationBarExpended = MutableStateFlow(false)
 }

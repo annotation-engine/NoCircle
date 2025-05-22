@@ -17,14 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NavRoot
-import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.login.LoginRoute
-import com.nocircle.app.pages.main.NavMain
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
-import com.nocircle.common.navigation.NoPopUp
-import com.nocircle.common.navigation.NoRoute
+import com.nocircle.app.rootController
+import com.nocircle.common.navigation.*
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.compose.NoAlertModalBottomSheet
 import com.nocircle.compose.compose.NoOption
@@ -43,7 +40,7 @@ data object SettingsRoute : NoRoute
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsPage() {
-	val navController = NoNavControllerManager[NavMain]
+	val controller = LocalNavController.current
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
@@ -53,7 +50,7 @@ fun SettingsPage() {
 						NoIconButton(
 							icon = Icons.AutoMirrored.Rounded.ArrowBackIos
 						) {
-							navController.popBackStack()
+							controller.popBackStack()
 						}
 					}
 				}
@@ -82,7 +79,7 @@ fun SettingsPage() {
 					subtitle = Res.string.settings_appearance_subtitle.value(),
 					icon = Icons.Rounded.Cookie
 				) {
-					navController.navigate(route = AppearanceRoute)
+					controller.navigate(route = AppearanceRoute)
 				}
 				Spacer(Modifier.height(16.dp))
 				Logout()
@@ -97,7 +94,6 @@ private fun Logout() {
 	var showLogoutModal by remember { mutableStateOf(false) }
 	if (showLogoutModal) {
 		val viewModel = koinViewModel<SettingsViewModel>()
-		val controller = NoNavControllerManager[NavRoot]
 		NoAlertModalBottomSheet(
 			title = {
 				NoIcon(
@@ -118,11 +114,10 @@ private fun Logout() {
 			onConfirm = {
 				val success = viewModel.logout()
 				if (success) {
-					controller.navigate(
+					rootController?.navigate(
 						route = LoginRoute,
 						popup = NoPopUp.All
 					)
-					NoNavControllerManager -= NavMain
 				}
 			},
 			confirmColors = NoButtons.ErrorColors

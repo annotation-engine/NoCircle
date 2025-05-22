@@ -18,6 +18,8 @@ import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.navigation.addOnDestinationChangedListener
+import com.nocircle.common.navigation.currentRoute
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Toolkit
@@ -63,9 +65,9 @@ fun main() {
 					minSize.height.value.toInt()
 				)
 			}
-			val navController = NoNavControllerManager[NavRoot]
-			LaunchedEffect(Unit) {
-				navController.addOnDestinationChangedListener { controller, _, _ ->
+			
+			LaunchedEffect(rootController) {
+				rootController?.addOnDestinationChangedListener { controller, _, _ ->
 					val currentRoute = controller.currentRoute
 					val config = WindowConfig.entries.find { it.routes != null && currentRoute in it.routes } ?: WindowConfig.Other
 					widthTarget = config.size.width

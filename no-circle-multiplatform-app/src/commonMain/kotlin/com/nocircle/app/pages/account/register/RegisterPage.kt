@@ -19,11 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NavRoot
-import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
+import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.navigation.popBackStack
+import com.nocircle.common.windowsize.WindowHeightSizes
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
@@ -48,19 +49,19 @@ fun RegisterPage() {
 		snackbarHost = { NoSnackbarHost(hostState) }
 	) { paddingValues ->
 		val verticalScroll = rememberScrollState()
+		val isCompat = WindowHeightSizes.isCompact
 		Box(
 			modifier = Modifier
-				.fillMaxWidth()
-				.padding(top = paddingValues.calculateTopPadding())
+				.fillMaxSize()
 				.verticalScroll(verticalScroll),
-			contentAlignment = Alignment.TopCenter
+			contentAlignment = if (isCompat) Alignment.TopCenter else Alignment.Center
 		) {
 			Column(
 				modifier = Modifier
 					.widthIn(max = 550.dp)
 					.padding(horizontal = 40.dp)
 			) {
-				Spacer(modifier = Modifier.height(60.dp))
+				Spacer(modifier = Modifier.height(80.dp))
 				Text(
 					text = Res.string.register.value(),
 					style = MaterialTheme.typography.displayLarge
@@ -119,7 +120,7 @@ fun RegisterPage() {
 				HorizontalDivider()
 				Spacer(modifier = Modifier.height(36.dp))
 				
-				val navController = NoNavControllerManager[NavRoot]
+				val controller = LocalNavController.current
 				NoButton(
 					text = Res.string.register.value(),
 					modifier = Modifier.fillMaxWidth()
@@ -127,7 +128,7 @@ fun RegisterPage() {
 					val success = viewModel.register()
 					if (success) {
 						launch(Dispatchers.Main) {
-							navController.popBackStack("username" to username)
+							controller.popBackStack("username" to username)
 						}
 					}
 				}
@@ -137,9 +138,9 @@ fun RegisterPage() {
 					modifier = Modifier.fillMaxWidth(),
 					colors = NoButtons.SecondaryContainerColors
 				) {
-					navController.popBackStack()
+					controller.popBackStack()
 				}
-				Spacer(modifier = Modifier.height(60.dp))
+				Spacer(modifier = Modifier.height(80.dp))
 			}
 		}
 	}

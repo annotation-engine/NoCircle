@@ -9,10 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material.icons.rounded.Group
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Person2
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -20,15 +17,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.NavControllerKey
-import com.nocircle.app.NavRoot
-import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
@@ -38,10 +33,11 @@ import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
+import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
+import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.navigation.*
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoIcon
-import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
@@ -53,17 +49,12 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 data object MainRoute : NoRoute
 
-data object NavMain : NavControllerKey
-
 @Composable
 fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val controller = NoNavControllerManager[NavRoot]
 	LaunchedEffect(Unit) {
-		if (controller.resultRoute == null) {
-			hostState.showNoSnackbar(Res.string.login_success)
-		}
+		hostState.showNoSnackbar(Res.string.login_success)
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
@@ -73,37 +64,45 @@ fun MainPage() {
 			modifier = Modifier
 				.fillMaxSize()
 		) {
-			val controller = NoNavControllerManager[NavMain]
 			val isCompat = WindowWidthSizes.isCompact
 			val subRoute by viewModel.mainSubRoute.collectAsState()
-			if (!isCompat) {
-				LeftBar(
-					subRoute = subRoute,
-					onSubRouteChange = {
-						val current = viewModel.mainSubRoute.value
-						if (current != it) {
-							viewModel.mainSubRoute.value = it
+			LocalNavControllerProvider { controller ->
+				if (!isCompat) {
+					LeftNavigationBar(
+						subRoute = subRoute,
+						onSubRouteChange = {
+							if (subRoute != it) {
+								viewModel.mainSubRoute.value = it
+							}
+							if (controller.currentRoute != MainRoute::class) {
+								controller.navigate(route = MainRoute, popup = NoPopUp.All)
+							}
 						}
-						if (controller.currentRoute != MainRoute::class) {
-							controller.navigate(route = MainRoute, popup = NoPopUp.All)
-						}
-					}
-				)
-			}
-			Column(
-				modifier = Modifier
-					.weight(1f)
-					.fillMaxHeight()
-			) {
-				val navController = NoNavControllerManager[NavMain]
+					)
+				}
 				NoNavHost(
-					navController = navController,
+					navController = controller,
 					startDestination = MainRoute,
-					navTransition = if (isCompat) HorizontalSlideTransition else FadeTransition
+					modifier = Modifier
+						.weight(1f)
+						.fillMaxHeight(),
+					navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade
 				) {
 					composable<MainRoute>(
-						navTransition = FadeTransition,
-						content = { MainPage(subRoute) }
+						navTransition = NavTransition.Fade,
+						content = {
+							MainPage(
+								subRoute = subRoute,
+								onSubRouteChange = {
+									if (subRoute != it) {
+										viewModel.mainSubRoute.value = it
+									}
+									if (controller.currentRoute != MainRoute::class) {
+										controller.navigate(route = MainRoute, popup = NoPopUp.All)
+									}
+								}
+							)
+						}
 					)
 					composable<SettingsRoute> { SettingsPage() }
 					composable<AppearanceRoute> { AppearancePage() }
@@ -115,7 +114,8 @@ fun MainPage() {
 
 @Composable
 private fun MainPage(
-	subRoute: MainSubRoute
+	subRoute: MainSubRoute,
+	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
 	NoScaffold { paddingValues ->
 		Column(
@@ -138,22 +138,10 @@ private fun MainPage(
 					MainSubRoute.Person -> PersonPage()
 				}
 			}
-			
-			val isCompat = WindowWidthSizes.isCompact
-			val viewModel = koinViewModel<MainViewModel>()
-			if (isCompat) {
-				val controller = NoNavControllerManager[NavMain]
-				BottomBar(
+			if (WindowWidthSizes.isCompact) {
+				BottomNavigationBar(
 					subRoute = subRoute,
-					onSubRouteChange = {
-						val current = viewModel.mainSubRoute.value
-						if (current != it) {
-							viewModel.mainSubRoute.value = it
-						}
-						if (controller.currentRoute != MainRoute::class) {
-							controller.navigate(route = MainRoute, popup = NoPopUp.All)
-						}
-					}
+					onSubRouteChange = onSubRouteChange
 				)
 			}
 		}
@@ -163,7 +151,7 @@ private fun MainPage(
 private val HorizontalItemSpacing = 12.dp
 
 @Composable
-private fun BottomBar(
+private fun BottomNavigationBar(
 	subRoute: MainSubRoute,
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
@@ -238,101 +226,141 @@ private fun BottomBar(
 	}
 }
 
-private val VerticalItemSpacing = 12.dp
-
 @Composable
-private fun LeftBar(
+private fun LeftNavigationBar(
 	subRoute: MainSubRoute,
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	Box(
+	val viewModel = koinViewModel<MainViewModel>()
+	val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
+	Column(
 		modifier = Modifier
-			.width(68.dp)
+			.width(if (isLeftNavigationBarExpended) 140.dp else 60.dp)
 			.fillMaxHeight()
-			.background(MaterialTheme.colorScheme.surfaceContainerHigh)
+			.background(MaterialTheme.colorScheme.surfaceContainer)
 			.padding(
-				horizontal = 6.dp,
-				vertical = 32.dp
+				top = 32.dp,
+				start = 6.dp,
+				end = 6.dp,
+				bottom = 6.dp
 			)
 	) {
-		val navController = NoNavControllerManager[NavMain]
-		NoIconButton(
-			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
-			modifier = Modifier
-				.size(44.dp)
-				.align(Alignment.TopCenter),
-			tint = MaterialTheme.colorScheme.primary,
-			paddingValues = PaddingValues(10.dp),
-		) {
-			navController.popBackStack()
-		}
-		
-		Box(
+		val controller = LocalNavController.current
+		Row(
 			modifier = Modifier
 				.fillMaxWidth()
-				.align(Alignment.Center)
+				.height(48.dp)
+				.clip(MaterialTheme.shapes.small)
+				.clickable {
+					controller.popBackStack()
+				}
+				.padding(12.dp),
+			verticalAlignment = Alignment.CenterVertically,
 		) {
-			var height by remember { mutableStateOf(Dp.Unspecified) }
-			if (height != Dp.Unspecified) {
-				val sliderHeight by remember(height) {
-					derivedStateOf {
-						val size = MainSubRoute.entries.size
-						(height - VerticalItemSpacing * (size - 1)) / size
-					}
-				}
-				val offsetYTarget by remember(sliderHeight, subRoute) {
-					derivedStateOf {
-						(sliderHeight + VerticalItemSpacing) * MainSubRoute.entries.indexOfFirst { it == subRoute }
-					}
-				}
-				val offsetY by animateDpAsState(offsetYTarget)
-				Box(
-					modifier = Modifier
-						.offset(y = offsetY)
-						.fillMaxWidth()
-						.height(sliderHeight)
-						.clip(MaterialTheme.shapes.small)
-						.background(MaterialTheme.colorScheme.primary)
+			NoIcon(
+				icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
+				modifier = Modifier.size(24.dp),
+				tint = MaterialTheme.colorScheme.primary
+			)
+			if (isLeftNavigationBarExpended) {
+				Spacer(modifier = Modifier.width(8.dp))
+				Text(
+					text = "上一页",
+					color = MaterialTheme.colorScheme.primary,
+					style = MaterialTheme.typography.bodyMedium
 				)
 			}
-			val density = LocalDensity.current
-			Column(
+		}
+		Spacer(modifier = Modifier.height(6.dp))
+		Spacer(modifier = Modifier.weight(1f))
+		MainSubRoute.entries.forEachIndexed { index, route ->
+			Row(
 				modifier = Modifier
 					.fillMaxWidth()
-					.onGloballyPositioned {
-						height = with(density) { it.size.height.toDp() }
-					}
-			) {
-				MainSubRoute.entries.fastForEachIndexed { index, it ->
-					val color by animateColorAsState(
-						targetValue = if (it == subRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+					.height(48.dp)
+					.clip(MaterialTheme.shapes.small)
+					.background(
+						color = if (subRoute == route) MaterialTheme.colorScheme.primary else Color.Transparent,
+						shape = MaterialTheme.shapes.small
 					)
-					Column(
-						modifier = Modifier
-							.fillMaxWidth()
-							.height(56.dp)
-							.clip(MaterialTheme.shapes.small)
-							.clickable { onSubRouteChange(it) },
-						verticalArrangement = Arrangement.Center,
-						horizontalAlignment = Alignment.CenterHorizontally
-					) {
-						NoIcon(
-							icon = it.icon,
-							tint = color,
-							modifier = Modifier
-								.size(22.dp)
-						)
-						Spacer(modifier = Modifier.height(2.dp))
-						Text(
-							text = it.title.value(),
-							color = color,
-							style = MaterialTheme.typography.bodySmall,
-						)
-					}
-					if (index < MainSubRoute.entries.size - 1) {
-						Spacer(modifier = Modifier.height(VerticalItemSpacing))
-					}
+					.clickable { onSubRouteChange(route) }
+					.padding(12.dp),
+				verticalAlignment = Alignment.CenterVertically,
+			) {
+				NoIcon(
+					icon = route.icon,
+					modifier = Modifier.size(24.dp),
+					tint = if (subRoute == route) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+				)
+				if (isLeftNavigationBarExpended) {
+					Spacer(modifier = Modifier.width(12.dp))
+					Text(
+						text = route.title.value(),
+						color = if (subRoute == route) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+						style = MaterialTheme.typography.bodyMedium
+					)
 				}
+			}
+			if (index < MainSubRoute.entries.lastIndex) {
+				Spacer(modifier = Modifier.height(4.dp))
+			}
+		}
+		Spacer(modifier = Modifier.weight(1f))
+		Spacer(modifier = Modifier.height(6.dp))
+		val appearanceViewModel = koinViewModel<AppearanceViewModel>()
+		val attribute by appearanceViewModel.colorSchemeAttribute.collectAsState()
+		val isDark = attribute.themeMode.isDark
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.height(48.dp)
+				.clip(MaterialTheme.shapes.small)
+				.clickable {
+					appearanceViewModel.colorSchemeAttribute.value = attribute.copy(
+						themeMode = if (isDark) ThemeMode.Light else ThemeMode.Dark
+					)
+				}
+				.padding(12.dp),
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			NoIcon(
+				icon = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
+				modifier = Modifier.size(24.dp),
+				tint = MaterialTheme.colorScheme.primary
+			)
+			if (isLeftNavigationBarExpended) {
+				Spacer(modifier = Modifier.width(8.dp))
+				Text(
+					text = if (isDark) Res.string.appearance_theme_mode_light.value() else Res.string.appearance_theme_mode_dark.value(),
+					color = MaterialTheme.colorScheme.primary,
+					style = MaterialTheme.typography.bodyMedium,
+				)
+			}
+		}
+		Spacer(modifier = Modifier.width(6.dp))
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.height(48.dp)
+				.clip(MaterialTheme.shapes.small)
+				.clickable {
+					viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
+				}
+				.padding(12.dp),
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			NoIcon(
+				icon = if (isLeftNavigationBarExpended) Icons.Rounded.KeyboardDoubleArrowLeft else Icons.Rounded.KeyboardDoubleArrowRight,
+				modifier = Modifier.size(24.dp),
+				tint = MaterialTheme.colorScheme.primary
+			)
+			if (isLeftNavigationBarExpended) {
+				Spacer(modifier = Modifier.width(8.dp))
+				Text(
+					text = "收起",
+					color = MaterialTheme.colorScheme.primary,
+					style = MaterialTheme.typography.bodyMedium,
+				)
 			}
 		}
 	}

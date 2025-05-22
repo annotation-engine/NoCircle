@@ -19,14 +19,14 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.person_account
 import com.nocircle.app.generated.resources.person_settings_subtitle
 import com.nocircle.app.generated.resources.settings
-import com.nocircle.app.pages.main.NavMain
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.common.expends.hexToColor
+import com.nocircle.common.navigation.LocalNavController
+import com.nocircle.common.navigation.navigate
 import com.nocircle.compose.compose.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIconButton
@@ -174,12 +174,12 @@ private fun EditLabel() {
 
 @Composable
 private fun OptionList() {
-	val navController = NoNavControllerManager[NavMain]
+	val controller = LocalNavController.current
 	NoOption(
 		title = Res.string.settings.value(),
 		subtitle = Res.string.person_settings_subtitle.value(),
 		icon = Icons.Rounded.Settings,
 	) {
-		navController.navigate(route = SettingsRoute)
+		controller.navigate(route = SettingsRoute)
 	}
 }

@@ -29,17 +29,17 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.constants.ColorSchemeContrastConfigKey
 import com.nocircle.app.constants.ColorSchemeGroupConfigKey
 import com.nocircle.app.constants.ColorSchemeThemeModeConfigKey
 import com.nocircle.app.generated.resources.*
-import com.nocircle.app.pages.main.NavMain
 import com.nocircle.app.theme.colors.ColorSchemeContrast
 import com.nocircle.app.theme.colors.ColorSchemeGroup
 import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.config.set
+import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.navigation.popBackStack
 import com.nocircle.common.windowsize.WindowWidthSize
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.windowsize.calculateWindowWidthSize
@@ -67,11 +67,11 @@ fun AppearancePage() {
 				title = { Text(Res.string.appearance.value()) },
 				navigationIcon = {
 					if (WindowWidthSizes.isCompact) {
-						val navController = NoNavControllerManager[NavMain]
+						val controller = LocalNavController.current
 						NoIconButton(
 							icon = Icons.AutoMirrored.Rounded.ArrowBackIos
 						) {
-							navController.popBackStack()
+							controller.popBackStack()
 						}
 					}
 				}
