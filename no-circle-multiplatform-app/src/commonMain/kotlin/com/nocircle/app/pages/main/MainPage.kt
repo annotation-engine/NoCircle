@@ -88,7 +88,8 @@ fun MainPage() {
 					modifier = Modifier
 						.weight(1f)
 						.fillMaxHeight(),
-					navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade
+					navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
+					navPopTransition = if (isCompat) NavPopTransition.HorizontalSlide else NavPopTransition.Fade,
 				) {
 					composable<MainRoute>(
 						content = {
