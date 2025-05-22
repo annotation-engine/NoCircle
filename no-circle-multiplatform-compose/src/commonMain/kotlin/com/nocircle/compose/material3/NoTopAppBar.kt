@@ -29,14 +29,10 @@ fun NoTopAppBar(
 	val windowInsets by remember(paddingValues, isCompat) {
 		derivedStateOf {
 			WindowInsets(
-				top = if (isCompat) {
-					if (deviceType == DeviceType.Desktop) {
-						paddingValues.calculateTopPadding() + 16.dp
-					} else {
-						paddingValues.calculateTopPadding()
-					}
-				} else {
-					paddingValues.calculateTopPadding() * 0.6f
+				top = when {
+					!isCompat -> paddingValues.calculateTopPadding() / 2
+					deviceType == DeviceType.Desktop -> paddingValues.calculateTopPadding() + 16.dp
+					else -> paddingValues.calculateTopPadding()
 				}
 			)
 		}

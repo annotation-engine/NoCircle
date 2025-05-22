@@ -25,6 +25,9 @@
 	<string name="main_friends">好友</string>
 	<string name="main_groups">群组</string>
 	<string name="main_person">我的</string>
+	<string name="main_previous">上一页</string>
+	<string name="main_collapse">收起</string>
+	<string name="main_expended">展开</string>
 	
 	<!-- 我的 -->
 	<string name="person_account">账号：%1$d</string>

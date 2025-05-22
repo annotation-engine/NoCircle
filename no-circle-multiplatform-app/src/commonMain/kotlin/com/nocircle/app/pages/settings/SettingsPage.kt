@@ -37,7 +37,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 data object SettingsRoute : NoRoute
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsPage() {
 	val controller = LocalNavController.current

@@ -26,6 +26,7 @@ fun NoAppNavHost() {
 			composable<RegisterRoute> { RegisterPage() }
 			composable<MainRoute>(
 				navTransition = NavTransition.None,
+				navPopTransition = NavPopTransition.None,
 				content = { MainPage() }
 			)
 		}

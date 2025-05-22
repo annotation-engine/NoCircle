@@ -3,7 +3,6 @@ package com.nocircle.common.navigation
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
@@ -24,26 +23,23 @@ fun NoNavHost(
 	contentAlignment: Alignment = Alignment.TopStart,
 	route: KClass<*>? = null,
 	navTransition: NavTransition = NavTransition.HorizontalSlide,
+	navPopTransition: NavPopTransition = NavPopTransition.HorizontalSlide,
 	builder: NoNavGraphBuilder.() -> Unit
 ) {
-	CompositionLocalProvider(
-		LocalNavController provides navController
-	) {
-		NavHost(
-			navController = navController.original,
-			graph = remember(route, startDestination, builder) {
-				navController.original.createGraph(startDestination, route) {
-					NoNavGraphBuilder(this).builder()
-				}
-			},
-			modifier = modifier,
-			contentAlignment = contentAlignment,
-			enterTransition = { navTransition.enter },
-			exitTransition = { navTransition.exit },
-			popEnterTransition = { navTransition.popEnter },
-			popExitTransition = { navTransition.popExit }
-		)
-	}
+	NavHost(
+		navController = navController.original,
+		graph = remember(route, startDestination, builder) {
+			navController.original.createGraph(startDestination, route) {
+				NoNavGraphBuilder(this).builder()
+			}
+		},
+		modifier = modifier,
+		contentAlignment = contentAlignment,
+		enterTransition = { navTransition.enter },
+		exitTransition = { navTransition.exit },
+		popEnterTransition = { navPopTransition.popEnter },
+		popExitTransition = { navPopTransition.popExit }
+	)
 }
 
 val LocalNavController = staticCompositionLocalOf<NoNavHostController> {
@@ -56,10 +52,6 @@ sealed interface NavTransition {
 	
 	val exit: ExitTransition
 	
-	val popEnter: EnterTransition
-	
-	val popExit: ExitTransition
-	
 	object HorizontalSlide : NavTransition {
 		
 		override val enter = slideInHorizontally(
@@ -71,6 +63,30 @@ sealed interface NavTransition {
 			targetOffsetX = { -it / 5 },
 			animationSpec = tween(300)
 		)
+	}
+	
+	object Fade : NavTransition {
+		
+		override val enter = fadeIn(animationSpec = tween(120))
+		
+		override val exit = fadeOut(animationSpec = tween(120))
+	}
+	
+	object None : NavTransition {
+		
+		override val enter = EnterTransition.None
+		
+		override val exit = ExitTransition.None
+	}
+}
+
+sealed interface NavPopTransition {
+	
+	val popEnter: EnterTransition
+	
+	val popExit: ExitTransition
+	
+	object HorizontalSlide : NavPopTransition {
 		
 		override val popEnter = slideInHorizontally(
 			initialOffsetX = { -it / 5 },
@@ -83,26 +99,18 @@ sealed interface NavTransition {
 		)
 	}
 	
-	object Fade : NavTransition {
+	object Fade : NavPopTransition {
 		
-		override val enter = fadeIn(animationSpec = tween(120))
+		override val popEnter = fadeIn(animationSpec = tween(120))
 		
-		override val exit = fadeOut(animationSpec = tween(120))
-		
-		override val popEnter = enter
-		
-		override val popExit = exit
+		override val popExit = fadeOut(animationSpec = tween(120))
 	}
 	
-	object None : NavTransition {
+	object None : NavPopTransition {
 		
-		override val enter = EnterTransition.None
+		override val popEnter = EnterTransition.None
 		
-		override val exit = ExitTransition.None
-		
-		override val popEnter = enter
-		
-		override val popExit = exit
+		override val popExit = ExitTransition.None
 	}
 }
 
@@ -115,6 +123,7 @@ inline fun <reified T : NoRoute> NoNavGraphBuilder.composable(
 	typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
 	deepLinks: List<NavDeepLink> = emptyList(),
 	navTransition: NavTransition? = null,
+	navPopTransition: NavPopTransition? = null,
 	noinline sizeTransform: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)? = null,
 	noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {
@@ -124,8 +133,8 @@ inline fun <reified T : NoRoute> NoNavGraphBuilder.composable(
 		deepLinks = deepLinks,
 		enterTransition = { navTransition?.enter },
 		exitTransition = { navTransition?.exit },
-		popEnterTransition = { navTransition?.popEnter },
-		popExitTransition = { navTransition?.popExit },
+		popEnterTransition = { navPopTransition?.popEnter },
+		popExitTransition = { navPopTransition?.popExit },
 		sizeTransform = sizeTransform,
 		content = content
 	)
