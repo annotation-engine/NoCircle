@@ -88,10 +88,6 @@ class NoNavHostController internal constructor(
 						this.inclusive = true
 					}
 				}
-				val key = NoNavControllerManager.findKey(this)
-				if (key == RootNavHost) {
-					NoNavControllerManager.removeAllExpectForRoot()
-				}
 			}
 		}
 	}

@@ -17,7 +17,7 @@ private val NoKoinModule = module {
 	viewModel { GuideViewModel() }
 	viewModel { LoginViewModel() }
 	viewModel { RegisterViewModel() }
-	viewModel { MainViewModel() }
+	single { MainViewModel() }
 	viewModel { PersonViewModel() }
 	viewModel { SettingsViewModel() }
 	single { AppearanceViewModel() }

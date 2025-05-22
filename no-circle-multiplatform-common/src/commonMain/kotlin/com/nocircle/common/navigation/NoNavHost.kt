@@ -20,10 +20,7 @@ fun NoNavHost(
 	modifier: Modifier = Modifier,
 	contentAlignment: Alignment = Alignment.TopStart,
 	route: KClass<*>? = null,
-	enterTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) = { DefaultEnterTransition },
-	exitTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) = { DefaultExitTransition },
-	popEnterTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) = { DefaultPopEnterTransition },
-	popExitTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) = { DefaultPopExitTransition },
+	navTransition: NavTransition = HorizontalSlideTransition,
 	builder: NoNavGraphBuilder.() -> Unit
 ) {
 	NavHost(
@@ -35,32 +32,57 @@ fun NoNavHost(
 		},
 		modifier = modifier,
 		contentAlignment = contentAlignment,
-		enterTransition = enterTransition,
-		exitTransition = exitTransition,
-		popEnterTransition = popEnterTransition,
-		popExitTransition = popExitTransition
+		enterTransition = { navTransition.enter },
+		exitTransition = { navTransition.exit },
+		popEnterTransition = { navTransition.popEnter },
+		popExitTransition = { navTransition.popExit }
 	)
 }
 
-private val DefaultEnterTransition = slideInHorizontally(
-	initialOffsetX = { it },
-	animationSpec = tween(300)
-)
+interface NavTransition {
+	
+	val enter: EnterTransition
+	
+	val exit: ExitTransition
+	
+	val popEnter: EnterTransition
+	
+	val popExit: ExitTransition
+}
 
-private val DefaultExitTransition = slideOutHorizontally(
-	targetOffsetX = { -it / 5 },
-	animationSpec = tween(300)
-)
+object HorizontalSlideTransition : NavTransition {
+	
+	override val enter = slideInHorizontally(
+		initialOffsetX = { it },
+		animationSpec = tween(300)
+	)
+	
+	override val exit = slideOutHorizontally(
+		targetOffsetX = { -it / 5 },
+		animationSpec = tween(300)
+	)
+	
+	override val popEnter = slideInHorizontally(
+		initialOffsetX = { -it / 5 },
+		animationSpec = tween(300)
+	)
+	
+	override val popExit = slideOutHorizontally(
+		targetOffsetX = { it },
+		animationSpec = tween(300)
+	)
+}
 
-private val DefaultPopEnterTransition = slideInHorizontally(
-	initialOffsetX = { -it / 5 },
-	animationSpec = tween(300)
-)
-
-private val DefaultPopExitTransition = slideOutHorizontally(
-	targetOffsetX = { it },
-	animationSpec = tween(300)
-)
+object FadeTransition : NavTransition {
+	
+	override val enter = fadeIn(animationSpec = tween(120))
+	
+	override val exit = fadeOut(animationSpec = tween(120))
+	
+	override val popEnter = enter
+	
+	override val popExit = exit
+}
 
 class NoNavGraphBuilder(
 	val original: NavGraphBuilder,
@@ -69,10 +91,7 @@ class NoNavGraphBuilder(
 	inline fun <reified T : NoRoute> composable(
 		typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
 		deepLinks: List<NavDeepLink> = emptyList(),
-		noinline enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)? = null,
-		noinline exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)? = null,
-		noinline popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards EnterTransition?)? = enterTransition,
-		noinline popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards ExitTransition?)? = exitTransition,
+		navTransition: NavTransition? = null,
 		noinline sizeTransform: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)? = null,
 		noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 	) {
@@ -80,10 +99,10 @@ class NoNavGraphBuilder(
 		original.composable<T>(
 			typeMap = typeMap,
 			deepLinks = deepLinks,
-			enterTransition = enterTransition,
-			exitTransition = exitTransition,
-			popEnterTransition = popEnterTransition,
-			popExitTransition = popExitTransition,
+			enterTransition = { navTransition?.enter },
+			exitTransition = { navTransition?.exit },
+			popEnterTransition = { navTransition?.popEnter },
+			popExitTransition = { navTransition?.popExit },
 			sizeTransform = sizeTransform,
 			content = content
 		)

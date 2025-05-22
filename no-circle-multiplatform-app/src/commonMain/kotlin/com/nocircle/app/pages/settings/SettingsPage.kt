@@ -17,11 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.nocircle.app.NavRoot
+import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.login.LoginRoute
-import com.nocircle.app.pages.main.person.PersonNavHostKey
+import com.nocircle.app.pages.main.NavMain
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
-import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
@@ -30,7 +31,6 @@ import com.nocircle.compose.compose.NoOption
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
-import com.nocircle.compose.foundation.layout.autoPadding
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.resources.value
@@ -43,7 +43,7 @@ data object SettingsRoute : NoRoute
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsPage() {
-	val navController = NoNavControllerManager.get(PersonNavHostKey)
+	val navController = NoNavControllerManager[NavMain]
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
@@ -64,7 +64,7 @@ fun SettingsPage() {
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
-				.autoPadding(paddingValues)
+				.padding(top = paddingValues.calculateTopPadding())
 				.verticalScroll(verticalScrollState),
 			contentAlignment = Alignment.TopCenter
 		) {
@@ -97,7 +97,7 @@ private fun Logout() {
 	var showLogoutModal by remember { mutableStateOf(false) }
 	if (showLogoutModal) {
 		val viewModel = koinViewModel<SettingsViewModel>()
-		val controller = NoNavControllerManager.get()
+		val controller = NoNavControllerManager[NavRoot]
 		NoAlertModalBottomSheet(
 			title = {
 				NoIcon(
@@ -119,6 +119,7 @@ private fun Logout() {
 				val success = viewModel.logout()
 				if (success) {
 					controller.navigate(LoginRoute, popup = NoPopUp.All)
+					NoNavControllerManager -= NavMain
 				}
 			},
 			confirmColors = NoButtons.ErrorColors

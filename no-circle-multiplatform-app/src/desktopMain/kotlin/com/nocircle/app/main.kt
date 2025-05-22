@@ -17,7 +17,6 @@ import com.nocircle.app.pages.account.register.RegisterRoute
 import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoRoute
 import java.awt.Color
 import java.awt.Dimension
@@ -26,14 +25,14 @@ import kotlin.reflect.KClass
 
 fun main() {
 	application {
-		var widthTarget by remember { mutableStateOf(440.dp) }
-		var heightTarget by remember { mutableStateOf(540.dp) }
+		var widthTarget by remember { mutableStateOf(WindowConfig.Size440x540.size.width) }
+		var heightTarget by remember { mutableStateOf(WindowConfig.Size440x540.size.height) }
 		val width by animateDpAsState(
 			targetValue = widthTarget,
 			animationSpec = spring(stiffness = Spring.StiffnessLow)
 		)
-		var minSizeTarget by remember { mutableStateOf(DpSize(440.dp, 540.dp)) }
-		var minSize by remember { mutableStateOf(DpSize(440.dp, 540.dp)) }
+		var minSizeTarget by remember { mutableStateOf(WindowConfig.Size440x540.minSize) }
+		var minSize by remember { mutableStateOf(WindowConfig.Size440x540.minSize) }
 		val height by animateDpAsState(
 			targetValue = heightTarget,
 			animationSpec = spring(stiffness = Spring.StiffnessLow),
@@ -64,7 +63,7 @@ fun main() {
 					minSize.height.value.toInt()
 				)
 			}
-			val navController = NoNavControllerManager.get()
+			val navController = NoNavControllerManager[NavRoot]
 			LaunchedEffect(Unit) {
 				navController.addOnDestinationChangedListener { controller, _, _ ->
 					val currentRoute = controller.currentRoute
@@ -100,7 +99,7 @@ private enum class WindowConfig(
 	Other(
 		size = DpSize(800.dp, 600.dp),
 		resize = true,
-		minSize = DpSize(600.dp, 540.dp)
+		minSize = DpSize(380.dp, 540.dp)
 	)
 }
 

@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainViewModel : NoViewModel() {
 	
-	val mainSubPage = MutableStateFlow(MainSubPage.Home)
+	val mainSubRoute = MutableStateFlow(MainSubRoute.Home)
 }

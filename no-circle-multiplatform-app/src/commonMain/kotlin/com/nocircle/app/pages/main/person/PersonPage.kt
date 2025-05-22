@@ -1,8 +1,5 @@
 package com.nocircle.app.pages.main.person
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -22,20 +19,14 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.person_account
 import com.nocircle.app.generated.resources.person_settings_subtitle
 import com.nocircle.app.generated.resources.settings
-import com.nocircle.app.pages.main.MainRoute
-import com.nocircle.app.pages.settings.SettingsPage
+import com.nocircle.app.pages.main.NavMain
 import com.nocircle.app.pages.settings.SettingsRoute
-import com.nocircle.app.pages.settings.appearance.AppearancePage
-import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.common.expends.hexToColor
-import com.nocircle.common.navigation.NoNavControllerManager
-import com.nocircle.common.navigation.NoNavHost
-import com.nocircle.common.navigation.NoNavHostKey
-import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.compose.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIconButton
@@ -45,37 +36,6 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun PersonPage() {
-	if (WindowWidthSizes.isCompact) {
-		PersonPageCompat()
-	} else {
-		PersonPageMedium()
-	}
-}
-
-data object PersonNavHostKey : NoNavHostKey
-
-@Composable
-private fun PersonPageMedium() {
-	val navController = NoNavControllerManager.get(PersonNavHostKey)
-	NoNavHost(
-		navController = navController,
-		startDestination = MainRoute,
-		enterTransition = { EnterTransition },
-		exitTransition = { ExitTransition },
-		popEnterTransition = { EnterTransition },
-		popExitTransition = { ExitTransition },
-	) {
-		composable<MainRoute> { PersonPageCompat() }
-		composable<SettingsRoute> { SettingsPage() }
-		composable<AppearanceRoute> { AppearancePage() }
-	}
-}
-
-private val EnterTransition = fadeIn(animationSpec = tween(120))
-private val ExitTransition = fadeOut(animationSpec = tween(120))
-
-@Composable
-private fun PersonPageCompat() {
 	val verticalScrollState = rememberScrollState()
 	Box(
 		modifier = Modifier
@@ -214,7 +174,7 @@ private fun EditLabel() {
 
 @Composable
 private fun OptionList() {
-	val navController = NoNavControllerManager.get(PersonNavHostKey)
+	val navController = NoNavControllerManager[NavMain]
 	NoOption(
 		title = Res.string.settings.value(),
 		subtitle = Res.string.person_settings_subtitle.value(),

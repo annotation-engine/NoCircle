@@ -19,9 +19,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import com.nocircle.app.NoNavControllerManager
+import com.nocircle.app.NavRoot
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.MainRoute
-import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.icon.NoIcons
@@ -41,7 +42,7 @@ fun GuidePage() {
 	var alphaTarget by remember { mutableStateOf(0f) }
 	var scaleTarget by remember { mutableStateOf(1f) }
 	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
-	val navController = NoNavControllerManager.get()
+	val navController = NoNavControllerManager[NavRoot]
 	LaunchedEffect(Unit) {
 		delay(300)
 		offsetYTarget = (-100).dp

@@ -19,15 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.nocircle.app.NavRoot
+import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.register.RegisterRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.expends.not
-import com.nocircle.common.navigation.NoNavControllerManager
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.foundation.*
-import com.nocircle.compose.foundation.layout.autoPadding
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
@@ -44,7 +44,7 @@ data object LoginRoute : NoRoute
 fun LoginPage() {
 	val viewModel = koinViewModel<LoginViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val navController = NoNavControllerManager.get()
+	val navController = NoNavControllerManager[NavRoot]
 	LaunchedEffect(Unit) {
 		if (navController.resultRoute == RegisterRoute::class) {
 			val username = navController.getResult<String>("username")
@@ -62,7 +62,7 @@ fun LoginPage() {
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
-				.autoPadding(paddingValues)
+				.padding(top = paddingValues.calculateTopPadding())
 				.verticalScroll(verticalScroll),
 			contentAlignment = Alignment.TopCenter
 		) {

@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.nocircle.common.device.DeviceType
+import com.nocircle.common.device.NoDevice
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.LocalNoIconTintColor
 
@@ -23,10 +25,19 @@ fun NoTopAppBar(
 ) {
 	val paddingValues = NoTopAppBarDefaults.windowInsets.asPaddingValues()
 	val isCompat = WindowWidthSizes.isCompact
+	val deviceType = NoDevice.Type
 	val windowInsets by remember(paddingValues, isCompat) {
 		derivedStateOf {
 			WindowInsets(
-				top = paddingValues.calculateTopPadding() / if (isCompat) 1 else 2
+				top = if (isCompat) {
+					if (deviceType == DeviceType.Desktop) {
+						paddingValues.calculateTopPadding() + 16.dp
+					} else {
+						paddingValues.calculateTopPadding()
+					}
+				} else {
+					paddingValues.calculateTopPadding() * 0.6f
+				}
 			)
 		}
 	}

@@ -26,18 +26,22 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import com.nocircle.app.NavControllerKey
+import com.nocircle.app.NavRoot
+import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
-import com.nocircle.app.pages.main.person.PersonNavHostKey
 import com.nocircle.app.pages.main.person.PersonPage
-import com.nocircle.common.navigation.NoNavControllerManager
-import com.nocircle.common.navigation.NoRoute
+import com.nocircle.app.pages.settings.SettingsPage
+import com.nocircle.app.pages.settings.SettingsRoute
+import com.nocircle.app.pages.settings.appearance.AppearancePage
+import com.nocircle.app.pages.settings.appearance.AppearanceRoute
+import com.nocircle.common.navigation.*
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
-import com.nocircle.compose.foundation.layout.autoPadding
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
@@ -49,11 +53,13 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 data object MainRoute : NoRoute
 
+data object NavMain : NavControllerKey
+
 @Composable
 fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
-	val controller = NoNavControllerManager.get()
+	val controller = NoNavControllerManager[NavRoot]
 	LaunchedEffect(Unit) {
 		if (controller.resultRoute == null) {
 			hostState.showNoSnackbar(Res.string.login_success)
@@ -62,48 +68,40 @@ fun MainPage() {
 	}
 	NoScaffold(
 		snackbarHost = { NoSnackbarHost(hostState) }
-	) { paddingValues ->
-		Box(
+	) {
+		Row(
 			modifier = Modifier
 				.fillMaxSize()
-				.autoPadding(paddingValues)
 		) {
-			val subPage by viewModel.mainSubPage.collectAsState()
-			if (WindowWidthSizes.isCompact) {
-				CompactMainPage(
-					subPage = subPage,
-					onSubPageChange = { viewModel.mainSubPage.value = it },
-				)
-			} else {
-				MediumMainPage(
-					subPage = subPage,
-					onSubPageChange = { viewModel.mainSubPage.value = it },
+			val controller = NoNavControllerManager[NavMain]
+			val isCompat = WindowWidthSizes.isCompact
+			val subRoute by viewModel.mainSubRoute.collectAsState()
+			if (!isCompat) {
+				LeftBar(
+					subRoute = subRoute,
+					onSubRouteChange = {
+						viewModel.mainSubRoute.value = it
+						controller.navigate(MainRoute, popup = NoPopUp.All)
+					}
 				)
 			}
+			Column(
+				modifier = Modifier
+					.weight(1f)
+					.fillMaxHeight()
+			) {
+				val navController = NoNavControllerManager[NavMain]
+				NoNavHost(
+					navController = navController,
+					startDestination = MainRoute,
+					navTransition = if (isCompat) HorizontalSlideTransition else FadeTransition
+				) {
+					composable<MainRoute> { MainPage(subRoute) }
+					composable<SettingsRoute> { SettingsPage() }
+					composable<AppearanceRoute> { AppearancePage() }
+				}
+			}
 		}
-	}
-}
-
-@Composable
-private fun CompactMainPage(
-	subPage: MainSubPage,
-	onSubPageChange: (MainSubPage) -> Unit
-) {
-	Column(
-		modifier = Modifier
-			.fillMaxSize()
-	) {
-		Box(
-			modifier = Modifier
-				.weight(1f)
-				.fillMaxHeight()
-		) {
-			MainRoute(subPage)
-		}
-		BottomBar(
-			subPage = subPage,
-			onSubPageChange = onSubPageChange
-		)
 	}
 }
 
@@ -111,13 +109,12 @@ private val HorizontalItemSpacing = 12.dp
 
 @Composable
 private fun BottomBar(
-	subPage: MainSubPage,
-	onSubPageChange: (MainSubPage) -> Unit
+	subRoute: MainSubRoute,
+	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
 	Box(
 		modifier = Modifier
 			.fillMaxWidth()
-			.windowInsetsPadding(WindowInsets.navigationBars)
 			.padding(12.dp)
 			.height(48.dp)
 	) {
@@ -126,13 +123,13 @@ private fun BottomBar(
 		if (width != Dp.Unspecified) {
 			val sliderWidth by remember(width) {
 				derivedStateOf {
-					val size = MainSubPage.entries.size
+					val size = MainSubRoute.entries.size
 					(width - HorizontalItemSpacing * (size - 1)) / size
 				}
 			}
-			val offsetXTarget by remember(sliderWidth, subPage) {
+			val offsetXTarget by remember(sliderWidth, subRoute) {
 				derivedStateOf {
-					(sliderWidth + HorizontalItemSpacing) * MainSubPage.entries.indexOfFirst { it == subPage }
+					(sliderWidth + HorizontalItemSpacing) * MainSubRoute.entries.indexOfFirst { it == subRoute }
 				}
 			}
 			val offsetX by animateDpAsState(offsetXTarget)
@@ -152,16 +149,16 @@ private fun BottomBar(
 					width = with(density) { it.size.width.toDp() }
 				}
 		) {
-			MainSubPage.entries.fastForEachIndexed { index, it ->
+			MainSubRoute.entries.fastForEachIndexed { index, it ->
 				val color by animateColorAsState(
-					targetValue = if (it == subPage) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+					targetValue = if (it == subRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
 				)
 				Row(
 					modifier = Modifier
 						.weight(1f)
 						.fillMaxHeight()
 						.clip(MaterialTheme.shapes.small)
-						.clickable { onSubPageChange(it) },
+						.clickable { onSubRouteChange(it) },
 					verticalAlignment = Alignment.CenterVertically,
 					horizontalArrangement = Arrangement.Center
 				) {
@@ -178,36 +175,10 @@ private fun BottomBar(
 						style = MaterialTheme.typography.bodySmall,
 					)
 				}
-				if (index < MainSubPage.entries.lastIndex) {
+				if (index < MainSubRoute.entries.lastIndex) {
 					Spacer(modifier = Modifier.width(HorizontalItemSpacing))
 				}
 			}
-		}
-	}
-}
-
-@Composable
-private fun MediumMainPage(
-	subPage: MainSubPage,
-	onSubPageChange: (MainSubPage) -> Unit
-) {
-	Row(
-		modifier = Modifier
-			.fillMaxSize()
-			.background(MaterialTheme.colorScheme.surfaceContainer),
-		verticalAlignment = Alignment.CenterVertically,
-	) {
-		LeftBar(
-			subPage = subPage,
-			onSubPageChange = onSubPageChange
-		)
-		Box(
-			modifier = Modifier
-				.weight(1f)
-				.fillMaxHeight()
-				.background(MaterialTheme.colorScheme.surface)
-		) {
-			MainRoute(subPage)
 		}
 	}
 }
@@ -216,28 +187,24 @@ private val VerticalItemSpacing = 12.dp
 
 @Composable
 private fun LeftBar(
-	subPage: MainSubPage,
-	onSubPageChange: (MainSubPage) -> Unit
+	subRoute: MainSubRoute,
+	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
 	Box(
 		modifier = Modifier
 			.width(68.dp)
 			.fillMaxHeight()
+			.background(MaterialTheme.colorScheme.surfaceContainerHigh)
 			.padding(
 				horizontal = 6.dp,
 				vertical = 32.dp
 			)
 	) {
-		val navController = NoNavControllerManager.get(
-			moreNavHost = when (subPage) {
-				MainSubPage.Person -> PersonNavHostKey
-				else -> PersonNavHostKey
-			}
-		)
+		val navController = NoNavControllerManager[NavMain]
 		NoIconButton(
 			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
 			modifier = Modifier
-				.size(48.dp)
+				.size(44.dp)
 				.align(Alignment.TopCenter),
 			tint = MaterialTheme.colorScheme.primary,
 			paddingValues = PaddingValues(10.dp),
@@ -254,13 +221,13 @@ private fun LeftBar(
 			if (height != Dp.Unspecified) {
 				val sliderHeight by remember(height) {
 					derivedStateOf {
-						val size = MainSubPage.entries.size
+						val size = MainSubRoute.entries.size
 						(height - VerticalItemSpacing * (size - 1)) / size
 					}
 				}
-				val offsetYTarget by remember(sliderHeight, subPage) {
+				val offsetYTarget by remember(sliderHeight, subRoute) {
 					derivedStateOf {
-						(sliderHeight + VerticalItemSpacing) * MainSubPage.entries.indexOfFirst { it == subPage }
+						(sliderHeight + VerticalItemSpacing) * MainSubRoute.entries.indexOfFirst { it == subRoute }
 					}
 				}
 				val offsetY by animateDpAsState(offsetYTarget)
@@ -281,16 +248,16 @@ private fun LeftBar(
 						height = with(density) { it.size.height.toDp() }
 					}
 			) {
-				MainSubPage.entries.fastForEachIndexed { index, it ->
+				MainSubRoute.entries.fastForEachIndexed { index, it ->
 					val color by animateColorAsState(
-						targetValue = if (it == subPage) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+						targetValue = if (it == subRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
 					)
 					Column(
 						modifier = Modifier
 							.fillMaxWidth()
 							.height(56.dp)
 							.clip(MaterialTheme.shapes.small)
-							.clickable { onSubPageChange(it) },
+							.clickable { onSubRouteChange(it) },
 						verticalArrangement = Arrangement.Center,
 						horizontalAlignment = Alignment.CenterHorizontally
 					) {
@@ -307,7 +274,7 @@ private fun LeftBar(
 							style = MaterialTheme.typography.bodySmall,
 						)
 					}
-					if (index < MainSubPage.entries.size - 1) {
+					if (index < MainSubRoute.entries.size - 1) {
 						Spacer(modifier = Modifier.height(VerticalItemSpacing))
 					}
 				}
@@ -317,24 +284,48 @@ private fun LeftBar(
 }
 
 @Composable
-private fun MainRoute(
-	subPage: MainSubPage,
+private fun MainPage(
+	subRoute: MainSubRoute
 ) {
-	Crossfade(
-		targetState = subPage,
-		animationSpec = tween(durationMillis = 120),
-		label = "CompactMainRouteCrossfade",
-	) { target ->
-		when (target) {
-			MainSubPage.Home -> HomePage()
-			MainSubPage.Friends -> FriendsPage()
-			MainSubPage.Groups -> GroupsPage()
-			MainSubPage.Person -> PersonPage()
+	NoScaffold { paddingValues ->
+		Column(
+			modifier = Modifier
+				.fillMaxSize()
+				.padding(paddingValues)
+		) {
+			Crossfade(
+				targetState = subRoute,
+				modifier = Modifier
+					.fillMaxWidth()
+					.weight(1f),
+				animationSpec = tween(durationMillis = 120),
+				label = "CompactMainRouteCrossfade",
+			) { target ->
+				when (target) {
+					MainSubRoute.Home -> HomePage()
+					MainSubRoute.Friends -> FriendsPage()
+					MainSubRoute.Groups -> GroupsPage()
+					MainSubRoute.Person -> PersonPage()
+				}
+			}
+			
+			val isCompat = WindowWidthSizes.isCompact
+			val viewModel = koinViewModel<MainViewModel>()
+			if (isCompat) {
+				val controller = NoNavControllerManager[NavMain]
+				BottomBar(
+					subRoute = subRoute,
+					onSubRouteChange = {
+						viewModel.mainSubRoute.value = it
+						controller.navigate(MainRoute, popup = NoPopUp.All)
+					}
+				)
+			}
 		}
 	}
 }
 
-enum class MainSubPage(
+enum class MainSubRoute(
 	val title: StringResource,
 	val icon: ImageVector
 ) {
