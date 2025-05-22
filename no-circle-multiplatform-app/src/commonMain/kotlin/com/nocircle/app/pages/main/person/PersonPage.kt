@@ -180,6 +180,6 @@ private fun OptionList() {
 		subtitle = Res.string.person_settings_subtitle.value(),
 		icon = Icons.Rounded.Settings,
 	) {
-		navController.navigate(SettingsRoute)
+		navController.navigate(route = SettingsRoute)
 	}
 }

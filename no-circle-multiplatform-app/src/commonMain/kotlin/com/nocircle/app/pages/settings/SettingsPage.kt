@@ -82,7 +82,7 @@ fun SettingsPage() {
 					subtitle = Res.string.settings_appearance_subtitle.value(),
 					icon = Icons.Rounded.Cookie
 				) {
-					navController.navigate(AppearanceRoute)
+					navController.navigate(route = AppearanceRoute)
 				}
 				Spacer(Modifier.height(16.dp))
 				Logout()
@@ -118,7 +118,10 @@ private fun Logout() {
 			onConfirm = {
 				val success = viewModel.logout()
 				if (success) {
-					controller.navigate(LoginRoute, popup = NoPopUp.All)
+					controller.navigate(
+						route = LoginRoute,
+						popup = NoPopUp.All
+					)
 					NoNavControllerManager -= NavMain
 				}
 			},

@@ -81,7 +81,9 @@ fun MainPage() {
 					subRoute = subRoute,
 					onSubRouteChange = {
 						viewModel.mainSubRoute.value = it
-						controller.navigate(MainRoute, popup = NoPopUp.All)
+						if (controller.currentRoute != MainRoute) {
+							controller.navigate(route = MainRoute, popup = NoPopUp.All)
+						}
 					}
 				)
 			}
@@ -96,10 +98,57 @@ fun MainPage() {
 					startDestination = MainRoute,
 					navTransition = if (isCompat) HorizontalSlideTransition else FadeTransition
 				) {
-					composable<MainRoute> { MainPage(subRoute) }
+					composable<MainRoute>(
+						navTransition = FadeTransition,
+						content = { MainPage(subRoute) }
+					)
 					composable<SettingsRoute> { SettingsPage() }
 					composable<AppearanceRoute> { AppearancePage() }
 				}
+			}
+		}
+	}
+}
+
+@Composable
+private fun MainPage(
+	subRoute: MainSubRoute
+) {
+	NoScaffold { paddingValues ->
+		Column(
+			modifier = Modifier
+				.fillMaxSize()
+				.padding(paddingValues)
+		) {
+			Crossfade(
+				targetState = subRoute,
+				modifier = Modifier
+					.fillMaxWidth()
+					.weight(1f),
+				animationSpec = tween(durationMillis = 120),
+				label = "CompactMainRouteCrossfade",
+			) { target ->
+				when (target) {
+					MainSubRoute.Home -> HomePage()
+					MainSubRoute.Friends -> FriendsPage()
+					MainSubRoute.Groups -> GroupsPage()
+					MainSubRoute.Person -> PersonPage()
+				}
+			}
+			
+			val isCompat = WindowWidthSizes.isCompact
+			val viewModel = koinViewModel<MainViewModel>()
+			if (isCompat) {
+				val controller = NoNavControllerManager[NavMain]
+				BottomBar(
+					subRoute = subRoute,
+					onSubRouteChange = {
+						viewModel.mainSubRoute.value = it
+						if (controller.currentRoute != MainRoute) {
+							controller.navigate(route = MainRoute, popup = NoPopUp.All)
+						}
+					}
+				)
 			}
 		}
 	}
@@ -278,48 +327,6 @@ private fun LeftBar(
 						Spacer(modifier = Modifier.height(VerticalItemSpacing))
 					}
 				}
-			}
-		}
-	}
-}
-
-@Composable
-private fun MainPage(
-	subRoute: MainSubRoute
-) {
-	NoScaffold { paddingValues ->
-		Column(
-			modifier = Modifier
-				.fillMaxSize()
-				.padding(paddingValues)
-		) {
-			Crossfade(
-				targetState = subRoute,
-				modifier = Modifier
-					.fillMaxWidth()
-					.weight(1f),
-				animationSpec = tween(durationMillis = 120),
-				label = "CompactMainRouteCrossfade",
-			) { target ->
-				when (target) {
-					MainSubRoute.Home -> HomePage()
-					MainSubRoute.Friends -> FriendsPage()
-					MainSubRoute.Groups -> GroupsPage()
-					MainSubRoute.Person -> PersonPage()
-				}
-			}
-			
-			val isCompat = WindowWidthSizes.isCompact
-			val viewModel = koinViewModel<MainViewModel>()
-			if (isCompat) {
-				val controller = NoNavControllerManager[NavMain]
-				BottomBar(
-					subRoute = subRoute,
-					onSubRouteChange = {
-						viewModel.mainSubRoute.value = it
-						controller.navigate(MainRoute, popup = NoPopUp.All)
-					}
-				)
 			}
 		}
 	}

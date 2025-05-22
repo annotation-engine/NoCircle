@@ -84,6 +84,17 @@ object FadeTransition : NavTransition {
 	override val popExit = exit
 }
 
+object NoneTransition : NavTransition {
+	
+	override val enter = EnterTransition.None
+	
+	override val exit = ExitTransition.None
+	
+	override val popEnter = enter
+	
+	override val popExit = exit
+}
+
 class NoNavGraphBuilder(
 	val original: NavGraphBuilder,
 ) {

@@ -9,6 +9,7 @@ import com.nocircle.app.pages.guide.GuidePage
 import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.MainPage
 import com.nocircle.app.pages.main.MainRoute
+import com.nocircle.common.navigation.FadeTransition
 import com.nocircle.common.navigation.NoNavHost
 import com.nocircle.common.navigation.NoNavHostController
 import com.nocircle.common.navigation.rememberNoNavController
@@ -23,7 +24,10 @@ fun NoAppNavHost() {
 		composable<GuideRoute> { GuidePage() }
 		composable<LoginRoute> { LoginPage() }
 		composable<RegisterRoute> { RegisterPage() }
-		composable<MainRoute> { MainPage() }
+		composable<MainRoute>(
+			navTransition = FadeTransition,
+			content = { MainPage() }
+		)
 	}
 }
 

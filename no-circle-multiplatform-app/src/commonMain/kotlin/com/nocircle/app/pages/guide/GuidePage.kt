@@ -19,8 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.NavRoot
+import com.nocircle.app.NoNavControllerManager
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.navigation.NoPopUp
@@ -52,11 +52,11 @@ fun GuidePage() {
 		scaleTarget = 0.8f
 		alphaTarget = 0f
 		delay(250)
-		if (viewModel.verifyToken()) {
-			navController.navigate(route = MainRoute, popup = NoPopUp.Current)
-		} else {
-			navController.navigate(route = LoginRoute, popup = NoPopUp.Current)
-		}
+		val verify = viewModel.verifyToken()
+		navController.navigate(
+			route = if (verify) MainRoute else LoginRoute,
+			popup = NoPopUp.Current
+		)
 	}
 	NoScaffold {
 		Box(
