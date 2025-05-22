@@ -80,8 +80,11 @@ fun MainPage() {
 				LeftBar(
 					subRoute = subRoute,
 					onSubRouteChange = {
-						viewModel.mainSubRoute.value = it
-						if (controller.currentRoute != MainRoute) {
+						val current = viewModel.mainSubRoute.value
+						if (current != it) {
+							viewModel.mainSubRoute.value = it
+						}
+						if (controller.currentRoute != MainRoute::class) {
 							controller.navigate(route = MainRoute, popup = NoPopUp.All)
 						}
 					}
@@ -143,8 +146,11 @@ private fun MainPage(
 				BottomBar(
 					subRoute = subRoute,
 					onSubRouteChange = {
-						viewModel.mainSubRoute.value = it
-						if (controller.currentRoute != MainRoute) {
+						val current = viewModel.mainSubRoute.value
+						if (current != it) {
+							viewModel.mainSubRoute.value = it
+						}
+						if (controller.currentRoute != MainRoute::class) {
 							controller.navigate(route = MainRoute, popup = NoPopUp.All)
 						}
 					}
