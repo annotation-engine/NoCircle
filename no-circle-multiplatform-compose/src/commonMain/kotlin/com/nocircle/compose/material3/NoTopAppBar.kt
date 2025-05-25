@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.foundation.NoWindowDraggableArea
 import com.nocircle.compose.foundation.LocalNoIconTintColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,37 +38,39 @@ fun NoTopAppBar(
 			)
 		}
 	}
-	Row(
-		modifier = modifier
-			.shadow(
-				elevation = 4.dp,
-				ambientColor = colors.shadowColor,
-				spotColor = colors.shadowColor,
-			)
-			.fillMaxWidth()
-			.background(colors.containerColor)
-			.windowInsetsPadding(windowInsets)
-			.padding(16.dp),
-		verticalAlignment = Alignment.CenterVertically,
-	) {
-		if (navigationIcon != null) {
+	NoWindowDraggableArea {
+		Row(
+			modifier = modifier
+				.shadow(
+					elevation = 4.dp,
+					ambientColor = colors.shadowColor,
+					spotColor = colors.shadowColor,
+				)
+				.fillMaxWidth()
+				.background(colors.containerColor)
+				.windowInsetsPadding(windowInsets)
+				.padding(16.dp),
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			if (navigationIcon != null) {
+				CompositionLocalProvider(
+					LocalNoIconTintColor provides colors.navigationIconContentColor,
+					content = navigationIcon
+				)
+				Spacer(Modifier.width(8.dp))
+			}
 			CompositionLocalProvider(
-				LocalNoIconTintColor provides colors.navigationIconContentColor,
-				content = navigationIcon
+				LocalContentColor provides colors.titleContentColor,
+				LocalTextStyle provides MaterialTheme.typography.titleLarge,
+				content = title
 			)
-			Spacer(Modifier.width(8.dp))
-		}
-		CompositionLocalProvider(
-			LocalContentColor provides colors.titleContentColor,
-			LocalTextStyle provides MaterialTheme.typography.titleLarge,
-			content = title
-		)
-		Spacer(Modifier.weight(1f))
-		if (actions != null) {
-			CompositionLocalProvider(
-				LocalNoIconTintColor provides colors.actionIconContentColor
-			) {
-				actions()
+			Spacer(Modifier.weight(1f))
+			if (actions != null) {
+				CompositionLocalProvider(
+					LocalNoIconTintColor provides colors.actionIconContentColor
+				) {
+					actions()
+				}
 			}
 		}
 	}

@@ -19,6 +19,7 @@ import com.nocircle.common.log.NoLog
 import com.nocircle.common.navigation.NoNavHostController
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.animation.animateWindowStateAsState
+import com.nocircle.compose.foundation.LocalFrameWindowScope
 import java.awt.Color
 import java.awt.Dimension
 import kotlin.reflect.KClass
@@ -45,7 +46,8 @@ fun main() {
 			)
 			NoLog.info(LocalDensity.current)
 			CompositionLocalProvider(
-				LocalDensity provides Density(density = LocalDensity.current.density * 0.88f)
+				LocalDensity provides Density(density = LocalDensity.current.density * 0.88f),
+				LocalFrameWindowScope provides this
 			) {
 				NoApp {
 					val surface = MaterialTheme.colorScheme.surface
