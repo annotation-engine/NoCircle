@@ -19,7 +19,7 @@ import com.nocircle.common.log.NoLog
 import com.nocircle.common.navigation.NoNavHostController
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.animation.animateWindowStateAsState
-import com.nocircle.compose.foundation.LocalFrameWindowScope
+import com.nocircle.compose.desktop.LocalFrameWindowScope
 import java.awt.Color
 import java.awt.Dimension
 import kotlin.reflect.KClass

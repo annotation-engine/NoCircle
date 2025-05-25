@@ -1,4 +1,4 @@
-package com.nocircle.compose.foundation
+package com.nocircle.compose.desktop
 
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.runtime.Composable

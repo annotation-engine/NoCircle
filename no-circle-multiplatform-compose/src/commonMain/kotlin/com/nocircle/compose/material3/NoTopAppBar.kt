@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
 import com.nocircle.common.windowsize.WindowWidthSizes
-import com.nocircle.compose.foundation.NoWindowDraggableArea
+import com.nocircle.compose.desktop.NoWindowDraggableArea
 import com.nocircle.compose.foundation.LocalNoIconTintColor
 
 @OptIn(ExperimentalMaterial3Api::class)

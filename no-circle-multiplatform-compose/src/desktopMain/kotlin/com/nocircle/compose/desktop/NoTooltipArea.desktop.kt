@@ -1,4 +1,4 @@
-package com.nocircle.compose.foundation
+package com.nocircle.compose.desktop
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.TooltipArea
@@ -25,7 +25,7 @@ actual fun NoTooltipArea(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-private fun NoTooltipPlacement.toTooltipPlacement(): TooltipPlacement {
+fun NoTooltipPlacement.toTooltipPlacement(): TooltipPlacement {
 	return when (this) {
 		is NoTooltipPlacement.ComponentRect -> {
 			TooltipPlacement.ComponentRect(

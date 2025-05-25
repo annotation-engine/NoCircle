@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -43,9 +42,10 @@ import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.navigation.*
 import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.desktop.NoTooltipArea
+import com.nocircle.compose.desktop.NoTooltipPlacement
+import com.nocircle.compose.desktop.NoWindowDraggableArea
 import com.nocircle.compose.foundation.NoIcon
-import com.nocircle.compose.foundation.NoTooltipArea
-import com.nocircle.compose.foundation.NoTooltipPlacement
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
@@ -236,89 +236,91 @@ private fun LeftNavigationBar(
 	subRoute: MainSubRoute,
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	val viewModel = koinViewModel<MainViewModel>()
-	val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
-	val width by animateDpAsState(
-		targetValue = if (isLeftNavigationBarExpended) 148.dp else 72.dp
-	)
-	Column(
-		modifier = Modifier
-			.width(width)
-			.fillMaxHeight()
-			.background(MaterialTheme.colorScheme.surfaceContainer)
-			.padding(
-				top = 36.dp,
-				start = 12.dp,
-				end = 12.dp,
-				bottom = 12.dp
-			)
-	) {
-		val controller = LocalNavController.current
-		var enabled by remember { mutableStateOf(true) }
-		DisposableEffect(Unit) {
-			val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
-				enabled = controller.currentRoute != MainRoute::class
-			}
-			controller.addOnDestinationChangedListener(listener)
-			onDispose {
-				controller.removeOnDestinationChangedListener(listener)
-			}
-		}
-		val previousText = Res.string.main_previous.value()
-		LeftNavigationBarItem(
-			title = previousText,
-			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
-			tooltipText = previousText,
-			isExpended = isLeftNavigationBarExpended,
-			onClick = {
-				controller.popBackStack()
-			},
-			enabled = enabled
+	NoWindowDraggableArea {
+		val viewModel = koinViewModel<MainViewModel>()
+		val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
+		val width by animateDpAsState(
+			targetValue = if (isLeftNavigationBarExpended) 148.dp else 72.dp
 		)
-		Spacer(modifier = Modifier.height(8.dp))
-		Spacer(modifier = Modifier.weight(1f))
-		MainSubRoute.entries.forEachIndexed { index, route ->
+		Column(
+			modifier = Modifier
+				.width(width)
+				.fillMaxHeight()
+				.background(MaterialTheme.colorScheme.surfaceContainer)
+				.padding(
+					top = 36.dp,
+					start = 12.dp,
+					end = 12.dp,
+					bottom = 12.dp
+				)
+		) {
+			val controller = LocalNavController.current
+			var enabled by remember { mutableStateOf(true) }
+			DisposableEffect(Unit) {
+				val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
+					enabled = controller.currentRoute != MainRoute::class
+				}
+				controller.addOnDestinationChangedListener(listener)
+				onDispose {
+					controller.removeOnDestinationChangedListener(listener)
+				}
+			}
+			val previousText = Res.string.main_previous.value()
 			LeftNavigationBarItem(
-				title = route.title.value(),
-				icon = route.icon,
-				tooltipText = route.title.value(),
+				title = previousText,
+				icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
+				tooltipText = previousText,
 				isExpended = isLeftNavigationBarExpended,
 				onClick = {
-					onSubRouteChange(route)
+					controller.popBackStack()
 				},
-				selected = subRoute == route
+				enabled = enabled
 			)
-			if (index < MainSubRoute.entries.lastIndex) {
-				Spacer(modifier = Modifier.height(8.dp))
-			}
-		}
-		Spacer(modifier = Modifier.weight(1f))
-		Spacer(modifier = Modifier.height(8.dp))
-		val appearanceViewModel = koinViewModel<AppearanceViewModel>()
-		val attribute by appearanceViewModel.colorSchemeAttribute.collectAsState()
-		val isDark = attribute.themeMode.isDark
-		val themeModeText = if (isDark) Res.string.appearance_theme_mode_light.value() else Res.string.appearance_theme_mode_dark.value()
-		LeftNavigationBarItem(
-			title = themeModeText,
-			icon = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
-			tooltipText = themeModeText,
-			isExpended = isLeftNavigationBarExpended,
-			onClick = {
-				appearanceViewModel.colorSchemeAttribute.value = attribute.copy(
-					themeMode = ThemeMode.getThemeMode(!isDark)
+			Spacer(modifier = Modifier.height(8.dp))
+			Spacer(modifier = Modifier.weight(1f))
+			MainSubRoute.entries.forEachIndexed { index, route ->
+				LeftNavigationBarItem(
+					title = route.title.value(),
+					icon = route.icon,
+					tooltipText = route.title.value(),
+					isExpended = isLeftNavigationBarExpended,
+					onClick = {
+						onSubRouteChange(route)
+					},
+					selected = subRoute == route
 				)
+				if (index < MainSubRoute.entries.lastIndex) {
+					Spacer(modifier = Modifier.height(8.dp))
+				}
 			}
-		)
-		Spacer(modifier = Modifier.width(6.dp))
-		LeftNavigationBarItem(
-			title = Res.string.main_collapse.value(),
-			icon = if (isLeftNavigationBarExpended) Icons.Rounded.KeyboardDoubleArrowLeft else Icons.Rounded.KeyboardDoubleArrowRight,
-			tooltipText = Res.string.main_expand.value(),
-			isExpended = isLeftNavigationBarExpended,
-			onClick = {
-				viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
-			}
-		)
+			Spacer(modifier = Modifier.weight(1f))
+			Spacer(modifier = Modifier.height(8.dp))
+			val appearanceViewModel = koinViewModel<AppearanceViewModel>()
+			val attribute by appearanceViewModel.colorSchemeAttribute.collectAsState()
+			val isDark = attribute.themeMode.isDark
+			val themeModeText = if (isDark) Res.string.appearance_theme_mode_light.value() else Res.string.appearance_theme_mode_dark.value()
+			LeftNavigationBarItem(
+				title = themeModeText,
+				icon = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
+				tooltipText = themeModeText,
+				isExpended = isLeftNavigationBarExpended,
+				onClick = {
+					appearanceViewModel.colorSchemeAttribute.value = attribute.copy(
+						themeMode = ThemeMode.getThemeMode(!isDark)
+					)
+				}
+			)
+			Spacer(modifier = Modifier.width(6.dp))
+			LeftNavigationBarItem(
+				title = Res.string.main_collapse.value(),
+				icon = if (isLeftNavigationBarExpended) Icons.Rounded.KeyboardDoubleArrowLeft else Icons.Rounded.KeyboardDoubleArrowRight,
+				tooltipText = Res.string.main_expand.value(),
+				isExpended = isLeftNavigationBarExpended,
+				onClick = {
+					viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
+				}
+			)
+		}
 	}
 }
 
@@ -332,7 +334,7 @@ private fun LeftNavigationBarItem(
 	enabled: Boolean = true,
 	selected: Boolean = false
 ) {
-	LeftBarItemTooltip(
+	LeftNavigationBarItemWithExpended(
 		tooltipText = tooltipText,
 		isExpended = isExpended
 	) {
@@ -384,9 +386,8 @@ private fun LeftNavigationBarItem(
 	}
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LeftBarItemTooltip(
+private fun LeftNavigationBarItemWithExpended(
 	tooltipText: String,
 	isExpended: Boolean,
 	content: @Composable () -> Unit

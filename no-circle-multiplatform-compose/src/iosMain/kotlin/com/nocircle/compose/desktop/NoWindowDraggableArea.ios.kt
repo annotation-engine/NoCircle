@@ -1,9 +1,9 @@
-package com.nocircle.compose.foundation
+package com.nocircle.compose.desktop
 
 import androidx.compose.runtime.Composable
 
 @Composable
-actual fun NoWindowDraggableArea(
+actual inline fun NoWindowDraggableArea(
 	content: @Composable (() -> Unit)
 ) {
 	content()

@@ -1,10 +1,10 @@
-package com.nocircle.compose.foundation
+package com.nocircle.compose.desktop
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-actual fun NoTooltipArea(
+actual inline fun NoTooltipArea(
 	tooltip: @Composable (() -> Unit),
 	modifier: Modifier,
 	delayMillis: Int,
