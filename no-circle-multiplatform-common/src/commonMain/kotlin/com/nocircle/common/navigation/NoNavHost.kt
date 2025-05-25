@@ -127,7 +127,7 @@ inline fun <reified T : NoRoute> NoNavGraphBuilder.composable(
 	noinline sizeTransform: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> @JvmSuppressWildcards SizeTransform?)? = null,
 	noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {
-	recordRoute(T::class.qualifiedName!!, route = T::class)
+	NoNavHostController.recordRouteMapping(T::class.qualifiedName!!, route = T::class)
 	original.composable<T>(
 		typeMap = typeMap,
 		deepLinks = deepLinks,

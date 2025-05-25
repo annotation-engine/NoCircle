@@ -232,7 +232,7 @@ private fun LeftNavigationBar(
 	val viewModel = koinViewModel<MainViewModel>()
 	val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
 	val width by animateDpAsState(
-		targetValue = if (isLeftNavigationBarExpended) 140.dp else 68.dp
+		targetValue = if (isLeftNavigationBarExpended) 148.dp else 72.dp
 	)
 	Column(
 		modifier = Modifier
@@ -240,27 +240,38 @@ private fun LeftNavigationBar(
 			.fillMaxHeight()
 			.background(MaterialTheme.colorScheme.surfaceContainer)
 			.padding(
-				top = 32.dp,
+				top = 36.dp,
 				start = 12.dp,
 				end = 12.dp,
 				bottom = 12.dp
 			)
 	) {
 		val controller = LocalNavController.current
+		var enabled by remember { mutableStateOf(true) }
+		DisposableEffect(Unit) {
+			val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
+				enabled = controller.currentRoute != MainRoute::class
+			}
+			controller.addOnDestinationChangedListener(listener)
+			onDispose {
+				controller.removeOnDestinationChangedListener(listener)
+			}
+		}
 		val previousText = Res.string.main_previous.value()
-		LeftBarItem(
+		LeftNavigationBarItem(
 			title = previousText,
 			icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
 			tooltipText = previousText,
 			isExpended = isLeftNavigationBarExpended,
 			onClick = {
 				controller.popBackStack()
-			}
+			},
+			enabled = enabled
 		)
 		Spacer(modifier = Modifier.height(8.dp))
 		Spacer(modifier = Modifier.weight(1f))
 		MainSubRoute.entries.forEachIndexed { index, route ->
-			LeftBarItem(
+			LeftNavigationBarItem(
 				title = route.title.value(),
 				icon = route.icon,
 				tooltipText = route.title.value(),
@@ -280,7 +291,7 @@ private fun LeftNavigationBar(
 		val attribute by appearanceViewModel.colorSchemeAttribute.collectAsState()
 		val isDark = attribute.themeMode.isDark
 		val themeModeText = if (isDark) Res.string.appearance_theme_mode_light.value() else Res.string.appearance_theme_mode_dark.value()
-		LeftBarItem(
+		LeftNavigationBarItem(
 			title = themeModeText,
 			icon = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
 			tooltipText = themeModeText,
@@ -292,10 +303,10 @@ private fun LeftNavigationBar(
 			}
 		)
 		Spacer(modifier = Modifier.width(6.dp))
-		LeftBarItem(
+		LeftNavigationBarItem(
 			title = Res.string.main_collapse.value(),
 			icon = if (isLeftNavigationBarExpended) Icons.Rounded.KeyboardDoubleArrowLeft else Icons.Rounded.KeyboardDoubleArrowRight,
-			tooltipText = Res.string.main_expended.value(),
+			tooltipText = Res.string.main_expand.value(),
 			isExpended = isLeftNavigationBarExpended,
 			onClick = {
 				viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
@@ -305,7 +316,7 @@ private fun LeftNavigationBar(
 }
 
 @Composable
-private fun LeftBarItem(
+private fun LeftNavigationBarItem(
 	title: String,
 	icon: ImageVector,
 	tooltipText: String,
@@ -326,7 +337,7 @@ private fun LeftBarItem(
 		)
 		val contentColor by animateColorAsState(
 			targetValue = when {
-				!enabled -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
+				!enabled -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0f)
 				selected -> MaterialTheme.colorScheme.onPrimary
 				else -> MaterialTheme.colorScheme.tertiary
 			},
@@ -334,25 +345,29 @@ private fun LeftBarItem(
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
-				.height(44.dp)
+				.height(48.dp)
 				.clip(MaterialTheme.shapes.small)
 				.background(
 					color = containerColor,
 					shape = MaterialTheme.shapes.small
 				)
-				.clickable(onClick = onClick)
-				.padding(8.dp),
+				.clickable(
+					enabled = enabled,
+					onClick = onClick
+				)
+				.padding(horizontal = 12.dp),
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.Start
 		) {
 			NoIcon(
 				icon = icon,
-				modifier = Modifier.size(28.dp),
+				modifier = Modifier.size(24.dp),
 				tint = contentColor
 			)
-			Spacer(modifier = Modifier.width(8.dp))
 			Text(
 				text = title,
+				modifier = Modifier
+					.padding(start = 8.dp),
 				color = contentColor,
 				style = MaterialTheme.typography.bodyMedium,
 				maxLines = 1,

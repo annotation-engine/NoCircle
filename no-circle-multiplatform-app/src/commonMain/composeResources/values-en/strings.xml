@@ -21,6 +21,9 @@
 	<string name="main_friends">Friends</string>
 	<string name="main_groups">Groups</string>
 	<string name="main_person">Profile</string>
+	<string name="main_previous">Previous</string>
+	<string name="main_collapse">Collapse</string>
+	<string name="main_expand">Expand</string>
 	
 	<string name="person_account">Account: %1$d</string>
 	<string name="person_settings_subtitle">Appearance, Sign Out</string>

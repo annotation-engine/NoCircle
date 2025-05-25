@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 fun NoModalBottomSheet(
 	onDismissRequest: () -> Unit,
 	modifier: Modifier = Modifier,
-	sheetState: SheetState = rememberModalBottomSheetState(),
+	sheetState: SheetState = rememberNoModalBottomSheetState(),
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),
 	tonalElevation: Dp = 0.dp,
@@ -34,5 +34,16 @@ fun NoModalBottomSheet(
 		dragHandle = {},
 		contentWindowInsets = contentWindowInsets,
 		content = content,
+	)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun rememberNoModalBottomSheetState(): SheetState {
+	return rememberModalBottomSheetState(
+		skipPartiallyExpanded = true,
+//		confirmValueChange = {
+//			it != SheetValue.Hidden
+//		}
 	)
 }

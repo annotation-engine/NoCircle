@@ -24,7 +24,6 @@ import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.navigation.navigate
 import com.nocircle.compose.icon.NoIcons
 import com.nocircle.compose.icon.NoLogo
 import com.nocircle.compose.material3.NoScaffold

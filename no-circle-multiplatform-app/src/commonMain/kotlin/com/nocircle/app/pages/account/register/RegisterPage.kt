@@ -23,7 +23,6 @@ import com.nocircle.app.generated.resources.*
 import com.nocircle.common.expends.not
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.navigation.popBackStack
 import com.nocircle.common.windowsize.WindowHeightSizes
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold

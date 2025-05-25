@@ -1,4 +1,4 @@
-package com.nocircle.compose.compose
+package com.nocircle.compose.complex
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

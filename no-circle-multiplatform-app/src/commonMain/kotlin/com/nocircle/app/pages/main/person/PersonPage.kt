@@ -6,8 +6,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
@@ -26,11 +27,9 @@ import com.nocircle.app.generated.resources.settings
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.navigation.LocalNavController
-import com.nocircle.common.navigation.navigate
-import com.nocircle.compose.compose.NoOption
+import com.nocircle.compose.complex.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIconButton
-import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.resources.value
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -105,17 +104,17 @@ private fun UserDetailCard() {
 					)
 			) {
 				val labels by viewModel.labels.collectAsState()
-				if (labels != null) {
-					labels!!.fastForEachIndexed { index, label ->
+				labels?.let {
+					it.fastForEachIndexed { index, label ->
 						Label(
 							label = label.label,
 							color = label.color,
 						)
 						Spacer(modifier = Modifier.width(6.dp))
 					}
-					if (labels!!.size < 5) {
-						EditLabel()
-					}
+					EditLabel(
+						icon = if (it.size < 5) Icons.Rounded.Add else Icons.Rounded.Remove
+					)
 				}
 			}
 		}
@@ -149,12 +148,13 @@ private fun Label(
 	}
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EditLabel() {
+private fun EditLabel(
+	icon: ImageVector
+) {
 	var showModal by remember { mutableStateOf(false) }
 	NoIconButton(
-		icon = Icons.Rounded.Add,
+		icon = icon,
 		modifier = Modifier
 			.size(22.dp),
 		tint = MaterialTheme.colorScheme.outline,
@@ -164,11 +164,9 @@ private fun EditLabel() {
 		showModal = true
 	}
 	if (showModal) {
-		NoModalBottomSheet(
+		EditLabelSheet(
 			onDismissRequest = { showModal = false },
-		) {
-			Spacer(modifier = Modifier.height(200.dp))
-		}
+		)
 	}
 }
 

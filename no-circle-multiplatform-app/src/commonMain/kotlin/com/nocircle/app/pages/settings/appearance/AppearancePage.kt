@@ -39,7 +39,6 @@ import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.config.set
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.navigation.popBackStack
 import com.nocircle.common.windowsize.WindowWidthSize
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.windowsize.calculateWindowWidthSize

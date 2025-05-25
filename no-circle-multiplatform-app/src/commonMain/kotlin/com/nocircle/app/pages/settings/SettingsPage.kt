@@ -23,8 +23,8 @@ import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.rootController
 import com.nocircle.common.navigation.*
 import com.nocircle.common.windowsize.WindowWidthSizes
-import com.nocircle.compose.compose.NoAlertModalBottomSheet
-import com.nocircle.compose.compose.NoOption
+import com.nocircle.compose.complex.NoAlertModalBottomSheet
+import com.nocircle.compose.complex.NoOption
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
