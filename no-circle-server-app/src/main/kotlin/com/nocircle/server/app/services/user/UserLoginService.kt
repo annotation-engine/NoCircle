@@ -7,7 +7,7 @@ import com.nocircle.server.app.tables.user.User
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
-import com.nocircle.server.common.exposed.isLogicExists
+import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
@@ -42,7 +42,7 @@ object UserLoginService : NoService<UserLoginService.UserLogin> {
 		val user = transaction {
 			val row = Users.select(Users.id, Users.username, Users.password)
 				.where { Users.username eq username }
-				.isLogicExists(Users)
+				.logicExists(Users)
 				.singleOrNull() ?: return@transaction null
 			User.wrapRow(row)
 		}

@@ -8,8 +8,11 @@ import kotlinx.serialization.Serializable
 interface LabelApi {
 	
 	@BearerAuth
-	@GET("query")
-	suspend fun queryLabels(): ResultBody<List<LabelVO>>?
+	@POST("add")
+	suspend fun addLabel(
+		@Form label: String,
+		@Form color: String,
+	): ResultBody<Unit>?
 	
 	@BearerAuth
 	@POST("delete")
@@ -18,11 +21,16 @@ interface LabelApi {
 	): ResultBody<Unit>?
 	
 	@BearerAuth
-	@POST("add")
-	suspend fun addLabel(
+	@POST("update")
+	suspend fun updateLabel(
+		@Form id: Int,
 		@Form label: String,
 		@Form color: String,
 	): ResultBody<Unit>?
+	
+	@BearerAuth
+	@GET("query")
+	suspend fun queryLabels(): ResultBody<List<LabelVO>>?
 }
 
 @Serializable

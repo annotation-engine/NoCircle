@@ -8,15 +8,9 @@ fun String.isNotAlphanumeric(): Boolean {
 	return this.any { !(it.isLetterOrDigit()) }
 }
 
-fun String.getDisplayLength(): Long {
-	return this.sumOf {
-		when {
-			it.isChinese() -> 2L
-			else -> 1L
-		}
-	}
+fun String.getDisplayLength(): Int = this.sumOf {
+	if (it.isWideChar()) TWO else ONE
 }
 
-fun Char.isChinese(): Boolean {
-	return this in '\u4e00' .. '\u9fff'
-}
+private const val ONE = 1
+private const val TWO = 2

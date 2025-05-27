@@ -6,12 +6,13 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.foundation.NoIconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,6 +20,7 @@ fun NoModalBottomSheet(
 	onDismissRequest: () -> Unit,
 	modifier: Modifier = Modifier,
 	sheetState: SheetState = rememberNoModalBottomSheetState(),
+	snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),
 	tonalElevation: Dp = 0.dp,
@@ -40,34 +42,51 @@ fun NoModalBottomSheet(
 		dragHandle = {},
 		contentWindowInsets = contentWindowInsets
 	) {
-		if (icon != null || title != null || showCloseButton) {
-			CompositionLocalProvider(
-				LocalTextStyle provides MaterialTheme.typography.titleLarge,
-				LocalContentColor provides MaterialTheme.colorScheme.onSurface
-			) {
-				Row(
-					modifier = Modifier.fillMaxWidth(),
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					if (icon != null) {
-						icon()
-						Spacer(modifier = Modifier.width(8.dp))
-					}
-					if (title != null) {
-						title()
-					}
-					Spacer(modifier = Modifier.weight(1f))
-					if (showCloseButton) {
-						NoIcon(
-							icon = Icons.Rounded.Close,
-							tint = MaterialTheme.colorScheme.onSurface
-						)
+		Box {
+			Column {
+				if (icon != null || title != null || showCloseButton) {
+					CompositionLocalProvider(
+						LocalTextStyle provides MaterialTheme.typography.titleLarge,
+						LocalContentColor provides MaterialTheme.colorScheme.onSurface
+					) {
+						Row(
+							modifier = Modifier.fillMaxWidth(),
+							verticalAlignment = Alignment.CenterVertically
+						) {
+							if (icon != null) {
+								icon()
+								Spacer(modifier = Modifier.width(8.dp))
+							}
+							if (title != null) {
+								title()
+							}
+							Spacer(modifier = Modifier.weight(1f))
+							if (showCloseButton) {
+								NoIconButton(
+									icon = Icons.Rounded.Close,
+									tint = MaterialTheme.colorScheme.onSurface
+								) {
+									sheetState.hide()
+									onDismissRequest()
+								}
+							}
+						}
+						Spacer(modifier = Modifier.height(32.dp))
 					}
 				}
-				Spacer(modifier = Modifier.height(32.dp))
+				CompositionLocalProvider(
+					LocalSnackbarHostState provides snackbarHostState
+				) {
+					content()
+				}
 			}
+			NoSnackbarHost(
+				hostState = snackbarHostState,
+				modifier = Modifier
+					.align(Alignment.BottomCenter)
+					.offset(y = 10.dp)
+			)
 		}
-		content()
 	}
 }
 

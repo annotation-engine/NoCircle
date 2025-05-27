@@ -108,13 +108,11 @@ private fun Logout() {
 			},
 			onDismissRequest = { showLogoutModal = false },
 			onConfirm = {
-				val success = viewModel.logout()
-				if (success) {
-					rootController?.navigate(
-						route = LoginRoute,
-						popup = NoPopUp.All
-					)
-				}
+				viewModel.logout()
+				rootController?.navigate(
+					route = LoginRoute,
+					popup = NoPopUp.All
+				)
 			},
 			confirmColors = NoButtons.ErrorColors,
 			icon = {

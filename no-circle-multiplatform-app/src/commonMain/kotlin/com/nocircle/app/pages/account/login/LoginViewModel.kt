@@ -2,7 +2,6 @@ package com.nocircle.app.pages.account.login
 
 import com.nocircle.app.api.impl.userApi
 import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.generated.resources.global_network_connect_error
 import com.nocircle.app.generated.resources.login_please_input_password
 import com.nocircle.app.generated.resources.login_please_input_username
 import com.nocircle.app.ktorfitx.ktorfitx
@@ -12,7 +11,6 @@ import com.nocircle.common.config.set
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.serialization.Serializable
 
 class LoginViewModel() : NoViewModel() {
 	
@@ -45,10 +43,7 @@ class LoginViewModel() : NoViewModel() {
 			showNoSnackbar(Res.string.login_please_input_password)
 			return false
 		}
-		val result = ktorfitx.userApi.login(username, password) ?: let {
-			showNoErrorSnackbar(Res.string.global_network_connect_error)
-			return false
-		}
+		val result = ktorfitx.userApi.login(username, password) ?: return networkError()
 		if (result.success) {
 			TokenConfigKey.set(result.data!!.token)
 		} else {
@@ -56,9 +51,4 @@ class LoginViewModel() : NoViewModel() {
 		}
 		return result.success
 	}
-	
-	@Serializable
-	data class Login(
-		val token: String,
-	)
 }

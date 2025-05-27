@@ -1,6 +1,4 @@
 <resources>
-	<string name="global_network_connect_error">Network connection error</string>
-	
 	<string name="login">Sign In</string>
 	<string name="login_please_input_username">Enter your username</string>
 	<string name="login_please_input_password">Enter your password</string>

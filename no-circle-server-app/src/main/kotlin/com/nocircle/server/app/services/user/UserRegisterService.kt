@@ -3,7 +3,7 @@ package com.nocircle.server.app.services.user
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.app.utils.PasswordUtils
 import com.nocircle.server.common.exposed.exists
-import com.nocircle.server.common.exposed.isLogicExists
+import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
@@ -37,7 +37,7 @@ object UserRegisterService : NoService<Unit> {
 		val success = transaction {
 			val exists = Users.selectAll()
 				.where { Users.username eq username }
-				.isLogicExists(Users)
+				.logicExists(Users)
 				.exists()
 			if (exists) {
 				return@transaction false

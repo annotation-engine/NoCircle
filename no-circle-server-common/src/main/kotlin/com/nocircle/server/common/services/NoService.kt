@@ -4,6 +4,7 @@ import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.model.principal
 import io.ktor.http.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kotlin.reflect.KProperty
 
 interface NoService<out R : Any> {
@@ -47,6 +48,22 @@ class NoParameters {
 	@Suppress("UNCHECKED_CAST")
 	operator fun <T> getValue(thisRef: Any?, property: KProperty<*>): T {
 		return this.parameters[property.name] as T
+	}
+	
+	fun Parameters.getInt(key: String): Int? {
+		return this[key]?.toIntOrNull()
+	}
+	
+	fun Parameters.getBoolean(key: String): Boolean? {
+		return this[key]?.toBooleanStrictOrNull()
+	}
+	
+	fun Parameters.getIntOrFail(key: String): Int {
+		return this.getOrFail(key).toInt()
+	}
+	
+	fun Parameters.getBooleanOrFail(key: String): Boolean {
+		return this.getOrFail(key).toBooleanStrict()
 	}
 }
 

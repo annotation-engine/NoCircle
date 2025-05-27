@@ -2,7 +2,7 @@ package com.nocircle.server.app.services.user
 
 import com.nocircle.server.app.tables.user.User
 import com.nocircle.server.app.tables.user.Users
-import com.nocircle.server.common.exposed.isLogicExists
+import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
@@ -24,7 +24,7 @@ object UserDetailService : NoService<UserDetailService.UserDetail> {
 		val data = transaction {
 			val userRow = Users.selectAll()
 				.where { Users.id eq userId }
-				.isLogicExists(Users)
+				.logicExists(Users)
 				.firstOrNull() ?: return@transaction null
 			val user = User.wrapRow(userRow)
 			UserDetail(

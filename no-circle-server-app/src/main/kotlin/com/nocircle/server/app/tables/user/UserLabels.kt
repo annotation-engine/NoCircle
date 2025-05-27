@@ -10,7 +10,7 @@ object UserLabels : BaseTable("tb_user_labels") {
 	val userId = integer("user_id")
 		.references(Users.id)
 	
-	val label = varchar("label", 10)
+	val label = varchar("label", 16)
 	
 	val color = varchar("color", 9)
 }

@@ -5,6 +5,8 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
+import com.nocircle.compose.generated.resources.Res
+import com.nocircle.compose.generated.resources.network_connect_error
 import com.nocircle.compose.material3.NoSnackbarColors
 import com.nocircle.compose.material3.NoSnackbarVisuals
 import kotlinx.coroutines.flow.FlowCollector
@@ -60,5 +62,10 @@ abstract class NoViewModel : ViewModel() {
 		duration: SnackbarDuration = SnackbarDuration.Short,
 	) {
 		this.snackbarVisualsSharedFlow.emit(NoSnackbarVisuals(getString(message), actionLabel, prefixIcon, withDismissAction, duration, colors = NoSnackbarColors.Error))
+	}
+	
+	protected suspend fun networkError(): Boolean {
+		this.showNoErrorSnackbar(Res.string.network_connect_error)
+		return false
 	}
 }

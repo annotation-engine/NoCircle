@@ -110,6 +110,6 @@ private enum class ScreenConfig(
 	Medium(
 		size = DpSize(800.dp, 600.dp),
 		routes = arrayOf(MainRoute::class),
-		minSize = DpSize(360.dp, 520.dp)
+		minSize = DpSize(380.dp, 540.dp)
 	)
 }

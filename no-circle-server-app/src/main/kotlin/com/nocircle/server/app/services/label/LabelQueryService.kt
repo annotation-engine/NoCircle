@@ -2,7 +2,7 @@ package com.nocircle.server.app.services.label
 
 import com.nocircle.server.app.tables.user.UserLabel
 import com.nocircle.server.app.tables.user.UserLabels
-import com.nocircle.server.common.exposed.isLogicExists
+import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
@@ -24,7 +24,7 @@ object LabelQueryService : NoService<List<LabelQueryService.Label>> {
 		val data = transaction {
 			val query = UserLabels.selectAll()
 				.where { UserLabels.userId eq userId }
-				.isLogicExists(UserLabels)
+				.logicExists(UserLabels)
 			UserLabel.wrapRows(query).map {
 				Label(it.id.value, it.label, it.color)
 			}

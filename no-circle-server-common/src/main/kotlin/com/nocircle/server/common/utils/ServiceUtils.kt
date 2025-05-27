@@ -68,3 +68,7 @@ private class ServiceScopeImpl(
 		NoLog.info("[TOTAL] ${services.size} used for ${(millis + totalMillis) / 1000f} seconds")
 	}
 }
+
+inline fun ServiceScope.group(scope: ServiceScope.() -> Unit) {
+	scope()
+}

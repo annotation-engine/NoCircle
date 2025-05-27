@@ -25,6 +25,7 @@ import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.generated.resources.person_account
 import com.nocircle.app.generated.resources.person_settings_subtitle
 import com.nocircle.app.generated.resources.settings
+import com.nocircle.app.pages.main.person.label.EditLabelSheet
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.common.expends.rememberHexToColor
 import com.nocircle.common.navigation.LocalNavController
@@ -105,7 +106,7 @@ private fun UserDetailCard() {
 					)
 			) {
 				val labels by viewModel.labels.collectAsState()
-				labels?.let {
+				labels.let {
 					it.fastForEachIndexed { index, label ->
 						Label(
 							label = label.label,

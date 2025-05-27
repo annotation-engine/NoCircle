@@ -1,5 +1,8 @@
-package com.nocircle.app.pages.main.person
+package com.nocircle.app.pages.main.person.label
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.api.LabelVO
+import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.common.expends.getDisplayLength
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.expends.rememberHexToColor
@@ -23,8 +27,10 @@ import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoInput
+import com.nocircle.compose.material3.LocalSnackbarHostState
 import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
+import com.nocircle.compose.material3.showNoSnackbar
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,22 +54,41 @@ fun EditLabelSheet(
 				icon = Icons.Rounded.Edit,
 				tint = MaterialTheme.colorScheme.onSurface
 			)
-		}
+		},
+		showCloseButton = true
 	) {
+		val hostState = LocalSnackbarHostState.current
+		val viewModel = koinViewModel<EditLabelViewModel>()
+		val personViewModel = koinViewModel<PersonViewModel>()
+		LaunchedEffect(Unit) {
+			viewModel.snackbarCollect(hostState::showNoSnackbar)
+		}
 		Column(
 			modifier = Modifier
 				.align(Alignment.CenterHorizontally)
 				.widthIn(max = 450.dp)
 				.fillMaxWidth()
 		) {
-			val viewModel = koinViewModel<PersonViewModel>()
 			var selected by remember { mutableStateOf<LabelVO?>(null) }
-			val labels by viewModel.labels.collectAsState()
-			val currentLabels = remember { mutableStateListOf<LabelVO>() }
+			val labels by personViewModel.labels.collectAsState()
+			var label by remember { mutableStateOf("") }
+			var addLabel by remember { mutableStateOf("") }
+			val primary = MaterialTheme.colorScheme.primary
+			var color by remember { mutableStateOf(primary) }
+			var maxLength by remember { mutableStateOf(0) }
+			var overlength by remember { mutableStateOf(0) }
 			LaunchedEffect(labels) {
-				if (labels == null) return@LaunchedEffect
-				currentLabels.clear()
-				currentLabels += labels!!
+				addLabel = ""
+				overlength = MAX_TOTAL_LENGTH - labels.sumOf { it.label.getDisplayLength() }
+				selected = if (labels.size < MAX_COUNT && overlength > 0) null else labels.last()
+				color = primary
+				label = selected?.label ?: ""
+				maxLength = overlength + if (selected != null) selected!!.label.getDisplayLength() else 0
+			}
+			LaunchedEffect(selected) {
+				label = selected?.label ?: addLabel
+				overlength = MAX_TOTAL_LENGTH - labels.sumOf { it.label.getDisplayLength() }
+				maxLength = overlength + if (selected != null) selected!!.label.getDisplayLength() else 0
 			}
 			Row(
 				modifier = Modifier
@@ -74,17 +99,26 @@ fun EditLabelSheet(
 						reverseScrolling = true
 					)
 			) {
-				currentLabels.fastForEachIndexed { index, label ->
+				labels.fastForEachIndexed { index, label ->
 					Label(
 						label = label,
 						selected = selected == label,
 						onClick = { selected = label },
 					)
-					if (index < currentLabels.lastIndex) {
+					if (index < labels.lastIndex) {
 						Spacer(modifier = Modifier.width(2.dp))
 					}
 				}
-				if (currentLabels.size < 5) {
+				val showAddLabel by remember {
+					derivedStateOf {
+						labels.size < MAX_COUNT && overlength > 0
+					}
+				}
+				AnimatedVisibility(
+					visible = showAddLabel,
+					enter = fadeIn(),
+					exit = fadeOut()
+				) {
 					Spacer(modifier = Modifier.width(2.dp))
 					AddLabel(
 						selected = selected == null,
@@ -93,16 +127,11 @@ fun EditLabelSheet(
 				}
 			}
 			Spacer(modifier = Modifier.height(24.dp))
-			var label by remember { mutableStateOf("") }
-			var addLabel by remember { mutableStateOf("") }
-			LaunchedEffect(selected) {
-				label = selected?.label ?: addLabel
-			}
 			NoInput(
 				value = label,
 				onValueChange = {
 					val length = it.getDisplayLength()
-					if (length <= 10) {
+					if (length <= maxLength) {
 						label = it
 						if (selected == null) {
 							addLabel = it
@@ -110,10 +139,9 @@ fun EditLabelSheet(
 					}
 				},
 				placeholder = "请输入标签名称",
-				suffix = { Text("${label.getDisplayLength()} / 10") }
+				suffix = { Text("${label.getDisplayLength()} / $maxLength") }
 			)
 			Spacer(modifier = Modifier.height(24.dp))
-			var color by remember { mutableStateOf(Color.Transparent) }
 			ColorSliders(
 				selected = selected,
 				color = color,
@@ -136,6 +164,9 @@ fun EditLabelSheet(
 		}
 	}
 }
+
+private const val MAX_COUNT = 4
+private const val MAX_TOTAL_LENGTH = 16
 
 @Composable
 private fun Label(
@@ -225,6 +256,7 @@ private fun ColorSliders(
 		},
 		color = color
 	)
+	Spacer(modifier = Modifier.height(4.dp))
 	ColorSlider(
 		title = "绿",
 		value = color.green * 255f,
@@ -237,6 +269,7 @@ private fun ColorSliders(
 		},
 		color = color
 	)
+	Spacer(modifier = Modifier.height(4.dp))
 	ColorSlider(
 		title = "蓝",
 		value = color.blue * 255f,
@@ -371,34 +404,47 @@ private fun ControlBottomBar(
 		modifier = Modifier
 			.fillMaxWidth()
 	) {
-		val viewModel = koinViewModel<PersonViewModel>()
-		NoButton(
-			text = if (selected != null) "删除" else "取消",
-			modifier = Modifier
-				.weight(1f),
-			colors = if (selected != null) NoButtons.ErrorColors else NoButtons.SurfaceContainerColors
-		) {
-			if (selected != null) {
+		val viewModel = koinViewModel<EditLabelViewModel>()
+		val personViewModel = koinViewModel<PersonViewModel>()
+		if (selected != null) {
+			NoButton(
+				text = "删除",
+				modifier = Modifier.weight(1f),
+				colors = NoButtons.ErrorColors
+			) {
 				val success = viewModel.deleteLabelById(selected.id)
 				if (success) {
-					sheetState.hide()
-					onDismissRequest()
+					personViewModel.loadLabels()
 				}
-			} else {
+			}
+			Spacer(modifier = Modifier.width(16.dp))
+			NoButton(
+				text = "修改",
+				modifier = Modifier.weight(1f),
+			) {
+				val success = viewModel.updateLabel(selected.id, label, color)
+				if (success) {
+					personViewModel.loadLabels()
+				}
+			}
+		} else {
+			NoButton(
+				text = "取消",
+				modifier = Modifier.weight(1f),
+				colors = NoButtons.SurfaceContainerColors
+			) {
 				sheetState.hide()
 				onDismissRequest()
 			}
-		}
-		Spacer(modifier = Modifier.width(16.dp))
-		NoButton(
-			text = if (selected != null) "修改" else "添加",
-			modifier = Modifier
-				.weight(1f),
-		) {
-			val success = viewModel.addLabel(label, color)
-			if (success) {
-				sheetState.hide()
-				onDismissRequest()
+			Spacer(modifier = Modifier.width(16.dp))
+			NoButton(
+				text = "添加",
+				modifier = Modifier.weight(1f)
+			) {
+				val success = viewModel.addLabel(label, color)
+				if (success) {
+					personViewModel.loadLabels()
+				}
 			}
 		}
 	}

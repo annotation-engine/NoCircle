@@ -59,10 +59,7 @@ class RegisterViewModel : NoViewModel() {
 			showNoSnackbar(Res.string.register_passwords_are_inconsistent_twice)
 			return false
 		}
-		val result = ktorfitx.userApi.register(username, password) ?: let {
-			showNoErrorSnackbar(Res.string.global_network_connect_error)
-			return false
-		}
+		val result = ktorfitx.userApi.register(username, password) ?: return networkError()
 		if (!result.success) {
 			showNoErrorSnackbar(result.msg)
 		}
