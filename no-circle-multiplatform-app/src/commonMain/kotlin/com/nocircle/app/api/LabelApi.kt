@@ -1,8 +1,6 @@
 package com.nocircle.app.api
 
-import cn.vividcode.multiplatform.ktorfitx.annotation.Api
-import cn.vividcode.multiplatform.ktorfitx.annotation.BearerAuth
-import cn.vividcode.multiplatform.ktorfitx.annotation.GET
+import cn.vividcode.multiplatform.ktorfitx.annotation.*
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
 import kotlinx.serialization.Serializable
 
@@ -12,6 +10,19 @@ interface LabelApi {
 	@BearerAuth
 	@GET("query")
 	suspend fun queryLabels(): ResultBody<List<LabelVO>>?
+	
+	@BearerAuth
+	@POST("delete")
+	suspend fun deleteLabelById(
+		@Form id: Int
+	): ResultBody<Unit>?
+	
+	@BearerAuth
+	@POST("add")
+	suspend fun addLabel(
+		@Form label: String,
+		@Form color: String,
+	): ResultBody<Unit>?
 }
 
 @Serializable

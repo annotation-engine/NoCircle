@@ -45,7 +45,7 @@ fun RegisterPage() {
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
-		snackbarHost = { NoSnackbarHost(hostState) }
+		snackbarHostState = hostState,
 	) { paddingValues ->
 		val verticalScroll = rememberScrollState()
 		val isCompat = WindowHeightSizes.isCompact

@@ -1,6 +1,6 @@
 package com.nocircle.server.app.tables.user
 
-import com.nocircle.server.common.tables.BaseTable
+import com.nocircle.server.common.exposed.BaseTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass

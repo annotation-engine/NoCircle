@@ -38,4 +38,5 @@ val ktorfitx = ktorfit {
 
 expect val HttpClientEngineFactory: HttpClientEngineFactory<*>
 
-val <T : Any> ResultBody<T>.success: Boolean get() = this.code == 0
+val <T : Any> ResultBody<T>.success: Boolean
+	get() = this.code == 0

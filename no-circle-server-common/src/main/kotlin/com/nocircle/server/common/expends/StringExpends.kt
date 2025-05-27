@@ -1,4 +1,4 @@
-package com.nocircle.common.expends
+package com.nocircle.server.common.expends
 
 fun String.isAlphanumeric(): Boolean {
 	return this.all { it.isLetterOrDigit() }

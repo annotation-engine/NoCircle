@@ -2,13 +2,12 @@ package com.nocircle.server.app.services.user
 
 import com.nocircle.server.app.tables.user.User
 import com.nocircle.server.app.tables.user.Users
+import com.nocircle.server.common.exposed.isLogicExists
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
-import com.nocircle.server.common.tables.isLogicExists
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
@@ -24,7 +23,8 @@ object UserDetailService : NoService<UserDetailService.UserDetail> {
 		val userId: Int by parameters
 		val data = transaction {
 			val userRow = Users.selectAll()
-				.where { Users.id eq userId and Users.isLogicExists }
+				.where { Users.id eq userId }
+				.isLogicExists(Users)
 				.firstOrNull() ?: return@transaction null
 			val user = User.wrapRow(userRow)
 			UserDetail(

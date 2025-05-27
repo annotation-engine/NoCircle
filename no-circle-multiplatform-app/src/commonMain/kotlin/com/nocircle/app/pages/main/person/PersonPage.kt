@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -25,7 +26,7 @@ import com.nocircle.app.generated.resources.person_account
 import com.nocircle.app.generated.resources.person_settings_subtitle
 import com.nocircle.app.generated.resources.settings
 import com.nocircle.app.pages.settings.SettingsRoute
-import com.nocircle.common.expends.hexToColor
+import com.nocircle.common.expends.rememberHexToColor
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.compose.complex.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
@@ -124,17 +125,14 @@ private fun UserDetailCard() {
 @Composable
 private fun Label(
 	label: String,
-	color: Any,
+	color: String,
 ) {
+	val containerColor = rememberHexToColor(color)
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()
 			.background(
-				color = when (color) {
-					is String -> remember(color) { color.hexToColor() }
-					is Color -> color
-					else -> error("不支持的 color 类型")
-				},
+				color = containerColor,
 				shape = MaterialTheme.shapes.extraSmall
 			)
 			.padding(horizontal = 6.dp),
@@ -142,7 +140,7 @@ private fun Label(
 	) {
 		Text(
 			text = label,
-			color = Color.White,
+			color = if (containerColor.luminance() > 0.5f) Color.Black else Color.White,
 			style = MaterialTheme.typography.labelMedium
 		)
 	}
@@ -165,7 +163,7 @@ private fun EditLabel(
 	}
 	if (showModal) {
 		EditLabelSheet(
-			onDismissRequest = { showModal = false },
+			onDismissRequest = { showModal = false }
 		)
 	}
 }

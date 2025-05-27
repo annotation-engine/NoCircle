@@ -47,6 +47,10 @@ fun NoSnackbarHost(
 	)
 }
 
+val LocalSnackbarHostState = staticCompositionLocalOf<SnackbarHostState> {
+	error("CompositionLocal LocalSnackbarHostState not present")
+}
+
 private fun SnackbarDuration.toMillis(
 	hasAction: Boolean,
 	accessibilityManager: AccessibilityManager?

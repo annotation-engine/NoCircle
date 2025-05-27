@@ -3,6 +3,7 @@ package com.nocircle.app.pages.main
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -47,7 +49,6 @@ import com.nocircle.compose.desktop.NoTooltipPlacement
 import com.nocircle.compose.desktop.NoWindowDraggableArea
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
-import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
 import com.nocircle.compose.resources.value
 import kotlinx.serialization.Serializable
@@ -66,7 +67,7 @@ fun MainPage() {
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
-		snackbarHost = { NoSnackbarHost(hostState) }
+		snackbarHostState = hostState,
 	) {
 		Row(
 			modifier = Modifier
@@ -255,10 +256,10 @@ private fun LeftNavigationBar(
 				)
 		) {
 			val controller = LocalNavController.current
-			var enabled by remember { mutableStateOf(true) }
+			var popStackEnabled by remember { mutableStateOf(true) }
 			DisposableEffect(Unit) {
 				val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
-					enabled = controller.currentRoute != MainRoute::class
+					popStackEnabled = controller.currentRoute != MainRoute::class
 				}
 				controller.addOnDestinationChangedListener(listener)
 				onDispose {
@@ -266,20 +267,18 @@ private fun LeftNavigationBar(
 				}
 			}
 			val previousText = Res.string.main_previous.value()
-			LeftNavigationBarItem(
+			LeftToolItem(
 				title = previousText,
 				icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
 				tooltipText = previousText,
 				isExpended = isLeftNavigationBarExpended,
-				onClick = {
-					controller.popBackStack()
-				},
-				enabled = enabled
+				onClick = { controller.popBackStack() },
+				enabled = popStackEnabled
 			)
 			Spacer(modifier = Modifier.height(8.dp))
 			Spacer(modifier = Modifier.weight(1f))
 			MainSubRoute.entries.forEachIndexed { index, route ->
-				LeftNavigationBarItem(
+				LeftMenuItem(
 					title = route.title.value(),
 					icon = route.icon,
 					tooltipText = route.title.value(),
@@ -299,7 +298,7 @@ private fun LeftNavigationBar(
 			val attribute by appearanceViewModel.colorSchemeAttribute.collectAsState()
 			val isDark = attribute.themeMode.isDark
 			val themeModeText = if (isDark) Res.string.appearance_theme_mode_light.value() else Res.string.appearance_theme_mode_dark.value()
-			LeftNavigationBarItem(
+			LeftToolItem(
 				title = themeModeText,
 				icon = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
 				tooltipText = themeModeText,
@@ -308,33 +307,37 @@ private fun LeftNavigationBar(
 					appearanceViewModel.colorSchemeAttribute.value = attribute.copy(
 						themeMode = ThemeMode.getThemeMode(!isDark)
 					)
-				}
+				},
+				iconRotate = if (isDark) 90f else 0f,
 			)
 			Spacer(modifier = Modifier.width(6.dp))
-			LeftNavigationBarItem(
+			LeftToolItem(
 				title = Res.string.main_collapse.value(),
-				icon = if (isLeftNavigationBarExpended) Icons.Rounded.KeyboardDoubleArrowLeft else Icons.Rounded.KeyboardDoubleArrowRight,
+				icon = Icons.Rounded.KeyboardDoubleArrowRight,
 				tooltipText = Res.string.main_expand.value(),
 				isExpended = isLeftNavigationBarExpended,
 				onClick = {
 					viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
-				}
+				},
+				iconRotate = if (isLeftNavigationBarExpended) -180f else 0f,
 			)
 		}
 	}
 }
 
+/**
+ * 左侧菜单项
+ */
 @Composable
-private fun LeftNavigationBarItem(
+private fun LeftMenuItem(
 	title: String,
 	icon: ImageVector,
 	tooltipText: String,
 	isExpended: Boolean,
 	onClick: () -> Unit,
-	enabled: Boolean = true,
 	selected: Boolean = false
 ) {
-	LeftNavigationBarItemWithExpended(
+	LeftItemWithExpended(
 		tooltipText = tooltipText,
 		isExpended = isExpended
 	) {
@@ -346,9 +349,8 @@ private fun LeftNavigationBarItem(
 		)
 		val contentColor by animateColorAsState(
 			targetValue = when {
-				!enabled -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0f)
 				selected -> MaterialTheme.colorScheme.onPrimary
-				else -> MaterialTheme.colorScheme.tertiary
+				else -> MaterialTheme.colorScheme.primary
 			},
 		)
 		Row(
@@ -361,7 +363,6 @@ private fun LeftNavigationBarItem(
 					shape = MaterialTheme.shapes.small
 				)
 				.clickable(
-					enabled = enabled,
 					onClick = onClick
 				)
 				.padding(horizontal = 12.dp),
@@ -387,50 +388,99 @@ private fun LeftNavigationBarItem(
 }
 
 @Composable
-private fun LeftNavigationBarItemWithExpended(
+private fun LeftToolItem(
+	title: String,
+	icon: ImageVector,
+	tooltipText: String,
+	isExpended: Boolean,
+	onClick: () -> Unit,
+	iconRotate: Float = 0f,
+	enabled: Boolean = true
+) {
+	LeftItemWithExpended(
+		tooltipText = tooltipText,
+		isExpended = isExpended
+	) {
+		val contentColor by animateColorAsState(
+			targetValue = when (enabled) {
+				true -> MaterialTheme.colorScheme.primary
+				false -> Color.Transparent
+			}
+		)
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.height(48.dp)
+				.clip(MaterialTheme.shapes.small)
+				.clickable(
+					enabled = enabled,
+					onClick = onClick
+				)
+				.padding(horizontal = 12.dp),
+			verticalAlignment = Alignment.CenterVertically,
+			horizontalArrangement = Arrangement.Start
+		) {
+			val iconRotate by animateFloatAsState(iconRotate)
+			NoIcon(
+				icon = icon,
+				modifier = Modifier.size(24.dp)
+					.rotate(iconRotate),
+				tint = contentColor
+			)
+			Text(
+				text = title,
+				modifier = Modifier
+					.padding(start = 8.dp),
+				color = contentColor,
+				style = MaterialTheme.typography.bodyMedium,
+				maxLines = 1,
+				overflow = TextOverflow.Ellipsis
+			)
+		}
+	}
+}
+
+@Composable
+private fun LeftItemWithExpended(
 	tooltipText: String,
 	isExpended: Boolean,
 	content: @Composable () -> Unit
 ) {
-	if (isExpended) {
-		content()
-	} else {
-		NoTooltipArea(
-			tooltip = {
-				Text(
-					text = tooltipText,
-					modifier = Modifier
-						.clip(MaterialTheme.shapes.small)
-						.shadow(
-							elevation = 8.dp,
-						)
-						.border(
-							width = 1.dp,
-							color = Color(0xFF2B2D31),
-							shape = MaterialTheme.shapes.small
-						)
-						.background(
-							color = Color(0xFF25272C),
-							shape = MaterialTheme.shapes.small
-						)
-						.padding(
-							horizontal = 12.dp,
-							vertical = 8.dp
-						),
-					color = Color.White,
-					style = MaterialTheme.typography.bodyMedium,
-					textAlign = TextAlign.Center
-				)
-			},
-			delayMillis = 300,
-			tooltipPlacement = NoTooltipPlacement.ComponentRect(
-				anchor = Alignment.CenterEnd,
-				alignment = Alignment.CenterEnd,
-				offset = DpOffset(16.dp, 0.dp)
+	NoTooltipArea(
+		tooltip = {
+			Text(
+				text = tooltipText,
+				modifier = Modifier
+					.clip(MaterialTheme.shapes.small)
+					.shadow(
+						elevation = 8.dp,
+					)
+					.border(
+						width = 1.dp,
+						color = Color(0xFF2B2D31),
+						shape = MaterialTheme.shapes.small
+					)
+					.background(
+						color = Color(0xFF25272C),
+						shape = MaterialTheme.shapes.small
+					)
+					.padding(
+						horizontal = 12.dp,
+						vertical = 8.dp
+					),
+				color = Color.White,
+				style = MaterialTheme.typography.bodyMedium,
+				textAlign = TextAlign.Center
 			)
-		) {
-			content()
-		}
+		},
+		delayMillis = if (isExpended) Int.MAX_VALUE else 200,
+		tooltipPlacement = NoTooltipPlacement.ComponentRect(
+			anchor = Alignment.CenterEnd,
+			alignment = Alignment.CenterEnd,
+			offset = DpOffset(16.dp, 0.dp)
+		)
+	) {
+		content()
 	}
 }
 

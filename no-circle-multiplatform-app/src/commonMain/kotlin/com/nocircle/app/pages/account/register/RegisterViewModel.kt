@@ -4,7 +4,7 @@ import com.nocircle.app.api.impl.userApi
 import com.nocircle.app.generated.resources.*
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
-import com.nocircle.common.expends.isAlphanumeric
+import com.nocircle.common.expends.isNotAlphanumeric
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -21,21 +21,18 @@ class RegisterViewModel : NoViewModel() {
 	val showConfirmPassword = MutableStateFlow(false)
 	
 	fun updateUsername(value: String) {
-		if (value.length <= 20 && value.isAlphanumeric()) {
-			this.username.value = value
-		}
+		if (value.length > 20 || value.isNotAlphanumeric()) return
+		this.username.value = value
 	}
 	
 	fun updatePassword(value: String) {
-		if (value.length <= 20) {
-			this.password.value = value
-		}
+		if (value.length > 20) return
+		this.password.value = value
 	}
 	
 	fun updateConfirmPassword(value: String) {
-		if (value.length <= 20) {
-			this.confirmPassword.value = value
-		}
+		if (value.length > 20) return
+		this.confirmPassword.value = value
 	}
 	
 	suspend fun register(): Boolean {

@@ -7,19 +7,18 @@ import com.nocircle.server.app.tables.user.User
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
+import com.nocircle.server.common.exposed.isLogicExists
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
 import com.nocircle.server.common.services.noParameters
-import com.nocircle.server.common.tables.isLogicExists
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.jdbc.select
-import org.jetbrains.exposed.v1.jdbc.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.toJavaDuration
 
 /**
@@ -40,10 +39,11 @@ object UserLoginService : NoService<UserLoginService.UserLogin> {
 	override suspend fun process(parameters: NoParameters): ApiResult<UserLogin> {
 		val username: String by parameters
 		val password: String by parameters
-		val user = newSuspendedTransaction {
+		val user = transaction {
 			val row = Users.select(Users.id, Users.username, Users.password)
-				.where { Users.username eq username and Users.isLogicExists }
-				.singleOrNull() ?: return@newSuspendedTransaction null
+				.where { Users.username eq username }
+				.isLogicExists(Users)
+				.singleOrNull() ?: return@transaction null
 			User.wrapRow(row)
 		}
 		if (user == null || !PasswordUtils.verity(password, user.password)) {

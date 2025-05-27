@@ -30,6 +30,9 @@ fun NoInput(
 	placeholder: String? = null,
 	leadingIcon: @Composable (() -> Unit)? = null,
 	trailingIcon: @Composable (() -> Unit)? = null,
+	prefix: @Composable (() -> Unit)? = null,
+	suffix: @Composable (() -> Unit)? = null,
+	supportingText: @Composable (() -> Unit)? = null,
 	isError: Boolean = false,
 	visualTransformation: VisualTransformation = VisualTransformation.None,
 	keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -90,6 +93,9 @@ fun NoInput(
 		trailingIcon = trailingIcon?.let {
 			{ if (showIcon) it() }
 		},
+		prefix = prefix,
+		suffix = suffix,
+		supportingText = supportingText,
 		isError = isError,
 		visualTransformation = visualTransformation,
 		keyboardOptions = keyboardOptions,

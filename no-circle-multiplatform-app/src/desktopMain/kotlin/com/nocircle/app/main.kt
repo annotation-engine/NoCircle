@@ -15,7 +15,6 @@ import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.log.NoLog
 import com.nocircle.common.navigation.NoNavHostController
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.compose.animation.animateWindowStateAsState
@@ -26,8 +25,8 @@ import kotlin.reflect.KClass
 
 fun main() {
 	application {
-		var minSize by remember { mutableStateOf(ScreenConfig.Small.minSize) }
-		var config by remember { mutableStateOf(ScreenConfig.Small) }
+		var minSize by remember { mutableStateOf(ScreenConfig.Guide.minSize) }
+		var config by remember { mutableStateOf(ScreenConfig.Guide) }
 		val windowState by animateWindowStateAsState(
 			targetValue = config.size,
 			finishedListener = {
@@ -44,7 +43,6 @@ fun main() {
 				minSize = minSize,
 				onConfigChange = { config = it }
 			)
-			NoLog.info(LocalDensity.current)
 			CompositionLocalProvider(
 				LocalDensity provides Density(density = LocalDensity.current.density * 0.88f),
 				LocalFrameWindowScope provides this
@@ -99,9 +97,14 @@ private enum class ScreenConfig(
 	val resizable: Boolean = true,
 	val minSize: DpSize = size,
 ) {
+	Guide(
+		size = DpSize(340.dp, 340.dp),
+		routes = arrayOf(GuideRoute::class),
+		resizable = false
+	),
 	Small(
-		size = DpSize(320.dp, 480.dp),
-		routes = arrayOf(GuideRoute::class, LoginRoute::class, RegisterRoute::class),
+		size = DpSize(340.dp, 520.dp),
+		routes = arrayOf(LoginRoute::class, RegisterRoute::class),
 		resizable = false
 	),
 	Medium(

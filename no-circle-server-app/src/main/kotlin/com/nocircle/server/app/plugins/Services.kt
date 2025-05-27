@@ -2,6 +2,7 @@ package com.nocircle.server.app.plugins
 
 import com.nocircle.server.app.services.auth.AuthVerifyTokenService
 import com.nocircle.server.app.services.label.LabelAddService
+import com.nocircle.server.app.services.label.LabelDeleteService
 import com.nocircle.server.app.services.label.LabelQueryService
 import com.nocircle.server.app.services.user.UserDetailService
 import com.nocircle.server.app.services.user.UserLoginService
@@ -19,6 +20,7 @@ fun Application.configureServices() {
 		this += UserLogoutService
 		this += UserDetailService
 		this += LabelAddService
+		this += LabelDeleteService
 		this += LabelQueryService
 	}
 }

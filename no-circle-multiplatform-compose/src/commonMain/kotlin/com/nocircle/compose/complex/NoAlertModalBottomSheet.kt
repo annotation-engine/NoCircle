@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoAlertModalBottomSheet(
-	title: @Composable RowScope.() -> Unit,
+	title: @Composable () -> Unit,
 	content: @Composable RowScope.() -> Unit,
 	onDismissRequest: () -> Unit,
 	onConfirm: suspend () -> Unit,
@@ -38,6 +38,8 @@ fun NoAlertModalBottomSheet(
 	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) },
 	confirmColors: NoButtonColors = NoButtons.PrimaryColors,
 	cancelColors: NoButtonColors = NoButtons.SurfaceContainerColors,
+	icon: @Composable (() -> Unit)? = null,
+	showCloseButton: Boolean = false,
 ) {
 	NoModalBottomSheet(
 		onDismissRequest = onDismissRequest,
@@ -46,58 +48,59 @@ fun NoAlertModalBottomSheet(
 		containerColor = containerColor,
 		contentColor = contentColor,
 		tonalElevation = tonalElevation,
-		contentWindowInsets = contentWindowInsets
+		contentWindowInsets = contentWindowInsets,
+		icon = icon,
+		title = title,
+		showCloseButton = showCloseButton
 	) {
-		CompositionLocalProvider(
-			LocalTextStyle provides MaterialTheme.typography.titleLarge,
-			LocalContentColor provides MaterialTheme.colorScheme.onSurface
-		) {
-			Row(
-				verticalAlignment = Alignment.CenterVertically,
-			) {
-				title()
-			}
-		}
-		Spacer(modifier = Modifier.height(32.dp))
-		CompositionLocalProvider(
-			LocalTextStyle provides MaterialTheme.typography.bodyLarge,
-			LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
-		) {
-			Row(
-				verticalAlignment = Alignment.CenterVertically
-			) {
-				content()
-			}
-		}
-		Spacer(modifier = Modifier.height(32.dp))
-		val coroutineScope = rememberCoroutineScope()
-		Row(
+		Column(
 			modifier = Modifier
+				.widthIn(
+					max = 450.dp
+				)
 				.fillMaxWidth()
+				.align(Alignment.CenterHorizontally)
 		) {
-			NoButton(
-				text = cancelText,
-				modifier = Modifier
-					.weight(1f),
-				colors = cancelColors
+			CompositionLocalProvider(
+				LocalTextStyle provides MaterialTheme.typography.bodyLarge,
+				LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
 			) {
-				coroutineScope.launch {
-					onCancel()
-					sheetState.hide()
-					onDismissRequest()
+				Row(
+					verticalAlignment = Alignment.CenterVertically
+				) {
+					content()
 				}
 			}
-			Spacer(modifier = Modifier.width(16.dp))
-			NoButton(
-				text = confirmText,
+			Spacer(modifier = Modifier.height(32.dp))
+			val coroutineScope = rememberCoroutineScope()
+			Row(
 				modifier = Modifier
-					.weight(1f),
-				colors = confirmColors
+					.fillMaxWidth()
 			) {
-				coroutineScope.launch {
-					onConfirm()
-					sheetState.hide()
-					onDismissRequest()
+				NoButton(
+					text = cancelText,
+					modifier = Modifier
+						.weight(1f),
+					colors = cancelColors
+				) {
+					coroutineScope.launch {
+						onCancel()
+						sheetState.hide()
+						onDismissRequest()
+					}
+				}
+				Spacer(modifier = Modifier.width(16.dp))
+				NoButton(
+					text = confirmText,
+					modifier = Modifier
+						.weight(1f),
+					colors = confirmColors
+				) {
+					coroutineScope.launch {
+						onConfirm()
+						sheetState.hide()
+						onDismissRequest()
+					}
 				}
 			}
 		}

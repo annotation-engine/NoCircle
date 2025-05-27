@@ -25,15 +25,13 @@ class LoginViewModel() : NoViewModel() {
 	val showPassword = MutableStateFlow(false)
 	
 	fun updateUsername(value: String) {
-		if (value.length <= 20) {
-			this._username.value = value
-		}
+		if (value.length > 20) return
+		this._username.value = value
 	}
 	
 	fun updatePassword(value: String) {
-		if (value.length <= 20) {
-			this._password.value = value
-		}
+		if (value.length > 20) return
+		this._password.value = value
 	}
 	
 	suspend fun login(): Boolean {

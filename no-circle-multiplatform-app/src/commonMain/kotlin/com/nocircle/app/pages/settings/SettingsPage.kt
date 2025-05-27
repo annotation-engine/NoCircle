@@ -21,7 +21,9 @@ import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.rootController
-import com.nocircle.common.navigation.*
+import com.nocircle.common.navigation.LocalNavController
+import com.nocircle.common.navigation.NoPopUp
+import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.complex.NoAlertModalBottomSheet
 import com.nocircle.compose.complex.NoOption
@@ -95,11 +97,6 @@ private fun Logout() {
 		val viewModel = koinViewModel<SettingsViewModel>()
 		NoAlertModalBottomSheet(
 			title = {
-				NoIcon(
-					icon = Icons.Rounded.Warning,
-					tint = MaterialTheme.colorScheme.error
-				)
-				Spacer(Modifier.width(8.dp))
 				Text(
 					text = Res.string.settings_logout_title.value(),
 				)
@@ -119,7 +116,13 @@ private fun Logout() {
 					)
 				}
 			},
-			confirmColors = NoButtons.ErrorColors
+			confirmColors = NoButtons.ErrorColors,
+			icon = {
+				NoIcon(
+					icon = Icons.Rounded.Warning,
+					tint = MaterialTheme.colorScheme.error
+				)
+			}
 		)
 	}
 	Box(

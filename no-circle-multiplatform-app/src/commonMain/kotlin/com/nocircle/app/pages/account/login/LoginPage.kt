@@ -23,12 +23,13 @@ import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.account.register.RegisterRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.expends.not
-import com.nocircle.common.navigation.*
+import com.nocircle.common.navigation.LocalNavController
+import com.nocircle.common.navigation.NoPopUp
+import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.windowsize.WindowHeightSizes
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
-import com.nocircle.compose.material3.NoSnackbarHost
 import com.nocircle.compose.material3.showNoSnackbar
 import com.nocircle.compose.resources.value
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +56,7 @@ fun LoginPage() {
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
-		snackbarHost = { NoSnackbarHost(hostState) }
+		snackbarHostState = hostState,
 	) { paddingValues ->
 		val verticalScroll = rememberScrollState()
 		val isCompat = WindowHeightSizes.isCompact || WindowWidthSizes.isCompact
