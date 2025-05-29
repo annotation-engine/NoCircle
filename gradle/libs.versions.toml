@@ -18,7 +18,7 @@ mysql = "8.4.0"
 coil3 = "3.2.0"
 logback-classic = "1.5.18"
 hutool = "5.8.38"
-redisson = "3.47.0"
+redisson = "3.48.0"
 ksp = "2.1.21-2.0.1"
 hot-reload = "1.0.0-alpha10"
 

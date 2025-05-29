@@ -11,7 +11,7 @@ interface LabelApi {
 	@POST("add")
 	suspend fun addLabel(
 		@Form label: String,
-		@Form color: String,
+		@Form color: Int,
 	): ResultBody<Unit>?
 	
 	@BearerAuth
@@ -25,7 +25,7 @@ interface LabelApi {
 	suspend fun updateLabel(
 		@Form id: Int,
 		@Form label: String,
-		@Form color: String,
+		@Form color: Int,
 	): ResultBody<Unit>?
 	
 	@BearerAuth
@@ -37,5 +37,5 @@ interface LabelApi {
 data class LabelVO(
 	val id: Int,
 	val label: String,
-	val color: String,
+	val color: Int,
 )

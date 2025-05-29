@@ -36,6 +36,8 @@ class NoParameters {
 	
 	private val parameters = mutableMapOf<String, Any?>()
 	
+	val userId by lazy { parameters["userId"] as Int }
+	
 	operator fun <T> set(key: String, value: T) {
 		this.parameters[key] = value
 	}

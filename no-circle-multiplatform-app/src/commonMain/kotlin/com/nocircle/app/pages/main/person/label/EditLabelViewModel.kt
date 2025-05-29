@@ -1,10 +1,10 @@
 package com.nocircle.app.pages.main.person.label
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import com.nocircle.app.api.impl.labelApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
-import com.nocircle.common.expends.toHexString
 import com.nocircle.compose.viewmodel.NoViewModel
 
 class EditLabelViewModel : NoViewModel() {
@@ -24,7 +24,7 @@ class EditLabelViewModel : NoViewModel() {
 			showNoErrorSnackbar("标签不能为空")
 			return false
 		}
-		val result = ktorfitx.labelApi.addLabel(label, color.toHexString()) ?: return networkError()
+		val result = ktorfitx.labelApi.addLabel(label, color.toArgb()) ?: return networkError()
 		if (result.success) {
 			showNoSnackbar(result.msg)
 		} else {
@@ -38,7 +38,7 @@ class EditLabelViewModel : NoViewModel() {
 			showNoErrorSnackbar("标签不能为空")
 			return false
 		}
-		val result = ktorfitx.labelApi.updateLabel(id, label, color.toHexString()) ?: return networkError()
+		val result = ktorfitx.labelApi.updateLabel(id, label, color.toArgb()) ?: return networkError()
 		return result.success
 	}
 }

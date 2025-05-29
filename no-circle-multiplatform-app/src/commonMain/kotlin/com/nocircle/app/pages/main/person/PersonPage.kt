@@ -27,7 +27,6 @@ import com.nocircle.app.generated.resources.person_settings_subtitle
 import com.nocircle.app.generated.resources.settings
 import com.nocircle.app.pages.main.person.label.EditLabelSheet
 import com.nocircle.app.pages.settings.SettingsRoute
-import com.nocircle.common.expends.rememberHexToColor
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.compose.complex.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
@@ -126,14 +125,14 @@ private fun UserDetailCard() {
 @Composable
 private fun Label(
 	label: String,
-	color: String,
+	color: Int,
 ) {
-	val containerColor = rememberHexToColor(color)
+	val color = remember(color) { Color(color) }
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()
 			.background(
-				color = containerColor,
+				color = color,
 				shape = MaterialTheme.shapes.extraSmall
 			)
 			.padding(horizontal = 6.dp),
@@ -141,7 +140,7 @@ private fun Label(
 	) {
 		Text(
 			text = label,
-			color = if (containerColor.luminance() > 0.5f) Color.Black else Color.White,
+			color = if (color.luminance() > 0.5f) Color.Black else Color.White,
 			style = MaterialTheme.typography.labelMedium
 		)
 	}

@@ -21,8 +21,6 @@ import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.api.LabelVO
 import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.common.expends.getDisplayLength
-import com.nocircle.common.expends.hexToColor
-import com.nocircle.common.expends.rememberHexToColor
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
@@ -174,7 +172,7 @@ private fun Label(
 	selected: Boolean,
 	onClick: () -> Unit,
 ) {
-	val containerColor = rememberHexToColor(label.color)
+	val color = remember(label.color) { Color(label.color) }
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()
@@ -187,7 +185,7 @@ private fun Label(
 			)
 			.padding(5.dp)
 			.background(
-				color = containerColor,
+				color = color,
 				shape = MaterialTheme.shapes.extraSmall
 			)
 			.padding(
@@ -197,7 +195,7 @@ private fun Label(
 	) {
 		Text(
 			text = label.label,
-			color = if (containerColor.luminance() > 0.5f) Color.Black else Color.White,
+			color = if (color.luminance() > 0.5f) Color.Black else Color.White,
 			style = MaterialTheme.typography.bodyMedium,
 		)
 	}
@@ -242,7 +240,7 @@ private fun ColorSliders(
 	val primary = MaterialTheme.colorScheme.primary
 	var addColor by remember(primary) { mutableStateOf(primary) }
 	LaunchedEffect(selected) {
-		onColorChange(selected?.color?.hexToColor() ?: addColor)
+		onColorChange(selected?.color?.let { Color(it) } ?: addColor)
 	}
 	ColorSlider(
 		title = "红",

@@ -1,14 +1,11 @@
 package com.nocircle.server.app.services.label
 
-import com.nocircle.server.app.tables.user.UserLabel
 import com.nocircle.server.app.tables.user.UserLabels
-import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 object LabelQueryService : NoService<List<LabelQueryService.Label>> {
@@ -20,12 +17,9 @@ object LabelQueryService : NoService<List<LabelQueryService.Label>> {
 	override val auth = true
 	
 	override suspend fun process(parameters: NoParameters): ApiResult<List<Label>> {
-		val userId: Int by parameters
+		val userId = parameters.userId
 		val data = transaction {
-			val query = UserLabels.selectAll()
-				.where { UserLabels.userId eq userId }
-				.logicExists(UserLabels)
-			UserLabel.wrapRows(query).map {
+			UserLabels.queryByUserId(userId).map {
 				Label(it.id.value, it.label, it.color)
 			}
 		}
@@ -36,6 +30,6 @@ object LabelQueryService : NoService<List<LabelQueryService.Label>> {
 	data class Label(
 		val id: Int,
 		val label: String,
-		val color: String,
+		val color: Int,
 	)
 }
