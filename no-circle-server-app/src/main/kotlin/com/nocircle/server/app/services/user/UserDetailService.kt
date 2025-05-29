@@ -1,14 +1,11 @@
 package com.nocircle.server.app.services.user
 
-import com.nocircle.server.app.tables.user.User
 import com.nocircle.server.app.tables.user.Users
-import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 object UserDetailService : NoService<UserDetailService.UserDetail> {
@@ -22,11 +19,7 @@ object UserDetailService : NoService<UserDetailService.UserDetail> {
 	override suspend fun process(parameters: NoParameters): ApiResult<UserDetail> {
 		val userId: Int by parameters
 		val data = transaction {
-			val userRow = Users.selectAll()
-				.where { Users.id eq userId }
-				.logicExists(Users)
-				.firstOrNull() ?: return@transaction null
-			val user = User.wrapRow(userRow)
+			val user = Users.getById(userId) ?: return@transaction null
 			UserDetail(
 				username = user.username,
 				nickname = user.nickname,

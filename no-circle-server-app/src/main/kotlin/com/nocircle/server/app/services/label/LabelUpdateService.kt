@@ -9,7 +9,6 @@ import com.nocircle.server.common.services.noParameters
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -17,8 +16,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  */
 object LabelUpdateService : NoService<Unit> {
 	
-	private const val MAX_COUNT = 4
-	private const val MAX_TOTAL_LENGTH = 16
+	private const val MAX_TOTAL_LENGTH = 20
 	
 	override val path = "/label/update"
 	
@@ -28,9 +26,9 @@ object LabelUpdateService : NoService<Unit> {
 	
 	override suspend fun receive(call: RoutingCall) = noParameters(call) {
 		val parameters = call.receiveParameters()
-		this["id"] = parameters.getIntOrFail("id")
-		this["label"] = parameters.getOrFail("label")
-		this["color"] = parameters.getOrFail("color")
+		this["id"] = parameters.getInt("id")
+		this["label"] = parameters.getString("label")
+		this["color"] = parameters.getInt("color")
 	}
 	
 	override suspend fun process(parameters: NoParameters): ApiResult<Unit> {
@@ -43,15 +41,19 @@ object LabelUpdateService : NoService<Unit> {
 			if (displayLength == 0) {
 				return@transaction Code.Empty
 			}
-			val labels = UserLabels.queryByUserId(userId)
-			if (labels.size >= MAX_COUNT) {
-				return@transaction Code.TotalLimit
+			val userLabel = UserLabels.getById(id)
+				?: return@transaction Code.NotFound
+			
+			if (userLabel.label == label && userLabel.color == color) {
+				return@transaction Code.NoChange
 			}
+			
+			val labels = UserLabels.getListByUserIdAndNotId(userId, id)
 			if (labels.find { it.label == label } != null) {
 				return@transaction Code.AlreadyExists
 			}
 			val totalLength = labels.sumOf { it.label.getDisplayLength() } + displayLength
-			if (totalLength >= MAX_TOTAL_LENGTH) {
+			if (totalLength > MAX_TOTAL_LENGTH) {
 				return@transaction Code.LengthLimit
 			}
 			val success = UserLabels.update(userId, id, label, color)
@@ -69,8 +71,9 @@ object LabelUpdateService : NoService<Unit> {
 	) {
 		Success("标签修改成功"),
 		Failure("标签修改失败"),
+		NotFound("未找到标签"),
+		NoChange("标签无需修改"),
 		AlreadyExists("标签已存在"),
-		TotalLimit("超过最大数量限制"),
 		LengthLimit("超过总长度限制"),
 		Empty("标签不能为空")
 	}

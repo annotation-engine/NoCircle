@@ -1,6 +1,6 @@
 package com.nocircle.server.app.services.user
 
-import com.nocircle.server.app.plugins.RedisPrefix
+import com.nocircle.server.app.plugins.UserToken
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
@@ -20,7 +20,7 @@ object UserLogoutService : NoService<Unit> {
 	
 	override suspend fun process(parameters: NoParameters): ApiResult<Unit> {
 		val userId: Int by parameters
-		val bucket = redisson.getBucket<String>("${RedisPrefix.USER_TOKEN}$userId")
+		val bucket = redisson.getBucket<String>("${UserToken.prefix}$userId")
 		bucket.delete()
 		return ApiResult.success("登出成功，请重新登录")
 	}

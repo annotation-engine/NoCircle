@@ -19,7 +19,7 @@ object LabelQueryService : NoService<List<LabelQueryService.Label>> {
 	override suspend fun process(parameters: NoParameters): ApiResult<List<Label>> {
 		val userId = parameters.userId
 		val data = transaction {
-			UserLabels.queryByUserId(userId).map {
+			UserLabels.getListByUserId(userId).map {
 				Label(it.id.value, it.label, it.color)
 			}
 		}

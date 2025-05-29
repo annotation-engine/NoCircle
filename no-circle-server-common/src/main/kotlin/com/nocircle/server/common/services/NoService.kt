@@ -52,21 +52,21 @@ class NoParameters {
 		return this.parameters[property.name] as T
 	}
 	
-	fun Parameters.getInt(key: String): Int? {
-		return this[key]?.toIntOrNull()
-	}
+	fun Parameters.getString(key: String): String = this.getOrFail(key)
 	
-	fun Parameters.getBoolean(key: String): Boolean? {
-		return this[key]?.toBooleanStrictOrNull()
-	}
+	fun Parameters.getStringOrNull(key: String): String? = this[key]
 	
-	fun Parameters.getIntOrFail(key: String): Int {
-		return this.getOrFail(key).toInt()
-	}
+	fun Parameters.getInt(key: String): Int = this.getOrFail(key).toInt()
 	
-	fun Parameters.getBooleanOrFail(key: String): Boolean {
-		return this.getOrFail(key).toBooleanStrict()
-	}
+	fun Parameters.getIntOrNull(key: String): Int? = this[key]?.toIntOrNull()
+	
+	fun Parameters.getBoolean(key: String): Boolean = this.getOrFail(key).toBooleanStrict()
+	
+	fun Parameters.getBooleanOrNull(key: String): Boolean? = this[key]?.toBooleanStrictOrNull()
+	
+	fun Parameters.getDouble(key: String): Double = this.getOrFail(key).toDouble()
+	
+	fun Parameters.getDoubleOrNull(key: String): Double? = this[key]?.toDouble()
 }
 
 inline fun noParameters(

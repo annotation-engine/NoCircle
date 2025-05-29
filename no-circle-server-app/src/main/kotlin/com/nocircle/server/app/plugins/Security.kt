@@ -16,7 +16,7 @@ fun Application.configureSecurity() {
 			validate {
 				val token = request.token ?: return@validate null
 				val userId = it.payload.getClaim("userId").asInt()
-				val bucket = redisson.getBucket<String>("${RedisPrefix.USER_TOKEN}$userId")
+				val bucket = redisson.getBucket<String>("${UserToken.prefix}$userId")
 				if (bucket.isExists && bucket.get() == token) {
 					val username = it.payload.getClaim("username").asString()
 					NoPrincipal(userId, username)

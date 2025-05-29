@@ -1,6 +1,7 @@
 package com.nocircle.app.pages.main.person
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -79,26 +80,32 @@ private fun UserDetailCard() {
 			contentScale = ContentScale.Crop
 		)
 		Spacer(modifier = Modifier.width(16.dp))
-		Column(
+		Box(
 			modifier = Modifier
-				.fillMaxHeight()
-				.padding(vertical = 2.dp),
+				.fillMaxSize()
 		) {
 			Text(
 				text = userDetail?.nickname ?: "",
+				modifier = Modifier
+					.align(Alignment.TopStart),
 				color = MaterialTheme.colorScheme.onSurface,
 				style = MaterialTheme.typography.bodyLarge,
 			)
-			Spacer(modifier = Modifier.weight(1f))
+			
 			Text(
 				text = Res.string.person_account.value(userDetail?.username ?: ""),
+				modifier = Modifier
+					.align(Alignment.CenterStart),
 				color = MaterialTheme.colorScheme.outline,
 				style = MaterialTheme.typography.bodyMedium,
 			)
-			Spacer(modifier = Modifier.weight(1f))
+			
+			val horizontalScroll = rememberScrollState()
 			Row(
 				modifier = Modifier
-					.height(22.dp)
+					.align(Alignment.BottomStart)
+					.horizontalScroll(horizontalScroll)
+					.height(24.dp)
 					.background(
 						color = if (userDetail == null) MaterialTheme.colorScheme.surface else Color.Transparent,
 						shape = MaterialTheme.shapes.extraSmall
@@ -114,7 +121,7 @@ private fun UserDetailCard() {
 						Spacer(modifier = Modifier.width(6.dp))
 					}
 					EditLabel(
-						icon = if (it.size < 5) Icons.Rounded.Add else Icons.Rounded.Remove
+						icon = if (it.size < 4) Icons.Rounded.Add else Icons.Rounded.Remove
 					)
 				}
 			}
@@ -154,7 +161,7 @@ private fun EditLabel(
 	NoIconButton(
 		icon = icon,
 		modifier = Modifier
-			.size(22.dp),
+			.size(24.dp),
 		tint = MaterialTheme.colorScheme.outline,
 		shape = MaterialTheme.shapes.extraSmall,
 		paddingValues = PaddingValues()

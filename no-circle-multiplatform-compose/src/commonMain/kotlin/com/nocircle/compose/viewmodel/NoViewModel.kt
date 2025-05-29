@@ -64,6 +64,14 @@ abstract class NoViewModel : ViewModel() {
 		this.snackbarVisualsSharedFlow.emit(NoSnackbarVisuals(getString(message), actionLabel, prefixIcon, withDismissAction, duration, colors = NoSnackbarColors.Error))
 	}
 	
+	suspend fun autoShowNoSnackbar(success: Boolean, message: String) {
+		if (success) {
+			showNoSnackbar(message)
+		} else {
+			showNoErrorSnackbar(message)
+		}
+	}
+	
 	protected suspend fun networkError(): Boolean {
 		this.showNoErrorSnackbar(Res.string.network_connect_error)
 		return false

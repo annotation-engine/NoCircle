@@ -23,7 +23,7 @@ object LabelDeleteService : NoService<Unit> {
 	
 	override suspend fun receive(call: RoutingCall) = noParameters(call) {
 		val parameters = call.receiveParameters()
-		this["id"] = parameters.getIntOrFail("id")
+		this["id"] = parameters.getInt("id")
 	}
 	
 	override suspend fun process(parameters: NoParameters): ApiResult<Unit> {

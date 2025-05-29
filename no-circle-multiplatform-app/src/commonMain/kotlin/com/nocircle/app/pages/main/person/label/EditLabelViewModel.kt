@@ -11,11 +11,7 @@ class EditLabelViewModel : NoViewModel() {
 	
 	suspend fun deleteLabelById(id: Int): Boolean {
 		val result = ktorfitx.labelApi.deleteLabelById(id) ?: return networkError()
-		if (result.success) {
-			showNoSnackbar(result.msg)
-		} else {
-			showNoErrorSnackbar(result.msg)
-		}
+		autoShowNoSnackbar(result.success, result.msg)
 		return result.success
 	}
 	
@@ -25,11 +21,7 @@ class EditLabelViewModel : NoViewModel() {
 			return false
 		}
 		val result = ktorfitx.labelApi.addLabel(label, color.toArgb()) ?: return networkError()
-		if (result.success) {
-			showNoSnackbar(result.msg)
-		} else {
-			showNoErrorSnackbar(result.msg)
-		}
+		autoShowNoSnackbar(result.success, result.msg)
 		return result.success
 	}
 	
@@ -39,6 +31,7 @@ class EditLabelViewModel : NoViewModel() {
 			return false
 		}
 		val result = ktorfitx.labelApi.updateLabel(id, label, color.toArgb()) ?: return networkError()
+		autoShowNoSnackbar(result.success, result.msg)
 		return result.success
 	}
 }

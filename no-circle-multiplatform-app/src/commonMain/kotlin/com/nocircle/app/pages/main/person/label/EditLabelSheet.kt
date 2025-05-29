@@ -157,7 +157,7 @@ private fun List<LabelVO>.getOverlength(): Int {
 }
 
 private const val MAX_COUNT = 4
-private const val MAX_TOTAL_LENGTH = 16
+private const val MAX_TOTAL_LENGTH = 20
 
 @Composable
 private fun Label(

@@ -21,7 +21,15 @@ fun configureRedis() {
 
 lateinit var redisson: RedissonClient
 
-data object RedisPrefix {
+abstract class NoRedisson {
 	
-	const val USER_TOKEN = "user::token::"
+	val key: String by lazy {
+		this::class.qualifiedName!!.replace(".", "::")
+	}
+	
+	val prefix: String by lazy {
+		"${this.key}::"
+	}
 }
+
+data object UserToken : NoRedisson()

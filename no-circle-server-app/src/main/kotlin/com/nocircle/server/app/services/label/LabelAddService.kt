@@ -9,7 +9,6 @@ import com.nocircle.server.common.services.noParameters
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -18,7 +17,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 object LabelAddService : NoService<Unit> {
 	
 	private const val MAX_COUNT = 4
-	private const val MAX_TOTAL_LENGTH = 16
+	private const val MAX_TOTAL_LENGTH = 20
 	
 	override val path = "/label/add"
 	
@@ -28,8 +27,8 @@ object LabelAddService : NoService<Unit> {
 	
 	override suspend fun receive(call: RoutingCall) = noParameters(call) {
 		val parameters = call.receiveParameters()
-		this["label"] = parameters.getOrFail("label")
-		this["color"] = parameters.getIntOrFail("color")
+		this["label"] = parameters.getString("label")
+		this["color"] = parameters.getInt("color")
 	}
 	
 	override suspend fun process(parameters: NoParameters): ApiResult<Unit> {
@@ -42,7 +41,7 @@ object LabelAddService : NoService<Unit> {
 			if (displayLength == 0) {
 				return@transaction Code.Empty
 			}
-			val labels = UserLabels.queryByUserId(userId)
+			val labels = UserLabels.getListByUserId(userId)
 			if (labels.size >= MAX_COUNT) {
 				return@transaction Code.TotalLimit
 			}

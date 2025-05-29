@@ -34,3 +34,10 @@
 5. Redisson
 6. Hutool (Crypto)
 7. Logback Classic
+
+### 命名规范
+
+1. 查询：getById, getListById
+2. 新增：insert, batchInsert
+3. 删除：deleteById, batchDeleteById
+4. 修改：updateById, batchUpdateById

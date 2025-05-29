@@ -21,9 +21,24 @@ object UserLabels : BaseTable("tb_user_labels") {
 	
 	val color = integer("color")
 	
-	fun queryByUserId(userId: Int): List<UserLabel> {
+	fun getById(id: Int): UserLabel? {
+		val row = UserLabels.selectAll()
+			.where { UserLabels.id eq id }
+			.logicExists(UserLabels)
+			.singleOrNull() ?: return null
+		return UserLabel.wrapRow(row)
+	}
+	
+	fun getListByUserId(userId: Int): List<UserLabel> {
 		val query = UserLabels.selectAll()
 			.where { UserLabels.userId eq userId }
+			.logicExists(UserLabels)
+		return UserLabel.wrapRows(query).toList()
+	}
+	
+	fun getListByUserIdAndNotId(userId: Int, id: Int): List<UserLabel> {
+		val query = UserLabels.selectAll()
+			.where { (UserLabels.userId eq userId) and (UserLabels.id neq id) }
 			.logicExists(UserLabels)
 		return UserLabel.wrapRows(query).toList()
 	}

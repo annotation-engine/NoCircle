@@ -2,7 +2,7 @@ package com.nocircle.server.app.utils
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.nocircle.server.app.plugins.RedisPrefix
+import com.nocircle.server.app.plugins.UserToken
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.app.plugins.yaml
 import kotlinx.datetime.Clock
@@ -27,7 +27,7 @@ object JWTUtils {
 			.withExpiresAt(expiresAt.toJavaInstant())
 			.sign(algorithm)
 		
-		redisson.getBucket<String>("${RedisPrefix.USER_TOKEN}$userId")
+		redisson.getBucket<String>("${UserToken.prefix}$userId")
 			.set(token, yaml.jwt.timeout.toJavaDuration())
 		
 		return token
