@@ -1,8 +1,5 @@
 package com.nocircle.app.pages.main.person.label
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -74,19 +71,20 @@ fun EditLabelSheet(
 			val primary = MaterialTheme.colorScheme.primary
 			var color by remember { mutableStateOf(primary) }
 			var maxLength by remember { mutableStateOf(0) }
-			var overlength by remember { mutableStateOf(0) }
+			val showAddLabel = remember(labels) {
+				labels.getOverlength() > 0 && labels.size < MAX_COUNT
+			}
 			LaunchedEffect(labels) {
 				addLabel = ""
-				overlength = MAX_TOTAL_LENGTH - labels.sumOf { it.label.getDisplayLength() }
+				val overlength = labels.getOverlength()
 				selected = if (labels.size < MAX_COUNT && overlength > 0) null else labels.last()
+				maxLength = overlength + if (selected != null) selected!!.label.getDisplayLength() else 0
 				color = primary
 				label = selected?.label ?: ""
-				maxLength = overlength + if (selected != null) selected!!.label.getDisplayLength() else 0
 			}
 			LaunchedEffect(selected) {
 				label = selected?.label ?: addLabel
-				overlength = MAX_TOTAL_LENGTH - labels.sumOf { it.label.getDisplayLength() }
-				maxLength = overlength + if (selected != null) selected!!.label.getDisplayLength() else 0
+				maxLength = labels.getOverlength() + if (selected != null) selected!!.label.getDisplayLength() else 0
 			}
 			Row(
 				modifier = Modifier
@@ -107,16 +105,7 @@ fun EditLabelSheet(
 						Spacer(modifier = Modifier.width(2.dp))
 					}
 				}
-				val showAddLabel by remember {
-					derivedStateOf {
-						labels.size < MAX_COUNT && overlength > 0
-					}
-				}
-				AnimatedVisibility(
-					visible = showAddLabel,
-					enter = fadeIn(),
-					exit = fadeOut()
-				) {
+				if (showAddLabel) {
 					Spacer(modifier = Modifier.width(2.dp))
 					AddLabel(
 						selected = selected == null,
@@ -161,6 +150,10 @@ fun EditLabelSheet(
 			)
 		}
 	}
+}
+
+private fun List<LabelVO>.getOverlength(): Int {
+	return MAX_TOTAL_LENGTH - this.sumOf { it.label.getDisplayLength() }
 }
 
 private const val MAX_COUNT = 4

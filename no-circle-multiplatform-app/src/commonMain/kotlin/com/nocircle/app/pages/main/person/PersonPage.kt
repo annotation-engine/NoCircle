@@ -66,19 +66,19 @@ private fun UserDetailCard() {
 				color = MaterialTheme.colorScheme.surfaceContainer,
 				shape = MaterialTheme.shapes.small
 			)
-			.padding(24.dp)
-			.height(80.dp)
+			.padding(16.dp)
+			.height(100.dp)
 	) {
 		val userDetail by viewModel.userDetail.collectAsState()
 		NoAsyncImage(
 			url = userDetail?.avatarUrl,
 			modifier = Modifier
-				.size(80.dp)
+				.size(100.dp)
 				.clip(MaterialTheme.shapes.small),
 			placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceDim),
 			contentScale = ContentScale.Crop
 		)
-		Spacer(modifier = Modifier.width(12.dp))
+		Spacer(modifier = Modifier.width(16.dp))
 		Column(
 			modifier = Modifier
 				.fillMaxHeight()
