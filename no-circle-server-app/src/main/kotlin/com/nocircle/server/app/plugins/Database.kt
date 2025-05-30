@@ -1,6 +1,7 @@
 package com.nocircle.server.app.plugins
 
 import com.nocircle.server.app.tables.user.UserLabels
+import com.nocircle.server.app.tables.user.UserLogins
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.utils.NoLog
 import org.jetbrains.exposed.v1.jdbc.Database
@@ -8,7 +9,7 @@ import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.system.measureTimeMillis
 
-fun configureMysql() {
+fun configureDatabase() {
 	val millis = measureTimeMillis {
 		val database = Database.connect(
 			url = yaml.mysql.url,
@@ -19,7 +20,8 @@ fun configureMysql() {
 		transaction(database) {
 			SchemaUtils.create(
 				Users,
-				UserLabels
+				UserLabels,
+				UserLogins
 			)
 		}
 	}

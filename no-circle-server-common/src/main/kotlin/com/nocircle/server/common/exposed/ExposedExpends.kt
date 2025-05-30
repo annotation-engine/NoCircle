@@ -1,5 +1,6 @@
 package com.nocircle.server.common.exposed
 
+import kotlinx.datetime.Clock
 import org.jetbrains.exposed.v1.core.*
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.statements.UpdateStatement
@@ -28,9 +29,11 @@ fun <T : BaseTable> T.logicUpdate(
 ): Int {
 	return this.update(
 		where = { deleteFlag eq false },
-		limit = limit,
-		body = body
-	)
+		limit = limit
+	) {
+		body(it)
+		it[this.updateTime] = Clock.System.now()
+	}
 }
 
 fun <T : BaseTable> T.logicUpdate(
@@ -40,9 +43,11 @@ fun <T : BaseTable> T.logicUpdate(
 ): Int {
 	return this.update(
 		where = { deleteFlag eq false and where() },
-		limit = limit,
-		body = body
-	)
+		limit = limit
+	) {
+		body(it)
+		it[this.updateTime] = Clock.System.now()
+	}
 }
 
 fun <T : BaseTable> T.logicUpdateReturning(
@@ -51,9 +56,11 @@ fun <T : BaseTable> T.logicUpdateReturning(
 ): ReturningBlockingExecutable {
 	return this.updateReturning(
 		returning = returning,
-		where = { deleteFlag eq false },
-		body = body
-	)
+		where = { deleteFlag eq false }
+	) {
+		body(it)
+		it[this.updateTime] = Clock.System.now()
+	}
 }
 
 fun <T : BaseTable> T.logicUpdateReturning(
@@ -63,9 +70,11 @@ fun <T : BaseTable> T.logicUpdateReturning(
 ): ReturningBlockingExecutable {
 	return this.updateReturning(
 		returning = returning,
-		where = { deleteFlag eq false and where() },
-		body = body
-	)
+		where = { deleteFlag eq false and where() }
+	) {
+		body(it)
+		it[this.updateTime] = Clock.System.now()
+	}
 }
 
 fun <T : BaseTable> T.logicDeleteWhere(

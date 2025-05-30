@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
 	configureYaml()
 	configureJson()
-	configureMysql()
+	configureDatabase()
 	configureRedis()
 	configureSecurity()
 	configureLogging()

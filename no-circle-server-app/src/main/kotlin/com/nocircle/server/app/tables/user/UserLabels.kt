@@ -12,7 +12,7 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 
-object UserLabels : BaseTable("tb_user_labels") {
+object UserLabels : BaseTable("tb_user_label") {
 	
 	val userId = integer("user_id")
 		.references(Users.id)
