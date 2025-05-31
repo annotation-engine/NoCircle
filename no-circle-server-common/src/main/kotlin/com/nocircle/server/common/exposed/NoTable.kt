@@ -1,10 +1,12 @@
 package com.nocircle.server.common.exposed
 
 import kotlinx.datetime.Clock
+import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
+import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-open class BaseTable(
+abstract class BaseTable(
 	name: String,
 	columnName: String = "id"
 ) : IntIdTable(name, columnName) {
@@ -17,4 +19,13 @@ open class BaseTable(
 	
 	val deleteFlag = bool("delete_flag")
 		.default(false)
+}
+
+abstract class BaseIntEntity(id: EntityID<Int>, table: BaseTable) : IntEntity(id) {
+	
+	val createTime by table.deleteFlag
+	
+	val updateTime by table.updateTime
+	
+	val deleteFlag by table.deleteFlag
 }

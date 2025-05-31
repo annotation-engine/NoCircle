@@ -1,6 +1,9 @@
 package com.nocircle.app
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.nocircle.app.pages.account.login.LoginViewModel
 import com.nocircle.app.pages.account.register.RegisterViewModel
 import com.nocircle.app.pages.guide.GuideViewModel
@@ -10,33 +13,52 @@ import com.nocircle.app.pages.main.person.label.EditLabelViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
+import com.nocircle.compose.resources.LocalSupportLanguage
+import com.nocircle.compose.resources.SupportLanguage
 import org.koin.compose.KoinApplication
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 private val NoKoinModule = module {
-	viewModel { GuideViewModel() }
-	viewModel { LoginViewModel() }
-	viewModel { RegisterViewModel() }
-	viewModel { MainViewModel() }
-	viewModel { PersonViewModel() }
-	viewModel { SettingsViewModel() }
-	single { AppearanceViewModel() }
-	viewModel { EditLabelViewModel() }
+    viewModel { GuideViewModel() }
+    viewModel { LoginViewModel() }
+    viewModel { RegisterViewModel() }
+    viewModel { MainViewModel() }
+    viewModel { PersonViewModel() }
+    single { SettingsViewModel() }
+    single { AppearanceViewModel() }
+    viewModel { EditLabelViewModel() }
 }
 
 @Composable
 fun NoApp(
-	effectContent: @Composable (() -> Unit)? = null
+    effect: @Composable (() -> Unit)? = null
 ) {
-	KoinApplication(
-		application = {
-			modules(NoKoinModule)
-		}
-	) {
-		NoMaterialTheme {
-			NoAppNavHost()
-			effectContent?.invoke()
-		}
-	}
+    KoinApplication(
+        application = {
+            modules(NoKoinModule)
+        }
+    ) {
+        NoMaterialTheme {
+            CompositionLocalAppString {
+                NoAppNavHost()
+            }
+            effect?.invoke()
+        }
+    }
+}
+
+
+@Composable
+private fun CompositionLocalAppString(
+    content: @Composable () -> Unit
+) {
+    val viewModel = koinViewModel<SettingsViewModel>()
+    val language by viewModel.language.collectAsState()
+    SupportLanguage.current = language
+    CompositionLocalProvider(
+        LocalSupportLanguage provides language,
+        content = content
+    )
 }

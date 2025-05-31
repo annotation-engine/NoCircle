@@ -1,11 +1,11 @@
 package com.nocircle.server.app.tables.user
 
 import com.nocircle.server.app.utils.PasswordUtils
+import com.nocircle.server.common.exposed.BaseIntEntity
 import com.nocircle.server.common.exposed.BaseTable
 import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicExists
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
-import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
@@ -54,7 +54,7 @@ object Users : BaseTable("tb_user") {
 	}
 }
 
-class User(id: EntityID<Int>) : IntEntity(id) {
+class User(id: EntityID<Int>) : BaseIntEntity(id, Users) {
 	
 	companion object : IntEntityClass<User>(Users)
 	

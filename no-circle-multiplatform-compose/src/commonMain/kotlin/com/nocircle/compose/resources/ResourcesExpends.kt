@@ -6,7 +6,7 @@ import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun StringResource.value(
+fun StringResource.rawValue(
 	vararg formatArgs: Any
 ): String = stringResource(this, *formatArgs)
 

@@ -17,7 +17,7 @@ import com.nocircle.compose.generated.resources.Res
 import com.nocircle.compose.generated.resources.alert_modal_bottom_sheet_cancel
 import com.nocircle.compose.generated.resources.alert_modal_bottom_sheet_confirm
 import com.nocircle.compose.material3.NoModalBottomSheet
-import com.nocircle.compose.resources.value
+import com.nocircle.compose.resources.rawValue
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,8 +29,8 @@ fun NoAlertModalBottomSheet(
 	onConfirm: suspend () -> Unit,
 	modifier: Modifier = Modifier,
 	sheetState: SheetState = rememberModalBottomSheetState(),
-	confirmText: String = Res.string.alert_modal_bottom_sheet_confirm.value(),
-	cancelText: String = Res.string.alert_modal_bottom_sheet_cancel.value(),
+	confirmText: String = Res.string.alert_modal_bottom_sheet_confirm.rawValue(),
+	cancelText: String = Res.string.alert_modal_bottom_sheet_cancel.rawValue(),
 	onCancel: suspend () -> Unit = {},
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),

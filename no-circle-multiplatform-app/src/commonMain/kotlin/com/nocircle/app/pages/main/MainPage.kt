@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.generated.resources.*
 import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
@@ -42,6 +41,9 @@ import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.colors.ThemeMode
+import com.nocircle.app.resources.AppString
+import com.nocircle.app.resources.getString
+import com.nocircle.app.resources.value
 import com.nocircle.common.navigation.*
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.desktop.NoTooltipArea
@@ -50,9 +52,7 @@ import com.nocircle.compose.desktop.NoWindowDraggableArea
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.showNoSnackbar
-import com.nocircle.compose.resources.value
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
@@ -60,269 +60,270 @@ data object MainRoute : NoRoute
 
 @Composable
 fun MainPage() {
-	val viewModel = koinViewModel<MainViewModel>()
-	val hostState = remember { SnackbarHostState() }
-	LaunchedEffect(Unit) {
-		hostState.showNoSnackbar(Res.string.login_success)
-		viewModel.snackbarCollect(hostState::showNoSnackbar)
-	}
-	NoScaffold(
-		snackbarHostState = hostState,
-	) {
-		Row(
-			modifier = Modifier
-				.fillMaxSize()
-		) {
-			val isCompat = WindowWidthSizes.isCompact
-			val subRoute by viewModel.mainSubRoute.collectAsState()
-			LocalNavControllerProvider { controller ->
-				val onSubRouteChange = { route: MainSubRoute ->
-					if (subRoute != route) {
-						viewModel.mainSubRoute.value = route
-					}
-					if (controller.currentRoute != MainRoute::class) {
-						controller.navigate(route = MainRoute, popup = NoPopUp.All)
-					}
-				}
-				if (!isCompat) {
-					LeftNavigationBar(
-						subRoute = subRoute,
-						onSubRouteChange = onSubRouteChange
-					)
-				}
-				NoNavHost(
-					navController = controller,
-					startDestination = MainRoute,
-					modifier = Modifier
-						.weight(1f)
-						.fillMaxHeight(),
-					navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
-					navPopTransition = if (isCompat) NavPopTransition.HorizontalSlide else NavPopTransition.Fade,
-				) {
-					composable<MainRoute>(
-						content = {
-							MainPage(
-								subRoute = subRoute,
-								onSubRouteChange = onSubRouteChange
-							)
-						}
-					)
-					composable<SettingsRoute> { SettingsPage() }
-					composable<AppearanceRoute> { AppearancePage() }
-				}
-			}
-		}
-	}
+    val viewModel = koinViewModel<MainViewModel>()
+    val hostState = remember { SnackbarHostState() }
+    LaunchedEffect(Unit) {
+        hostState.showNoSnackbar(AppString.LoginSuccess.getString())
+        viewModel.snackbarCollect(hostState::showNoSnackbar)
+    }
+    NoScaffold(
+        snackbarHostState = hostState,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            val isCompat = WindowWidthSizes.isCompact
+            val subRoute by viewModel.mainSubRoute.collectAsState()
+            LocalNavControllerProvider { controller ->
+                val onSubRouteChange = { route: MainSubRoute ->
+                    if (subRoute != route) {
+                        viewModel.mainSubRoute.value = route
+                    }
+                    if (controller.currentRoute != MainRoute::class) {
+                        controller.navigate(route = MainRoute, popup = NoPopUp.All)
+                    }
+                }
+                if (!isCompat) {
+                    LeftNavigationBar(
+                        subRoute = subRoute,
+                        onSubRouteChange = onSubRouteChange
+                    )
+                }
+                NoNavHost(
+                    navController = controller,
+                    startDestination = MainRoute,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
+                    navPopTransition = if (isCompat) NavPopTransition.HorizontalSlide else NavPopTransition.Fade,
+                ) {
+                    composable<MainRoute>(
+                        content = {
+                            MainPage(
+                                subRoute = subRoute,
+                                onSubRouteChange = onSubRouteChange
+                            )
+                        }
+                    )
+                    composable<SettingsRoute> { SettingsPage() }
+                    composable<AppearanceRoute> { AppearancePage() }
+                }
+            }
+        }
+    }
 }
 
 @Composable
 private fun MainPage(
-	subRoute: MainSubRoute,
-	onSubRouteChange: (MainSubRoute) -> Unit
+    subRoute: MainSubRoute,
+    onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	NoScaffold {
-		val isCompat = WindowWidthSizes.isCompact
-		Column(
-			modifier = Modifier
-				.fillMaxSize()
-				.padding(
-					top = if (isCompat) it.calculateTopPadding() else Dp.Hairline
-				)
-		) {
-			Crossfade(
-				targetState = subRoute,
-				modifier = Modifier
-					.fillMaxWidth()
-					.weight(1f),
-				animationSpec = tween(durationMillis = 120),
-				label = "CompactMainRouteCrossfade",
-			) { target ->
-				when (target) {
-					MainSubRoute.Home -> HomePage()
-					MainSubRoute.Friends -> FriendsPage()
-					MainSubRoute.Groups -> GroupsPage()
-					MainSubRoute.Person -> PersonPage()
-				}
-			}
-			if (WindowWidthSizes.isCompact) {
-				BottomNavigationBar(
-					subRoute = subRoute,
-					onSubRouteChange = onSubRouteChange
-				)
-			}
-		}
-	}
+    NoScaffold {
+        val isCompat = WindowWidthSizes.isCompact
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = if (isCompat) it.calculateTopPadding() else Dp.Hairline
+                )
+        ) {
+            Crossfade(
+                targetState = subRoute,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                animationSpec = tween(durationMillis = 120),
+                label = "CompactMainRouteCrossfade",
+            ) { target ->
+                when (target) {
+                    MainSubRoute.Home -> HomePage()
+                    MainSubRoute.Friends -> FriendsPage()
+                    MainSubRoute.Groups -> GroupsPage()
+                    MainSubRoute.Person -> PersonPage()
+                }
+            }
+            if (WindowWidthSizes.isCompact) {
+                BottomNavigationBar(
+                    subRoute = subRoute,
+                    onSubRouteChange = onSubRouteChange
+                )
+            }
+        }
+    }
 }
 
 private val HorizontalItemSpacing = 12.dp
 
 @Composable
 private fun BottomNavigationBar(
-	subRoute: MainSubRoute,
-	onSubRouteChange: (MainSubRoute) -> Unit
+    subRoute: MainSubRoute,
+    onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	Box(
-		modifier = Modifier
-			.fillMaxWidth()
-			.padding(12.dp)
-			.height(56.dp)
-	) {
-		val density = LocalDensity.current
-		var width by remember { mutableStateOf(Dp.Unspecified) }
-		if (width != Dp.Unspecified) {
-			val sliderWidth by remember(width) {
-				derivedStateOf {
-					val size = MainSubRoute.entries.size
-					(width - HorizontalItemSpacing * (size - 1)) / size
-				}
-			}
-			val offsetXTarget by remember(sliderWidth, subRoute) {
-				derivedStateOf {
-					(sliderWidth + HorizontalItemSpacing) * MainSubRoute.entries.indexOfFirst { it == subRoute }
-				}
-			}
-			val offsetX by animateDpAsState(offsetXTarget)
-			Box(
-				modifier = Modifier
-					.offset(x = offsetX)
-					.width(sliderWidth)
-					.fillMaxHeight()
-					.clip(MaterialTheme.shapes.small)
-					.background(MaterialTheme.colorScheme.primary)
-			)
-		}
-		Row(
-			modifier = Modifier
-				.fillMaxSize()
-				.onGloballyPositioned {
-					width = with(density) { it.size.width.toDp() }
-				}
-		) {
-			MainSubRoute.entries.fastForEachIndexed { index, it ->
-				val color by animateColorAsState(
-					targetValue = if (it == subRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
-				)
-				Row(
-					modifier = Modifier
-						.weight(1f)
-						.fillMaxHeight()
-						.clip(MaterialTheme.shapes.small)
-						.clickable { onSubRouteChange(it) },
-					verticalAlignment = Alignment.CenterVertically,
-					horizontalArrangement = Arrangement.Center
-				) {
-					NoIcon(
-						icon = it.icon,
-						tint = color,
-						modifier = Modifier
-							.size(24.dp)
-					)
-					Spacer(modifier = Modifier.width(8.dp))
-					Text(
-						text = it.title.value(),
-						color = color,
-						style = MaterialTheme.typography.bodyMedium,
-					)
-				}
-				if (index < MainSubRoute.entries.lastIndex) {
-					Spacer(modifier = Modifier.width(HorizontalItemSpacing))
-				}
-			}
-		}
-	}
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+            .height(56.dp)
+    ) {
+        val density = LocalDensity.current
+        var width by remember { mutableStateOf(Dp.Unspecified) }
+        if (width != Dp.Unspecified) {
+            val sliderWidth by remember(width) {
+                derivedStateOf {
+                    val size = MainSubRoute.entries.size
+                    (width - HorizontalItemSpacing * (size - 1)) / size
+                }
+            }
+            val offsetXTarget by remember(sliderWidth, subRoute) {
+                derivedStateOf {
+                    (sliderWidth + HorizontalItemSpacing) * MainSubRoute.entries.indexOfFirst { it == subRoute }
+                }
+            }
+            val offsetX by animateDpAsState(offsetXTarget)
+            Box(
+                modifier = Modifier
+                    .offset(x = offsetX)
+                    .width(sliderWidth)
+                    .fillMaxHeight()
+                    .clip(MaterialTheme.shapes.small)
+                    .background(MaterialTheme.colorScheme.primary)
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .onGloballyPositioned {
+                    width = with(density) { it.size.width.toDp() }
+                }
+        ) {
+            MainSubRoute.entries.fastForEachIndexed { index, it ->
+                val color by animateColorAsState(
+                    targetValue = if (it == subRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+                )
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .clip(MaterialTheme.shapes.small)
+                        .clickable { onSubRouteChange(it) },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    NoIcon(
+                        icon = it.icon,
+                        tint = color,
+                        modifier = Modifier
+                            .size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = it.title.value(),
+                        color = color,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+                if (index < MainSubRoute.entries.lastIndex) {
+                    Spacer(modifier = Modifier.width(HorizontalItemSpacing))
+                }
+            }
+        }
+    }
 }
 
 @Composable
 private fun LeftNavigationBar(
-	subRoute: MainSubRoute,
-	onSubRouteChange: (MainSubRoute) -> Unit
+    subRoute: MainSubRoute,
+    onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	NoWindowDraggableArea {
-		val viewModel = koinViewModel<MainViewModel>()
-		val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
-		val width by animateDpAsState(
-			targetValue = if (isLeftNavigationBarExpended) 148.dp else 72.dp
-		)
-		Column(
-			modifier = Modifier
-				.width(width)
-				.fillMaxHeight()
-				.background(MaterialTheme.colorScheme.surfaceContainer)
-				.padding(
-					top = 36.dp,
-					start = 12.dp,
-					end = 12.dp,
-					bottom = 12.dp
-				)
-		) {
-			val controller = LocalNavController.current
-			var popStackEnabled by remember { mutableStateOf(true) }
-			DisposableEffect(Unit) {
-				val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
-					popStackEnabled = controller.currentRoute != MainRoute::class
-				}
-				controller.addOnDestinationChangedListener(listener)
-				onDispose {
-					controller.removeOnDestinationChangedListener(listener)
-				}
-			}
-			val previousText = Res.string.main_previous.value()
-			LeftToolItem(
-				title = previousText,
-				icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
-				tooltipText = previousText,
-				isExpended = isLeftNavigationBarExpended,
-				onClick = { controller.popBackStack() },
-				enabled = popStackEnabled
-			)
-			Spacer(modifier = Modifier.height(8.dp))
-			Spacer(modifier = Modifier.weight(1f))
-			MainSubRoute.entries.forEachIndexed { index, route ->
-				LeftMenuItem(
-					title = route.title.value(),
-					icon = route.icon,
-					tooltipText = route.title.value(),
-					isExpended = isLeftNavigationBarExpended,
-					onClick = {
-						onSubRouteChange(route)
-					},
-					selected = subRoute == route
-				)
-				if (index < MainSubRoute.entries.lastIndex) {
-					Spacer(modifier = Modifier.height(8.dp))
-				}
-			}
-			Spacer(modifier = Modifier.weight(1f))
-			Spacer(modifier = Modifier.height(8.dp))
-			val appearanceViewModel = koinViewModel<AppearanceViewModel>()
-			val attribute by appearanceViewModel.colorSchemeAttribute.collectAsState()
-			val isDark = attribute.themeMode.isDark
-			val themeModeText = if (isDark) Res.string.appearance_theme_mode_light.value() else Res.string.appearance_theme_mode_dark.value()
-			LeftToolItem(
-				title = themeModeText,
-				icon = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
-				tooltipText = themeModeText,
-				isExpended = isLeftNavigationBarExpended,
-				onClick = {
-					appearanceViewModel.colorSchemeAttribute.value = attribute.copy(
-						themeMode = ThemeMode.getThemeMode(!isDark)
-					)
-				},
-				iconRotate = if (isDark) 90f else 0f,
-			)
-			Spacer(modifier = Modifier.width(6.dp))
-			LeftToolItem(
-				title = Res.string.main_collapse.value(),
-				icon = Icons.Rounded.KeyboardDoubleArrowRight,
-				tooltipText = Res.string.main_expand.value(),
-				isExpended = isLeftNavigationBarExpended,
-				onClick = {
-					viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
-				},
-				iconRotate = if (isLeftNavigationBarExpended) -180f else 0f,
-			)
-		}
-	}
+    NoWindowDraggableArea {
+        val viewModel = koinViewModel<MainViewModel>()
+        val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
+        val width by animateDpAsState(
+            targetValue = if (isLeftNavigationBarExpended) 148.dp else 72.dp
+        )
+        Column(
+            modifier = Modifier
+                .width(width)
+                .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.surfaceContainer)
+                .padding(
+                    top = 36.dp,
+                    start = 12.dp,
+                    end = 12.dp,
+                    bottom = 12.dp
+                )
+        ) {
+            val controller = LocalNavController.current
+            var popStackEnabled by remember { mutableStateOf(true) }
+            DisposableEffect(Unit) {
+                val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
+                    popStackEnabled = controller.currentRoute != MainRoute::class
+                }
+                controller.addOnDestinationChangedListener(listener)
+                onDispose {
+                    controller.removeOnDestinationChangedListener(listener)
+                }
+            }
+            val previousText = AppString.MainPrevious.value()
+            LeftToolItem(
+                title = previousText,
+                icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
+                tooltipText = previousText,
+                isExpended = isLeftNavigationBarExpended,
+                onClick = { controller.popBackStack() },
+                enabled = popStackEnabled
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.weight(1f))
+            MainSubRoute.entries.forEachIndexed { index, route ->
+                LeftMenuItem(
+                    title = route.title.value(),
+                    icon = route.icon,
+                    tooltipText = route.title.value(),
+                    isExpended = isLeftNavigationBarExpended,
+                    onClick = {
+                        onSubRouteChange(route)
+                    },
+                    selected = subRoute == route
+                )
+                if (index < MainSubRoute.entries.lastIndex) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(8.dp))
+            val appearanceViewModel = koinViewModel<AppearanceViewModel>()
+            val attribute by appearanceViewModel.colorSchemeAttribute.collectAsState()
+            val isDark = attribute.themeMode.isDark
+            val themeModeText =
+                if (isDark) AppString.AppearanceThemeModeLight.value() else AppString.AppearanceThemeModeDark.value()
+            LeftToolItem(
+                title = themeModeText,
+                icon = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
+                tooltipText = themeModeText,
+                isExpended = isLeftNavigationBarExpended,
+                onClick = {
+                    appearanceViewModel.colorSchemeAttribute.value = attribute.copy(
+                        themeMode = ThemeMode.getThemeMode(!isDark)
+                    )
+                },
+                iconRotate = if (isDark) 90f else 0f,
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            LeftToolItem(
+                title = AppString.MainCollapse.value(),
+                icon = Icons.Rounded.KeyboardDoubleArrowRight,
+                tooltipText = AppString.MainExpand.value(),
+                isExpended = isLeftNavigationBarExpended,
+                onClick = {
+                    viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
+                },
+                iconRotate = if (isLeftNavigationBarExpended) -180f else 0f,
+            )
+        }
+    }
 }
 
 /**
@@ -330,178 +331,179 @@ private fun LeftNavigationBar(
  */
 @Composable
 private fun LeftMenuItem(
-	title: String,
-	icon: ImageVector,
-	tooltipText: String,
-	isExpended: Boolean,
-	onClick: () -> Unit,
-	selected: Boolean = false
+    title: String,
+    icon: ImageVector,
+    tooltipText: String,
+    isExpended: Boolean,
+    onClick: () -> Unit,
+    selected: Boolean = false
 ) {
-	LeftItemWithExpended(
-		tooltipText = tooltipText,
-		isExpended = isExpended
-	) {
-		val containerColor by animateColorAsState(
-			targetValue = when {
-				selected -> MaterialTheme.colorScheme.primary
-				else -> Color.Transparent
-			},
-		)
-		val contentColor by animateColorAsState(
-			targetValue = when {
-				selected -> MaterialTheme.colorScheme.onPrimary
-				else -> MaterialTheme.colorScheme.primary
-			},
-		)
-		Row(
-			modifier = Modifier
-				.fillMaxWidth()
-				.height(48.dp)
-				.clip(MaterialTheme.shapes.small)
-				.background(
-					color = containerColor,
-					shape = MaterialTheme.shapes.small
-				)
-				.clickable(
-					onClick = onClick
-				)
-				.padding(horizontal = 12.dp),
-			verticalAlignment = Alignment.CenterVertically,
-			horizontalArrangement = Arrangement.Start
-		) {
-			NoIcon(
-				icon = icon,
-				modifier = Modifier.size(24.dp),
-				tint = contentColor
-			)
-			Text(
-				text = title,
-				modifier = Modifier
-					.padding(start = 8.dp),
-				color = contentColor,
-				style = MaterialTheme.typography.bodyMedium,
-				maxLines = 1,
-				overflow = TextOverflow.Ellipsis
-			)
-		}
-	}
+    LeftItemWithExpended(
+        tooltipText = tooltipText,
+        isExpended = isExpended
+    ) {
+        val containerColor by animateColorAsState(
+            targetValue = when {
+                selected -> MaterialTheme.colorScheme.primary
+                else -> Color.Transparent
+            },
+        )
+        val contentColor by animateColorAsState(
+            targetValue = when {
+                selected -> MaterialTheme.colorScheme.onPrimary
+                else -> MaterialTheme.colorScheme.primary
+            },
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .clip(MaterialTheme.shapes.small)
+                .background(
+                    color = containerColor,
+                    shape = MaterialTheme.shapes.small
+                )
+                .clickable(
+                    onClick = onClick
+                )
+                .padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            NoIcon(
+                icon = icon,
+                modifier = Modifier.size(24.dp),
+                tint = contentColor
+            )
+            Text(
+                text = title,
+                modifier = Modifier
+                    .padding(start = 8.dp),
+                color = contentColor,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
 }
 
 @Composable
 private fun LeftToolItem(
-	title: String,
-	icon: ImageVector,
-	tooltipText: String,
-	isExpended: Boolean,
-	onClick: () -> Unit,
-	iconRotate: Float = 0f,
-	enabled: Boolean = true
+    title: String,
+    icon: ImageVector,
+    tooltipText: String,
+    isExpended: Boolean,
+    onClick: () -> Unit,
+    iconRotate: Float = 0f,
+    enabled: Boolean = true
 ) {
-	LeftItemWithExpended(
-		tooltipText = tooltipText,
-		isExpended = isExpended
-	) {
-		val contentColor by animateColorAsState(
-			targetValue = when (enabled) {
-				true -> MaterialTheme.colorScheme.primary
-				false -> Color.Transparent
-			}
-		)
-		Row(
-			modifier = Modifier
-				.fillMaxWidth()
-				.height(48.dp)
-				.clip(MaterialTheme.shapes.small)
-				.clickable(
-					enabled = enabled,
-					onClick = onClick
-				)
-				.padding(horizontal = 12.dp),
-			verticalAlignment = Alignment.CenterVertically,
-			horizontalArrangement = Arrangement.Start
-		) {
-			val iconRotate by animateFloatAsState(iconRotate)
-			NoIcon(
-				icon = icon,
-				modifier = Modifier.size(24.dp)
-					.rotate(iconRotate),
-				tint = contentColor
-			)
-			Text(
-				text = title,
-				modifier = Modifier
-					.padding(start = 8.dp),
-				color = contentColor,
-				style = MaterialTheme.typography.bodyMedium,
-				maxLines = 1,
-				overflow = TextOverflow.Ellipsis
-			)
-		}
-	}
+    LeftItemWithExpended(
+        tooltipText = tooltipText,
+        isExpended = isExpended
+    ) {
+        val primary = MaterialTheme.colorScheme.primary
+        val contentColor = remember(enabled, primary) {
+            when (enabled) {
+                true -> primary
+                false -> Color.Transparent
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .clip(MaterialTheme.shapes.small)
+                .clickable(
+                    enabled = enabled,
+                    onClick = onClick
+                )
+                .padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            val iconRotate by animateFloatAsState(iconRotate)
+            NoIcon(
+                icon = icon,
+                modifier = Modifier.size(24.dp)
+                    .rotate(iconRotate),
+                tint = contentColor
+            )
+            Text(
+                text = title,
+                modifier = Modifier
+                    .padding(start = 8.dp),
+                color = contentColor,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
 }
 
 @Composable
 private fun LeftItemWithExpended(
-	tooltipText: String,
-	isExpended: Boolean,
-	content: @Composable () -> Unit
+    tooltipText: String,
+    isExpended: Boolean,
+    content: @Composable () -> Unit
 ) {
-	NoTooltipArea(
-		tooltip = {
-			Text(
-				text = tooltipText,
-				modifier = Modifier
-					.clip(MaterialTheme.shapes.small)
-					.shadow(
-						elevation = 8.dp,
-					)
-					.border(
-						width = 1.dp,
-						color = Color(0xFF2B2D31),
-						shape = MaterialTheme.shapes.small
-					)
-					.background(
-						color = Color(0xFF25272C),
-						shape = MaterialTheme.shapes.small
-					)
-					.padding(
-						horizontal = 12.dp,
-						vertical = 8.dp
-					),
-				color = Color.White,
-				style = MaterialTheme.typography.bodyMedium,
-				textAlign = TextAlign.Center
-			)
-		},
-		delayMillis = if (isExpended) Int.MAX_VALUE else 200,
-		tooltipPlacement = NoTooltipPlacement.ComponentRect(
-			anchor = Alignment.CenterEnd,
-			alignment = Alignment.CenterEnd,
-			offset = DpOffset(16.dp, 0.dp)
-		)
-	) {
-		content()
-	}
+    NoTooltipArea(
+        tooltip = {
+            Text(
+                text = tooltipText,
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.small)
+                    .shadow(
+                        elevation = 8.dp,
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = Color(0xFF2B2D31),
+                        shape = MaterialTheme.shapes.small
+                    )
+                    .background(
+                        color = Color(0xFF25272C),
+                        shape = MaterialTheme.shapes.small
+                    )
+                    .padding(
+                        horizontal = 12.dp,
+                        vertical = 8.dp
+                    ),
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+        },
+        delayMillis = if (isExpended) Int.MAX_VALUE else 200,
+        tooltipPlacement = NoTooltipPlacement.ComponentRect(
+            anchor = Alignment.CenterEnd,
+            alignment = Alignment.CenterEnd,
+            offset = DpOffset(16.dp, 0.dp)
+        )
+    ) {
+        content()
+    }
 }
 
 enum class MainSubRoute(
-	val title: StringResource,
-	val icon: ImageVector
+    val title: AppString,
+    val icon: ImageVector
 ) {
-	Home(
-		title = Res.string.main_home,
-		icon = Icons.Rounded.Home
-	),
-	Friends(
-		title = Res.string.main_friends,
-		icon = Icons.Rounded.People
-	),
-	Groups(
-		title = Res.string.main_groups,
-		icon = Icons.Rounded.Diversity2
-	),
-	Person(
-		title = Res.string.main_person,
-		icon = Icons.Rounded.Person
-	)
+    Home(
+        title = AppString.MainHome,
+        icon = Icons.Rounded.Home
+    ),
+    Friends(
+        title = AppString.MainFriends,
+        icon = Icons.Rounded.People
+    ),
+    Groups(
+        title = AppString.MainGroups,
+        icon = Icons.Rounded.Diversity2
+    ),
+    Person(
+        title = AppString.MainPerson,
+        icon = Icons.Rounded.Person
+    )
 }

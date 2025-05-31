@@ -173,4 +173,5 @@ compose.desktop {
 compose.resources {
 	packageOfResClass = "com.nocircle.app.generated.resources"
 	publicResClass = false
+	generateResClass = auto
 }

@@ -1,13 +1,9 @@
 package com.nocircle.server.app.tables.user
 
-import com.nocircle.server.common.exposed.BaseTable
-import com.nocircle.server.common.exposed.logicDeleteWhere
-import com.nocircle.server.common.exposed.logicExists
-import com.nocircle.server.common.exposed.logicUpdate
+import com.nocircle.server.common.exposed.*
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
-import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
@@ -70,7 +66,7 @@ object UserLabels : BaseTable("tb_user_label") {
 	}
 }
 
-class UserLabel(id: EntityID<Int>) : IntEntity(id) {
+class UserLabel(id: EntityID<Int>) : BaseIntEntity(id, UserLabels) {
 	
 	companion object : IntEntityClass<UserLabel>(UserLabels)
 	

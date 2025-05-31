@@ -101,4 +101,5 @@ dependencies {
 compose.resources {
 	packageOfResClass = "com.nocircle.compose.generated.resources"
 	publicResClass = false
+	generateResClass = auto
 }

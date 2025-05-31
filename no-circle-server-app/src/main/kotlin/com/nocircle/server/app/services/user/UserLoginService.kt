@@ -3,6 +3,7 @@ package com.nocircle.server.app.services.user
 import com.nocircle.server.app.plugins.UserToken
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.app.plugins.yaml
+import com.nocircle.server.app.tables.user.UserLogins
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
@@ -41,6 +42,11 @@ object UserLoginService : NoService<UserLoginService.UserLogin> {
 		if (user == null || !PasswordUtils.verity(password, user.password)) {
 			return ApiResult.failure("用户名或密码错误")
 		}
+		
+		transaction {
+			UserLogins.insert(user.id.value, UserLogins.Method.Password)
+		}
+		
 		val token = JWTUtils.generate(user.id.value, user.username)
 		val bucket = redisson.getBucket<String>("${UserToken.prefix}${user.id}")
 		bucket.set(token, yaml.jwt.timeout.toJavaDuration())
