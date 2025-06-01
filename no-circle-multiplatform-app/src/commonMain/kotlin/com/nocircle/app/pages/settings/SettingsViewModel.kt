@@ -4,13 +4,13 @@ import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impl.userApi
 import com.nocircle.app.config.LanguageConfigKey
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.resources.loadStringConf
+import com.nocircle.app.resources.loadAppStringJson
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.clear
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
-import com.nocircle.compose.resources.SupportLanguage
-import com.nocircle.compose.resources.getSupportLanguage
+import com.nocircle.common.resources.SupportLanguage
+import com.nocircle.common.resources.getSupportLanguage
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,7 +30,7 @@ class SettingsViewModel : NoViewModel() {
     private suspend fun initLanguage() {
         LanguageConfigKey.get()?.let(::getSupportLanguage)?.let {
             _language.value = it
-            loadStringConf(it)
+            loadAppStringJson(it)
         }
     }
 

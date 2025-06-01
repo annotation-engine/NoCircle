@@ -13,8 +13,8 @@ import com.nocircle.app.pages.main.person.label.EditLabelViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
-import com.nocircle.compose.resources.LocalSupportLanguage
-import com.nocircle.compose.resources.SupportLanguage
+import com.nocircle.common.resources.LocalSupportLanguage
+import com.nocircle.common.resources.SupportLanguage
 import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.module.dsl.viewModel

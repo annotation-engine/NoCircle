@@ -26,9 +26,9 @@ import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.pages.main.person.label.EditLabelSheet
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.resources.value
 import com.nocircle.common.expends.format
 import com.nocircle.common.navigation.LocalNavController
+import com.nocircle.common.resources.value
 import com.nocircle.compose.complex.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIconButton
@@ -181,7 +181,7 @@ private fun LastLoginTime() {
     val lastLoginTime = userDetail?.lastLoginTime
     if (lastLoginTime != null) {
         NoOption(
-            title = "上次登录时间",
+            title = AppString.PersonLastLoginTime.value(),
             subtitle = lastLoginTime,
             icon = Icons.Rounded.AccessTime,
         )

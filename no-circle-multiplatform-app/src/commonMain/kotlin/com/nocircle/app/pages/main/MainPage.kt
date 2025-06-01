@@ -40,11 +40,11 @@ import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
-import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.resources.getString
-import com.nocircle.app.resources.value
+import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.navigation.*
+import com.nocircle.common.resources.getString
+import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.desktop.NoTooltipArea
 import com.nocircle.compose.desktop.NoTooltipPlacement

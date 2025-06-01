@@ -19,12 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
-import com.nocircle.app.rootController
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.resources.value
+import com.nocircle.app.rootController
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.resources.SupportLanguage
+import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.complex.NoAlertModalBottomSheet
 import com.nocircle.compose.complex.NoOption
@@ -33,7 +34,6 @@ import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
-import com.nocircle.compose.resources.SupportLanguage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -138,40 +138,6 @@ private fun SwitchLanguage() {
         expanded = true
     }
 }
-
-// @Composable
-//fun LanguageDropdown(
-//    selectedLanguage: String,
-//    onLanguageSelected: (String) -> Unit
-//) {
-//    var expanded by remember { mutableStateOf(false) }
-//
-//    val languageMap = mapOf(
-//        "zh" to "中文",
-//        "en" to "English"
-//    )
-//
-//    Box {
-//        Button(onClick = { expanded = true }) {
-//            Text(text = languageMap[selectedLanguage] ?: "选择语言")
-//        }
-//
-//        DropdownMenu(
-//            expanded = expanded,
-//            onDismissRequest = { expanded = false }
-//        ) {
-//            languageMap.forEach { (code, label) ->
-//                DropdownMenuItem(
-//                    text = { Text(label) },
-//                    onClick = {
-//                        expanded = false
-//                        onLanguageSelected(code)
-//                    }
-//                )
-//            }
-//        }
-//    }
-//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

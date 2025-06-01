@@ -22,12 +22,12 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.app.pages.account.register.RegisterRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.resources.getString
-import com.nocircle.app.resources.value
 import com.nocircle.common.expends.not
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.resources.getString
+import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowHeightSizes
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.*

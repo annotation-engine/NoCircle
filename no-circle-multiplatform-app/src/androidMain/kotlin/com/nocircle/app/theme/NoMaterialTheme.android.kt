@@ -5,9 +5,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.nocircle.common.utils.Globals
 
 actual fun onDarkModeChanged(isDarkTheme: Boolean) {
-	val window = Globals.getActivity().window
-	WindowCompat.setDecorFitsSystemWindows(window, true)
-	val controller = WindowInsetsControllerCompat(window, window.decorView)
-	controller.isAppearanceLightStatusBars = !isDarkTheme // 浅色图标 = false
-	controller.isAppearanceLightNavigationBars = !isDarkTheme
+    val window = Globals.getActivity().window
+    WindowCompat.setDecorFitsSystemWindows(window, true)
+    val controller = WindowInsetsControllerCompat(window, window.decorView)
+    controller.isAppearanceLightStatusBars = !isDarkTheme
+    controller.isAppearanceLightNavigationBars = !isDarkTheme
 }

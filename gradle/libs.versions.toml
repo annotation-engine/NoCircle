@@ -3,7 +3,7 @@ android-compileSdk = "35"
 android-minSdk = "26"
 android-targetSdk = "35"
 kotlin = "2.1.21"
-agp = "8.9.2"
+agp = "8.9.3"
 androidx-activity-compose = "1.10.1"
 compose-multiplatform = "1.8.1"
 kotlinx-coroutines-swing = "1.10.2"
@@ -23,7 +23,6 @@ ksp = "2.1.21-2.0.1"
 hot-reload = "1.0.0-alpha10"
 
 [libraries]
-# Kotlin Multiplatform
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines-swing" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
@@ -79,82 +78,82 @@ hot-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hot-reloa
 
 [bundles]
 multiplatform-app = [
-	'kotlin-reflect',
-	'androidx-navigation-compose',
-	'material3-window-size-clazz',
-	'koin-core',
-	'koin-compose-viewmodel',
-	'ktor-client-core',
-	'ktor-client-content-negotiation',
-	'ktor-serialization-kotlinx-json',
-	'room-runtime',
-	'room-paging',
-	'coil-compose',
-	'coil-network-ktor3',
-	'ktorfitx-api'
+    'kotlin-reflect',
+    'androidx-navigation-compose',
+    'material3-window-size-clazz',
+    'koin-core',
+    'koin-compose-viewmodel',
+    'ktor-client-core',
+    'ktor-client-content-negotiation',
+    'ktor-serialization-kotlinx-json',
+    'room-runtime',
+    'room-paging',
+    'coil-compose',
+    'coil-network-ktor3',
+    'ktorfitx-api'
 ]
 
 multiplatform-app-desktop = [
-	'kotlinx-coroutines-swing',
-	'ktor-client-okhttp'
+    'kotlinx-coroutines-swing',
+    'ktor-client-okhttp'
 ]
 
 multiplatform-app-android = [
-	'androidx-activity-compose',
-	'ktor-client-okhttp'
+    'androidx-activity-compose',
+    'ktor-client-okhttp'
 ]
 
 multiplatform-app-ios = [
-	'ktor-client-darwin'
+    'ktor-client-darwin'
 ]
 
 multiplatform-compose = [
-	'kotlin-reflect',
-	'koin-compose-viewmodel',
-	'coil-compose',
-	'coil-network-ktor3'
+    'kotlin-reflect',
+    'koin-compose-viewmodel',
+    'coil-compose',
+    'coil-network-ktor3'
 ]
 
 multiplatform-common = [
-	'kotlin-reflect',
-	'androidx-navigation-compose',
-	'ktor-client-core',
-	'room-runtime',
-	'room-paging',
-	'sqlite-bundled',
-	'material3-window-size-clazz',
-	'ktor-serialization-kotlinx-json'
+    'kotlin-reflect',
+    'androidx-navigation-compose',
+    'ktor-client-core',
+    'room-runtime',
+    'room-paging',
+    'sqlite-bundled',
+    'material3-window-size-clazz',
+    'ktor-serialization-kotlinx-json'
 ]
 
 server-app = [
-	'kotlin-reflect',
-	'ktor-server-core',
-	'ktor-server-auth',
-	'ktor-server-auth-jwt',
-	'ktor-server-content-negotiation',
-	'ktor-server-cio',
-	'ktor-server-config-yaml',
-	'ktor-server-status-pages',
-	'ktor-serialization-kotlinx-json',
-	'exposed-core',
-	'exposed-dao',
-	'exposed-jdbc',
-	'exposed-kotlin-datetime',
-	'mysql-connector-j',
-	'logback-classic',
-	'hutool-crypto',
-	'redisson'
+    'kotlin-reflect',
+    'ktor-server-core',
+    'ktor-server-auth',
+    'ktor-server-auth-jwt',
+    'ktor-server-content-negotiation',
+    'ktor-server-cio',
+    'ktor-server-config-yaml',
+    'ktor-server-status-pages',
+    'ktor-serialization-kotlinx-json',
+    'exposed-core',
+    'exposed-dao',
+    'exposed-jdbc',
+    'exposed-kotlin-datetime',
+    'mysql-connector-j',
+    'logback-classic',
+    'hutool-crypto',
+    'redisson'
 ]
 
 server-common = [
-	'kotlin-reflect',
-	'ktor-server-core',
-	'ktor-server-auth',
-	'ktor-server-auth-jwt',
-	'ktor-server-config-yaml',
-	'ktor-serialization-kotlinx-json',
-	'exposed-core',
-	'exposed-dao',
-	'exposed-jdbc',
-	'exposed-kotlin-datetime'
+    'kotlin-reflect',
+    'ktor-server-core',
+    'ktor-server-auth',
+    'ktor-server-auth-jwt',
+    'ktor-server-config-yaml',
+    'ktor-serialization-kotlinx-json',
+    'exposed-core',
+    'exposed-dao',
+    'exposed-jdbc',
+    'exposed-kotlin-datetime'
 ]

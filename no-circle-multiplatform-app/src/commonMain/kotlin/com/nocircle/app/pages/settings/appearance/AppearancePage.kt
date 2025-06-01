@@ -33,15 +33,15 @@ import com.nocircle.app.config.ColorSchemeContrastConfigKey
 import com.nocircle.app.config.ColorSchemeGroupConfigKey
 import com.nocircle.app.config.ColorSchemeThemeModeConfigKey
 import com.nocircle.app.generated.resources.*
+import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.ColorSchemeContrast
 import com.nocircle.app.theme.colors.ColorSchemeGroup
 import com.nocircle.app.theme.colors.ThemeMode
-import com.nocircle.app.resources.AppString
-import com.nocircle.app.resources.value
 import com.nocircle.common.config.set
 import com.nocircle.common.expends.format
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSize
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.windowsize.calculateWindowWidthSize

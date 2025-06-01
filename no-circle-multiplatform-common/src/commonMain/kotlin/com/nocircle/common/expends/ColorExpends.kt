@@ -9,7 +9,7 @@ fun String.hexToColor(): Color {
 	return when (this.length) {
 		7 -> Color(colorLong or 0x00000000FF000000)
 		9 -> Color(colorLong)
-		else -> error("非法的颜色类型")
+		else -> error("Illegal color type!")
 	}
 }
 

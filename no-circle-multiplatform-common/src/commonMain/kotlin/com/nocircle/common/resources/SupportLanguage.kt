@@ -1,4 +1,4 @@
-package com.nocircle.compose.resources
+package com.nocircle.common.resources
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.intl.Locale
@@ -6,6 +6,7 @@ import androidx.compose.ui.text.intl.Locale
 enum class SupportLanguage(
     val language: String,
     val displayName: String,
+    internal val stringCacheMap: MutableMap<String, Map<String, String>> = mutableMapOf()
 ) {
     Chinese(
         language = "zh",
@@ -14,6 +15,14 @@ enum class SupportLanguage(
     English(
         language = "en",
         displayName = "English",
+    ),
+    Japanese(
+        language = "ja",
+        displayName = "日本語",
+    ),
+    French(
+        language = "fr",
+        displayName = "Français"
     );
 
     companion object {

@@ -1,6 +1,0 @@
-<resources>
-	<string name="network_connect_error">网络连接错误</string>
-	
-	<string name="alert_modal_bottom_sheet_confirm">确定</string>
-	<string name="alert_modal_bottom_sheet_cancel">取消</string>
-</resources>

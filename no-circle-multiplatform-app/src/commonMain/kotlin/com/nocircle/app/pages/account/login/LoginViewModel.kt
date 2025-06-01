@@ -4,9 +4,9 @@ import com.nocircle.app.api.impl.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.resources.getString
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.set
+import com.nocircle.common.resources.getString
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

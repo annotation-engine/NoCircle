@@ -1,12 +1,6 @@
 package com.nocircle.app.resources
 
-import androidx.compose.runtime.Composable
-import com.nocircle.app.generated.resources.Res
-import com.nocircle.common.expends.format
-import com.nocircle.common.log.NoLog
-import com.nocircle.compose.resources.NoString
-import com.nocircle.compose.resources.getRawString
-import com.nocircle.compose.resources.rawValue
+import com.nocircle.common.resources.NoString
 
 enum class AppString : NoString {
     Login,
@@ -14,7 +8,6 @@ enum class AppString : NoString {
     LoginPleaseInputPassword,
     LoginToRegister,
     LoginSuccess,
-
     Register,
     RegisterPleaseInputUsername,
     RegisterPleaseInputPassword,
@@ -24,7 +17,6 @@ enum class AppString : NoString {
     RegisterPasswordLengthAtLeast8,
     RegisterPasswordsAreInconsistentTwice,
     RegisterSuccess,
-
     MainHome,
     MainFriends,
     MainGroups,
@@ -32,17 +24,28 @@ enum class AppString : NoString {
     MainPrevious,
     MainCollapse,
     MainExpand,
-
     PersonAccount,
     PersonSettingsSubtitle,
-
+    PersonLastLoginTime,
+    Label,
+    LabelTitle,
+    LabelPleaseInputLabelName,
+    LabelRed,
+    LabelGreen,
+    LabelBlue,
+    LabelPreview,
+    LabelPreinstall,
+    LabelDelete,
+    LabelUpdate,
+    LabelCancel,
+    LabelAdd,
+    LabelMustNotEmpty,
     Settings,
     SettingsAppearanceSubtitle,
     SettingsLogout,
     SettingsLogoutTitle,
     SettingsLogoutContent,
     SettingsSwitchLanguage,
-
     Appearance,
     AppearanceInUse,
     AppearanceSingleLine,
@@ -70,5 +73,7 @@ enum class AppString : NoString {
     AppearanceThemeStoneGray,
     AppearanceThemeYellow,
     AppearanceThemeAmber,
-    AppearanceThemePreview
+    AppearanceThemePreview;
+
+    override val packageName = "com.nocircle.app"
 }

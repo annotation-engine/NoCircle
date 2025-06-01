@@ -20,10 +20,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.resources.value
 import com.nocircle.common.expends.not
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowHeightSizes
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
