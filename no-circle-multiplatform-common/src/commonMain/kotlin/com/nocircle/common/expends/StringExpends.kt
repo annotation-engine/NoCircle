@@ -15,7 +15,7 @@ fun String.getDisplayLength(): Int = this.sumOf {
 private const val ONE = 1
 private const val TWO = 2
 
-private val formatRegex = """\{(\d*)}""".toRegex()
+private val formatRegex = """\{(\d*)\}""".toRegex()
 
 fun String.format(vararg args: Any?): String {
     if (args.isEmpty()) return this

@@ -1,15 +1,13 @@
-@file:OptIn(InternalAPI::class)
+@file:OptIn(InternalCoroutinesApi::class)
 
 package com.nocircle.common.resources
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.nocircle.common.expends.format
-import io.ktor.utils.io.*
-import io.ktor.utils.io.locks.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -21,16 +19,17 @@ interface NoString {
     val packageName: String
 }
 
-private val LoadStringJsonLock = SynchronizedObject()
+private val LoadStringJsonMutex = Mutex()
 
-private const val PATH = "composeResources/{}.generated.resources/files/{}.json"
+private const val STRING_FILE_PATH = "composeResources/{}.generated.resources/files/{}.json"
 
 @OptIn(InternalResourceApi::class)
 suspend fun loadStringJson(
     language: SupportLanguage,
     packageName: String,
 ): Map<String, String> {
-    val json = readResourceBytes(PATH.format(packageName, language.language)).decodeToString()
+    val path = STRING_FILE_PATH.format(packageName, language.language)
+    val json = readResourceBytes(path).decodeToString()
     return Json.parseToJsonElement(json).jsonObject.mapValues {
         it.value.jsonPrimitive.content
     }.also {
@@ -52,15 +51,15 @@ fun NoString.value(
 private fun NoString.rawValue(
     language: SupportLanguage
 ): String? {
-    val cacheMap = language.stringCacheMap[this.packageName] ?: synchronized(LoadStringJsonLock) {
-        language.stringCacheMap[this.packageName] ?: runBlocking(Dispatchers.IO) {
+    val cacheMap = language.stringCacheMap[packageName] ?: runBlocking(Dispatchers.IO) {
+        language.stringCacheMap[packageName] ?: LoadStringJsonMutex.withLock {
             loadStringJson(language, packageName)
         }
     }
     return cacheMap[this.toString()]
 }
 
-fun NoString.getString(
+suspend fun NoString.getString(
     vararg args: Any?
 ): String {
     val language = SupportLanguage.current
@@ -68,11 +67,11 @@ fun NoString.getString(
     return value.format(*args)
 }
 
-private fun NoString.getRawString(
+private suspend fun NoString.getRawString(
     language: SupportLanguage
 ): String? {
-    val cacheMap = language.stringCacheMap[this.packageName] ?: synchronized(LoadStringJsonLock) {
-        language.stringCacheMap[this.packageName] ?: runBlocking(Dispatchers.IO) {
+    val cacheMap = language.stringCacheMap[this.packageName] ?: LoadStringJsonMutex.withLock {
+        language.stringCacheMap[this.packageName] ?: withContext(Dispatchers.IO) {
             loadStringJson(language, packageName)
         }
     }
