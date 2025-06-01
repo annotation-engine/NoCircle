@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Cancel
-import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -123,7 +123,7 @@ fun NoSnackbar(
 		if (showDismissAction) {
 			Spacer(modifier = Modifier.width(8.dp))
 			Icon(
-				imageVector = Icons.Rounded.Cancel,
+				imageVector = Icons.Outlined.Cancel,
 				contentDescription = null,
 				modifier = Modifier
 					.size(24.dp)
@@ -161,7 +161,7 @@ suspend fun SnackbarHostState.showNoSnackbar(
 suspend fun SnackbarHostState.showNoSnackbar(
 	message: String,
 	actionLabel: String? = null,
-	prefixIcon: ImageVector? = Icons.Rounded.Info,
+	prefixIcon: ImageVector? = Icons.Outlined.Info,
 	withDismissAction: Boolean = false,
 	duration: SnackbarDuration = SnackbarDuration.Short,
 	colors: NoSnackbarColors? = null,
@@ -170,7 +170,7 @@ suspend fun SnackbarHostState.showNoSnackbar(
 suspend fun SnackbarHostState.showNoSnackbar(
 	message: StringResource,
 	actionLabel: String? = null,
-	prefixIcon: ImageVector? = Icons.Rounded.Info,
+	prefixIcon: ImageVector? = Icons.Outlined.Info,
 	withDismissAction: Boolean = false,
 	duration: SnackbarDuration = SnackbarDuration.Short,
 	colors: NoSnackbarColors? = null,

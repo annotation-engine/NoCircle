@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,7 +76,7 @@ fun NoOption(
         if (onClick != null) {
             Spacer(modifier = Modifier.width(16.dp))
             NoIcon(
-                icon = Icons.AutoMirrored.Rounded.ArrowForwardIos,
+                icon = Icons.AutoMirrored.Outlined.ArrowForwardIos,
                 modifier = Modifier.size(20.dp),
                 tint = MaterialTheme.colorScheme.outline
             )

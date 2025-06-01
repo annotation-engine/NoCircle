@@ -6,10 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material.icons.rounded.Cookie
-import androidx.compose.material.icons.rounded.Language
-import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
+import androidx.compose.material.icons.outlined.Cookie
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.LineWeight
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -53,7 +54,7 @@ fun SettingsPage() {
                 navigationIcon = {
                     if (WindowWidthSizes.isCompact) {
                         NoIconButton(
-                            icon = Icons.AutoMirrored.Rounded.ArrowBackIos
+                            icon = Icons.AutoMirrored.Outlined.ArrowBackIos
                         ) {
                             controller.popBackStack()
                         }
@@ -79,36 +80,46 @@ fun SettingsPage() {
                         vertical = 32.dp
                     )
             ) {
+                val viewModel = koinViewModel<SettingsViewModel>()
                 NavToAppearance()
                 Spacer(modifier = Modifier.height(16.dp))
-                SwitchLanguage()
-                Spacer(Modifier.height(16.dp))
-                Logout()
+                SwitchLanguage(viewModel)
+                Spacer(modifier = Modifier.height(16.dp))
+                SwitchFontWeightLevel(viewModel)
+                Spacer(modifier = Modifier.height(16.dp))
+                Logout(viewModel)
             }
         }
     }
 }
 
+/**
+ * 前往外观页
+ */
 @Composable
 private fun NavToAppearance() {
     val controller = LocalNavController.current
     NoOption(
         title = AppString.Appearance.value(),
         subtitle = AppString.SettingsAppearanceSubtitle.value(),
-        icon = Icons.Rounded.Cookie
+        icon = Icons.Outlined.Cookie
     ) {
         controller.navigate(route = AppearanceRoute)
     }
 }
 
+/**
+ * 切换语言
+ */
 @Composable
-private fun SwitchLanguage() {
-    val viewModel = koinViewModel<SettingsViewModel>()
+private fun SwitchLanguage(
+    viewModel: SettingsViewModel
+) {
     val language by viewModel.language.collectAsState()
     var expanded by remember { mutableStateOf(false) }
     NoOption(
         title = AppString.SettingsSwitchLanguage.value(),
-        icon = Icons.Rounded.Language,
+        icon = Icons.Outlined.Language,
         actions = {
             Text(
                 text = language.displayName,
@@ -140,12 +151,44 @@ private fun SwitchLanguage() {
     }
 }
 
+/**
+ * 调整字重
+ */
+@Composable
+private fun SwitchFontWeightLevel(
+    viewModel: SettingsViewModel
+) {
+    NoOption(
+        title = "调整字重",
+        icon = Icons.Outlined.LineWeight,
+        actions = {
+            val fontWeightLevel by viewModel.fontWeightLevel.collectAsState()
+            val coroutineScope = rememberCoroutineScope()
+            Slider(
+                value = fontWeightLevel.ordinal.toFloat(),
+                onValueChange = {
+                    coroutineScope.launch(Dispatchers.IO) {
+                        viewModel.setFontWeightLevel(FontWeightLevel.entries[it.toInt()])
+                    }
+                },
+                modifier = Modifier.weight(1f),
+                valueRange = 0f..FontWeightLevel.entries.lastIndex.toFloat(),
+                steps = FontWeightLevel.entries.size
+            )
+        }
+    )
+}
+
+/**
+ * 退出登录
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Logout() {
+private fun Logout(
+    viewModel: SettingsViewModel
+) {
     var showLogoutModal by remember { mutableStateOf(false) }
     if (showLogoutModal) {
-        val viewModel = koinViewModel<SettingsViewModel>()
         NoAlertModalBottomSheet(
             title = {
                 Text(AppString.SettingsLogoutTitle.value())
@@ -164,7 +207,7 @@ private fun Logout() {
             confirmColors = NoButtons.ErrorColors,
             icon = {
                 NoIcon(
-                    icon = Icons.Rounded.Warning,
+                    icon = Icons.Outlined.Warning,
                     tint = MaterialTheme.colorScheme.error
                 )
             }

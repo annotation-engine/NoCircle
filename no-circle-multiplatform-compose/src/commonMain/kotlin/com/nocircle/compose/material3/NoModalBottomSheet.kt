@@ -2,7 +2,7 @@ package com.nocircle.compose.material3
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -63,7 +63,7 @@ fun NoModalBottomSheet(
 							Spacer(modifier = Modifier.weight(1f))
 							if (showCloseButton) {
 								NoIconButton(
-									icon = Icons.Rounded.Close,
+									icon = Icons.Outlined.Close,
 									tint = MaterialTheme.colorScheme.onSurface
 								) {
 									sheetState.hide()

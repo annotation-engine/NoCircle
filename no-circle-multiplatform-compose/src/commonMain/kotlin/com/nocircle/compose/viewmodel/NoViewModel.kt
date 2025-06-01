@@ -1,7 +1,7 @@
 package com.nocircle.compose.viewmodel
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
@@ -25,7 +25,7 @@ abstract class NoViewModel : ViewModel() {
     suspend fun showNoSnackbar(
         message: String,
         actionLabel: String? = null,
-        prefixIcon: ImageVector? = Icons.Rounded.Info,
+        prefixIcon: ImageVector? = Icons.Outlined.Info,
         withDismissAction: Boolean = false,
         duration: SnackbarDuration = SnackbarDuration.Short,
         colors: NoSnackbarColors? = null,
@@ -45,7 +45,7 @@ abstract class NoViewModel : ViewModel() {
     suspend fun showNoSnackbar(
         message: StringResource,
         actionLabel: String? = null,
-        prefixIcon: ImageVector? = Icons.Rounded.Info,
+        prefixIcon: ImageVector? = Icons.Outlined.Info,
         withDismissAction: Boolean = false,
         duration: SnackbarDuration = SnackbarDuration.Short,
         colors: NoSnackbarColors? = null,
@@ -65,7 +65,7 @@ abstract class NoViewModel : ViewModel() {
     suspend fun showNoErrorSnackbar(
         message: String,
         actionLabel: String? = null,
-        prefixIcon: ImageVector? = Icons.Rounded.Info,
+        prefixIcon: ImageVector? = Icons.Outlined.Info,
         withDismissAction: Boolean = false,
         duration: SnackbarDuration = SnackbarDuration.Short,
     ) {
@@ -84,7 +84,7 @@ abstract class NoViewModel : ViewModel() {
     suspend fun showNoErrorSnackbar(
         message: StringResource,
         actionLabel: String? = null,
-        prefixIcon: ImageVector? = Icons.Rounded.Info,
+        prefixIcon: ImageVector? = Icons.Outlined.Info,
         withDismissAction: Boolean = false,
         duration: SnackbarDuration = SnackbarDuration.Short,
     ) {

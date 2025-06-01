@@ -9,3 +9,5 @@ object ColorSchemeGroupConfigKey : ConfigKey<String>
 object ColorSchemeThemeModeConfigKey : ConfigKey<String>
 
 object LanguageConfigKey : ConfigKey<String>
+
+object FontWeightLevelConfigKey : ConfigKey<Int>

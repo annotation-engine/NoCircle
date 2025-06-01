@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccessTime
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Remove
-import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Remove
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -120,7 +120,7 @@ private fun UserDetailCard() {
                         Spacer(modifier = Modifier.width(6.dp))
                     }
                     EditLabel(
-                        icon = if (it.size < 4) Icons.Rounded.Add else Icons.Rounded.Remove
+                        icon = if (it.size < 4) Icons.Outlined.Add else Icons.Outlined.Remove
                     )
                 }
             }
@@ -183,7 +183,7 @@ private fun LastLoginTime() {
         NoOption(
             title = AppString.PersonLastLoginTime.value(),
             subtitle = lastLoginTime,
-            icon = Icons.Rounded.AccessTime,
+            icon = Icons.Outlined.AccessTime,
         )
     }
 }
@@ -194,7 +194,7 @@ private fun OptionList() {
     NoOption(
         title = AppString.Settings.value(),
         subtitle = AppString.PersonSettingsSubtitle.value(),
-        icon = Icons.Rounded.Settings,
+        icon = Icons.Outlined.Settings,
     ) {
         controller.navigate(route = SettingsRoute)
     }

@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.nocircle.app.config.ColorSchemeContrastConfigKey
 import com.nocircle.app.config.ColorSchemeGroupConfigKey
 import com.nocircle.app.config.ColorSchemeThemeModeConfigKey
-import com.nocircle.app.generated.resources.MiSans_VF
-import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.theme.colors.*
 import com.nocircle.common.config.get
 import com.nocircle.compose.viewmodel.NoViewModel
@@ -20,8 +18,6 @@ class AppearanceViewModel : NoViewModel() {
 
     val colorSchemeAttribute =
         MutableStateFlow(ColorSchemeAttribute(BlueColorSchemeGroup, ColorSchemeContrast.Standard, ThemeMode.System))
-
-    val fontResource = MutableStateFlow(Res.font.MiSans_VF)
 
     val colorSchemeCardWidth = MutableStateFlow(Dp.Unspecified)
 

@@ -3,8 +3,8 @@ package com.nocircle.app.pages.main.person.label
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -51,7 +51,7 @@ fun EditLabelSheet(
         },
         icon = {
             NoIcon(
-                icon = Icons.Rounded.Edit,
+                icon = Icons.Outlined.Edit,
                 tint = MaterialTheme.colorScheme.onSurface
             )
         },
@@ -223,7 +223,7 @@ private fun AddLabel(
         contentAlignment = Alignment.Center
     ) {
         NoIcon(
-            icon = Icons.Rounded.Add,
+            icon = Icons.Outlined.Add,
             tint = MaterialTheme.colorScheme.onSurface,
         )
     }

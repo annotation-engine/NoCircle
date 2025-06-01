@@ -27,10 +27,6 @@ enum class SupportLanguage(
     Russian(
         language = "ru",
         displayName = "Русский"
-    ),
-    Korean(
-        language = "ko",
-        displayName = "한국어"
     );
 
     companion object {

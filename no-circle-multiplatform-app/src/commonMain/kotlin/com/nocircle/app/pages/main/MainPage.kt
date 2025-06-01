@@ -10,8 +10,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -272,7 +272,7 @@ private fun LeftNavigationBar(
             val previousText = AppString.MainPrevious.value()
             LeftToolItem(
                 title = previousText,
-                icon = Icons.AutoMirrored.Rounded.ArrowBackIos,
+                icon = Icons.AutoMirrored.Outlined.ArrowBackIos,
                 tooltipText = previousText,
                 isExpended = isLeftNavigationBarExpended,
                 onClick = { controller.popBackStack() },
@@ -304,7 +304,7 @@ private fun LeftNavigationBar(
                 if (isDark) AppString.AppearanceThemeModeLight.value() else AppString.AppearanceThemeModeDark.value()
             LeftToolItem(
                 title = themeModeText,
-                icon = if (isDark) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
+                icon = if (isDark) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
                 tooltipText = themeModeText,
                 isExpended = isLeftNavigationBarExpended,
                 onClick = {
@@ -317,7 +317,7 @@ private fun LeftNavigationBar(
             Spacer(modifier = Modifier.width(6.dp))
             LeftToolItem(
                 title = AppString.MainCollapse.value(),
-                icon = Icons.Rounded.KeyboardDoubleArrowRight,
+                icon = Icons.Outlined.KeyboardDoubleArrowRight,
                 tooltipText = AppString.MainExpand.value(),
                 isExpended = isLeftNavigationBarExpended,
                 onClick = {
@@ -497,18 +497,18 @@ enum class MainSubRoute(
 ) {
     Home(
         title = AppString.MainHome,
-        icon = Icons.Rounded.Home
+        icon = Icons.Outlined.Home
     ),
     Friends(
         title = AppString.MainFriends,
-        icon = Icons.Rounded.People
+        icon = Icons.Outlined.People
     ),
     Groups(
         title = AppString.MainGroups,
-        icon = Icons.Rounded.Diversity2
+        icon = Icons.Outlined.Diversity2
     ),
     Person(
         title = AppString.MainPerson,
-        icon = Icons.Rounded.Person
+        icon = Icons.Outlined.Person
     )
 }

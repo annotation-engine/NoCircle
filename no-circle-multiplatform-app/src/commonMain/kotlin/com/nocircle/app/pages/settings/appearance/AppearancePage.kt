@@ -11,11 +11,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.ColorLens
-import androidx.compose.material.icons.rounded.Contrast
-import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.ColorLens
+import androidx.compose.material.icons.outlined.Contrast
+import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -71,7 +71,7 @@ fun AppearancePage() {
                     if (WindowWidthSizes.isCompact) {
                         val controller = LocalNavController.current
                         NoIconButton(
-                            icon = Icons.AutoMirrored.Rounded.ArrowBackIos
+                            icon = Icons.AutoMirrored.Outlined.ArrowBackIos
                         ) {
                             controller.popBackStack()
                         }
@@ -115,7 +115,7 @@ private fun ColorSchemeContrastOptions() {
     val viewModel = koinViewModel<AppearanceViewModel>()
     val attribute by viewModel.colorSchemeAttribute.collectAsState()
     SettingsOptions(
-        icon = Icons.Rounded.Contrast,
+        icon = Icons.Outlined.Contrast,
         title = AppString.AppearanceContrast.value(),
         items = ColorSchemeContrast.entries,
         current = attribute.contrast
@@ -148,7 +148,7 @@ private fun ColorSchemeGroupOptions() {
     val viewModel = koinViewModel<AppearanceViewModel>()
     val attribute by viewModel.colorSchemeAttribute.collectAsState()
     SettingsOptions(
-        icon = Icons.Rounded.ColorLens,
+        icon = Icons.Outlined.ColorLens,
         title = AppString.AppearanceTheme.value(),
         items = ColorSchemeGroup.All,
         current = attribute.group
@@ -195,7 +195,7 @@ private fun ThemeModeOptions() {
 
     val attribute by viewModel.colorSchemeAttribute.collectAsState()
     SettingsOptions(
-        icon = Icons.Rounded.DarkMode,
+        icon = Icons.Outlined.DarkMode,
         title = AppString.AppearanceThemeMode.value(),
         current = attribute.themeMode,
         items = ThemeMode.entries
@@ -320,7 +320,7 @@ private fun <T : Any> SettingsOptions(
                     targetValue = if (singleLine) 0f else 90f
                 )
                 NoIcon(
-                    icon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                    icon = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                     modifier = Modifier
                         .rotate(degrees),
                     tint = MaterialTheme.colorScheme.primary
