@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.config.ColorSchemeContrastConfigKey
@@ -440,7 +441,6 @@ private fun ColorSchemeCard(
                 }
             }
             Spacer(Modifier.height(4.dp))
-
             Row(
                 modifier = Modifier
                     .padding(8.dp),
@@ -449,17 +449,10 @@ private fun ColorSchemeCard(
                 Text(
                     text = name,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
-
-                if (selected) {
-                    Spacer(Modifier.weight(1f))
-                    Text(
-                        text = AppString.AppearanceInUse.value(),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
             }
         }
     }

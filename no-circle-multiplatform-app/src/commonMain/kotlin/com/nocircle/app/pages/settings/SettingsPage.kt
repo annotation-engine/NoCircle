@@ -112,7 +112,8 @@ private fun SwitchLanguage() {
         actions = {
             Text(
                 text = language.displayName,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.outline,
+                style = MaterialTheme.typography.bodyMedium,
             )
             val coroutineScope = rememberCoroutineScope()
             DropdownMenu(

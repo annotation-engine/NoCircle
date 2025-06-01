@@ -1,5 +1,5 @@
 {
-	"NetworkConnectError": "Erreur de connexion réseau",
-	"Confirm": "Confirmer",
-	"Cancel": "Annuler"
+	"NetworkConnectError": "网络连接错误",
+	"Confirm": "确定",
+	"Cancel": "取消"
 }

@@ -12,7 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.api.LabelVO
@@ -237,6 +240,7 @@ private fun ColorSliders(
     LaunchedEffect(selected) {
         onColorChange(selected?.color?.let { Color(it) } ?: addColor)
     }
+    var labelWidth by remember { mutableStateOf(Dp.Hairline) }
     ColorSlider(
         title = AppString.LabelRed.value(),
         value = color.red * 255f,
@@ -247,7 +251,9 @@ private fun ColorSliders(
                 addColor = color
             }
         },
-        color = color
+        color = color,
+        labelWidth = labelWidth,
+        onLabelWidthChange = { labelWidth = it }
     )
     Spacer(modifier = Modifier.height(4.dp))
     ColorSlider(
@@ -260,7 +266,9 @@ private fun ColorSliders(
                 addColor = color
             }
         },
-        color = color
+        color = color,
+        labelWidth = labelWidth,
+        onLabelWidthChange = { labelWidth = it }
     )
     Spacer(modifier = Modifier.height(4.dp))
     ColorSlider(
@@ -273,7 +281,9 @@ private fun ColorSliders(
                 addColor = color
             }
         },
-        color = color
+        color = color,
+        labelWidth = labelWidth,
+        onLabelWidthChange = { labelWidth = it }
     )
 }
 
@@ -282,15 +292,29 @@ private fun ColorSlider(
     title: String,
     value: Float,
     onValueChange: (Float) -> Unit,
-    color: Color
+    color: Color,
+    labelWidth: Dp,
+    onLabelWidthChange: (Dp) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        val viewModel = koinViewModel<EditLabelViewModel>()
+        val density = LocalDensity.current
         Text(
             text = title,
+            modifier = Modifier
+                .then(if (labelWidth != Dp.Unspecified) Modifier.width(labelWidth) else Modifier)
+                .onSizeChanged {
+                    val width = with(density) { it.width.toDp() }
+                    if (width > labelWidth) {
+                        onLabelWidthChange(width)
+                    }
+                }
+                .width(50.dp),
+            textAlign = TextAlign.End,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
         )

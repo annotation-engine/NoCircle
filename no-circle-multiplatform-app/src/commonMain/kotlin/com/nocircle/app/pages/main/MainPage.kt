@@ -154,7 +154,7 @@ private fun MainPage(
     }
 }
 
-private val HorizontalItemSpacing = 12.dp
+private val ItemSpacing = 6.dp
 
 @Composable
 private fun BottomNavigationBar(
@@ -173,12 +173,12 @@ private fun BottomNavigationBar(
             val sliderWidth by remember(width) {
                 derivedStateOf {
                     val size = MainSubRoute.entries.size
-                    (width - HorizontalItemSpacing * (size - 1)) / size
+                    (width - ItemSpacing * (size - 1)) / size
                 }
             }
             val offsetXTarget by remember(sliderWidth, subRoute) {
                 derivedStateOf {
-                    (sliderWidth + HorizontalItemSpacing) * MainSubRoute.entries.indexOfFirst { it == subRoute }
+                    (sliderWidth + ItemSpacing) * MainSubRoute.entries.indexOfFirst { it == subRoute }
                 }
             }
             val offsetX by animateDpAsState(offsetXTarget)
@@ -207,7 +207,8 @@ private fun BottomNavigationBar(
                         .weight(1f)
                         .fillMaxHeight()
                         .clip(MaterialTheme.shapes.small)
-                        .clickable { onSubRouteChange(it) },
+                        .clickable { onSubRouteChange(it) }
+                        .padding(horizontal = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -222,10 +223,12 @@ private fun BottomNavigationBar(
                         text = it.title.value(),
                         color = color,
                         style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 if (index < MainSubRoute.entries.lastIndex) {
-                    Spacer(modifier = Modifier.width(HorizontalItemSpacing))
+                    Spacer(modifier = Modifier.width(ItemSpacing))
                 }
             }
         }
@@ -241,7 +244,7 @@ private fun LeftNavigationBar(
         val viewModel = koinViewModel<MainViewModel>()
         val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
         val width by animateDpAsState(
-            targetValue = if (isLeftNavigationBarExpended) 148.dp else 72.dp
+            targetValue = if (isLeftNavigationBarExpended) 160.dp else 72.dp
         )
         Column(
             modifier = Modifier
@@ -289,7 +292,7 @@ private fun LeftNavigationBar(
                     selected = subRoute == route
                 )
                 if (index < MainSubRoute.entries.lastIndex) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(ItemSpacing))
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -378,7 +381,8 @@ private fun LeftMenuItem(
             Text(
                 text = title,
                 modifier = Modifier
-                    .padding(start = 8.dp),
+                    .padding(start = 8.dp)
+                    .weight(1f, fill = false),
                 color = contentColor,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
@@ -432,7 +436,8 @@ private fun LeftToolItem(
             Text(
                 text = title,
                 modifier = Modifier
-                    .padding(start = 8.dp),
+                    .padding(start = 8.dp)
+                    .weight(1f, fill = false),
                 color = contentColor,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
