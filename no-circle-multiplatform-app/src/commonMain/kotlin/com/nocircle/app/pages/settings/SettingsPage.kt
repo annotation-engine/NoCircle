@@ -35,11 +35,10 @@ import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.math.roundToInt
 
 @Serializable
 data object SettingsRoute : NoRoute
@@ -126,18 +125,18 @@ private fun SwitchLanguage(
                 color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.bodyMedium,
             )
-            val coroutineScope = rememberCoroutineScope()
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
+                val coroutineScope = rememberCoroutineScope()
                 SupportLanguage.entries.fastForEach {
                     DropdownMenuItem(
                         text = {
                             Text(it.displayName)
                         },
                         onClick = {
-                            coroutineScope.launch(Dispatchers.IO) {
+                            coroutineScope.launch {
                                 viewModel.setLanguage(it)
                             }
                             expanded = false
@@ -159,21 +158,22 @@ private fun SwitchFontWeightLevel(
     viewModel: SettingsViewModel
 ) {
     NoOption(
-        title = "调整字重",
+        title = AppString.SettingsSwitchFontWeight.value(),
         icon = Icons.Outlined.LineWeight,
         actions = {
-            val fontWeightLevel by viewModel.fontWeightLevel.collectAsState()
             val coroutineScope = rememberCoroutineScope()
+            val fontWeightStep by viewModel.fontWeightLevel.collectAsState()
             Slider(
-                value = fontWeightLevel.ordinal.toFloat(),
+                value = fontWeightStep.ordinal.toFloat(),
                 onValueChange = {
-                    coroutineScope.launch(Dispatchers.IO) {
-                        viewModel.setFontWeightLevel(FontWeightLevel.entries[it.toInt()])
+                    coroutineScope.launch {
+                        viewModel.setFontWeightLevel(it.roundToInt())
                     }
                 },
-                modifier = Modifier.weight(1f),
-                valueRange = 0f..FontWeightLevel.entries.lastIndex.toFloat(),
-                steps = FontWeightLevel.entries.size
+                modifier = Modifier
+                    .widthIn(max = 400.dp),
+                valueRange = remember { 0f..FontWeightLevel.entries.lastIndex.toFloat() },
+                steps = FontWeightLevel.entries.size - 2
             )
         }
     )

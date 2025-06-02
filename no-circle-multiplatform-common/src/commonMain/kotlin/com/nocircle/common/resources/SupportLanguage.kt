@@ -5,8 +5,7 @@ import androidx.compose.ui.text.intl.Locale
 
 enum class SupportLanguage(
     val language: String,
-    val displayName: String,
-    internal val stringCacheMap: MutableMap<String, Map<String, String>> = mutableMapOf()
+    val displayName: String
 ) {
     Chinese(
         language = "zh",
@@ -24,13 +23,17 @@ enum class SupportLanguage(
         language = "fr",
         displayName = "Français"
     ),
+    German(
+        language = "de",
+        displayName = "Deutsch"
+    ),
     Russian(
         language = "ru",
         displayName = "Русский"
     );
 
     companion object {
-        lateinit var current: SupportLanguage
+        var current = Chinese
     }
 }
 

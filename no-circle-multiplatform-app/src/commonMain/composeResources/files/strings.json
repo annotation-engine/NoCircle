@@ -1,0 +1,562 @@
+{
+	"Login": {
+		"zh": "登录",
+		"en": "Login",
+		"ja": "ログイン",
+		"fr": "Connexion",
+		"de": "Anmelden",
+		"ru": "Войти"
+	},
+	"LoginPleaseInputUsername": {
+		"zh": "请输入用户名",
+		"en": "Please enter username",
+		"ja": "ユーザー名を入力してください",
+		"fr": "Veuillez saisir le nom d'utilisateur",
+		"de": "Bitte Benutzernamen eingeben",
+		"ru": "Пожалуйста, введите имя пользователя"
+	},
+	"LoginPleaseInputPassword": {
+		"zh": "请输入密码",
+		"en": "Please enter password",
+		"ja": "パスワードを入力してください",
+		"fr": "Veuillez saisir le mot de passe",
+		"de": "Bitte Passwort eingeben",
+		"ru": "Пожалуйста, введите пароль"
+	},
+	"LoginToRegister": {
+		"zh": "去注册",
+		"en": "Go to register",
+		"ja": "登録へ",
+		"fr": "Aller à l'inscription",
+		"de": "Zur Registrierung",
+		"ru": "Перейти к регистрации"
+	},
+	"LoginSuccess": {
+		"zh": "登录成功",
+		"en": "Login successful",
+		"ja": "ログイン成功",
+		"fr": "Connexion réussie",
+		"de": "Anmeldung erfolgreich",
+		"ru": "Вход выполнен успешно"
+	},
+	"Register": {
+		"zh": "注册",
+		"en": "Register",
+		"ja": "登録",
+		"fr": "Inscription",
+		"de": "Registrieren",
+		"ru": "Регистрация"
+	},
+	"RegisterPleaseInputUsername": {
+		"zh": "请输入用户名",
+		"en": "Please enter username",
+		"ja": "ユーザー名を入力してください",
+		"fr": "Veuillez saisir le nom d'utilisateur",
+		"de": "Bitte Benutzernamen eingeben",
+		"ru": "Пожалуйста, введите имя пользователя"
+	},
+	"RegisterPleaseInputPassword": {
+		"zh": "请输入密码",
+		"en": "Please enter password",
+		"ja": "パスワードを入力してください",
+		"fr": "Veuillez saisir le mot de passe",
+		"de": "Bitte Passwort eingeben",
+		"ru": "Пожалуйста, введите пароль"
+	},
+	"RegisterPleaseConfirmPassword": {
+		"zh": "请确认密码",
+		"en": "Please confirm password",
+		"ja": "パスワードを確認してください",
+		"fr": "Veuillez confirmer le mot de passe",
+		"de": "Bitte Passwort bestätigen",
+		"ru": "Пожалуйста, подтвердите пароль"
+	},
+	"RegisterBackToLogin": {
+		"zh": "返回登录",
+		"en": "Back to login",
+		"ja": "ログインに戻る",
+		"fr": "Retour à la connexion",
+		"de": "Zurück zur Anmeldung",
+		"ru": "Вернуться к входу"
+	},
+	"RegisterUsernameLengthAtLeast8": {
+		"zh": "用户名至少是8位",
+		"en": "Username must be at least 8 characters",
+		"ja": "ユーザー名は8文字以上でなければなりません",
+		"fr": "Le nom d'utilisateur doit comporter au moins 8 caractères",
+		"de": "Benutzername muss mindestens 8 Zeichen lang sein",
+		"ru": "Имя пользователя должно содержать не менее 8 символов"
+	},
+	"RegisterPasswordLengthAtLeast8": {
+		"zh": "密码至少是8位",
+		"en": "Password must be at least 8 characters",
+		"ja": "パスワードは8文字以上でなければなりません",
+		"fr": "Le mot de passe doit comporter au moins 8 caractères",
+		"de": "Passwort muss mindestens 8 Zeichen lang sein",
+		"ru": "Пароль должен содержать не менее 8 символов"
+	},
+	"RegisterPasswordsAreInconsistentTwice": {
+		"zh": "两次密码不一致",
+		"en": "Passwords do not match",
+		"ja": "パスワードが一致しません",
+		"fr": "Les mots de passe ne correspondent pas",
+		"de": "Passwörter stimmen nicht überein",
+		"ru": "Пароли не совпадают"
+	},
+	"RegisterSuccess": {
+		"zh": "注册成功，请前往登录",
+		"en": "Registration successful, please proceed to login",
+		"ja": "登録成功しました。ログインしてください",
+		"fr": "Inscription réussie, veuillez vous connecter",
+		"de": "Registrierung erfolgreich, bitte melden Sie sich an",
+		"ru": "Регистрация успешна, пожалуйста, войдите"
+	},
+	"MainHome": {
+		"zh": "主页",
+		"en": "Home",
+		"ja": "ホーム",
+		"fr": "Accueil",
+		"de": "Startseite",
+		"ru": "Главная"
+	},
+	"MainFriends": {
+		"zh": "好友",
+		"en": "Friends",
+		"ja": "友達",
+		"fr": "Amis",
+		"de": "Freunde",
+		"ru": "Друзья"
+	},
+	"MainGroups": {
+		"zh": "群组",
+		"en": "Groups",
+		"ja": "グループ",
+		"fr": "Groupes",
+		"de": "Gruppen",
+		"ru": "Группы"
+	},
+	"MainPerson": {
+		"zh": "我的",
+		"en": "Profile",
+		"ja": "私の",
+		"fr": "Profil",
+		"de": "Mein Profil",
+		"ru": "Мой профиль"
+	},
+	"MainPrevious": {
+		"zh": "上一页",
+		"en": "Previous",
+		"ja": "前のページ",
+		"fr": "Page précédente",
+		"de": "Zurück",
+		"ru": "Предыдущая"
+	},
+	"MainCollapse": {
+		"zh": "收起",
+		"en": "Collapse",
+		"ja": "折りたたむ",
+		"fr": "Réduire",
+		"de": "Einklappen",
+		"ru": "Свернуть"
+	},
+	"MainExpand": {
+		"zh": "展开",
+		"en": "Expand",
+		"ja": "展開",
+		"fr": "Développer",
+		"de": "Ausklappen",
+		"ru": "Развернуть"
+	},
+	"PersonAccount": {
+		"zh": "账号：{}",
+		"en": "Account: {}",
+		"ja": "アカウント：{}",
+		"fr": "Compte : {}",
+		"de": "Konto: {}",
+		"ru": "Аккаунт: {}"
+	},
+	"PersonSettingsSubtitle": {
+		"zh": "外观，退出登录",
+		"en": "Appearance, Logout",
+		"ja": "外観、ログアウト",
+		"fr": "Apparence, Déconnexion",
+		"de": "Aussehen, Abmelden",
+		"ru": "Внешний вид, Выйти"
+	},
+	"PersonLastLoginTime": {
+		"zh": "上次登录时间",
+		"en": "Last login time",
+		"ja": "最終ログイン時間",
+		"fr": "Dernière connexion",
+		"de": "Letzte Anmeldung",
+		"ru": "Последнее время входа"
+	},
+	"Label": {
+		"zh": "标签",
+		"en": "Label",
+		"ja": "ラベル",
+		"fr": "Étiquette",
+		"de": "Label",
+		"ru": "Метка"
+	},
+	"LabelTitle": {
+		"zh": "编辑个人标签",
+		"en": "Edit Personal Label",
+		"ja": "個人ラベルを編集",
+		"fr": "Modifier l'étiquette personnelle",
+		"de": "Persönliches Label bearbeiten",
+		"ru": "Редактировать личную метку"
+	},
+	"LabelPleaseInputLabelName": {
+		"zh": "请输入标签名称",
+		"en": "Please enter label name",
+		"ja": "ラベル名を入力してください",
+		"fr": "Veuillez saisir le nom de l'étiquette",
+		"de": "Bitte Labelnamen eingeben",
+		"ru": "Пожалуйста, введите название метки"
+	},
+	"LabelRed": {
+		"zh": "红",
+		"en": "Red",
+		"ja": "赤",
+		"fr": "Rouge",
+		"de": "Rot",
+		"ru": "Красный"
+	},
+	"LabelGreen": {
+		"zh": "绿",
+		"en": "Green",
+		"ja": "緑",
+		"fr": "Vert",
+		"de": "Grün",
+		"ru": "Зеленый"
+	},
+	"LabelBlue": {
+		"zh": "蓝",
+		"en": "Blue",
+		"ja": "青",
+		"fr": "Bleu",
+		"de": "Blau",
+		"ru": "Синий"
+	},
+	"LabelPreview": {
+		"zh": "预览",
+		"en": "Preview",
+		"ja": "プレビュー",
+		"fr": "Aperçu",
+		"de": "Vorschau",
+		"ru": "Предпросмотр"
+	},
+	"LabelDelete": {
+		"zh": "删除",
+		"en": "Delete",
+		"ja": "削除",
+		"fr": "Supprimer",
+		"de": "Löschen",
+		"ru": "Удалить"
+	},
+	"LabelUpdate": {
+		"zh": "修改",
+		"en": "Update",
+		"ja": "更新",
+		"fr": "Modifier",
+		"de": "Aktualisieren",
+		"ru": "Обновить"
+	},
+	"LabelCancel": {
+		"zh": "取消",
+		"en": "Cancel",
+		"ja": "キャンセル",
+		"fr": "Annuler",
+		"de": "Abbrechen",
+		"ru": "Отмена"
+	},
+	"LabelAdd": {
+		"zh": "添加",
+		"en": "Add",
+		"ja": "追加",
+		"fr": "Ajouter",
+		"de": "Hinzufügen",
+		"ru": "Добавить"
+	},
+	"LabelMustNotEmpty": {
+		"zh": "标签不能为空",
+		"en": "Label must not be empty",
+		"ja": "ラベルは空にできません",
+		"fr": "L'étiquette ne doit pas être vide",
+		"de": "Label darf nicht leer sein",
+		"ru": "Метка не должна быть пустой"
+	},
+	"Settings": {
+		"zh": "设置",
+		"en": "Settings",
+		"ja": "設定",
+		"fr": "Paramètres",
+		"de": "Einstellungen",
+		"ru": "Настройки"
+	},
+	"SettingsAppearanceSubtitle": {
+		"zh": "对比度，深浅色模式，主题色",
+		"en": "Contrast, Light/Dark Mode, Theme Color",
+		"ja": "コントラスト、ライト/ダークモード、テーマカラー",
+		"fr": "Contraste, mode clair/sombre, couleur du thème",
+		"de": "Kontrast, Hell/Dunkel-Modus, Themenfarbe",
+		"ru": "Контраст, светлый/тёмный режим, цвет темы"
+	},
+	"SettingsLogout": {
+		"zh": "退出登录",
+		"en": "Logout",
+		"ja": "ログアウト",
+		"fr": "Déconnexion",
+		"de": "Abmelden",
+		"ru": "Выйти"
+	},
+	"SettingsLogoutTitle": {
+		"zh": "您确定要退出账号吗？",
+		"en": "Are you sure you want to logout?",
+		"ja": "ログアウトしてもよろしいですか？",
+		"fr": "Êtes-vous sûr de vouloir vous déconnecter ?",
+		"de": "Sind Sie sicher, dass Sie sich abmelden möchten?",
+		"ru": "Вы уверены, что хотите выйти?"
+	},
+	"SettingsLogoutContent": {
+		"zh": "退出当前账号后，您需要重新登录",
+		"en": "You will need to login again after logging out",
+		"ja": "ログアウト後は再度ログインが必要です",
+		"fr": "Vous devrez vous reconnecter après la déconnexion",
+		"de": "Sie müssen sich nach dem Abmelden erneut anmelden",
+		"ru": "После выхода потребуется повторный вход"
+	},
+	"SettingsSwitchLanguage": {
+		"zh": "语言",
+		"en": "Language",
+		"ja": "言語",
+		"fr": "Langue",
+		"de": "Sprache",
+		"ru": "Язык"
+	},
+	"SettingsSwitchFontWeight": {
+		"zh": "字重",
+		"en": "Font Weight",
+		"ja": "フォントの太さ",
+		"fr": "Graisse de police",
+		"de": "Schriftgewicht",
+		"ru": "Насыщенность шрифта"
+	},
+	"Appearance": {
+		"zh": "外观",
+		"en": "Appearance",
+		"ja": "外観",
+		"fr": "Apparence",
+		"de": "Aussehen",
+		"ru": "Внешний вид"
+	},
+	"AppearanceSingleLine": {
+		"zh": "单行显示",
+		"en": "Single Line",
+		"ja": "一行表示",
+		"fr": "Une seule ligne",
+		"de": "Einzeilig",
+		"ru": "Одна строка"
+	},
+	"AppearanceMultiLine": {
+		"zh": "全部显示 ({})",
+		"en": "Show All ({})",
+		"ja": "すべて表示 ({})",
+		"fr": "Afficher tout ({})",
+		"de": "Alle anzeigen ({})",
+		"ru": "Показать все ({})"
+	},
+	"AppearanceContrast": {
+		"zh": "对比度",
+		"en": "Contrast",
+		"ja": "コントラスト",
+		"fr": "Contraste",
+		"de": "Kontrast",
+		"ru": "Контраст"
+	},
+	"AppearanceContrastStandard": {
+		"zh": "标准对比度",
+		"en": "Standard Contrast",
+		"ja": "標準コントラスト",
+		"fr": "Contraste standard",
+		"de": "Standardkontrast",
+		"ru": "Стандартный контраст"
+	},
+	"AppearanceContrastMedium": {
+		"zh": "中对比度",
+		"en": "Medium Contrast",
+		"ja": "中間のコントラスト",
+		"fr": "Contraste moyen",
+		"de": "Mittlerer Kontrast",
+		"ru": "Средний контраст"
+	},
+	"AppearanceContrastHigh": {
+		"zh": "高对比度",
+		"en": "High Contrast",
+		"ja": "高コントラスト",
+		"fr": "Contraste élevé",
+		"de": "Hoher Kontrast",
+		"ru": "Высокий контраст"
+	},
+	"AppearanceContrastPreview": {
+		"zh": "对比度预览",
+		"en": "Contrast Preview",
+		"ja": "コントラストプレビュー",
+		"fr": "Aperçu du contraste",
+		"de": "Kontrastvorschau",
+		"ru": "Предпросмотр контраста"
+	},
+	"AppearanceThemeMode": {
+		"zh": "深浅色模式",
+		"en": "Theme Mode",
+		"ja": "テーマモード",
+		"fr": "Mode thème",
+		"de": "Themenmodus",
+		"ru": "Режим темы"
+	},
+	"AppearanceThemeModeLight": {
+		"zh": "浅色主题",
+		"en": "Light Theme",
+		"ja": "ライトテーマ",
+		"fr": "Thème clair",
+		"de": "Hellthema",
+		"ru": "Светлая тема"
+	},
+	"AppearanceThemeModeDark": {
+		"zh": "深色主题",
+		"en": "Dark Theme",
+		"ja": "ダークテーマ",
+		"fr": "Thème sombre",
+		"de": "Dunkelthema",
+		"ru": "Тёмная тема"
+	},
+	"AppearanceThemeModeSystem": {
+		"zh": "跟随系统",
+		"en": "Follow System",
+		"ja": "システムに従う",
+		"fr": "Suivre le système",
+		"de": "Systemeinstellungen folgen",
+		"ru": "Следовать системе"
+	},
+	"AppearanceThemeModePreview": {
+		"zh": "深浅色预览",
+		"en": "Theme Mode Preview",
+		"ja": "テーマモードプレビュー",
+		"fr": "Aperçu du mode thème",
+		"de": "Vorschau Themenmodus",
+		"ru": "Предпросмотр режима темы"
+	},
+	"AppearanceTheme": {
+		"zh": "主题色",
+		"en": "Theme Color",
+		"ja": "テーマカラー",
+		"fr": "Couleur du thème",
+		"de": "Themenfarbe",
+		"ru": "Цвет темы"
+	},
+	"AppearanceThemeRed": {
+		"zh": "山霞红",
+		"en": "Mountain Red",
+		"ja": "山霞の赤",
+		"fr": "Rouge montagne",
+		"de": "Bergrot",
+		"ru": "Горный красный"
+	},
+	"AppearanceThemePurple": {
+		"zh": "云暮紫",
+		"en": "Cloud Purple",
+		"ja": "雲暮れの紫",
+		"fr": "Pourpre nuageux",
+		"de": "Wolkenlila",
+		"ru": "Облачный пурпурный"
+	},
+	"AppearanceThemeModena": {
+		"zh": "岭夜紫",
+		"en": "Ridge Night Purple",
+		"ja": "峰の夜の紫",
+		"fr": "Pourpre de la nuit de la crête",
+		"de": "Grat Nacht Lila",
+		"ru": "Фиолетовый ночного хребта"
+	},
+	"AppearanceThemeBlue": {
+		"zh": "天远蓝",
+		"en": "Sky Blue",
+		"ja": "空の青",
+		"fr": "Bleu ciel",
+		"de": "Himmelblau",
+		"ru": "Небесно-голубой"
+	},
+	"AppearanceThemeLightBlue": {
+		"zh": "晨岚蓝",
+		"en": "Morning Mist Blue",
+		"ja": "朝の霧の青",
+		"fr": "Bleu brume matinale",
+		"de": "Morgennebelblau",
+		"ru": "Голубой утренний туман"
+	},
+	"AppearanceThemeCyan": {
+		"zh": "岸水青",
+		"en": "Shore Cyan",
+		"ja": "岸のシアン",
+		"fr": "Cyan du rivage",
+		"de": "Ufercyan",
+		"ru": "Береговой циан"
+	},
+	"AppearanceThemeTurquoise": {
+		"zh": "湖翠青",
+		"en": "Lake Turquoise",
+		"ja": "湖のターコイズ",
+		"fr": "Turquoise du lac",
+		"de": "See-Türkis",
+		"ru": "Озёрный бирюзовый"
+	},
+	"AppearanceThemeGreen": {
+		"zh": "径幽绿",
+		"en": "Path Green",
+		"ja": "小道の緑",
+		"fr": "Vert chemin",
+		"de": "Weggrün",
+		"ru": "Тропиновый зелёный"
+	},
+	"AppearanceThemeLightGreen": {
+		"zh": "野新绿",
+		"en": "Fresh Wild Green",
+		"ja": "野生の新緑",
+		"fr": "Vert sauvage frais",
+		"de": "Frisches Wildgrün",
+		"ru": "Свежая дикая зелень"
+	},
+	"AppearanceThemeStoneGray": {
+		"zh": "崖烟灰",
+		"en": "Cliff Gray",
+		"ja": "崖の灰色",
+		"fr": "Gris falaise",
+		"de": "Kliffgrau",
+		"ru": "Серый утёса"
+	},
+	"AppearanceThemeYellow": {
+		"zh": "原暖黄",
+		"en": "Warm Yellow",
+		"ja": "暖かい黄色",
+		"fr": "Jaune chaud",
+		"de": "Warmes Gelb",
+		"ru": "Тёплый жёлтый"
+	},
+	"AppearanceThemeAmber": {
+		"zh": "林暮黄",
+		"en": "Forest Amber",
+		"ja": "森の琥珀色",
+		"fr": "Ambre forestier",
+		"de": "Waldbernstein",
+		"ru": "Лесной янтарь"
+	},
+	"AppearanceThemePreview": {
+		"zh": "主题色预览",
+		"en": "Theme Color Preview",
+		"ja": "テーマカラーのプレビュー",
+		"fr": "Aperçu de la couleur du thème",
+		"de": "Vorschau der Themenfarbe",
+		"ru": "Предпросмотр цвета темы"
+	}
+}

@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
+import com.nocircle.app.pages.settings.FontWeightLevel
 import com.nocircle.app.pages.settings.SettingsViewModel
 import org.jetbrains.compose.resources.Font
 import org.koin.compose.viewmodel.koinViewModel
@@ -16,20 +17,7 @@ val FontWeightList = (100..900 step 100).map { FontWeight(it) }
 
 @Composable
 fun getNoTypography(): Typography = with(MaterialTheme.typography) {
-    val viewModel = koinViewModel<SettingsViewModel>()
-    val fontResource by viewModel.fontResource.collectAsState()
-    val fontWeightLevel by viewModel.fontWeightLevel.collectAsState()
-    val fontFamily = FontFamily(
-        fonts = fontWeightLevel.progression.mapIndexed { index, weight ->
-            Font(
-                resource = fontResource,
-                weight = FontWeightList[index],
-                variationSettings = FontVariation.Settings(
-                    FontVariation.weight(weight)
-                )
-            )
-        }
-    )
+    val fontFamily = getFontFamily()
     Typography(
         displayLarge = displayLarge.copy(fontFamily = fontFamily),
         displayMedium = displayMedium.copy(fontFamily = fontFamily),
@@ -47,4 +35,27 @@ fun getNoTypography(): Typography = with(MaterialTheme.typography) {
         labelMedium = labelMedium.copy(fontFamily = fontFamily),
         labelSmall = labelSmall.copy(fontFamily = fontFamily)
     )
+}
+
+private val fontFamilyCacheMap = mutableMapOf<FontWeightLevel, FontFamily>()
+
+@Composable
+private fun getFontFamily(): FontFamily {
+    val viewModel = koinViewModel<SettingsViewModel>()
+    val fontResource by viewModel.fontResource.collectAsState()
+    val level by viewModel.fontWeightLevel.collectAsState()
+    if (fontFamilyCacheMap.containsKey(level)) {
+        return fontFamilyCacheMap[level]!!
+    }
+    return FontFamily(
+        fonts = level.progression.mapIndexed { index, weight ->
+            Font(
+                resource = fontResource,
+                weight = FontWeightList[index],
+                variationSettings = FontVariation.Settings(
+                    FontVariation.weight(weight)
+                )
+            )
+        }
+    ).also { fontFamilyCacheMap[level] = it }
 }

@@ -12,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.api.LabelVO
@@ -32,6 +29,7 @@ import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
 import com.nocircle.compose.material3.showNoSnackbar
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -240,7 +238,6 @@ private fun ColorSliders(
     LaunchedEffect(selected) {
         onColorChange(selected?.color?.let { Color(it) } ?: addColor)
     }
-    var labelWidth by remember { mutableStateOf(Dp.Hairline) }
     ColorSlider(
         title = AppString.LabelRed.value(),
         value = color.red * 255f,
@@ -251,9 +248,7 @@ private fun ColorSliders(
                 addColor = color
             }
         },
-        color = color,
-        labelWidth = labelWidth,
-        onLabelWidthChange = { labelWidth = it }
+        color = color
     )
     Spacer(modifier = Modifier.height(4.dp))
     ColorSlider(
@@ -266,9 +261,7 @@ private fun ColorSliders(
                 addColor = color
             }
         },
-        color = color,
-        labelWidth = labelWidth,
-        onLabelWidthChange = { labelWidth = it }
+        color = color
     )
     Spacer(modifier = Modifier.height(4.dp))
     ColorSlider(
@@ -281,9 +274,7 @@ private fun ColorSliders(
                 addColor = color
             }
         },
-        color = color,
-        labelWidth = labelWidth,
-        onLabelWidthChange = { labelWidth = it }
+        color = color
     )
 }
 
@@ -293,30 +284,19 @@ private fun ColorSlider(
     value: Float,
     onValueChange: (Float) -> Unit,
     color: Color,
-    labelWidth: Dp,
-    onLabelWidthChange: (Dp) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        val viewModel = koinViewModel<EditLabelViewModel>()
-        val density = LocalDensity.current
         Text(
             text = title,
-            modifier = Modifier
-                .then(if (labelWidth != Dp.Unspecified) Modifier.width(labelWidth) else Modifier)
-                .onSizeChanged {
-                    val width = with(density) { it.width.toDp() }
-                    if (width > labelWidth) {
-                        onLabelWidthChange(width)
-                    }
-                }
-                .width(50.dp),
+            modifier = Modifier.width(50.dp),
             textAlign = TextAlign.End,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1
         )
         Spacer(modifier = Modifier.width(12.dp))
         Slider(
@@ -331,7 +311,7 @@ private fun ColorSlider(
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
-            text = value.toInt().toString(),
+            text = value.roundToInt().toString(),
             modifier = Modifier.width(28.dp),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
@@ -377,11 +357,6 @@ private fun LabelPreview(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = AppString.LabelPreinstall.value(),
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
-        )
         Spacer(modifier = Modifier.width(12.dp))
         val colors = arrayOf(
             MaterialTheme.colorScheme.primary,

@@ -9,3 +9,5 @@ internal enum class ComposeString : NoString {
 
     override val packageName = "com.nocircle.compose"
 }
+
+//suspend fun load

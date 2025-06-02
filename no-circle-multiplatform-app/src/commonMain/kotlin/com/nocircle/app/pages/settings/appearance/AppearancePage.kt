@@ -39,7 +39,6 @@ import com.nocircle.app.theme.colors.ColorSchemeContrast
 import com.nocircle.app.theme.colors.ColorSchemeGroup
 import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.config.set
-import com.nocircle.common.expends.format
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.resources.value
@@ -310,8 +309,7 @@ private fun <T : Any> SettingsOptions(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = if (singleLine) AppString.AppearanceMultiLine.value()
-                        .format(items.size) else AppString.AppearanceSingleLine.value(),
+                    text = if (singleLine) AppString.AppearanceMultiLine.value(items.size) else AppString.AppearanceSingleLine.value(),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyMedium
                 )
