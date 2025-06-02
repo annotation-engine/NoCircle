@@ -167,6 +167,14 @@
 		"de": "Ausklappen",
 		"ru": "Развернуть"
 	},
+	"FriendsSearch": {
+		"zh": "搜索",
+		"en": "Search",
+		"ja": "検索",
+		"fr": "Rechercher",
+		"de": "Suchen",
+		"ru": "Поиск"
+	},
 	"PersonAccount": {
 		"zh": "账号：{}",
 		"en": "Account: {}",

@@ -81,19 +81,21 @@ fun LoginPage() {
                 Spacer(modifier = Modifier.height(40.dp))
 
                 val username by viewModel.username.collectAsState()
-                NoInput(
+                NoTextField(
                     value = username,
                     onValueChange = viewModel::updateUsername,
-                    placeholder = AppString.LoginPleaseInputUsername.value(),
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text(AppString.LoginPleaseInputUsername.value()) },
                     leadingIcon = { NoIcon(Icons.Outlined.AccountBox) })
                 Spacer(modifier = Modifier.height(24.dp))
 
                 val password by viewModel.password.collectAsState()
                 val showPassword by viewModel.showPassword.collectAsState()
-                NoInput(
+                NoTextField(
                     value = password,
                     onValueChange = viewModel::updatePassword,
-                    placeholder = AppString.LoginPleaseInputPassword.value(),
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text(AppString.LoginPleaseInputPassword.value()) },
                     leadingIcon = { NoIcon(Icons.Outlined.Lock) },
                     trailingIcon = {
                         NoIconButton(

@@ -163,7 +163,7 @@ private fun EditLabel(
             .size(24.dp),
         tint = MaterialTheme.colorScheme.outline,
         shape = MaterialTheme.shapes.extraSmall,
-        paddingValues = PaddingValues()
+        contentPadding = PaddingValues()
     ) {
         showModal = true
     }

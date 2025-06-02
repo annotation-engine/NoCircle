@@ -6,6 +6,7 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 
 typealias WindowSize = WindowSizeClass
 typealias WindowWidthSize = WindowWidthSizeClass
@@ -16,40 +17,46 @@ expect inline fun calculateWindowSize(): WindowSize
 
 @Composable
 inline fun calculateWindowWidthSize(): WindowWidthSize {
-	return calculateWindowSize().widthSizeClass
+    return calculateWindowSize().widthSizeClass
 }
 
 @Composable
 inline fun calculateWindowHeightSize(): WindowHeightSize {
-	return calculateWindowSize().heightSizeClass
+    return calculateWindowSize().heightSizeClass
 }
 
 object WindowWidthSizes {
-	
-	inline val isCompact: Boolean
-		@Composable
-		get() = calculateWindowWidthSize() == WindowWidthSize.Compact
-	
-	inline val isMedium: Boolean
-		@Composable
-		get() = calculateWindowWidthSize() == WindowWidthSize.Medium
-	
-	inline val isExpended: Boolean
-		@Composable
-		get() = calculateWindowWidthSize() == WindowWidthSize.Expanded
+
+    inline val isCompact: Boolean
+        @Stable
+        @Composable
+        get() = calculateWindowWidthSize() == WindowWidthSize.Compact
+
+    inline val isMedium: Boolean
+        @Stable
+        @Composable
+        get() = calculateWindowWidthSize() == WindowWidthSize.Medium
+
+    inline val isExpended: Boolean
+        @Stable
+        @Composable
+        get() = calculateWindowWidthSize() == WindowWidthSize.Expanded
 }
 
 object WindowHeightSizes {
-	
-	inline val isCompact: Boolean
-		@Composable
-		get() = calculateWindowHeightSize() == WindowHeightSize.Compact
-	
-	inline val isMedium: Boolean
-		@Composable
-		get() = calculateWindowHeightSize() == WindowHeightSize.Medium
-	
-	inline val isExpended: Boolean
-		@Composable
-		get() = calculateWindowHeightSize() == WindowHeightSize.Expanded
+
+    inline val isCompact: Boolean
+        @Stable
+        @Composable
+        get() = calculateWindowHeightSize() == WindowHeightSize.Compact
+
+    inline val isMedium: Boolean
+        @Stable
+        @Composable
+        get() = calculateWindowHeightSize() == WindowHeightSize.Medium
+
+    inline val isExpended: Boolean
+        @Stable
+        @Composable
+        get() = calculateWindowHeightSize() == WindowHeightSize.Expanded
 }

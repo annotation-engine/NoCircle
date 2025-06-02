@@ -12,7 +12,6 @@ import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.clear
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
-import com.nocircle.common.log.NoLog
 import com.nocircle.common.resources.SupportLanguage
 import com.nocircle.common.resources.clearLanguageCache
 import com.nocircle.common.resources.getSupportLanguage
@@ -62,7 +61,6 @@ class SettingsViewModel : NoViewModel() {
 
     suspend fun setFontWeightLevel(ordinal: Int) {
         if (_fontWeightLevel.value.ordinal != ordinal) {
-            NoLog.info(ordinal)
             _fontWeightLevel.value = FontWeightLevel.entries.find { it.ordinal == ordinal } ?: FontWeightLevel.Medium
             FontWeightLevelConfigKey.set(ordinal)
         }

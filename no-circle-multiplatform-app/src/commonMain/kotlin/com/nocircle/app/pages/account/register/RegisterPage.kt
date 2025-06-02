@@ -67,20 +67,22 @@ fun RegisterPage() {
                 Spacer(modifier = Modifier.height(40.dp))
 
                 val username by viewModel.username.collectAsState()
-                NoInput(
+                NoTextField(
                     value = username,
                     onValueChange = viewModel::updateUsername,
-                    placeholder = AppString.RegisterPleaseInputUsername.value(),
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text(AppString.RegisterPleaseInputUsername.value()) },
                     leadingIcon = { NoIcon(Icons.Outlined.AccountBox) }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 
                 val password by viewModel.password.collectAsState()
                 val showPassword = viewModel.showPassword.collectAsState()
-                NoInput(
+                NoTextField(
                     value = password,
                     onValueChange = viewModel::updatePassword,
-                    placeholder = AppString.RegisterPleaseInputPassword.value(),
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text(AppString.RegisterPleaseInputPassword.value()) },
                     leadingIcon = { NoIcon(Icons.Outlined.Lock) },
                     trailingIcon = {
                         NoIconButton(
@@ -97,10 +99,11 @@ fun RegisterPage() {
 
                 val confirmPassword = viewModel.confirmPassword.collectAsState()
                 val showConfirmPassword = viewModel.showConfirmPassword.collectAsState()
-                NoInput(
+                NoTextField(
                     value = confirmPassword.value,
                     onValueChange = viewModel::updateConfirmPassword,
-                    placeholder = AppString.RegisterPleaseConfirmPassword.value(),
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text(AppString.RegisterPleaseConfirmPassword.value()) },
                     leadingIcon = { NoIcon(Icons.Outlined.Lock) },
                     trailingIcon = {
                         NoIconButton(

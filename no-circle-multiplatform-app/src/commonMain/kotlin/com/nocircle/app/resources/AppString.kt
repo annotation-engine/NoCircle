@@ -24,6 +24,7 @@ enum class AppString : NoString {
     MainPrevious,
     MainCollapse,
     MainExpand,
+    FriendsSearch,
     PersonAccount,
     PersonSettingsSubtitle,
     PersonLastLoginTime,

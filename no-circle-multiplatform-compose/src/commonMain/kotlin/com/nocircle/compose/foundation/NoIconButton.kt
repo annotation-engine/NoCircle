@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -28,9 +29,9 @@ fun NoIconButton(
 	icon: ImageVector,
 	contentDescription: String? = null,
 	modifier: Modifier = Modifier,
-	tint: Color = LocalNoIconTintColor.current,
+	tint: Color = LocalContentColor.current,
 	shape: Shape = MaterialTheme.shapes.small,
-	paddingValues: PaddingValues = PaddingValues(8.dp),
+	contentPadding: PaddingValues = PaddingValues(8.dp),
 	containerColor: Color = Color.Transparent,
 	interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 	context: CoroutineContext = EmptyCoroutineContext,
@@ -58,7 +59,7 @@ fun NoIconButton(
 				}
 			)
 			.pointerHoverIcon(PointerIcon.Default)
-			.padding(paddingValues),
+			.padding(contentPadding),
 		tint = tint
 	)
 }

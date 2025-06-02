@@ -23,7 +23,7 @@ import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.foundation.NoIcon
-import com.nocircle.compose.foundation.NoInput
+import com.nocircle.compose.foundation.NoTextField
 import com.nocircle.compose.material3.LocalSnackbarHostState
 import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
@@ -117,7 +117,7 @@ fun EditLabelSheet(
                 }
             }
             Spacer(modifier = Modifier.height(24.dp))
-            NoInput(
+            NoTextField(
                 value = label,
                 onValueChange = {
                     val length = it.getDisplayLength()
@@ -128,7 +128,13 @@ fun EditLabelSheet(
                         }
                     }
                 },
-                placeholder = AppString.LabelPleaseInputLabelName.value(),
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text(AppString.LabelPleaseInputLabelName.value()) },
+                leadingIcon = {
+                    NoIcon(
+                        icon = if (selected == null) Icons.Outlined.Add else Icons.Outlined.Edit
+                    )
+                },
                 suffix = { Text("${label.getDisplayLength()} / $maxLength") }
             )
             Spacer(modifier = Modifier.height(24.dp))
