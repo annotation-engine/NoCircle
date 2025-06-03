@@ -66,15 +66,10 @@ kotlin {
 	}
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_1
+		apiVersion = KotlinVersion.KOTLIN_2_1
 		freeCompilerArgs.addAll("-Xexpect-actual-classes")
 	}
 }
-
-//tasks.named("kspCommonMainKotlinMetadata") {
-//	doFirst {
-//		delete("build/generated/ksp/metadata/commonMain")
-//	}
-//}
 
 android {
 	namespace = "com.nocircle.common"

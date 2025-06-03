@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person.label
+package com.nocircle.app.pages.main.person
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -13,7 +13,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.api.LabelVO
-import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.getDisplayLength
@@ -50,8 +49,7 @@ fun EditLabelSheet(
 				icon = AppIcon.Edit.value,
 				tint = MaterialTheme.colorScheme.onSurface
 			)
-		},
-		showCloseButton = true
+		}
 	) {
 		val hostState = LocalSnackbarHostState.current
 		val viewModel = koinViewModel<EditLabelViewModel>()

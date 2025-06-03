@@ -29,7 +29,7 @@ fun NoModalBottomSheet(
 	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) },
 	icon: @Composable (() -> Unit)? = null,
 	title: @Composable (() -> Unit)? = null,
-	showCloseButton: Boolean = false,
+	showCloseButton: Boolean = true,
 	content: @Composable ColumnScope.() -> Unit
 ) {
 	ModalBottomSheet(

@@ -3,10 +3,7 @@ package com.nocircle.app.pages.main.friends.list
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -75,13 +72,21 @@ private fun FriendsSearch(
 			}
 		)
 		Spacer(modifier = Modifier.width(if (isCompat) 12.dp else 8.dp))
+		var showAddFriendSheet by remember { mutableStateOf(false) }
 		NoIconButton(
 			icon = AppIcon.Add.value,
 			modifier = Modifier.size(size),
 			tint = MaterialTheme.colorScheme.onSurfaceVariant,
 			containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
 		) {
-		
+			showAddFriendSheet = true
+		}
+		if (showAddFriendSheet) {
+			AddFriendSheet(
+				onDismissRequest = {
+					showAddFriendSheet = false
+				}
+			)
 		}
 	}
 }

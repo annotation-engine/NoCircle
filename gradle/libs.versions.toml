@@ -95,7 +95,8 @@ multiplatform-app = [
 
 multiplatform-app-desktop = [
     'kotlinx-coroutines-swing',
-    'ktor-client-okhttp'
+    'ktor-client-okhttp',
+    'logback-classic'
 ]
 
 multiplatform-app-android = [

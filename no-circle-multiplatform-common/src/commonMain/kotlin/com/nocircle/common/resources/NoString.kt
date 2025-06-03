@@ -62,11 +62,13 @@ private fun NoString.getCacheRawString(language: SupportLanguage): String {
 			jsonObjectCacheMap[packageName] ?: loadJsonElementMap(packageName)
 		}
 	}
-	val element = elementCacheMap[this.toString()] ?: error("Unknown String: $this not in strings.json")
-	return (element.jsonObject[language.language] ?: element.jsonObject[SupportLanguage.Chinese.language]!!)
-		.jsonPrimitive.content.also {
-			cacheMap[hashCode] = it
-		}
+	var element = elementCacheMap[this.toString()] ?: return ""
+	if (element is JsonObject) {
+		element = element.jsonObject[language.language] ?: return ""
+	}
+	return element.jsonPrimitive.content.also {
+		cacheMap[hashCode] = it
+	}
 }
 
 suspend fun NoString.getString(
@@ -87,11 +89,13 @@ private suspend fun NoString.getSuspendedCacheRawString(language: SupportLanguag
 	val elementCacheMap = jsonObjectCacheMap[packageName] ?: LoadStringJsonMutex.withLock {
 		jsonObjectCacheMap[packageName] ?: loadJsonElementMap(packageName)
 	}
-	val element = elementCacheMap[this.toString()] ?: error("Unknown key: $this in strings.json")
-	return (element.jsonObject[language.language] ?: element.jsonObject[SupportLanguage.Chinese.language]!!)
-		.jsonPrimitive.content.also {
-			cacheMap[hashCode] = it
-		}
+	var element = elementCacheMap[this.toString()] ?: return ""
+	if (element is JsonObject) {
+		element = element.jsonObject[language.language] ?: return ""
+	}
+	return element.jsonPrimitive.content.also {
+		cacheMap[hashCode] = it
+	}
 }
 
 fun clearLanguageCache(language: SupportLanguage) {

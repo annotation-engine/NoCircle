@@ -175,14 +175,7 @@
 		"de": "Suchen",
 		"ru": "Поиск"
 	},
-	"PersonAccount": {
-		"zh": "账号：{}",
-		"en": "Account: {}",
-		"ja": "アカウント：{}",
-		"fr": "Compte : {}",
-		"de": "Konto: {}",
-		"ru": "Аккаунт: {}"
-	},
+	"PersonAccount": "ID: {}",
 	"PersonSettingsSubtitle": {
 		"zh": "外观，退出登录",
 		"en": "Appearance, Logout",

@@ -69,6 +69,7 @@ kotlin {
 	}
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_1
+		apiVersion = KotlinVersion.KOTLIN_2_1
 		freeCompilerArgs.addAll("-Xexpect-actual-classes")
 	}
 }

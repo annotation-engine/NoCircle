@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.pages.main.person.label.EditLabelSheet
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString

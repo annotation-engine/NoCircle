@@ -37,7 +37,7 @@ fun NoAlertModalBottomSheet(
 	confirmColors: NoButtonColors = NoButtons.PrimaryColors,
 	cancelColors: NoButtonColors = NoButtons.SurfaceContainerColors,
 	icon: @Composable (() -> Unit)? = null,
-	showCloseButton: Boolean = false,
+	showCloseButton: Boolean = true,
 ) {
 	NoModalBottomSheet(
 		onDismissRequest = onDismissRequest,
