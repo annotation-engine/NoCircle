@@ -8,11 +8,9 @@ import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -60,7 +58,7 @@ fun NoSplitLayout(
 				derivedStateOf { isHovered || isDragging }
 			}
 			val paddingHorizontal by animateDpAsState(
-				targetValue = if (isHighlight) 3.5.dp else 4.dp
+				targetValue = if (isHighlight) 3.25.dp else 4.dp
 			)
 			val lineColor by animateColorAsState(
 				targetValue = if (isHighlight) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
@@ -95,12 +93,6 @@ fun NoSplitLayout(
 						)
 					}
 					.padding(horizontal = paddingHorizontal)
-					.shadow(
-						elevation = shadowElevation,
-						shape = CircleShape,
-						ambientColor = MaterialTheme.colorScheme.primary,
-						spotColor = MaterialTheme.colorScheme.primary
-					)
 					.background(color = lineColor)
 			)
 		}
