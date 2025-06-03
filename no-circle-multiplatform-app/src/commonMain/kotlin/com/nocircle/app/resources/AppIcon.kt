@@ -16,8 +16,10 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material.icons.sharp.*
 import androidx.compose.material.icons.twotone.*
+import androidx.compose.runtime.Immutable
 import com.nocircle.common.resources.*
 
+@Immutable
 enum class AppIcon(
 	override val rounded: RoundedIcon,
 	override val outlined: OutlinedIcon,

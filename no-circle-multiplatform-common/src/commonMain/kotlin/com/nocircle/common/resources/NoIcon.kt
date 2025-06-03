@@ -2,6 +2,8 @@ package com.nocircle.common.resources
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +14,7 @@ typealias FilledIcon = Icons.Filled.() -> ImageVector
 typealias SharpIcon = Icons.Sharp.() -> ImageVector
 typealias TwoToneIcon = Icons.TwoTone.() -> ImageVector
 
+@Immutable
 interface NoIcon {
 	val rounded: RoundedIcon
 	val outlined: OutlinedIcon
@@ -40,8 +43,8 @@ val NoIcon.value: ImageVector
 
 fun NoIcon.getIcon(): ImageVector = this.value(IconType.current.value)
 
-@Suppress("NOTHING_TO_INLINE")
-private inline fun NoIcon.value(type: IconType) = when (type) {
+@Stable
+private fun NoIcon.value(type: IconType) = when (type) {
 	IconType.Rounded -> Icons.Rounded.rounded()
 	IconType.Outlined -> Icons.Outlined.outlined()
 	IconType.Filled -> Icons.Filled.filled()

@@ -91,6 +91,7 @@ private fun FrameWindowScope.WindowEffect(
 	}
 }
 
+@Immutable
 private enum class ScreenConfig(
 	val size: DpSize,
 	val routes: Array<KClass<out NoRoute>>,

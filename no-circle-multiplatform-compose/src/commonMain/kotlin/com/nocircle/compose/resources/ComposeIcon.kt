@@ -21,8 +21,10 @@ import androidx.compose.material.icons.sharp.Info
 import androidx.compose.material.icons.twotone.Cancel
 import androidx.compose.material.icons.twotone.Close
 import androidx.compose.material.icons.twotone.Info
+import androidx.compose.runtime.Immutable
 import com.nocircle.common.resources.*
 
+@Immutable
 internal enum class ComposeIcon(
 	override val rounded: RoundedIcon,
 	override val outlined: OutlinedIcon,

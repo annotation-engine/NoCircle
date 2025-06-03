@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -135,6 +136,7 @@ fun NoSnackbar(
 	}
 }
 
+@Immutable
 @ConsistentCopyVisibility
 data class NoSnackbarVisuals internal constructor(
 	override val message: String,

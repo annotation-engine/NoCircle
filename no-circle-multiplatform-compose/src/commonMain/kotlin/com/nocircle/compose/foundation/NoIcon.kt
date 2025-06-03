@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.nocircle.compose.foundation
 
 import androidx.compose.material3.Icon
@@ -8,16 +10,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
-fun NoIcon(
-    icon: ImageVector,
-    contentDescription: String? = null,
-    modifier: Modifier = Modifier,
-    tint: Color = LocalContentColor.current
+inline fun NoIcon(
+	icon: ImageVector,
+	contentDescription: String? = null,
+	modifier: Modifier = Modifier,
+	tint: Color = LocalContentColor.current
 ) {
-    Icon(
-        imageVector = icon,
-        contentDescription = contentDescription,
-        modifier = modifier,
-        tint = tint
-    )
+	Icon(
+		imageVector = icon,
+		contentDescription = contentDescription,
+		modifier = modifier,
+		tint = tint
+	)
 }

@@ -1,3 +1,5 @@
+@file:Suppress("ConstPropertyName")
+
 package com.nocircle.compose.foundation
 
 import androidx.compose.animation.animateColorAsState
@@ -213,6 +215,7 @@ private fun TextFieldColors.indicatorColor(
 	else -> unfocusedIndicatorColor
 }
 
+@Stable
 private fun Modifier.textFieldBackground(
 	color: ColorProducer,
 	shape: Shape,
@@ -221,7 +224,7 @@ private fun Modifier.textFieldBackground(
 	onDrawBehind { drawOutline(outline, color = color()) }
 }
 
-@Suppress("ConstPropertyName")
+@Immutable
 object NoTextFieldDefaults {
 	
 	val MinHeight = 40.dp

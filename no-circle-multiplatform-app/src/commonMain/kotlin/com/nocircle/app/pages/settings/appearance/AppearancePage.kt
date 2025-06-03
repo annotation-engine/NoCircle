@@ -1,6 +1,8 @@
 package com.nocircle.app.pages.settings.appearance
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -10,7 +12,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.GenericShape
-import androidx.compose.material3.*
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.app.config.ColorSchemeContrastConfigKey
 import com.nocircle.app.config.ColorSchemeGroupConfigKey
 import com.nocircle.app.config.ColorSchemeThemeModeConfigKey
-import com.nocircle.app.generated.resources.*
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.ColorSchemeContrast
@@ -37,7 +42,6 @@ import com.nocircle.common.config.set
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.resources.value
-import com.nocircle.common.windowsize.WindowWidthSize
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.windowsize.calculateWindowWidthSize
 import com.nocircle.compose.foundation.NoIcon
@@ -54,7 +58,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 data object AppearanceRoute : NoRoute
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppearancePage() {
 	NoScaffold(
@@ -266,8 +269,8 @@ private fun <T : Any> SettingsOptions(
 ) {
 	var singleLine by remember { mutableStateOf(true) }
 	val displayCount = when (calculateWindowWidthSize()) {
-		WindowWidthSize.Compact -> 2
-		WindowWidthSize.Medium -> 3
+		WindowWidthSizeClass.Compact -> 2
+		WindowWidthSizeClass.Medium -> 3
 		else -> 4
 	}
 	Row(

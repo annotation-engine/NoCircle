@@ -159,6 +159,7 @@ fun EditLabelSheet(
 	}
 }
 
+@Stable
 private fun List<LabelVO>.getOverlength(): Int {
 	return MAX_TOTAL_LENGTH - this.sumOf { it.label.getDisplayLength() }
 }

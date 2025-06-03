@@ -191,6 +191,7 @@ private fun SwitchIconType(
 	}
 }
 
+@Stable
 private fun IconType.getAppString(): AppString = when (this) {
 	IconType.Rounded -> AppString.SettingsRounded
 	IconType.Outlined -> AppString.SettingsOutlined

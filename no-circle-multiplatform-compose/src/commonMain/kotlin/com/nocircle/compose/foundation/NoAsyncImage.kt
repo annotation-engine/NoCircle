@@ -1,6 +1,7 @@
 package com.nocircle.compose.foundation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -99,6 +100,7 @@ fun NoAsyncImage(
 	)
 }
 
+@Immutable
 object NoAsyncImageDefaults {
 	
 	const val DEFAULT_ALPHA: Float = 1.0f

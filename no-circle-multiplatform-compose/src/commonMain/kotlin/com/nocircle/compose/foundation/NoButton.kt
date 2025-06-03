@@ -8,10 +8,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -75,6 +72,7 @@ fun NoButton(
 
 object NoButtons {
 	
+	@Stable
 	@Composable
 	fun colors(
 		containerColor: Color = MaterialTheme.colorScheme.primary,
@@ -169,11 +167,13 @@ object NoButtons {
 		)
 }
 
+@Immutable
 object NoButtonDefaults {
 	
 	val DefaultButtonColors @Composable get() = NoButtons.colors()
 }
 
+@Immutable
 class NoButtonColors internal constructor(
 	val containerColor: Color,
 	val contentColor: Color,

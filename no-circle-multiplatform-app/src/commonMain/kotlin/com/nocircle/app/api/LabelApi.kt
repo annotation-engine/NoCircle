@@ -1,5 +1,6 @@
 package com.nocircle.app.api
 
+import androidx.compose.runtime.Immutable
 import cn.vividcode.multiplatform.ktorfitx.annotation.*
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
 import kotlinx.serialization.Serializable
@@ -33,6 +34,7 @@ interface LabelApi {
 	suspend fun queryLabels(): ResultBody<List<LabelVO>>?
 }
 
+@Immutable
 @Serializable
 data class LabelVO(
 	val id: Int,

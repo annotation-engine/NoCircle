@@ -15,32 +15,31 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class AppearanceViewModel : NoViewModel() {
-
-    val colorSchemeAttribute =
-        MutableStateFlow(ColorSchemeAttribute(BlueColorSchemeGroup, ColorSchemeContrast.Standard, ThemeMode.System))
-
-    val colorSchemeCardWidth = MutableStateFlow(Dp.Unspecified)
-
-    val themeModeSystemPercent = Animatable(0f)
-
-    val themeModeSystemFlag = MutableStateFlow(false)
-
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            initValue()
-        }
-    }
-
-    private suspend fun initValue() {
-        val contrast = ColorSchemeContrastConfigKey.get().let { name ->
-            ColorSchemeContrast.entries.find { it.name == name }
-        } ?: ColorSchemeContrast.Standard
-        val group = ColorSchemeGroupConfigKey.get()?.let { name ->
-            ColorSchemeGroup.All.find { it.toString() == name }
-        } ?: BlueColorSchemeGroup
-        val themeMode = ColorSchemeThemeModeConfigKey.get()?.let { name ->
-            ThemeMode.entries.find { it.name == name }
-        } ?: ThemeMode.System
-        colorSchemeAttribute.value = colorSchemeAttribute.value.copy(group, contrast, themeMode)
-    }
+	
+	val colorSchemeAttribute = MutableStateFlow(ColorSchemeAttribute(BlueColorSchemeGroup, ColorSchemeContrast.Standard, ThemeMode.System))
+	
+	val colorSchemeCardWidth = MutableStateFlow(Dp.Unspecified)
+	
+	val themeModeSystemPercent = Animatable(0f)
+	
+	val themeModeSystemFlag = MutableStateFlow(false)
+	
+	init {
+		viewModelScope.launch(Dispatchers.IO) {
+			initValue()
+		}
+	}
+	
+	private suspend fun initValue() {
+		val contrast = ColorSchemeContrastConfigKey.get().let { name ->
+			ColorSchemeContrast.entries.find { it.name == name }
+		} ?: ColorSchemeContrast.Standard
+		val group = ColorSchemeGroupConfigKey.get()?.let { name ->
+			ColorSchemeGroup.All.find { it.toString() == name }
+		} ?: BlueColorSchemeGroup
+		val themeMode = ColorSchemeThemeModeConfigKey.get()?.let { name ->
+			ThemeMode.entries.find { it.name == name }
+		} ?: ThemeMode.System
+		colorSchemeAttribute.value = colorSchemeAttribute.value.copy(group, contrast, themeMode)
+	}
 }
