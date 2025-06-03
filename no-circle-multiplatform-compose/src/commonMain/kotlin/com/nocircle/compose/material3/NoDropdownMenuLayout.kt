@@ -1,0 +1,50 @@
+package com.nocircle.compose.material3
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
+
+@Composable
+fun NoDropdownMenu(
+	expanded: Boolean,
+	onExpandedChange: (Boolean) -> Unit,
+	menuItems: @Composable ColumnScope.() -> Unit,
+	content: @Composable BoxScope.() -> Unit
+) {
+	BoxWithConstraints(
+		modifier = Modifier
+			.clip(MaterialTheme.shapes.small)
+			.clickable {
+				onExpandedChange(true)
+			}
+	) {
+		var dropdownMenuWidth by remember { mutableStateOf(Dp.Hairline) }
+		val density = LocalDensity.current
+		val offset by remember {
+			derivedStateOf { DpOffset(x = maxWidth - dropdownMenuWidth, y = Dp.Hairline) }
+		}
+		content()
+		DropdownMenu(
+			expanded = expanded,
+			onDismissRequest = { onExpandedChange(false) },
+			modifier = Modifier
+				.onGloballyPositioned {
+					dropdownMenuWidth = with(density) { it.size.width.toDp() }
+				},
+			shape = MaterialTheme.shapes.small,
+			offset = offset
+		) {
+			menuItems()
+		}
+	}
+}

@@ -70,7 +70,7 @@ private fun NoString.getCacheRawString(language: SupportLanguage): String {
 suspend fun NoString.getString(
     vararg args: Any?
 ): String {
-    val language = SupportLanguage.current
+    val language = SupportLanguage.current.value
     val value = this.getSuspendedCacheRawString(language)
     return value.format(*args)
 }

@@ -14,53 +14,53 @@ import com.nocircle.app.pages.main.person.label.EditLabelViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
+import com.nocircle.common.resources.LocalIconType
 import com.nocircle.common.resources.LocalSupportLanguage
+import com.nocircle.common.resources.IconType
 import com.nocircle.common.resources.SupportLanguage
 import org.koin.compose.KoinApplication
-import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 private val NoKoinModule = module {
-    viewModel { GuideViewModel() }
-    viewModel { LoginViewModel() }
-    viewModel { RegisterViewModel() }
-    viewModel { MainViewModel() }
-    viewModel { FriendsViewModel() }
-    viewModel { PersonViewModel() }
-    single { SettingsViewModel() }
-    single { AppearanceViewModel() }
-    viewModel { EditLabelViewModel() }
+	viewModel { GuideViewModel() }
+	viewModel { LoginViewModel() }
+	viewModel { RegisterViewModel() }
+	viewModel { MainViewModel() }
+	viewModel { FriendsViewModel() }
+	viewModel { PersonViewModel() }
+	single { SettingsViewModel() }
+	single { AppearanceViewModel() }
+	viewModel { EditLabelViewModel() }
 }
 
 @Composable
 fun NoApp(
-    effect: @Composable (() -> Unit)? = null
+	effect: @Composable (() -> Unit)? = null
 ) {
-    KoinApplication(
-        application = {
-            modules(NoKoinModule)
-        }
-    ) {
-        NoMaterialTheme {
-            CompositionLocalAppString {
-                NoAppNavHost()
-            }
-            effect?.invoke()
-        }
-    }
+	KoinApplication(
+		application = {
+			modules(NoKoinModule)
+		}
+	) {
+		NoMaterialTheme {
+			CompositionLocalConfig {
+				NoAppNavHost()
+			}
+			effect?.invoke()
+		}
+	}
 }
 
-
 @Composable
-private fun CompositionLocalAppString(
-    content: @Composable () -> Unit
+private fun CompositionLocalConfig(
+	content: @Composable () -> Unit
 ) {
-    val viewModel = koinViewModel<SettingsViewModel>()
-    val language by viewModel.language.collectAsState()
-    SupportLanguage.current = language
-    CompositionLocalProvider(
-        LocalSupportLanguage provides language,
-        content = content
-    )
+	val supportLanguage by SupportLanguage.current.collectAsState()
+	val iconType by IconType.current.collectAsState()
+	CompositionLocalProvider(
+		LocalSupportLanguage provides supportLanguage,
+		LocalIconType provides iconType,
+		content = content
+	)
 }

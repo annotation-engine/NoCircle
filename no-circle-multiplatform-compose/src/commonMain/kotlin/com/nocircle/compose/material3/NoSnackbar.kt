@@ -3,9 +3,6 @@ package com.nocircle.compose.material3
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -20,8 +17,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nocircle.common.resources.getIcon
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoSnackbarColors.*
+import com.nocircle.compose.resources.ComposeIcon
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 
@@ -123,7 +122,7 @@ fun NoSnackbar(
 		if (showDismissAction) {
 			Spacer(modifier = Modifier.width(8.dp))
 			Icon(
-				imageVector = Icons.Outlined.Cancel,
+				imageVector = ComposeIcon.Cancel.getIcon(),
 				contentDescription = null,
 				modifier = Modifier
 					.size(24.dp)
@@ -161,7 +160,7 @@ suspend fun SnackbarHostState.showNoSnackbar(
 suspend fun SnackbarHostState.showNoSnackbar(
 	message: String,
 	actionLabel: String? = null,
-	prefixIcon: ImageVector? = Icons.Outlined.Info,
+	prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
 	withDismissAction: Boolean = false,
 	duration: SnackbarDuration = SnackbarDuration.Short,
 	colors: NoSnackbarColors? = null,
@@ -170,7 +169,7 @@ suspend fun SnackbarHostState.showNoSnackbar(
 suspend fun SnackbarHostState.showNoSnackbar(
 	message: StringResource,
 	actionLabel: String? = null,
-	prefixIcon: ImageVector? = Icons.Outlined.Info,
+	prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
 	withDismissAction: Boolean = false,
 	duration: SnackbarDuration = SnackbarDuration.Short,
 	colors: NoSnackbarColors? = null,

@@ -53,6 +53,7 @@ kotlin {
 		commonMain.dependencies {
 			implementation(compose.runtime)
 			implementation(compose.components.resources)
+			implementation(compose.materialIconsExtended)
 			implementation(libs.bundles.multiplatform.common)
 		}
 		desktopMain.dependencies {

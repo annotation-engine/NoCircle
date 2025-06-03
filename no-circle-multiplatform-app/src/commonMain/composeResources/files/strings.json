@@ -351,6 +351,54 @@
 		"de": "Schriftgewicht",
 		"ru": "Насыщенность шрифта"
 	},
+	"SettingsSwitchIconType": {
+		"zh": "图标",
+		"en": "Icon",
+		"ja": "アイコン",
+		"fr": "Icône",
+		"de": "Symbol",
+		"ru": "Иконка"
+	},
+	"SettingsRounded": {
+		"zh": "圆润",
+		"en": "Rounded",
+		"ja": "ラウンド",
+		"de": "Abgerundet",
+		"fr": "Arrondi",
+		"ru": "Скруглённый"
+	},
+	"SettingsOutlined": {
+		"zh": "轮廓",
+		"en": "Outlined",
+		"ja": "アウトライン",
+		"de": "Umrissen",
+		"fr": "Contour",
+		"ru": "Контур"
+	},
+	"SettingsFilled": {
+		"zh": "填充",
+		"en": "Filled",
+		"ja": "塗りつぶし",
+		"de": "Ausgefüllt",
+		"fr": "Plein",
+		"ru": "Заливка"
+	},
+	"SettingsSharp": {
+		"zh": "锐利",
+		"en": "Sharp",
+		"ja": "シャープ",
+		"de": "Scharf",
+		"fr": "Net",
+		"ru": "Резкий"
+	},
+	"SettingsTwoTone": {
+		"zh": "双色",
+		"en": "Two Tone",
+		"ja": "ツートーン",
+		"de": "Zweifarbig",
+		"fr": "Deux tons",
+		"ru": "Двухцветный"
+	},
 	"Appearance": {
 		"zh": "外观",
 		"en": "Appearance",

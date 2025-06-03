@@ -2,15 +2,20 @@ package com.nocircle.common.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.savedstate.SavedState
+import com.nocircle.common.navigation.NoNavHostController.OnDestinationChangedListener
 import kotlin.jvm.JvmInline
 import kotlin.reflect.KClass
 
+private typealias OnDestinationChangedListenerMap = MutableMap<OnDestinationChangedListener, NavController.OnDestinationChangedListener>
+
+@Stable
 @JvmInline
 value class NoNavHostController internal constructor(
 	val original: NavHostController
@@ -27,7 +32,7 @@ value class NoNavHostController internal constructor(
 			routeMappingTables[key] = route
 		}
 		
-		private val onDestinationChangedListenerMap = mutableMapOf<NoNavHostController, MutableMap<OnDestinationChangedListener, NavController.OnDestinationChangedListener>>()
+		private val onDestinationChangedListenerMap = mutableMapOf<NoNavHostController, OnDestinationChangedListenerMap>()
 	}
 	
 	fun <T> getData(key: String, remove: Boolean = true): T? {

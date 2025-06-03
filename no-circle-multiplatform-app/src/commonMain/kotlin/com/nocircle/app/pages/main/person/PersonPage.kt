@@ -5,11 +5,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccessTime
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Remove
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -25,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.pages.main.person.label.EditLabelSheet
 import com.nocircle.app.pages.settings.SettingsRoute
+import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.format
 import com.nocircle.common.navigation.LocalNavController
@@ -36,166 +32,166 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun PersonPage() {
-    val verticalScrollState = rememberScrollState()
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        Column(
-            modifier = Modifier
-                .widthIn(max = 840.dp)
-                .fillMaxSize()
-                .verticalScroll(verticalScrollState)
-                .padding(horizontal = 16.dp, vertical = 32.dp)
-        ) {
-            UserDetailCard()
-            Spacer(modifier = Modifier.height(16.dp))
-            LastLoginTime()
-            Spacer(modifier = Modifier.height(16.dp))
-            OptionList()
-        }
-    }
+	val verticalScrollState = rememberScrollState()
+	Box(
+		modifier = Modifier
+			.fillMaxSize(),
+		contentAlignment = Alignment.TopCenter
+	) {
+		Column(
+			modifier = Modifier
+				.widthIn(max = 840.dp)
+				.fillMaxSize()
+				.verticalScroll(verticalScrollState)
+				.padding(horizontal = 16.dp, vertical = 32.dp)
+		) {
+			UserDetailCard()
+			Spacer(modifier = Modifier.height(16.dp))
+			LastLoginTime()
+			Spacer(modifier = Modifier.height(16.dp))
+			OptionList()
+		}
+	}
 }
 
 @Composable
 private fun UserDetailCard() {
-    val viewModel = koinViewModel<PersonViewModel>()
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
-                shape = MaterialTheme.shapes.small
-            )
-            .padding(16.dp)
-            .height(100.dp)
-    ) {
-        val userDetail by viewModel.userDetail.collectAsState()
-        NoAsyncImage(
-            url = userDetail?.avatarUrl,
-            modifier = Modifier
-                .size(100.dp)
-                .clip(MaterialTheme.shapes.small),
-            placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceDim),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Column {
-                Text(
-                    text = userDetail?.nickname ?: "",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = AppString.PersonAccount.value().format(userDetail?.username ?: ""),
-                    color = MaterialTheme.colorScheme.outline,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-
-            val horizontalScroll = rememberScrollState()
-            Row(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .horizontalScroll(horizontalScroll)
-                    .height(24.dp)
-                    .background(
-                        color = if (userDetail == null) MaterialTheme.colorScheme.surface else Color.Transparent,
-                        shape = MaterialTheme.shapes.extraSmall
-                    )
-            ) {
-                val labels by viewModel.labels.collectAsState()
-                labels.let {
-                    it.fastForEachIndexed { index, label ->
-                        Label(
-                            label = label.label,
-                            color = label.color,
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                    }
-                    EditLabel(
-                        icon = if (it.size < 4) Icons.Outlined.Add else Icons.Outlined.Remove
-                    )
-                }
-            }
-        }
-    }
+	val viewModel = koinViewModel<PersonViewModel>()
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.background(
+				color = MaterialTheme.colorScheme.surfaceContainer,
+				shape = MaterialTheme.shapes.small
+			)
+			.padding(16.dp)
+			.height(100.dp)
+	) {
+		val userDetail by viewModel.userDetail.collectAsState()
+		NoAsyncImage(
+			url = userDetail?.avatarUrl,
+			modifier = Modifier
+				.size(100.dp)
+				.clip(MaterialTheme.shapes.small),
+			placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceDim),
+			contentScale = ContentScale.Crop
+		)
+		Spacer(modifier = Modifier.width(16.dp))
+		Box(
+			modifier = Modifier
+				.fillMaxSize()
+		) {
+			Column {
+				Text(
+					text = userDetail?.nickname ?: "",
+					color = MaterialTheme.colorScheme.onSurface,
+					style = MaterialTheme.typography.titleMedium,
+				)
+				Spacer(modifier = Modifier.height(8.dp))
+				Text(
+					text = AppString.PersonAccount.value().format(userDetail?.username ?: ""),
+					color = MaterialTheme.colorScheme.outline,
+					style = MaterialTheme.typography.bodyMedium,
+				)
+			}
+			
+			val horizontalScroll = rememberScrollState()
+			Row(
+				modifier = Modifier
+					.align(Alignment.BottomStart)
+					.horizontalScroll(horizontalScroll)
+					.height(24.dp)
+					.background(
+						color = if (userDetail == null) MaterialTheme.colorScheme.surface else Color.Transparent,
+						shape = MaterialTheme.shapes.extraSmall
+					)
+			) {
+				val labels by viewModel.labels.collectAsState()
+				labels.let {
+					it.fastForEachIndexed { index, label ->
+						Label(
+							label = label.label,
+							color = label.color,
+						)
+						Spacer(modifier = Modifier.width(6.dp))
+					}
+					EditLabel(
+						icon = if (it.size < 4) AppIcon.Add.value else AppIcon.Remove.value
+					)
+				}
+			}
+		}
+	}
 }
 
 @Composable
 private fun Label(
-    label: String,
-    color: Int,
+	label: String,
+	color: Int,
 ) {
-    val color = remember(color) { Color(color) }
-    Box(
-        modifier = Modifier
-            .fillMaxHeight()
-            .background(
-                color = color,
-                shape = MaterialTheme.shapes.extraSmall
-            )
-            .padding(horizontal = 6.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = label,
-            color = if (color.luminance() > 0.5f) Color.Black else Color.White,
-            style = MaterialTheme.typography.labelMedium
-        )
-    }
+	val color = remember(color) { Color(color) }
+	Box(
+		modifier = Modifier
+			.fillMaxHeight()
+			.background(
+				color = color,
+				shape = MaterialTheme.shapes.extraSmall
+			)
+			.padding(horizontal = 6.dp),
+		contentAlignment = Alignment.Center
+	) {
+		Text(
+			text = label,
+			color = if (color.luminance() > 0.5f) Color.Black else Color.White,
+			style = MaterialTheme.typography.labelMedium
+		)
+	}
 }
 
 @Composable
 private fun EditLabel(
-    icon: ImageVector
+	icon: ImageVector
 ) {
-    var showModal by remember { mutableStateOf(false) }
-    NoIconButton(
-        icon = icon,
-        modifier = Modifier
-            .size(24.dp),
-        tint = MaterialTheme.colorScheme.outline,
-        shape = MaterialTheme.shapes.extraSmall,
-        contentPadding = PaddingValues()
-    ) {
-        showModal = true
-    }
-    if (showModal) {
-        EditLabelSheet(
-            onDismissRequest = { showModal = false }
-        )
-    }
+	var showModal by remember { mutableStateOf(false) }
+	NoIconButton(
+		icon = icon,
+		modifier = Modifier
+			.size(24.dp),
+		tint = MaterialTheme.colorScheme.outline,
+		shape = MaterialTheme.shapes.extraSmall,
+		contentPadding = PaddingValues()
+	) {
+		showModal = true
+	}
+	if (showModal) {
+		EditLabelSheet(
+			onDismissRequest = { showModal = false }
+		)
+	}
 }
 
 @Composable
 private fun LastLoginTime() {
-    val viewModel = koinViewModel<PersonViewModel>()
-    val userDetail by viewModel.userDetail.collectAsState()
-    val lastLoginTime = userDetail?.lastLoginTime
-    if (lastLoginTime != null) {
-        NoOption(
-            title = AppString.PersonLastLoginTime.value(),
-            subtitle = lastLoginTime,
-            icon = Icons.Outlined.AccessTime,
-        )
-    }
+	val viewModel = koinViewModel<PersonViewModel>()
+	val userDetail by viewModel.userDetail.collectAsState()
+	val lastLoginTime = userDetail?.lastLoginTime
+	if (lastLoginTime != null) {
+		NoOption(
+			title = AppString.PersonLastLoginTime.value(),
+			subtitle = lastLoginTime,
+			icon = AppIcon.AccessTime.value
+		)
+	}
 }
 
 @Composable
 private fun OptionList() {
-    val controller = LocalNavController.current
-    NoOption(
-        title = AppString.Settings.value(),
-        subtitle = AppString.PersonSettingsSubtitle.value(),
-        icon = Icons.Outlined.Settings,
-    ) {
-        controller.navigate(route = SettingsRoute)
-    }
+	val controller = LocalNavController.current
+	NoOption(
+		title = AppString.Settings.value(),
+		subtitle = AppString.PersonSettingsSubtitle.value(),
+		icon = AppIcon.Settings.value
+	) {
+		controller.navigate(route = SettingsRoute)
+	}
 }

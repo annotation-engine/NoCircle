@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.resources.ComposeIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +65,7 @@ fun NoModalBottomSheet(
 							Spacer(modifier = Modifier.weight(1f))
 							if (showCloseButton) {
 								NoIconButton(
-									icon = Icons.Outlined.Close,
+									icon = ComposeIcon.Close.value,
 									tint = MaterialTheme.colorScheme.onSurface
 								) {
 									sheetState.hide()
