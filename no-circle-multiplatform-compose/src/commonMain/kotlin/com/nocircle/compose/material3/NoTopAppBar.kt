@@ -17,10 +17,11 @@ import com.nocircle.compose.desktop.NoWindowDraggableArea
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoTopAppBar(
-	title: @Composable () -> Unit,
 	modifier: Modifier = Modifier,
+	title: (@Composable () -> Unit)? = null,
 	navigationIcon: @Composable (() -> Unit)? = null,
 	actions: @Composable (RowScope.() -> Unit)? = null,
+	contentPadding: PaddingValues = NoTopAppBarDefaults.contentPadding,
 	colors: NoTopAppBarColors = NoTopAppBarDefaults.topAppBarColors
 ) {
 	val paddingValues = NoTopAppBarDefaults.windowInsets.asPaddingValues()
@@ -31,7 +32,7 @@ fun NoTopAppBar(
 			WindowInsets(
 				top = when {
 					!isCompat -> paddingValues.calculateTopPadding() / 2
-					deviceType == DeviceType.Desktop -> paddingValues.calculateTopPadding() + 16.dp
+					deviceType == DeviceType.Desktop -> paddingValues.calculateTopPadding() + 20.dp
 					else -> paddingValues.calculateTopPadding()
 				}
 			)
@@ -48,7 +49,7 @@ fun NoTopAppBar(
 				.fillMaxWidth()
 				.background(colors.containerColor)
 				.windowInsetsPadding(windowInsets)
-				.padding(16.dp),
+				.padding(contentPadding),
 			verticalAlignment = Alignment.CenterVertically,
 		) {
 			if (navigationIcon != null) {
@@ -58,11 +59,13 @@ fun NoTopAppBar(
 				)
 				Spacer(Modifier.width(8.dp))
 			}
-			CompositionLocalProvider(
-				LocalContentColor provides colors.titleContentColor,
-				LocalTextStyle provides MaterialTheme.typography.titleLarge,
-				content = title
-			)
+			if (title != null) {
+				CompositionLocalProvider(
+					LocalContentColor provides colors.titleContentColor,
+					LocalTextStyle provides MaterialTheme.typography.titleLarge,
+					content = title
+				)
+			}
 			Spacer(Modifier.weight(1f))
 			if (actions != null) {
 				CompositionLocalProvider(
@@ -92,6 +95,8 @@ object NoTopAppBarDefaults {
 			actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
 			shadowColor = MaterialTheme.colorScheme.onSurface
 		)
+	
+	val contentPadding = PaddingValues(16.dp)
 }
 
 @Immutable

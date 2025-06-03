@@ -5,6 +5,6 @@ import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class FriendsViewModel : NoViewModel() {
-
-    val contentWidth = MutableStateFlow(240.dp)
+	
+	val contentWidth = MutableStateFlow(240.dp)
 }

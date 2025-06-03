@@ -26,5 +26,12 @@ enum class DeviceType {
 	
 	Mobile,
 	
-	Desktop
+	Desktop;
+	
+	companion object {
+		
+		val isMobile by lazy { NoDevice.Type == Mobile }
+		
+		val isDesktop by lazy { NoDevice.Type == Desktop }
+	}
 }
