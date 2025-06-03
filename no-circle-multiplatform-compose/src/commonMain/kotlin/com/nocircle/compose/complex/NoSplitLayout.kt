@@ -63,9 +63,6 @@ fun NoSplitLayout(
 			val lineColor by animateColorAsState(
 				targetValue = if (isHighlight) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
 			)
-			val shadowElevation by animateDpAsState(
-				targetValue = if (isHighlight) 20.dp else Dp.Hairline
-			)
 			Box(
 				modifier = Modifier
 					.width(9.dp)
