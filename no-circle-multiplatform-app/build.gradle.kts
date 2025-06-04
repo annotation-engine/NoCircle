@@ -23,6 +23,7 @@ kotlin {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
 			languageVersion = KotlinVersion.KOTLIN_2_1
+			apiVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
@@ -42,6 +43,7 @@ kotlin {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
 			languageVersion = KotlinVersion.KOTLIN_2_1
+			apiVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
@@ -61,7 +63,6 @@ kotlin {
 			implementation(compose.foundation)
 			implementation(compose.material3)
 			implementation(compose.ui)
-			implementation(compose.components.uiToolingPreview)
 			implementation(compose.components.resources)
 			implementation(compose.materialIconsExtended)
 			implementation(libs.bundles.multiplatform.app)
@@ -121,7 +122,6 @@ android {
 }
 
 dependencies {
-	debugImplementation(compose.uiTooling)
 	kspCommonMainMetadata(libs.ktorfitx.ksp)
 	add("kspAndroid", libs.room.compiler)
 	add("kspDesktop", libs.room.compiler)
@@ -160,7 +160,7 @@ compose.desktop {
 			packageName = "NoCircle"
 			packageVersion = noCircleVersionName
 			description = "No Circle App"
-			copyright = "© 2025 NoCirlc. All rights reserved."
+			copyright = "© 2025 NoCircle. All rights reserved."
 			vendor = "NoCircle"
 		}
 		buildTypes.release.proguard {
@@ -174,5 +174,4 @@ compose.desktop {
 compose.resources {
 	packageOfResClass = "com.nocircle.app.generated.resources"
 	publicResClass = false
-	generateResClass = auto
 }

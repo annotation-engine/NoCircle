@@ -5,6 +5,7 @@ import androidx.collection.mutableIntObjectMapOf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.util.fastFlatMap
 import com.nocircle.common.expends.format
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -22,20 +23,31 @@ interface NoString {
 
 private val LoadStringJsonMutex = Mutex()
 
-private const val STRING_FILE_PATH = "composeResources/{}.generated.resources/files/strings.json"
+private const val STRING_FILE_PATH = "composeResources/{}.generated.resources/files/"
 
-private val jsonObjectCacheMap = mutableMapOf<String, JsonObject>()
+private val allFileNames = mutableMapOf<String, List<String>>()
+
+private val jsonObjectCacheMap = mutableMapOf<String, Map<String, JsonElement>>()
 
 private val stringCacheMap = mutableMapOf<String, MutableMap<SupportLanguage, MutableIntObjectMap<String>>>()
 
 @OptIn(InternalResourceApi::class)
-suspend fun loadJsonElementMap(
+suspend fun loadStringJsonObject(
 	packageName: String,
+	fileNames: List<String> = allFileNames[packageName] ?: emptyList()
 ): Map<String, JsonElement> {
-	val path = STRING_FILE_PATH.format(packageName)
-	val json = readResourceBytes(path).decodeToString()
-	return Json.parseToJsonElement(json).jsonObject.also {
-		jsonObjectCacheMap[packageName] = it
+	return LoadStringJsonMutex.withLock {
+		jsonObjectCacheMap[packageName]?.let { return it }
+		if (packageName !in allFileNames) {
+			allFileNames[packageName] = fileNames
+		}
+		fileNames.fastFlatMap { fileName ->
+			val path = "${STRING_FILE_PATH}$fileName".format(packageName)
+			val json = readResourceBytes(path).decodeToString()
+			Json.parseToJsonElement(json).jsonObject.entries
+		}.associate { it.toPair() }.also {
+			jsonObjectCacheMap[packageName] = it
+		}
 	}
 }
 
@@ -58,9 +70,7 @@ private fun NoString.getCacheRawString(language: SupportLanguage): String {
 	val cacheMap = stringCacheMap.getOrPut(packageName) { mutableMapOf() }
 		.getOrPut(language) { mutableIntObjectMapOf() }
 	val elementCacheMap = jsonObjectCacheMap[packageName] ?: runBlocking(Dispatchers.IO) {
-		LoadStringJsonMutex.withLock {
-			jsonObjectCacheMap[packageName] ?: loadJsonElementMap(packageName)
-		}
+		loadStringJsonObject(packageName)
 	}
 	var element = elementCacheMap[this.toString()] ?: return ""
 	if (element is JsonObject) {
@@ -86,9 +96,7 @@ private suspend fun NoString.getSuspendedCacheRawString(language: SupportLanguag
 	if (value != null) return value
 	val cacheMap = stringCacheMap.getOrPut(packageName) { mutableMapOf() }
 		.getOrPut(language) { mutableIntObjectMapOf() }
-	val elementCacheMap = jsonObjectCacheMap[packageName] ?: LoadStringJsonMutex.withLock {
-		jsonObjectCacheMap[packageName] ?: loadJsonElementMap(packageName)
-	}
+	val elementCacheMap = jsonObjectCacheMap[packageName] ?: loadStringJsonObject(packageName)
 	var element = elementCacheMap[this.toString()] ?: return ""
 	if (element is JsonObject) {
 		element = element.jsonObject[language.language] ?: return ""

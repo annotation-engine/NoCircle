@@ -21,6 +21,7 @@ kotlin {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
 			languageVersion = KotlinVersion.KOTLIN_2_1
+			apiVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
@@ -40,6 +41,7 @@ kotlin {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
 			languageVersion = KotlinVersion.KOTLIN_2_1
+			apiVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
@@ -48,7 +50,7 @@ kotlin {
 		
 		androidMain.dependencies {
 			implementation(compose.preview)
-			implementation(libs.androidx.activity.compose)
+			implementation(libs.bundles.multiplatform.common.android)
 		}
 		commonMain.dependencies {
 			implementation(compose.runtime)
@@ -58,7 +60,7 @@ kotlin {
 		}
 		desktopMain.dependencies {
 			implementation(compose.desktop.currentOs)
-			implementation(libs.kotlinx.coroutines.swing)
+			implementation(libs.bundles.multiplatform.common.desktop)
 		}
 	}
 	sourceSets.commonMain {

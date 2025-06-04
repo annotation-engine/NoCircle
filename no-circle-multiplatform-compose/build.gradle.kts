@@ -17,6 +17,7 @@ kotlin {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
 			languageVersion = KotlinVersion.KOTLIN_2_1
+			apiVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
@@ -36,6 +37,7 @@ kotlin {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
 			languageVersion = KotlinVersion.KOTLIN_2_1
+			apiVersion = KotlinVersion.KOTLIN_2_1
 		}
 	}
 	
@@ -43,16 +45,15 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-			implementation(projects.noCircleMultiplatformCommon)
 			implementation(compose.preview)
-			implementation(libs.androidx.activity.compose)
+			implementation(libs.bundles.multiplatform.compose.android)
+			implementation(projects.noCircleMultiplatformCommon)
 		}
 		commonMain.dependencies {
 			implementation(compose.runtime)
 			implementation(compose.foundation)
 			implementation(compose.material3)
 			implementation(compose.ui)
-			implementation(compose.components.uiToolingPreview)
 			implementation(compose.components.resources)
 			implementation(compose.materialIconsExtended)
 			implementation(libs.bundles.multiplatform.compose)
@@ -62,9 +63,9 @@ kotlin {
 			kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 		}
 		desktopMain.dependencies {
-			implementation(projects.noCircleMultiplatformCommon)
 			implementation(compose.desktop.currentOs)
-			implementation(libs.kotlinx.coroutines.swing)
+			implementation(libs.bundles.multiplatform.compose.desktop)
+			implementation(projects.noCircleMultiplatformCommon)
 		}
 	}
 	compilerOptions {
@@ -95,12 +96,7 @@ android {
 	}
 }
 
-dependencies {
-	debugImplementation(compose.uiTooling)
-}
-
 compose.resources {
 	packageOfResClass = "com.nocircle.compose.generated.resources"
 	publicResClass = false
-	generateResClass = auto
 }

@@ -64,7 +64,7 @@ fun NoTextField(
 		BasicTextField(
 			value = value,
 			modifier = modifier
-				.height(56.dp)
+				.height(52.dp)
 				.defaultMinSize(
 					minWidth = NoTextFieldDefaults.MinWidth,
 					minHeight = NoTextFieldDefaults.MinHeight

@@ -45,7 +45,7 @@ private fun getCursorScreenBounds(): Rectangle {
 	val environment = GraphicsEnvironment.getLocalGraphicsEnvironment()
 	environment.screenDevices.forEach {
 		val bounds = it.defaultConfiguration.bounds
-		if (bounds.contains(mouseLocation)) {
+		if (mouseLocation in bounds) {
 			return bounds
 		}
 	}

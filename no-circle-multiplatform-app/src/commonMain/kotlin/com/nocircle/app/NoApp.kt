@@ -1,9 +1,6 @@
 package com.nocircle.app
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import com.nocircle.app.pages.account.login.LoginViewModel
 import com.nocircle.app.pages.account.register.RegisterViewModel
 import com.nocircle.app.pages.guide.GuideViewModel
@@ -16,10 +13,10 @@ import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
-import com.nocircle.common.resources.IconType
-import com.nocircle.common.resources.LocalIconType
-import com.nocircle.common.resources.LocalSupportLanguage
-import com.nocircle.common.resources.SupportLanguage
+import com.nocircle.common.resources.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import org.koin.compose.KoinApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -42,6 +39,7 @@ private val NoKoinModule = module {
 fun NoApp(
 	effect: @Composable (() -> Unit)? = null
 ) {
+	PreloadAllString()
 	KoinApplication(
 		application = {
 			modules(NoKoinModule)
@@ -67,4 +65,14 @@ private fun CompositionLocalConfig(
 		LocalIconType provides iconType,
 		content = content
 	)
+}
+
+@Composable
+private fun PreloadAllString() {
+	LaunchedEffect(Unit) {
+		withContext(Dispatchers.IO) {
+			loadStringJsonObject("com.nocircle.app", listOf("strings.json"))
+			loadStringJsonObject("com.nocircle.compose", listOf("strings.json"))
+		}
+	}
 }

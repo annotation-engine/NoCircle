@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
+import com.nocircle.app.pages.settings.memory.Memory
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.rootController
@@ -84,6 +85,8 @@ fun SettingsPage() {
 				SwitchIconType(viewModel)
 				Spacer(modifier = Modifier.height(16.dp))
 				SwitchFontWeightLevel(viewModel)
+				Spacer(modifier = Modifier.height(16.dp))
+				Memory()
 				Spacer(modifier = Modifier.height(16.dp))
 				Logout(viewModel)
 			}

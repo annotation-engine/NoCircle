@@ -53,6 +53,8 @@ enum class AppString : NoString {
 	SettingsFilled,
 	SettingsSharp,
 	SettingsTwoTone,
+	SettingsMemory,
+	SettingsUseMemory,
 	Appearance,
 	AppearanceSingleLine,
 	AppearanceMultiLine,

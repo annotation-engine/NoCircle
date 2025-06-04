@@ -18,7 +18,7 @@ fun <T : Any> ApplicationConfig.analysis(kClass: KClass<T>, pathPrefix: String? 
 	val companionInstance = kClass.companionObjectInstance
 	val args = constructor.parameters.associateWith {
 		val path = "${if (pathPrefix != null) "$pathPrefix." else ""}${it.name}"
-		if (formatParameterNameMaps != null && companionInstance != null && formatParameterNameMaps.containsKey(it.name)) {
+		if (formatParameterNameMaps != null && companionInstance != null && it.name in formatParameterNameMaps) {
 			val value = property(path).getString()
 			return@associateWith formatParameterNameMaps[it.name]!!.call(companionInstance, value)
 		}

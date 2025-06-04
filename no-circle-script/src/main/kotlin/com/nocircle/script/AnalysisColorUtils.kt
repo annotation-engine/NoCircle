@@ -10,12 +10,12 @@ fun generateColorSchemeGroupCodes(path: String, name: String): String {
 		val name = split[0]
 		val code = split[1]
 		val key = when {
-			name.contains("LightMediumContrast") -> "LightMediumContrast" to "lightMediumContrast"
-			name.contains("LightHighContrast") -> "LightHighContrast" to "lightHighContrast"
-			name.contains("Light") -> "Light" to "lightStandardContrast"
-			name.contains("DarkMediumContrast") -> "DarkMediumContrast" to "darkMediumContrast"
-			name.contains("DarkHighContrast") -> "DarkHighContrast" to "darkHighContrast"
-			name.contains("Dark") -> "Dark" to "darkStandardContrast"
+			"LightMediumContrast" in name -> "LightMediumContrast" to "lightMediumContrast"
+			"LightHighContrast" in name -> "LightHighContrast" to "lightHighContrast"
+			"Light" in name -> "Light" to "lightStandardContrast"
+			"DarkMediumContrast" in name -> "DarkMediumContrast" to "darkMediumContrast"
+			"DarkHighContrast" in name -> "DarkHighContrast" to "darkHighContrast"
+			"Dark" in name -> "Dark" to "darkStandardContrast"
 			else -> null
 		}
 		if (key == null) return@forEach
@@ -32,7 +32,7 @@ fun generateColorSchemeGroupCodes(path: String, name: String): String {
 		append("\toverride val name = Res.string.appearance_theme_$themeName\n\n")
 		colorSchemes.forEach { (key, value) ->
 			append("\toverride val $key by lazy {\n")
-			if (key.contains("Light")) {
+			if ("Light" in key) {
 				append("\t\tlightColorScheme(\n")
 			} else {
 				append("\t\tdarkColorScheme(\n")

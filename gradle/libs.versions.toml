@@ -115,6 +115,14 @@ multiplatform-compose = [
     'coil-network-ktor3'
 ]
 
+multiplatform-compose-android = [
+    'androidx-activity-compose'
+]
+
+multiplatform-compose-desktop = [
+    'kotlinx-coroutines-swing'
+]
+
 multiplatform-common = [
     'kotlin-reflect',
     'androidx-navigation-compose',
@@ -124,6 +132,14 @@ multiplatform-common = [
     'sqlite-bundled',
     'material3-window-size-clazz',
     'ktor-serialization-kotlinx-json'
+]
+
+multiplatform-common-android = [
+    'androidx-activity-compose'
+]
+
+multiplatform-common-desktop = [
+    'kotlinx-coroutines-swing'
 ]
 
 server-app = [

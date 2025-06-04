@@ -82,7 +82,7 @@ private fun NoFadeInFadeOutWithScale(
 	if (current != state.current) {
 		state.current = current
 		val keys = state.items.fastMap { it.key }.toMutableList()
-		if (!keys.contains(current)) {
+		if (current !in keys) {
 			keys += current
 		}
 		state.items.clear()

@@ -8,7 +8,6 @@ import com.nocircle.app.config.LanguageConfigKey
 import com.nocircle.app.generated.resources.MiSans_VF
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.resources.preloadStringJsonElementMap
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.clear
 import com.nocircle.common.config.get
@@ -18,6 +17,8 @@ import com.nocircle.common.resources.SupportLanguage
 import com.nocircle.common.resources.clearLanguageCache
 import com.nocircle.common.resources.getSupportLanguage
 import com.nocircle.compose.viewmodel.NoViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ class SettingsViewModel : NoViewModel() {
 	val fontWeightLevel = _fontWeightLevel.asStateFlow()
 	
 	init {
-		viewModelScope.launch {
+		viewModelScope.launch(Dispatchers.IO) {
 			initLanguage()
 			initFontWeightLevel()
 			initIconType()
@@ -41,7 +42,6 @@ class SettingsViewModel : NoViewModel() {
 	private suspend fun initLanguage() {
 		LanguageConfigKey.get()?.let(::getSupportLanguage)?.let {
 			SupportLanguage.current.value = it
-			preloadStringJsonElementMap()
 		}
 	}
 	
