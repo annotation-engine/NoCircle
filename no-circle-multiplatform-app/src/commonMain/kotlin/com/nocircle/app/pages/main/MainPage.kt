@@ -242,7 +242,7 @@ private fun LeftNavigationBar(
 		val viewModel = koinViewModel<MainViewModel>()
 		val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
 		val width by animateDpAsState(
-			targetValue = if (isLeftNavigationBarExpended) 160.dp else 76.dp
+			targetValue = if (isLeftNavigationBarExpended) 160.dp else 72.dp
 		)
 		Column(
 			modifier = Modifier
@@ -358,7 +358,7 @@ private fun LeftMenuItem(
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
-				.height(52.dp)
+				.height(48.dp)
 				.clip(MaterialTheme.shapes.small)
 				.background(
 					color = containerColor,
@@ -367,13 +367,13 @@ private fun LeftMenuItem(
 				.clickable(
 					onClick = onClick
 				)
-				.padding(horizontal = 13.dp),
+				.padding(horizontal = 12.dp),
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.Start
 		) {
 			NoIcon(
 				icon = icon,
-				modifier = Modifier.size(26.dp),
+				modifier = Modifier.size(24.dp),
 				tint = contentColor
 			)
 			Text(
@@ -414,20 +414,20 @@ private fun LeftToolItem(
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
-				.height(52.dp)
+				.height(48.dp)
 				.clip(MaterialTheme.shapes.small)
 				.clickable(
 					enabled = enabled,
 					onClick = onClick
 				)
-				.padding(horizontal = 13.dp),
+				.padding(horizontal = 12.dp),
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.Start
 		) {
 			val iconRotate by animateFloatAsState(iconRotate)
 			NoIcon(
 				icon = icon,
-				modifier = Modifier.size(26.dp)
+				modifier = Modifier.size(24.dp)
 					.rotate(iconRotate),
 				tint = contentColor
 			)
