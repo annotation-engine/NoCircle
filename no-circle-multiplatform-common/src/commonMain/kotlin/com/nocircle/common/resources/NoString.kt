@@ -2,9 +2,7 @@ package com.nocircle.common.resources
 
 import androidx.collection.MutableIntObjectMap
 import androidx.collection.mutableIntObjectMapOf
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.util.fastFlatMap
 import com.nocircle.common.expends.format
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +27,7 @@ private val allFileNames = mutableMapOf<String, List<String>>()
 
 private val jsonObjectCacheMap = mutableMapOf<String, Map<String, JsonElement>>()
 
-private val stringCacheMap = mutableMapOf<String, MutableMap<SupportLanguage, MutableIntObjectMap<String>>>()
+private val stringCacheMap = mutableMapOf<String, MutableMap<SupportedLanguage, MutableIntObjectMap<String>>>()
 
 @OptIn(InternalResourceApi::class)
 suspend fun loadStringJsonObject(
@@ -55,15 +53,17 @@ suspend fun loadStringJsonObject(
 fun NoString.value(
 	vararg args: Any?
 ): String {
-	val language = LocalSupportLanguage.current
-	val value = remember(this, language) {
-		this.getCacheRawString(language)
+	val supportedLanguage by SupportedLanguage.current.collectAsState()
+	val value = remember(this, supportedLanguage) {
+		this.getCacheRawString(supportedLanguage)
 	}
-	return value.format(*args)
+	return remember(value, *args) {
+		value.format(*args)
+	}
 }
 
 @Stable
-private fun NoString.getCacheRawString(language: SupportLanguage): String {
+private fun NoString.getCacheRawString(language: SupportedLanguage): String {
 	val hashCode = this.hashCode()
 	val value = stringCacheMap[packageName]?.get(language)?.get(hashCode)
 	if (value != null) return value
@@ -84,13 +84,13 @@ private fun NoString.getCacheRawString(language: SupportLanguage): String {
 suspend fun NoString.getString(
 	vararg args: Any?
 ): String {
-	val language = SupportLanguage.current.value
+	val language = SupportedLanguage.current.value
 	val value = this.getSuspendedCacheRawString(language)
 	return value.format(*args)
 }
 
 @Stable
-private suspend fun NoString.getSuspendedCacheRawString(language: SupportLanguage): String {
+private suspend fun NoString.getSuspendedCacheRawString(language: SupportedLanguage): String {
 	val hashCode = this.hashCode()
 	val value = stringCacheMap[packageName]?.get(language)?.get(hashCode)
 	if (value != null) return value
@@ -106,7 +106,7 @@ private suspend fun NoString.getSuspendedCacheRawString(language: SupportLanguag
 	}
 }
 
-fun clearLanguageCache(language: SupportLanguage) {
+fun clearLanguageCache(language: SupportedLanguage) {
 	stringCacheMap.values.forEach {
 		it -= language
 	}

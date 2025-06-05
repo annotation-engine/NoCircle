@@ -21,7 +21,9 @@ import com.nocircle.app.rootController
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.resources.*
+import com.nocircle.common.resources.IconType
+import com.nocircle.common.resources.SupportedLanguage
+import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.complex.NoAlertModalBottomSheet
 import com.nocircle.compose.complex.NoOption
@@ -116,14 +118,15 @@ private fun NavToAppearance() {
 private fun SwitchLanguage(
 	viewModel: SettingsViewModel
 ) {
-	val language = LocalSupportLanguage.current
+	val language by SupportedLanguage.current.collectAsState()
+	SupportedLanguage
 	var expanded by remember { mutableStateOf(false) }
 	NoDropdownMenu(
 		expanded = expanded,
 		onExpandedChange = { expanded = it },
 		menuItems = {
 			val coroutineScope = rememberCoroutineScope()
-			SupportLanguage.entries.fastForEach {
+			SupportedLanguage.entries.fastForEach {
 				DropdownMenuItem(
 					text = {
 						Text(it.displayName)
@@ -183,8 +186,9 @@ private fun SwitchIconType(
 			title = AppString.SettingsSwitchIconType.value(),
 			icon = AppIcon.ShapeLine.value,
 			action = {
+				val iconType by IconType.current.collectAsState()
 				Text(
-					text = LocalIconType.current.getAppString().value(),
+					text = iconType.getAppString().value(),
 					color = MaterialTheme.colorScheme.outline,
 					style = MaterialTheme.typography.bodyMedium,
 				)

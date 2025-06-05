@@ -1,31 +1,27 @@
 package com.nocircle.app.pages.guide
 
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
-import com.nocircle.compose.icon.NoIcons
-import com.nocircle.compose.icon.NoLogo
 import com.nocircle.compose.material3.NoScaffold
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
@@ -37,57 +33,93 @@ data object GuideRoute : NoRoute
 @Composable
 fun GuidePage() {
 	val viewModel = koinViewModel<GuideViewModel>()
-	var offsetYTarget by remember { mutableStateOf(50.dp) }
-	var alphaTarget by remember { mutableStateOf(0f) }
-	var scaleTarget by remember { mutableStateOf(1f) }
-	var alphaSpec by remember { mutableStateOf(tween<Float>(durationMillis = 1000)) }
+	var verify by remember { mutableStateOf<Boolean?>(null) }
+	var already by remember { mutableStateOf(false) }
+	var delayFinish by remember { mutableStateOf(false) }
 	val controller = LocalNavController.current
+	val toNextPage = suspend {
+		if (!already && verify != null && delayFinish) {
+			already = true
+			controller.navigate(
+				route = if (verify!!) MainRoute else LoginRoute,
+				popup = NoPopUp.Current
+			)
+		}
+	}
 	LaunchedEffect(Unit) {
-		delay(300)
-		offsetYTarget = (-100).dp
-		alphaTarget = 1f
-		delay(1100)
-		alphaSpec = tween(durationMillis = 250)
-		scaleTarget = 0.8f
-		alphaTarget = 0f
-		delay(250)
-		val verify = viewModel.verifyToken()
-		controller.navigate(
-			route = if (verify) MainRoute else LoginRoute,
-			popup = NoPopUp.Current
-		)
+		delay(2000)
+		delayFinish = true
+		toNextPage()
+	}
+	LaunchedEffect(Unit) {
+		verify = viewModel.verifyToken()
+		toNextPage()
 	}
 	NoScaffold {
 		Box(
 			modifier = Modifier
-				.fillMaxSize(),
-			contentAlignment = Alignment.Center
+				.fillMaxSize()
 		) {
-			val offsetY by animateDpAsState(
-				targetValue = offsetYTarget,
-				animationSpec = tween(durationMillis = 1000)
-			)
-			val alpha by animateFloatAsState(
-				targetValue = alphaTarget,
-				animationSpec = alphaSpec
-			)
-			val scale by animateFloatAsState(
-				targetValue = scaleTarget,
-				animationSpec = tween(durationMillis = 400)
-			)
-			Image(
-				imageVector = NoIcons.NoLogo,
-				contentDescription = null,
+			Box(
 				modifier = Modifier
-					.offset(y = offsetY)
-					.alpha(alpha)
-					.scale(scale)
-					.size(140.dp)
-					.background(MaterialTheme.colorScheme.primary, CircleShape)
-					.scale(1.5f)
-					.clip(CircleShape),
-				colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
-			)
+					.align(Alignment.Center)
+					.size(80.dp)
+			) {
+				Circle(
+					color = Color(0xFF3DDC97),
+					initStatus = 0
+				)
+				Circle(
+					color = Color(0xFFFFB74D),
+					initStatus = 1
+				)
+				Circle(
+					color = Color(0xFFFF6B6B),
+					initStatus = 2
+				)
+				Circle(
+					color = Color(0xFF7E57C2),
+					initStatus = 3
+				)
+			}
 		}
 	}
+}
+
+@Composable
+private fun Circle(
+	color: Color,
+	initStatus: Int
+) {
+	var offset by remember { mutableStateOf(getOffset(initStatus)) }
+	var status by remember { mutableStateOf(initStatus) }
+	LaunchedEffect(Unit) {
+		while (true) {
+			delay(500)
+			status++
+			offset = getOffset(status)
+		}
+	}
+	val x by animateDpAsState(
+		targetValue = offset.x,
+		animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessMediumLow)
+	)
+	val y by animateDpAsState(
+		targetValue = offset.y,
+		animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessMediumLow)
+	)
+	Box(
+		modifier = Modifier
+			.offset(x = x, y = y)
+			.size(20.dp)
+			.clip(CircleShape)
+			.background(color)
+	)
+}
+
+private fun getOffset(status: Int): DpOffset = when (status % 4) {
+	0 -> DpOffset(Dp.Hairline, Dp.Hairline)
+	1 -> DpOffset(Dp.Hairline, 60.dp)
+	2 -> DpOffset(60.dp, 60.dp)
+	else -> DpOffset(60.dp, Dp.Hairline)
 }

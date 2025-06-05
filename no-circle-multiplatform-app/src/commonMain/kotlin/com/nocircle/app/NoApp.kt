@@ -1,6 +1,7 @@
 package com.nocircle.app
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.nocircle.app.pages.account.login.LoginViewModel
 import com.nocircle.app.pages.account.register.RegisterViewModel
 import com.nocircle.app.pages.guide.GuideViewModel
@@ -13,7 +14,7 @@ import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
-import com.nocircle.common.resources.*
+import com.nocircle.common.resources.loadStringJsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -46,25 +47,10 @@ fun NoApp(
 		}
 	) {
 		NoMaterialTheme {
-			CompositionLocalConfig {
-				NoAppNavHost()
-			}
+			NoAppNavHost()
 			effect?.invoke()
 		}
 	}
-}
-
-@Composable
-private fun CompositionLocalConfig(
-	content: @Composable () -> Unit
-) {
-	val supportLanguage by SupportLanguage.current.collectAsState()
-	val iconType by IconType.current.collectAsState()
-	CompositionLocalProvider(
-		LocalSupportLanguage provides supportLanguage,
-		LocalIconType provides iconType,
-		content = content
-	)
 }
 
 @Composable

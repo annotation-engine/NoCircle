@@ -36,8 +36,8 @@ private const val GB = MB * 1024.0
 
 private fun Long.format(): String {
 	return when {
-		this < MB -> "${((this / KB) * 100).toInt() / 100f} KB"
-		this < GB -> "${((this / MB) * 100).toInt() / 100f} MB"
-		else -> "${((this / GB) * 100).toInt() / 100f} GB"
+		this < MB -> "${((this / KB) * 100L).toLong() / 100.0} KB"
+		this < GB -> "${((this / MB) * 100L).toLong() / 100.0} MB"
+		else -> "${((this / GB) * 100L).toLong() / 100.0} GB"
 	}
 }

@@ -1,10 +1,13 @@
 package com.nocircle.common.resources
 
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.ui.text.intl.Locale
+import com.nocircle.common.config.ConfigKey
+import com.nocircle.common.config.get
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
 
-enum class SupportLanguage(
+enum class SupportedLanguage(
 	val language: String,
 	val displayName: String
 ) {
@@ -33,15 +36,14 @@ enum class SupportLanguage(
 		displayName = "Русский"
 	);
 	
-	companion object {
-		val current = MutableStateFlow(Chinese)
+	companion object Companion {
+		
+		val current by lazy { MutableStateFlow(getSupportLanguage()) }
+		
+		private fun getSupportLanguage(): SupportedLanguage = runBlocking(Dispatchers.IO) {
+			SupportedLanguageConfigKey.get() ?: Chinese
+		}
 	}
 }
 
-fun getSupportLanguage(
-	language: String = Locale.current.language
-): SupportLanguage {
-	return SupportLanguage.entries.find { it.language == language } ?: SupportLanguage.Chinese
-}
-
-val LocalSupportLanguage = compositionLocalOf { getSupportLanguage() }
+object SupportedLanguageConfigKey : ConfigKey<SupportedLanguage>

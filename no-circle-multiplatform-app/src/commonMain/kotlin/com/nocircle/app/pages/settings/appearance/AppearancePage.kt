@@ -30,9 +30,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.config.ColorSchemeContrastConfigKey
-import com.nocircle.app.config.ColorSchemeGroupConfigKey
-import com.nocircle.app.config.ColorSchemeThemeModeConfigKey
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.ColorSchemeContrast
@@ -130,7 +127,7 @@ private fun ColorSchemeContrastOptions() {
 					contrast = contrast
 				)
 				coroutineScope.launch(Dispatchers.IO) {
-					ColorSchemeContrastConfigKey.set(contrast.name)
+					ColorSchemeContrastConfigKey.set(contrast)
 				}
 			}
 		}
@@ -204,7 +201,7 @@ private fun ThemeModeOptions() {
 					themeMode = themeMode
 				)
 				coroutineScope.launch(Dispatchers.IO) {
-					ColorSchemeThemeModeConfigKey.set(themeMode.name)
+					ColorSchemeThemeModeConfigKey.set(themeMode)
 				}
 			}
 		}
