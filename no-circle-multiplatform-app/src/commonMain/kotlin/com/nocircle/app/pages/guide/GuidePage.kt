@@ -4,9 +4,13 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,13 +84,13 @@ fun GuidePage() {
 					initStatus = 3
 				)
 			}
-			LinearProgressIndicator(
-				progress = {
-					1f
-				},
+			Text(
+				text = "© 2025 NoCircle. All rights reserved.",
 				modifier = Modifier
-					.fillMaxWidth()
 					.align(Alignment.BottomCenter)
+					.offset(y = (-12).dp),
+				style = MaterialTheme.typography.bodySmall,
+				color = MaterialTheme.colorScheme.outline
 			)
 		}
 	}

@@ -177,12 +177,12 @@
 	},
 	"PersonAccount": "ID: {}",
 	"PersonSettingsSubtitle": {
-		"zh": "外观，退出登录",
-		"en": "Appearance, Logout",
-		"ja": "外観、ログアウト",
-		"fr": "Apparence, Déconnexion",
-		"de": "Aussehen, Abmelden",
-		"ru": "Внешний вид, Выйти"
+		"zh": "外观、语言、图标、字重、内存、退出登录",
+		"en": "Appearance, Language, Icons, Font Weight, Memory, Logout",
+		"ja": "外観、言語、アイコン、フォントの太さ、メモリ、ログアウト",
+		"fr": "Apparence, Langue, Icônes, Graisse de police, Mémoire, Déconnexion",
+		"de": "Aussehen, Sprache, Symbole, Schriftstärke, Speicher, Abmelden",
+		"ru": "Внешний вид, Язык, Иконки, Толщина шрифта, Память, Выйти"
 	},
 	"PersonLastLoginTime": {
 		"zh": "上次登录时间",
