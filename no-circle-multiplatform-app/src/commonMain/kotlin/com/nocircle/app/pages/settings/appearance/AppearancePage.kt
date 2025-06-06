@@ -205,11 +205,12 @@ private fun ThemeModeOptions() {
 					}
 			) {
 				BooleanList.forEach { isDark ->
-					val shape by remember(themeModeSystemPercent.value) {
+					val percent = themeModeSystemPercent.value
+					val shape by remember(percent) {
 						derivedStateOf {
 							GenericShape { size, _ ->
-								moveTo(size.width * themeModeSystemPercent.value, 0f)
-								lineTo(size.width * themeModeSystemPercent.value, size.height)
+								moveTo(size.width * percent, 0f)
+								lineTo(size.width * percent, size.height)
 								if (isDark) {
 									lineTo(size.width, size.height)
 									lineTo(size.width, 0f)
@@ -221,8 +222,10 @@ private fun ThemeModeOptions() {
 							}
 						}
 					}
-					val themeMode = remember(isDarkPreview, isDark) {
-						if ((isDarkPreview && isDark) || (!isDarkPreview && !isDark)) ThemeMode.Dark else ThemeMode.Light
+					val themeMode by remember(isDarkPreview, isDark) {
+						derivedStateOf {
+							if ((isDarkPreview && isDark) || (!isDarkPreview && !isDark)) ThemeMode.Dark else ThemeMode.Light
+						}
 					}
 					val colorScheme = getColorScheme(themeMode = themeMode)
 					ColorSchemeCard(

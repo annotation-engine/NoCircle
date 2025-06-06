@@ -247,11 +247,15 @@ private fun LeftNavigationBar(
 	val width by animateDpAsState(
 		targetValue = if (isLeftNavigationBarExpended) 180.dp else LeftNavigationWidth
 	)
-	if (isLeftNavigationBarExpended) {
+	val alpha by animateFloatAsState(
+		targetValue = if (isLeftNavigationBarExpended) 0.2f else 0f
+	)
+	if (alpha > 0f) {
 		Box(
 			modifier = Modifier
 				.padding(start = width)
 				.fillMaxSize()
+				.background(Color.Black.copy(alpha = alpha))
 				.clickable(
 					interactionSource = null,
 					indication = null
@@ -263,15 +267,6 @@ private fun LeftNavigationBar(
 	NoWindowDraggableArea {
 		Column(
 			modifier = Modifier
-				.then(
-					if (!isLeftNavigationBarExpended) Modifier else {
-						Modifier.shadow(
-							elevation = 4.dp,
-							ambientColor = MaterialTheme.colorScheme.onSurface,
-							spotColor = MaterialTheme.colorScheme.onSurface
-						)
-					}
-				)
 				.width(width)
 				.fillMaxHeight()
 				.background(MaterialTheme.colorScheme.surfaceContainer)
@@ -430,10 +425,9 @@ private fun LeftToolItem(
 		isExpended = isExpended
 	) {
 		val primary = MaterialTheme.colorScheme.primary
-		val contentColor = remember(enabled, primary) {
-			when (enabled) {
-				true -> primary
-				false -> Color.Transparent
+		val contentColor by remember(enabled, primary) {
+			derivedStateOf {
+				if (enabled) primary else Color.Transparent
 			}
 		}
 		Row(

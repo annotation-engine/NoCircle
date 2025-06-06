@@ -68,10 +68,12 @@ fun EditLabelSheet(
 			var label by remember { mutableStateOf("") }
 			var addLabel by remember { mutableStateOf("") }
 			val primary = MaterialTheme.colorScheme.primary
-			var color by remember { mutableStateOf(primary) }
+			var color by remember(primary) { mutableStateOf(primary) }
 			var maxLength by remember { mutableIntStateOf(0) }
-			val showAddLabel = remember(labels) {
-				labels.getOverlength() > 0 && labels.size < MAX_COUNT
+			val showAddLabel by remember(labels) {
+				derivedStateOf {
+					labels.getOverlength() > 0 && labels.size < MAX_COUNT
+				}
 			}
 			LaunchedEffect(labels) {
 				addLabel = ""
@@ -171,7 +173,9 @@ private fun Label(
 	selected: Boolean,
 	onClick: () -> Unit,
 ) {
-	val color = remember(label.color) { Color(label.color) }
+	val color by remember(label.color) {
+		derivedStateOf { Color(label.color) }
+	}
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()

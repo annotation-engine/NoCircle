@@ -128,7 +128,9 @@ private fun Label(
 	label: String,
 	color: Int,
 ) {
-	val color = remember(color) { Color(color) }
+	val color by remember(color) {
+		derivedStateOf { Color(color) }
+	}
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()

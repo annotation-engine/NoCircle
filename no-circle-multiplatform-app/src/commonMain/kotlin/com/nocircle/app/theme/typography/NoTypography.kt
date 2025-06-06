@@ -3,6 +3,8 @@ package com.nocircle.app.theme.typography
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
@@ -42,8 +44,10 @@ private val FontWeightList = (100..900 step 100).map { FontWeight(it) }
 @Composable
 private fun getFontFamily(): FontFamily {
 	val progression = FontWeightLevel.current.progression
-	val settings = remember(progression) {
-		progression.map { FontVariation.Settings(FontVariation.weight(it)) }
+	val settings by remember(progression) {
+		derivedStateOf {
+			progression.map { FontVariation.Settings(FontVariation.weight(it)) }
+		}
 	}
 	return FontFamily(
 		fonts = settings.fastMapIndexed { index, settings ->

@@ -2,9 +2,7 @@ package com.nocircle.common.resources
 
 import androidx.collection.MutableIntObjectMap
 import androidx.collection.mutableIntObjectMapOf
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.util.fastFlatMap
 import com.nocircle.common.expends.format
 import kotlinx.coroutines.Dispatchers
@@ -56,8 +54,8 @@ fun NoString.value(
 	vararg args: Any?
 ): String {
 	val current = SupportedLanguage.current
-	val value = remember(this, current) {
-		this.getCacheRawString(current)
+	val value by remember(this, current) {
+		derivedStateOf { this.getCacheRawString(current) }
 	}
 	return remember(value, *args) {
 		value.format(*args)

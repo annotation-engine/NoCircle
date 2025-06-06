@@ -30,8 +30,10 @@ fun NoDropdownMenu(
 	) {
 		var dropdownMenuWidth by remember { mutableStateOf(Dp.Hairline) }
 		val density = LocalDensity.current
-		val offset by remember {
-			derivedStateOf { DpOffset(x = maxWidth - dropdownMenuWidth, y = Dp.Hairline) }
+		val offset by remember(maxWidth, dropdownMenuWidth) {
+			derivedStateOf {
+				DpOffset(x = maxWidth - dropdownMenuWidth, y = Dp.Hairline)
+			}
 		}
 		content()
 		DropdownMenu(

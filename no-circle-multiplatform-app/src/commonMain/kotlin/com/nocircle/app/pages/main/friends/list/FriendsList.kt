@@ -50,10 +50,12 @@ private fun FriendsSearch(
 	) {
 		val viewModel = koinViewModel<FriendsListViewModel>()
 		val search by viewModel.search.collectAsState()
-		val size = remember(isCompat) {
-			when {
-				DeviceType.isDesktop -> if (isCompat) 48.dp else 40.dp
-				else -> if (isCompat) 48.dp else 44.dp
+		val size by remember(isCompat) {
+			derivedStateOf {
+				when {
+					DeviceType.isDesktop -> if (isCompat) 48.dp else 40.dp
+					else -> if (isCompat) 48.dp else 44.dp
+				}
 			}
 		}
 		NoTextField(

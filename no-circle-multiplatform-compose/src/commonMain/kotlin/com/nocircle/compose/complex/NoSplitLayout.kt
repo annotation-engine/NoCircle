@@ -69,7 +69,7 @@ fun NoSplitLayout(
 			val interactionSource = remember { MutableInteractionSource() }
 			val isHovered by interactionSource.collectIsHoveredAsState()
 			var isDragging by remember { mutableStateOf(false) }
-			val isHighlight by remember {
+			val isHighlight by remember(isHovered || isDragging) {
 				derivedStateOf { isHovered || isDragging }
 			}
 			val paddingHorizontal by animateDpAsState(
@@ -117,7 +117,7 @@ internal expect fun Modifier.pointerResizeHorizontalHoverIcon(): Modifier
 
 object NoSplitLayoutDefaults {
 	
-	val ContentWidthRange = 200.dp..280.dp
+	val ContentWidthRange = 175.dp..400.dp
 	
-	val ExpendedMinWidth = 327.dp
+	val ExpendedMinWidth = 350.dp
 }
