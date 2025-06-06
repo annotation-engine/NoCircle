@@ -14,7 +14,7 @@ fun FriendsPage() {
 	NoSplitLayout(
 		contentWidth = contentWidth,
 		onContentWidthChange = { viewModel.contentWidth.value = it },
-		expend = {
+		expended = {
 		
 		}
 	) { isCompat ->

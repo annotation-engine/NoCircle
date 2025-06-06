@@ -25,7 +25,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -461,9 +461,9 @@ private fun <T> SingleLineOptions(
 	LazyRow(
 		modifier = Modifier
 			.fillMaxWidth()
-			.onGloballyPositioned {
+			.onSizeChanged {
 				viewModel.colorSchemeCardWidth.value = with(density) {
-					(it.size.width.toDp() - 12.dp - IntervalDp * (displayCount - 1)) / displayCount
+					(it.width.toDp() - 12.dp - IntervalDp * (displayCount - 1)) / displayCount
 				}
 			},
 		state = lazyListState

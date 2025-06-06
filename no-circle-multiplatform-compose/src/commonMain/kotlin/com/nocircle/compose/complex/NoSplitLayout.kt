@@ -12,8 +12,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.range.DpRange
 
@@ -21,36 +24,48 @@ import com.nocircle.compose.range.DpRange
 fun NoSplitLayout(
 	contentWidth: Dp,
 	onContentWidthChange: (Dp) -> Unit,
-	contentWidthRange: DpRange = 200.dp..400.dp,
-	expend: @Composable () -> Unit,
-	content: @Composable (isCompat: Boolean) -> Unit
+	expended: @Composable () -> Unit,
+	modifier: Modifier = Modifier,
+	contentWidthRange: DpRange = NoSplitLayoutDefaults.ContentWidthRange,
+	expendedMinWidth: Dp = NoSplitLayoutDefaults.ExpendedMinWidth,
+	content: @Composable BoxScope.(isCompat: Boolean) -> Unit,
 ) {
-	Box(
-		modifier = Modifier.fillMaxSize()
-	) {
-		val isCompact = WindowWidthSizes.isCompact
-		Row(
-			modifier = Modifier.fillMaxSize()
-		) {
-			Box(
-				modifier = Modifier
-					.then(if (isCompact) Modifier.fillMaxWidth() else Modifier.width(contentWidth))
-			) {
-				content(isCompact)
-			}
-			if (!isCompact) {
-				Spacer(modifier = Modifier.width(1.dp))
-				Box(
-					modifier = Modifier
-						.weight(1f)
-						.fillMaxHeight()
-				) {
-					expend()
-				}
+	val isCompact = WindowWidthSizes.isCompact
+	var width by remember { mutableStateOf(Dp.Hairline) }
+	val density = LocalDensity.current
+	LaunchedEffect(width) {
+		if (!isCompact) {
+			val newContentWidth = width - expendedMinWidth - 1.dp
+			if (contentWidth > newContentWidth) {
+				onContentWidthChange(newContentWidth)
 			}
 		}
+	}
+	Box(
+		modifier = modifier
+			.fillMaxSize()
+			.onSizeChanged {
+				width = with(density) { it.width.toDp() }
+			}
+	) {
+		Box(
+			modifier = Modifier
+				.fillMaxHeight()
+				.then(if (isCompact) Modifier.fillMaxWidth() else Modifier.width(contentWidth))
+		) {
+			content(isCompact)
+		}
 		if (!isCompact) {
-			val currentWidth by rememberUpdatedState(contentWidth)
+			Box(
+				modifier = Modifier
+					.padding(
+						start = contentWidth + 1.dp
+					)
+					.fillMaxSize()
+			) {
+				expended()
+			}
+			val currentContentWidth by rememberUpdatedState(contentWidth)
 			val interactionSource = remember { MutableInteractionSource() }
 			val isHovered by interactionSource.collectIsHoveredAsState()
 			var isDragging by remember { mutableStateOf(false) }
@@ -65,17 +80,17 @@ fun NoSplitLayout(
 			)
 			Box(
 				modifier = Modifier
+					.offset(x = contentWidth - 4.dp)
 					.width(9.dp)
 					.fillMaxHeight()
-					.offset(contentWidth - 4.dp)
 					.pointerResizeHorizontalHoverIcon()
 					.hoverable(interactionSource)
-					.pointerInput(Unit) {
-						var width = Dp.Hairline
+					.pointerInput(width, expendedMinWidth, contentWidthRange) {
+						var contentWidth = Dp.Hairline
 						detectDragGestures(
 							onDragStart = {
 								isDragging = true
-								width = currentWidth
+								contentWidth = currentContentWidth
 							},
 							onDragEnd = {
 								isDragging = false
@@ -83,9 +98,10 @@ fun NoSplitLayout(
 							onDragCancel = {
 								isDragging = false
 							},
-							onDrag = { _, dragAmount ->
-								width += dragAmount.x.toDp()
-								onContentWidthChange(width.coerceIn(contentWidthRange))
+							onDrag = { change, dragAmount ->
+								contentWidth += dragAmount.x.toDp()
+								val newContentWidth = contentWidth.coerceIn(contentWidthRange.start, min(width - expendedMinWidth - 1.dp, contentWidthRange.endInclusive))
+								onContentWidthChange(newContentWidth)
 							}
 						)
 					}
@@ -98,3 +114,10 @@ fun NoSplitLayout(
 
 @Stable
 internal expect fun Modifier.pointerResizeHorizontalHoverIcon(): Modifier
+
+object NoSplitLayoutDefaults {
+	
+	val ContentWidthRange = 200.dp..280.dp
+	
+	val ExpendedMinWidth = 327.dp
+}

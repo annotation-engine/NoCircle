@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -69,7 +69,7 @@ fun MainPage() {
 	NoScaffold(
 		snackbarHostState = hostState,
 	) {
-		Row(
+		Box(
 			modifier = Modifier
 				.fillMaxSize()
 		) {
@@ -84,18 +84,12 @@ fun MainPage() {
 						controller.navigate(route = MainRoute, popup = NoPopUp.All)
 					}
 				}
-				if (!isCompat) {
-					LeftNavigationBar(
-						subRoute = subRoute,
-						onSubRouteChange = onSubRouteChange
-					)
-				}
 				NoNavHost(
 					navController = controller,
 					startDestination = MainRoute,
 					modifier = Modifier
-						.weight(1f)
-						.fillMaxHeight(),
+						.padding(start = if (isCompat) Dp.Hairline else LeftNavigationWidth)
+						.fillMaxSize(),
 					navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
 					navPopTransition = if (isCompat) NavPopTransition.HorizontalSlide else NavPopTransition.Fade,
 				) {
@@ -109,6 +103,12 @@ fun MainPage() {
 					)
 					composable<SettingsRoute> { SettingsPage() }
 					composable<AppearanceRoute> { AppearancePage() }
+				}
+				if (!isCompat) {
+					LeftNavigationBar(
+						subRoute = subRoute,
+						onSubRouteChange = onSubRouteChange
+					)
 				}
 			}
 		}
@@ -194,8 +194,8 @@ private fun BottomNavigationBar(
 		Row(
 			modifier = Modifier
 				.fillMaxSize()
-				.onGloballyPositioned {
-					width = with(density) { it.size.width.toDp() }
+				.onSizeChanged {
+					width = with(density) { it.width.toDp() }
 				}
 		) {
 			MainSubRoute.entries.fastForEachIndexed { index, it ->
@@ -235,19 +235,43 @@ private fun BottomNavigationBar(
 	}
 }
 
+private val LeftNavigationWidth = 72.dp
+
 @Composable
 private fun LeftNavigationBar(
 	subRoute: MainSubRoute,
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	NoWindowDraggableArea {
-		val viewModel = koinViewModel<MainViewModel>()
-		val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
-		val width by animateDpAsState(
-			targetValue = if (isLeftNavigationBarExpended) 160.dp else 72.dp
+	val viewModel = koinViewModel<MainViewModel>()
+	val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
+	val width by animateDpAsState(
+		targetValue = if (isLeftNavigationBarExpended) 180.dp else LeftNavigationWidth
+	)
+	if (isLeftNavigationBarExpended) {
+		Box(
+			modifier = Modifier
+				.padding(start = width)
+				.fillMaxSize()
+				.clickable(
+					interactionSource = null,
+					indication = null
+				) {
+					viewModel.isLeftNavigationBarExpended.value = false
+				}
 		)
+	}
+	NoWindowDraggableArea {
 		Column(
 			modifier = Modifier
+				.then(
+					if (!isLeftNavigationBarExpended) Modifier else {
+						Modifier.shadow(
+							elevation = 4.dp,
+							ambientColor = MaterialTheme.colorScheme.onSurface,
+							spotColor = MaterialTheme.colorScheme.onSurface
+						)
+					}
+				)
 				.width(width)
 				.fillMaxHeight()
 				.background(MaterialTheme.colorScheme.surfaceContainer)
