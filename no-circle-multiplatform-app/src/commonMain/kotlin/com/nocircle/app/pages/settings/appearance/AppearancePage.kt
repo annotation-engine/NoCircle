@@ -35,7 +35,7 @@ import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.ColorSchemeContrast
 import com.nocircle.app.theme.colors.ColorSchemeGroup
 import com.nocircle.app.theme.colors.ThemeMode
-import com.nocircle.common.config.set
+import com.nocircle.app.theme.colors.getColorScheme
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.resources.value
@@ -106,29 +106,23 @@ fun AppearancePage() {
  */
 @Composable
 private fun ColorSchemeContrastOptions() {
-	val viewModel = koinViewModel<AppearanceViewModel>()
-	val attribute by viewModel.colorSchemeAttribute.collectAsState()
+	val current = ColorSchemeContrast.current
+	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
 		icon = AppIcon.Contrast.value,
 		title = AppString.AppearanceContrast.value(),
 		items = ColorSchemeContrast.entries,
-		current = attribute.contrast
+		current = current
 	) { contrast ->
-		val colorScheme by attribute.getColorScheme(contrast = contrast)
-		val coroutineScope = rememberCoroutineScope()
+		val colorScheme = getColorScheme(contrast = contrast)
 		ColorSchemeCard(
-			selected = attribute.contrast == contrast,
+			selected = current == contrast,
 			colorScheme = colorScheme,
 			name = contrast.title.value(),
 			preview = AppString.AppearanceContrastPreview.value()
 		) {
-			if (attribute.contrast != contrast) {
-				viewModel.colorSchemeAttribute.value = attribute.copy(
-					contrast = contrast
-				)
-				coroutineScope.launch(Dispatchers.IO) {
-					ColorSchemeContrastConfigKey.set(contrast)
-				}
+			coroutineScope.launch(Dispatchers.IO) {
+				ColorSchemeContrast.set(contrast)
 			}
 		}
 	}
@@ -139,29 +133,23 @@ private fun ColorSchemeContrastOptions() {
  */
 @Composable
 private fun ColorSchemeGroupOptions() {
-	val viewModel = koinViewModel<AppearanceViewModel>()
-	val attribute by viewModel.colorSchemeAttribute.collectAsState()
+	val current = ColorSchemeGroup.current
+	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
 		icon = AppIcon.ColorLens.value,
 		title = AppString.AppearanceTheme.value(),
-		items = ColorSchemeGroup.All,
-		current = attribute.group
+		items = ColorSchemeGroup.allColorSchemeGroups,
+		current = current
 	) { group ->
-		val colorScheme by attribute.getColorScheme(group)
-		val coroutineScope = rememberCoroutineScope()
+		val colorScheme = getColorScheme(group = group)
 		ColorSchemeCard(
-			selected = attribute.group == group,
+			selected = current == group,
 			colorScheme = colorScheme,
 			name = group.name.value(),
 			preview = AppString.AppearanceThemePreview.value()
 		) {
-			if (attribute.group != group) {
-				viewModel.colorSchemeAttribute.value = attribute.copy(
-					group = group
-				)
-				coroutineScope.launch(Dispatchers.IO) {
-					ColorSchemeGroupConfigKey.set(group.toString())
-				}
+			coroutineScope.launch(Dispatchers.IO) {
+				ColorSchemeGroup.set(group)
 			}
 		}
 	}
@@ -174,7 +162,7 @@ private fun ColorSchemeGroupOptions() {
 private fun ThemeModeOptions() {
 	val viewModel = koinViewModel<AppearanceViewModel>()
 	val themeModeSystemPercent = viewModel.themeModeSystemPercent
-	val themeModeSystemFlag by viewModel.themeModeSystemFlag.collectAsState()
+	val isDarkPreview by viewModel.isDarkPreview.collectAsState()
 	LaunchedEffect(Unit) {
 		while (true) {
 			themeModeSystemPercent.snapTo(0f)
@@ -183,45 +171,40 @@ private fun ThemeModeOptions() {
 				animationSpec = tween(durationMillis = 1500, easing = FastOutSlowInEasing)
 			)
 			delay(500)
-			viewModel.themeModeSystemFlag.value = !themeModeSystemFlag
+			viewModel.isDarkPreview.value = !isDarkPreview
 		}
 	}
-	
-	val attribute by viewModel.colorSchemeAttribute.collectAsState()
+	val current = ThemeMode.current
+	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
 		icon = AppIcon.DarkMode.value,
 		title = AppString.AppearanceThemeMode.value(),
-		current = attribute.themeMode,
+		current = current,
 		items = ThemeMode.entries
 	) { themeMode ->
-		val coroutineScope = rememberCoroutineScope()
-		val onClick: () -> Unit = {
-			if (attribute.themeMode != themeMode) {
-				viewModel.colorSchemeAttribute.value = attribute.copy(
-					themeMode = themeMode
-				)
-				coroutineScope.launch(Dispatchers.IO) {
-					ColorSchemeThemeModeConfigKey.set(themeMode)
-				}
-			}
-		}
 		if (themeMode != ThemeMode.System) {
-			val colorScheme by attribute.getColorScheme(themeMode = themeMode)
+			val colorScheme = getColorScheme(themeMode = themeMode)
 			ColorSchemeCard(
-				selected = attribute.themeMode == themeMode,
+				selected = current == themeMode,
 				colorScheme = colorScheme,
 				name = themeMode.title.value(),
-				preview = AppString.AppearanceThemeModePreview.value(),
-				onClick = onClick
-			)
+				preview = AppString.AppearanceThemeModePreview.value()
+			) {
+				coroutineScope.launch(Dispatchers.IO) {
+					ThemeMode.set(themeMode)
+				}
+			}
 		} else {
 			Box(
 				modifier = Modifier
 					.clip(MaterialTheme.shapes.large)
-					.clickable(onClick = onClick)
+					.clickable {
+						coroutineScope.launch(Dispatchers.IO) {
+							ThemeMode.set(ThemeMode.System)
+						}
+					}
 			) {
-				val booleans by remember { mutableStateOf(arrayOf(true, false)) }
-				booleans.forEach { isDark ->
+				BooleanList.forEach { isDark ->
 					val shape by remember(themeModeSystemPercent.value) {
 						derivedStateOf {
 							GenericShape { size, _ ->
@@ -238,10 +221,12 @@ private fun ThemeModeOptions() {
 							}
 						}
 					}
-					val themeMode = ThemeMode.getThemeMode(if (themeModeSystemFlag) isDark else !isDark)
-					val colorScheme by attribute.getColorScheme(themeMode = themeMode)
+					val themeMode = remember(isDarkPreview, isDark) {
+						if ((isDarkPreview && isDark) || (!isDarkPreview && !isDark)) ThemeMode.Dark else ThemeMode.Light
+					}
+					val colorScheme = getColorScheme(themeMode = themeMode)
 					ColorSchemeCard(
-						selected = attribute.themeMode == ThemeMode.System,
+						selected = current == ThemeMode.System,
 						colorScheme = colorScheme,
 						name = ThemeMode.System.title.value(),
 						preview = AppString.AppearanceThemeModePreview.value(),
@@ -252,6 +237,8 @@ private fun ThemeModeOptions() {
 		}
 	}
 }
+
+private val BooleanList = arrayOf(true, false)
 
 /**
  * 设置选项

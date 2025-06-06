@@ -18,7 +18,7 @@ fun Memory() {
 		}
 	}
 	NoOption(
-		title = "内存",
+		title = AppString.SettingsMemory.value(),
 		icon = Icons.Rounded.Memory,
 		subtitle = AppString.SettingsUseMemory.value(usedMemory)
 	) {

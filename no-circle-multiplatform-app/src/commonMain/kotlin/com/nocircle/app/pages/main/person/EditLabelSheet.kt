@@ -69,7 +69,7 @@ fun EditLabelSheet(
 			var addLabel by remember { mutableStateOf("") }
 			val primary = MaterialTheme.colorScheme.primary
 			var color by remember { mutableStateOf(primary) }
-			var maxLength by remember { mutableStateOf(0) }
+			var maxLength by remember { mutableIntStateOf(0) }
 			val showAddLabel = remember(labels) {
 				labels.getOverlength() > 0 && labels.size < MAX_COUNT
 			}

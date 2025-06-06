@@ -82,11 +82,11 @@ fun SettingsPage() {
 				val viewModel = koinViewModel<SettingsViewModel>()
 				NavToAppearance()
 				Spacer(modifier = Modifier.height(16.dp))
-				SwitchLanguage(viewModel)
+				SwitchLanguage()
 				Spacer(modifier = Modifier.height(16.dp))
-				SwitchIconType(viewModel)
+				SwitchIconType()
 				Spacer(modifier = Modifier.height(16.dp))
-				SwitchFontWeightLevel(viewModel)
+				SwitchFontWeightLevel()
 				Spacer(modifier = Modifier.height(16.dp))
 				Memory()
 				Spacer(modifier = Modifier.height(16.dp))
@@ -115,10 +115,8 @@ private fun NavToAppearance() {
  * 切换语言
  */
 @Composable
-private fun SwitchLanguage(
-	viewModel: SettingsViewModel
-) {
-	val language by SupportedLanguage.current.collectAsState()
+private fun SwitchLanguage() {
+	val language = SupportedLanguage.current
 	SupportedLanguage
 	var expanded by remember { mutableStateOf(false) }
 	NoDropdownMenu(
@@ -132,8 +130,8 @@ private fun SwitchLanguage(
 						Text(it.displayName)
 					},
 					onClick = {
-						coroutineScope.launch {
-							viewModel.setSupportLanguage(it)
+						coroutineScope.launch(Dispatchers.IO) {
+							SupportedLanguage.set(it)
 						}
 						expanded = false
 					}
@@ -160,9 +158,7 @@ private fun SwitchLanguage(
  * 切换图标类型
  */
 @Composable
-private fun SwitchIconType(
-	viewModel: SettingsViewModel
-) {
+private fun SwitchIconType() {
 	var expanded by remember { mutableStateOf(false) }
 	NoDropdownMenu(
 		expanded = expanded,
@@ -174,7 +170,7 @@ private fun SwitchIconType(
 					text = { Text(it.getAppString().value()) },
 					onClick = {
 						coroutineScope.launch(Dispatchers.IO) {
-							viewModel.setIconType(it)
+							IconType.set(it)
 						}
 						expanded = false
 					}
@@ -186,7 +182,7 @@ private fun SwitchIconType(
 			title = AppString.SettingsSwitchIconType.value(),
 			icon = AppIcon.ShapeLine.value,
 			action = {
-				val iconType by IconType.current.collectAsState()
+				val iconType = IconType.current
 				Text(
 					text = iconType.getAppString().value(),
 					color = MaterialTheme.colorScheme.outline,
@@ -211,20 +207,19 @@ private fun IconType.getAppString(): AppString = when (this) {
  * 调整字重
  */
 @Composable
-private fun SwitchFontWeightLevel(
-	viewModel: SettingsViewModel
-) {
+private fun SwitchFontWeightLevel() {
 	NoOption(
 		title = AppString.SettingsSwitchFontWeight.value(),
 		icon = AppIcon.LineWeight.value,
 		action = {
 			val coroutineScope = rememberCoroutineScope()
-			val fontWeightStep by viewModel.fontWeightLevel.collectAsState()
+			val current = FontWeightLevel.current
 			Slider(
-				value = fontWeightStep.ordinal.toFloat(),
-				onValueChange = {
+				value = current.ordinal.toFloat(),
+				onValueChange = { value ->
 					coroutineScope.launch {
-						viewModel.setFontWeightLevel(it.roundToInt())
+						val level = FontWeightLevel.entries.first { it.ordinal == value.roundToInt() }
+						FontWeightLevel.set(level)
 					}
 				},
 				modifier = Modifier

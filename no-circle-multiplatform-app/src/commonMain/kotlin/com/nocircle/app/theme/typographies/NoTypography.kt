@@ -3,16 +3,15 @@ package com.nocircle.app.theme.typographies
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.util.fastMapIndexed
-import com.nocircle.app.pages.settings.SettingsViewModel
+import com.nocircle.app.generated.resources.MiSans_VF
+import com.nocircle.app.generated.resources.Res
+import com.nocircle.app.pages.settings.FontWeightLevel
 import org.jetbrains.compose.resources.Font
-import org.koin.compose.viewmodel.koinViewModel
 
 val FontWeightList = (100..900 step 100).map { FontWeight(it) }
 
@@ -40,21 +39,19 @@ fun getNoTypography(): Typography = with(MaterialTheme.typography) {
 
 @Composable
 private fun getFontFamily(): FontFamily {
-	val viewModel = koinViewModel<SettingsViewModel>()
-	val fontResource by viewModel.fontResource.collectAsState()
-	val level by viewModel.fontWeightLevel.collectAsState()
-	val settings = remember(level) {
-		level.progression.map {
-			FontVariation.Settings(FontVariation.weight(it))
-		}
+	val progression = FontWeightLevel.current.progression
+	val settings = remember(progression) {
+		progression.map { FontVariation.Settings(FontVariation.weight(it)) }
 	}
 	return FontFamily(
 		fonts = settings.fastMapIndexed { index, settings ->
 			Font(
-				resource = fontResource,
+				resource = MiSansVF,
 				weight = FontWeightList[index],
 				variationSettings = settings
 			)
 		}
 	)
 }
+
+private val MiSansVF = Res.font.MiSans_VF

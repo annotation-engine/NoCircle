@@ -1,55 +1,12 @@
 package com.nocircle.app.pages.settings
 
 import com.nocircle.app.api.impl.userApi
-import com.nocircle.app.generated.resources.MiSans_VF
-import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.common.config.*
-import com.nocircle.common.resources.*
+import com.nocircle.common.flow.StatusFlowConfig
 import com.nocircle.compose.viewmodel.NoViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.runBlocking
 
 class SettingsViewModel : NoViewModel() {
-	
-	private val _fontResource = MutableStateFlow(Res.font.MiSans_VF)
-	val fontResource = _fontResource.asStateFlow()
-	
-	private val _fontWeightLevel by lazy { MutableStateFlow(getFontWeightLevel()) }
-	val fontWeightLevel by lazy { _fontWeightLevel.asStateFlow() }
-	
-	
-	private fun getFontWeightLevel() = runBlocking(Dispatchers.IO) {
-		FontWeightLevelConfigKey.get() ?: FontWeightLevel.Medium
-	}
-	
-	suspend fun setSupportLanguage(language: SupportedLanguage) {
-		val current = SupportedLanguage.current.value
-		if (current != language) {
-			clearLanguageCache(current)
-			SupportedLanguage.current.value = language
-			SupportedLanguageConfigKey.set(language)
-		}
-	}
-	
-	suspend fun setFontWeightLevel(ordinal: Int) {
-		if (_fontWeightLevel.value.ordinal != ordinal) {
-			val level = FontWeightLevel.entries.find { it.ordinal == ordinal } ?: FontWeightLevel.Medium
-			_fontWeightLevel.value = level
-			FontWeightLevelConfigKey.set(level)
-		}
-	}
-	
-	suspend fun setIconType(iconType: IconType) {
-		val current = IconType.current.value
-		if (current != iconType) {
-			IconType.current.value = iconType
-			IconTypeConfigKey.set(iconType)
-		}
-	}
 	
 	suspend fun logout() {
 		ktorfitx.userApi.logout()
@@ -66,7 +23,18 @@ enum class FontWeightLevel(
 	Medium(100..900 step 100),
 	Bold(300..900 step 75),
 	ExtraBold(500..900 step 50),
-	UltraBold(700..900 step 25)
+	UltraBold(700..900 step 25);
+	
+	companion object : StatusFlowConfig<FontWeightLevel>() {
+		
+		override suspend fun getConfigFromStorage(): FontWeightLevel {
+			return FontWeightLevelConfigKey.get() ?: Medium
+		}
+		
+		override suspend fun setConfigToStorage(oldConfig: FontWeightLevel, newConfig: FontWeightLevel) {
+			FontWeightLevelConfigKey.set(newConfig)
+		}
+	}
 }
 
-object FontWeightLevelConfigKey : ConfigKey<FontWeightLevel>
+private object FontWeightLevelConfigKey : ConfigKey<FontWeightLevel>("fontWeightLevel")

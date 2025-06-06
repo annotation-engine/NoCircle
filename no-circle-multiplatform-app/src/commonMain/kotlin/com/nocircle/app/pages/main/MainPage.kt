@@ -36,7 +36,6 @@ import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
-import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.ThemeMode
@@ -50,6 +49,9 @@ import com.nocircle.compose.desktop.NoWindowDraggableArea
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.showNoSnackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -295,9 +297,8 @@ private fun LeftNavigationBar(
 			}
 			Spacer(modifier = Modifier.weight(1f))
 			Spacer(modifier = Modifier.height(8.dp))
-			val appearanceViewModel = koinViewModel<AppearanceViewModel>()
-			val attribute by appearanceViewModel.colorSchemeAttribute.collectAsState()
-			val isDark = attribute.themeMode.isDark
+			val coroutineScope = rememberCoroutineScope()
+			val isDark = ThemeMode.current.isDark
 			val themeModeText =
 				if (isDark) AppString.AppearanceThemeModeLight.value() else AppString.AppearanceThemeModeDark.value()
 			LeftToolItem(
@@ -306,9 +307,9 @@ private fun LeftNavigationBar(
 				tooltipText = themeModeText,
 				isExpended = isLeftNavigationBarExpended,
 				onClick = {
-					appearanceViewModel.colorSchemeAttribute.value = attribute.copy(
-						themeMode = ThemeMode.getThemeMode(!isDark)
-					)
+					coroutineScope.launch(Dispatchers.IO) {
+						ThemeMode.set(if (isDark) ThemeMode.Light else ThemeMode.Dark)
+					}
 				},
 				iconRotate = if (isDark) 90f else 0f,
 			)

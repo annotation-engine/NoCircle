@@ -4,11 +4,9 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,7 +61,7 @@ fun GuidePage() {
 			Box(
 				modifier = Modifier
 					.align(Alignment.Center)
-					.size(80.dp)
+					.size(100.dp)
 			) {
 				Circle(
 					color = Color(0xFF3DDC97),
@@ -82,6 +80,14 @@ fun GuidePage() {
 					initStatus = 3
 				)
 			}
+			LinearProgressIndicator(
+				progress = {
+					1f
+				},
+				modifier = Modifier
+					.fillMaxWidth()
+					.align(Alignment.BottomCenter)
+			)
 		}
 	}
 }
@@ -92,7 +98,7 @@ private fun Circle(
 	initStatus: Int
 ) {
 	var offset by remember { mutableStateOf(getOffset(initStatus)) }
-	var status by remember { mutableStateOf(initStatus) }
+	var status by remember { mutableIntStateOf(initStatus) }
 	LaunchedEffect(Unit) {
 		while (true) {
 			delay(500)
@@ -119,7 +125,7 @@ private fun Circle(
 
 private fun getOffset(status: Int): DpOffset = when (status % 4) {
 	0 -> DpOffset(Dp.Hairline, Dp.Hairline)
-	1 -> DpOffset(Dp.Hairline, 60.dp)
-	2 -> DpOffset(60.dp, 60.dp)
-	else -> DpOffset(60.dp, Dp.Hairline)
+	1 -> DpOffset(Dp.Hairline, 80.dp)
+	2 -> DpOffset(80.dp, 80.dp)
+	else -> DpOffset(80.dp, Dp.Hairline)
 }

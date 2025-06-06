@@ -2,7 +2,9 @@ package com.nocircle.common.resources
 
 import androidx.collection.MutableIntObjectMap
 import androidx.collection.mutableIntObjectMapOf
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.util.fastFlatMap
 import com.nocircle.common.expends.format
 import kotlinx.coroutines.Dispatchers
@@ -53,9 +55,9 @@ suspend fun loadStringJsonObject(
 fun NoString.value(
 	vararg args: Any?
 ): String {
-	val supportedLanguage by SupportedLanguage.current.collectAsState()
-	val value = remember(this, supportedLanguage) {
-		this.getCacheRawString(supportedLanguage)
+	val current = SupportedLanguage.current
+	val value = remember(this, current) {
+		this.getCacheRawString(current)
 	}
 	return remember(value, *args) {
 		value.format(*args)
@@ -84,8 +86,8 @@ private fun NoString.getCacheRawString(language: SupportedLanguage): String {
 suspend fun NoString.getString(
 	vararg args: Any?
 ): String {
-	val language = SupportedLanguage.current.value
-	val value = this.getSuspendedCacheRawString(language)
+	val current = SupportedLanguage.value
+	val value = this.getSuspendedCacheRawString(current)
 	return value.format(*args)
 }
 
@@ -106,8 +108,8 @@ private suspend fun NoString.getSuspendedCacheRawString(language: SupportedLangu
 	}
 }
 
-fun clearLanguageCache(language: SupportedLanguage) {
-	stringCacheMap.values.forEach {
-		it -= language
+fun clearSupportedLanguageCache(language: SupportedLanguage) {
+	stringCacheMap.values.forEach { cacheMap ->
+		cacheMap -= language
 	}
 }

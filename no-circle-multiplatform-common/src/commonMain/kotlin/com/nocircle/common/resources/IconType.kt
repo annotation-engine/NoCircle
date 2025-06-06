@@ -2,10 +2,8 @@ package com.nocircle.common.resources
 
 import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.runBlocking
+import com.nocircle.common.config.set
+import com.nocircle.common.flow.StatusFlowConfig
 
 enum class IconType {
 	Rounded,
@@ -14,14 +12,15 @@ enum class IconType {
 	Sharp,
 	TwoTone;
 	
-	companion object Companion {
+	companion object : StatusFlowConfig<IconType>() {
+		override suspend fun getConfigFromStorage(): IconType {
+			return IconTypeConfigKey.get() ?: Rounded
+		}
 		
-		val current by lazy { MutableStateFlow(getIconType()) }
-		
-		private fun getIconType(): IconType = runBlocking(Dispatchers.IO) {
-			IconTypeConfigKey.get() ?: Rounded
+		override suspend fun setConfigToStorage(oldConfig: IconType, newConfig: IconType) {
+			IconTypeConfigKey.set(newConfig)
 		}
 	}
 }
 
-object IconTypeConfigKey : ConfigKey<IconType>
+private object IconTypeConfigKey : ConfigKey<IconType>("iconType")

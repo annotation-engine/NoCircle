@@ -2,10 +2,8 @@ package com.nocircle.common.resources
 
 import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.runBlocking
+import com.nocircle.common.config.set
+import com.nocircle.common.flow.StatusFlowConfig
 
 enum class SupportedLanguage(
 	val language: String,
@@ -36,14 +34,17 @@ enum class SupportedLanguage(
 		displayName = "Русский"
 	);
 	
-	companion object Companion {
+	companion object : StatusFlowConfig<SupportedLanguage>() {
 		
-		val current by lazy { MutableStateFlow(getSupportLanguage()) }
+		override suspend fun getConfigFromStorage(): SupportedLanguage {
+			return SupportedLanguageConfigKey.get() ?: Chinese
+		}
 		
-		private fun getSupportLanguage(): SupportedLanguage = runBlocking(Dispatchers.IO) {
-			SupportedLanguageConfigKey.get() ?: Chinese
+		override suspend fun setConfigToStorage(oldConfig: SupportedLanguage, newConfig: SupportedLanguage) {
+			SupportedLanguageConfigKey.set(newConfig)
+			clearSupportedLanguageCache(oldConfig)
 		}
 	}
 }
 
-object SupportedLanguageConfigKey : ConfigKey<SupportedLanguage>
+private object SupportedLanguageConfigKey : ConfigKey<SupportedLanguage>("supportedLanguage")

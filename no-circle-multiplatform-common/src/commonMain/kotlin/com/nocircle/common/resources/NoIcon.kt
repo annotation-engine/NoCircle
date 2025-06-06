@@ -1,7 +1,9 @@
 package com.nocircle.common.resources
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.vector.ImageVector
 
 typealias RoundedIcon = Icons.Rounded.() -> ImageVector
@@ -21,12 +23,9 @@ interface NoIcon {
 
 val NoIcon.value: ImageVector
 	@Composable
-	get() {
-		val iconType by IconType.current.collectAsState()
-		return value(iconType)
-	}
+	get() = value(IconType.current)
 
-fun NoIcon.getIcon(): ImageVector = this.value(IconType.current.value)
+fun NoIcon.getIcon(): ImageVector = this.value(IconType.value)
 
 @Stable
 private fun NoIcon.value(iconType: IconType) = when (iconType) {

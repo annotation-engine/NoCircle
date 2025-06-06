@@ -8,39 +8,44 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
-object Config {
+abstract class ConfigKey<T : Any>(
+	private val key: String = ""
+) {
 	
-	suspend inline operator fun <reified T : Any> set(key: ConfigKey<T>, value: T) = key.set(value)
+	companion object {
+		
+		suspend fun clearAll(): Int {
+			return CommonDatabase.INSTANCE.configDao().deleteAll()
+		}
+	}
 	
-	suspend inline operator fun <reified T : Any> get(key: ConfigKey<T>): T? = key.get()
-	
-	suspend fun clear(key: ConfigKey<*>): Int = key.clear()
-	
-	suspend fun clearAll(): Int {
-		return CommonDatabase.INSTANCE.configDao().deleteAll()
+	internal val configKey: String by lazy {
+		key.ifBlank { this::class.qualifiedName!! }
 	}
 }
-
-interface ConfigKey<T : Any>
 
 suspend inline fun <reified T : Any> ConfigKey<T>.set(value: T?) = this.set(value, serializer())
 
 suspend inline fun <reified T : Any> ConfigKey<T>.get(): T? = this.get(serializer())
 
-suspend fun ConfigKey<*>.clear(): Int {
-	return CommonDatabase.INSTANCE.configDao().delete(this.key)
+suspend fun <T : Any> ConfigKey<T>.clear(): Int {
+	return CommonDatabase.INSTANCE.configDao().delete(this.configKey)
 }
 
 suspend fun <T : Any> ConfigKey<T>.set(value: T?, serializer: KSerializer<T>) {
 	val value = value?.let { Json.encodeToString(serializer, it) }
-	CommonDatabase.INSTANCE.configDao().insert(ConfigEntity(this.key, value))
+	CommonDatabase.INSTANCE.configDao().insert(ConfigEntity(this.configKey, value))
 }
 
 suspend fun <T : Any> ConfigKey<T>.get(serializer: KSerializer<T>): T? {
-	val entity = CommonDatabase.INSTANCE.configDao().query(this.key) ?: return null
-	return entity.value?.let { Json.decodeFromString(serializer, it) }
+	val entity = CommonDatabase.INSTANCE.configDao().query(this.configKey) ?: return null
+	return entity.value?.let {
+		try {
+			Json.decodeFromString(serializer, it)
+		} catch (_: Exception) {
+			null
+		}
+	}
 }
 
-private val ConfigKey<*>.key: String get() = this::class.qualifiedName ?: error("ConfigKey is not available!")
-
-object TokenConfigKey : ConfigKey<String>
+object TokenConfigKey : ConfigKey<String>("token")
