@@ -23,14 +23,14 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 private val NoKoinModule = module {
-	viewModel { GuideViewModel() }
-	viewModel { LoginViewModel() }
+	single { GuideViewModel() }
+	single { LoginViewModel() }
 	viewModel { RegisterViewModel() }
-	viewModel { MainViewModel() }
-	viewModel { FriendsViewModel() }
-	viewModel { FriendsListViewModel() }
+	single { MainViewModel() }
+	single { FriendsViewModel() }
+	single { FriendsListViewModel() }
 	viewModel { AddFriendSheetViewModel() }
-	viewModel { PersonViewModel() }
+	single { PersonViewModel() }
 	single { SettingsViewModel() }
 	single { AppearanceViewModel() }
 	viewModel { EditLabelViewModel() }

@@ -18,7 +18,7 @@ fun animateWindowStateAsState(
 		targetValue = targetValue,
 		finishedListener = finishedListener
 	)
-	return remember(size) {
+	return remember {
 		derivedStateOf {
 			WindowState(
 				position = calcWindowPosition(size),
@@ -28,7 +28,6 @@ fun animateWindowStateAsState(
 	}
 }
 
-@Stable
 private fun calcWindowPosition(size: DpSize): WindowPosition {
 	val screenBounds = getCursorScreenBounds()
 	val x = screenBounds.x + ((screenBounds.width - size.width.value) / 2f)
@@ -39,7 +38,6 @@ private fun calcWindowPosition(size: DpSize): WindowPosition {
 	)
 }
 
-@Stable
 private fun getCursorScreenBounds(): Rectangle {
 	val mouseLocation = MouseInfo.getPointerInfo().location
 	val environment = GraphicsEnvironment.getLocalGraphicsEnvironment()

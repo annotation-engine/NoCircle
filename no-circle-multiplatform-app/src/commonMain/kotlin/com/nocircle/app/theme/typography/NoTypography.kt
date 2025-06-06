@@ -1,4 +1,4 @@
-package com.nocircle.app.theme.typographies
+package com.nocircle.app.theme.typography
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
@@ -13,11 +13,11 @@ import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.pages.settings.FontWeightLevel
 import org.jetbrains.compose.resources.Font
 
-val FontWeightList = (100..900 step 100).map { FontWeight(it) }
-
 @Composable
-fun getNoTypography(): Typography = with(MaterialTheme.typography) {
-	val fontFamily = getFontFamily()
+fun getTypography(
+	typography: Typography = MaterialTheme.typography,
+	fontFamily: FontFamily = getFontFamily()
+): Typography = with(typography) {
 	Typography(
 		displayLarge = displayLarge.copy(fontFamily = fontFamily),
 		displayMedium = displayMedium.copy(fontFamily = fontFamily),
@@ -36,6 +36,8 @@ fun getNoTypography(): Typography = with(MaterialTheme.typography) {
 		labelSmall = labelSmall.copy(fontFamily = fontFamily)
 	)
 }
+
+private val FontWeightList = (100..900 step 100).map { FontWeight(it) }
 
 @Composable
 private fun getFontFamily(): FontFamily {

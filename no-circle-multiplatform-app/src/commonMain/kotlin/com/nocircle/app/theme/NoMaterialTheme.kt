@@ -1,17 +1,16 @@
 package com.nocircle.app.theme
 
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
-import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.app.theme.colors.getColorScheme
-import com.nocircle.app.theme.typographies.getNoTypography
-import org.koin.compose.viewmodel.koinViewModel
+import com.nocircle.app.theme.typography.getTypography
 
 @Composable
 fun NoMaterialTheme(
@@ -23,8 +22,8 @@ fun NoMaterialTheme(
 		onDarkModeChanged(isDark)
 	}
 	MaterialTheme(
-		colorScheme = animateColorSchemeTransition(colorScheme),
-		typography = getNoTypography(),
+		colorScheme = animateColorScheme(colorScheme),
+		typography = getTypography(),
 		content = content,
 	)
 }
@@ -32,49 +31,49 @@ fun NoMaterialTheme(
 expect fun onDarkModeChanged(isDarkTheme: Boolean)
 
 @Composable
-fun animateColorSchemeTransition(target: ColorScheme): ColorScheme {
+fun animateColorScheme(target: ColorScheme): ColorScheme {
+	val transition = updateTransition(target, label = "ColorSchemeTransition")
 	return ColorScheme(
-		primary = animateColor(target.primary),
-		onPrimary = animateColor(target.onPrimary),
-		primaryContainer = animateColor(target.primaryContainer),
-		onPrimaryContainer = animateColor(target.onPrimaryContainer),
-		inversePrimary = animateColor(target.inversePrimary),
-		secondary = animateColor(target.secondary),
-		onSecondary = animateColor(target.onSecondary),
-		secondaryContainer = animateColor(target.secondaryContainer),
-		onSecondaryContainer = animateColor(target.onSecondaryContainer),
-		tertiary = animateColor(target.tertiary),
-		onTertiary = animateColor(target.onTertiary),
-		tertiaryContainer = animateColor(target.tertiaryContainer),
-		onTertiaryContainer = animateColor(target.onTertiaryContainer),
-		background = animateColor(target.background),
-		onBackground = animateColor(target.onBackground),
-		surface = animateColor(target.surface),
-		onSurface = animateColor(target.onSurface),
-		surfaceVariant = animateColor(target.surfaceVariant),
-		onSurfaceVariant = animateColor(target.onSurfaceVariant),
-		surfaceTint = animateColor(target.surfaceTint),
-		inverseSurface = animateColor(target.inverseSurface),
-		inverseOnSurface = animateColor(target.inverseOnSurface),
-		error = animateColor(target.error),
-		onError = animateColor(target.onError),
-		errorContainer = animateColor(target.errorContainer),
-		onErrorContainer = animateColor(target.onErrorContainer),
-		outline = animateColor(target.outline),
-		outlineVariant = animateColor(target.outlineVariant),
-		scrim = animateColor(target.scrim),
-		surfaceBright = animateColor(target.surfaceBright),
-		surfaceDim = animateColor(target.surfaceDim),
-		surfaceContainer = animateColor(target.surfaceContainer),
-		surfaceContainerHigh = animateColor(target.surfaceContainerHigh),
-		surfaceContainerHighest = animateColor(target.surfaceContainerHighest),
-		surfaceContainerLow = animateColor(target.surfaceContainerLow),
-		surfaceContainerLowest = animateColor(target.surfaceContainerLowest),
+		primary = transition.animateColor(label = "primary") { it.primary }.value,
+		onPrimary = transition.animateColor(label = "onPrimary") { it.onPrimary }.value,
+		primaryContainer = transition.animateColor(label = "primaryContainer") { it.primaryContainer }.value,
+		onPrimaryContainer = transition.animateColor(label = "onPrimaryContainer") { it.onPrimaryContainer }.value,
+		inversePrimary = transition.animateColor(label = "inversePrimary") { it.inversePrimary }.value,
+		secondary = transition.animateColor(label = "secondary") { it.secondary }.value,
+		onSecondary = transition.animateColor(label = "onSecondary") { it.onSecondary }.value,
+		secondaryContainer = transition.animateColor(label = "secondaryContainer") { it.secondaryContainer }.value,
+		onSecondaryContainer = transition.animateColor(label = "onSecondaryContainer") { it.onSecondaryContainer }.value,
+		tertiary = transition.animateColor(label = "tertiary") { it.tertiary }.value,
+		onTertiary = transition.animateColor(label = "onTertiary") { it.onTertiary }.value,
+		tertiaryContainer = transition.animateColor(label = "tertiaryContainer") { it.tertiaryContainer }.value,
+		onTertiaryContainer = transition.animateColor(label = "onTertiaryContainer") { it.onTertiaryContainer }.value,
+		background = transition.animateColor(label = "background") { it.background }.value,
+		onBackground = transition.animateColor(label = "onBackground") { it.onBackground }.value,
+		surface = transition.animateColor(label = "surface") { it.surface }.value,
+		onSurface = transition.animateColor(label = "onSurface") { it.onSurface }.value,
+		surfaceVariant = transition.animateColor(label = "surfaceVariant") { it.surfaceVariant }.value,
+		onSurfaceVariant = transition.animateColor(label = "onSurfaceVariant") { it.onSurfaceVariant }.value,
+		surfaceTint = transition.animateColor(label = "surfaceTint") { it.surfaceTint }.value,
+		inverseSurface = transition.animateColor(label = "inverseSurface") { it.inverseSurface }.value,
+		inverseOnSurface = transition.animateColor(label = "inverseOnSurface") { it.inverseOnSurface }.value,
+		error = transition.animateColor(label = "error") { it.error }.value,
+		onError = transition.animateColor(label = "onError") { it.onError }.value,
+		errorContainer = transition.animateColor(label = "errorContainer") { it.errorContainer }.value,
+		onErrorContainer = transition.animateColor(label = "onErrorContainer") { it.onErrorContainer }.value,
+		outline = transition.animateColor(label = "outline") { it.outline }.value,
+		outlineVariant = transition.animateColor(label = "outlineVariant") { it.outlineVariant }.value,
+		scrim = transition.animateColor(label = "scrim") { it.scrim }.value,
+		surfaceBright = transition.animateColor(label = "surfaceBright") { it.surfaceBright }.value,
+		surfaceDim = transition.animateColor(label = "surfaceDim") { it.surfaceDim }.value,
+		surfaceContainer = transition.animateColor(label = "surfaceContainer") { it.surfaceContainer }.value,
+		surfaceContainerHigh = transition.animateColor(label = "surfaceContainerHigh") { it.surfaceContainerHigh }.value,
+		surfaceContainerHighest = transition.animateColor(label = "surfaceContainerHighest") { it.surfaceContainerHighest }.value,
+		surfaceContainerLow = transition.animateColor(label = "surfaceContainerLow") { it.surfaceContainerLow }.value,
+		surfaceContainerLowest = transition.animateColor(label = "surfaceContainerLowest") { it.surfaceContainerLowest }.value,
 	)
 }
 
 @Composable
 private fun animateColor(target: Color): Color {
-	val animated by animateColorAsState(target)
-	return animated
+	return animateColorAsState(target).value
 }

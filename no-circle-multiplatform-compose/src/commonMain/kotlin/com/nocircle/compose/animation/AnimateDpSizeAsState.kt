@@ -3,14 +3,13 @@ package com.nocircle.compose.animation
 import androidx.compose.animation.core.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun animateDpSizeAsState(
 	targetValue: DpSize,
-	animationSpec: AnimationSpec<DpSize> = remember { spring() },
+	animationSpec: AnimationSpec<DpSize> = spring(),
 	label: String = "NoDpSizeAnimation",
 	finishedListener: ((DpSize) -> Unit)? = null,
 ): State<DpSize> = animateValueAsState(

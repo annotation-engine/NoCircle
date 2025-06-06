@@ -1,8 +1,6 @@
 package com.nocircle.common.expends
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 
 @Stable
@@ -15,11 +13,6 @@ fun String.hexToColor(): Color {
 	}
 }
 
-@Composable
-fun rememberHexToColor(hexColor: String): Color {
-	return remember(hexColor) { hexColor.hexToColor() }
-}
-
 @Stable
 fun Color.toHexString(): String {
 	val a = (alpha * 255).toInt().toString(radix = 16)
@@ -27,9 +20,4 @@ fun Color.toHexString(): String {
 	val g = (green * 255).toInt().toString(radix = 16)
 	val b = (blue * 255).toInt().toString(radix = 16)
 	return "#$a$r$g$b"
-}
-
-@Composable
-fun rememberColorToHex(color: Color): String {
-	return remember(color) { color.toHexString() }
 }

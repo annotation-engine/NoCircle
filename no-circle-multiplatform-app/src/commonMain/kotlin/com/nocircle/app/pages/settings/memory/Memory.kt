@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun Memory() {
-	var usedMemory by remember { mutableStateOf("--") }
+	var usedMemory by remember { mutableStateOf("---") }
 	LaunchedEffect(Unit) {
 		while (true) {
 			usedMemory = getUsedMemory().format()

@@ -2,7 +2,10 @@ package com.nocircle.app.theme.colors
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.ColorSchemeContrast.*
 import com.nocircle.common.config.ConfigKey
@@ -110,7 +113,6 @@ private object ColorSchemeGroupConfigKey : ConfigKey<AppString>("colorSchemeGrou
 
 private object ThemeModeConfigKey : ConfigKey<ThemeMode>("themeMode")
 
-@Stable
 @Composable
 fun getColorScheme(
 	group: ColorSchemeGroup = ColorSchemeGroup.current,
