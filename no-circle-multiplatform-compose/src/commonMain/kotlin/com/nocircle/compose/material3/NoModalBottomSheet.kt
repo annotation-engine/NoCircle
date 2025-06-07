@@ -1,8 +1,6 @@
 package com.nocircle.compose.material3
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -26,7 +24,7 @@ fun NoModalBottomSheet(
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),
 	tonalElevation: Dp = 0.dp,
-	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) },
+	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(16.dp, 16.dp, 16.dp, 16.dp) },
 	icon: @Composable (() -> Unit)? = null,
 	title: @Composable (() -> Unit)? = null,
 	showCloseButton: Boolean = true,
@@ -39,7 +37,7 @@ fun NoModalBottomSheet(
 		sheetState = sheetState,
 		containerColor = containerColor,
 		contentColor = contentColor,
-		shape = MaterialTheme.shapes.extraLarge,
+		shape = MaterialTheme.shapes.medium,
 		tonalElevation = tonalElevation,
 		dragHandle = {},
 		contentWindowInsets = contentWindowInsets

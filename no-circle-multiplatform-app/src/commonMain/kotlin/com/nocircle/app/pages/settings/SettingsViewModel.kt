@@ -15,15 +15,15 @@ class SettingsViewModel : NoViewModel() {
 }
 
 enum class FontWeightLevel(
-	val progression: IntProgression
+	vararg val weights: Int
 ) {
-	UltraThin(100..300 step 25),
-	ExtraThin(100..500 step 50),
-	Thin(100..700 step 75),
-	Medium(100..900 step 100),
-	Bold(300..900 step 75),
-	ExtraBold(500..900 step 50),
-	UltraBold(700..900 step 25);
+	UltraThin(100, 100, 100, 100, 200, 300, 400, 500, 600),
+	ExtraThin(100, 100, 100, 200, 300, 400, 500, 600, 700),
+	Thin(100, 100, 200, 300, 400, 500, 600, 700, 800),
+	Medium(100, 200, 300, 400, 500, 600, 700, 800, 900),
+	Bold(200, 300, 400, 500, 600, 700, 800, 900, 900),
+	ExtraBold(300, 400, 500, 600, 700, 800, 900, 900, 900),
+	UltraBold(400, 500, 600, 700, 800, 900, 900, 900, 900), ;
 	
 	companion object : StatusFlowConfig<FontWeightLevel>() {
 		

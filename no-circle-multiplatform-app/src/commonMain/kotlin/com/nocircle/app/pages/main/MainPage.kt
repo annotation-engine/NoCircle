@@ -248,7 +248,7 @@ private fun LeftNavigationBar(
 		targetValue = if (isLeftNavigationBarExpended) 180.dp else LeftNavigationWidth
 	)
 	val alpha by animateFloatAsState(
-		targetValue = if (isLeftNavigationBarExpended) 0.2f else 0f
+		targetValue = if (isLeftNavigationBarExpended) 0.25f else 0f
 	)
 	if (alpha > 0f) {
 		Box(

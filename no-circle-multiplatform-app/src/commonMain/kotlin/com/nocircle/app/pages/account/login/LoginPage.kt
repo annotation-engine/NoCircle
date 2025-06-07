@@ -24,8 +24,6 @@ import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.resources.getString
 import com.nocircle.common.resources.value
-import com.nocircle.common.windowsize.WindowHeightSizes
-import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.showNoSnackbar
@@ -56,12 +54,11 @@ fun LoginPage() {
 		snackbarHostState = hostState,
 	) { paddingValues ->
 		val verticalScroll = rememberScrollState()
-		val isCompat = WindowHeightSizes.isCompact || WindowWidthSizes.isCompact
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
 				.verticalScroll(verticalScroll),
-			contentAlignment = if (isCompat) Alignment.TopCenter else Alignment.Center
+			contentAlignment = Alignment.Center
 		) {
 			Column(
 				modifier = Modifier

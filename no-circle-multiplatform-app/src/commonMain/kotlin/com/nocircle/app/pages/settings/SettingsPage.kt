@@ -5,7 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +41,6 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.math.roundToInt
 
 @Serializable
 data object SettingsRoute : NoRoute
@@ -85,8 +87,6 @@ fun SettingsPage() {
 				SwitchLanguage()
 				Spacer(modifier = Modifier.height(16.dp))
 				SwitchIconType()
-				Spacer(modifier = Modifier.height(16.dp))
-				SwitchFontWeightLevel()
 				Spacer(modifier = Modifier.height(16.dp))
 				Memory()
 				Spacer(modifier = Modifier.height(16.dp))
@@ -201,34 +201,6 @@ private fun IconType.getAppString(): AppString = when (this) {
 	IconType.Filled -> AppString.SettingsFilled
 	IconType.Sharp -> AppString.SettingsSharp
 	IconType.TwoTone -> AppString.SettingsTwoTone
-}
-
-/**
- * 调整字重
- */
-@Composable
-private fun SwitchFontWeightLevel() {
-	NoOption(
-		title = AppString.SettingsSwitchFontWeight.value(),
-		icon = AppIcon.LineWeight.value,
-		action = {
-			val coroutineScope = rememberCoroutineScope()
-			val current = FontWeightLevel.current
-			Slider(
-				value = current.ordinal.toFloat(),
-				onValueChange = { value ->
-					coroutineScope.launch {
-						val level = FontWeightLevel.entries.first { it.ordinal == value.roundToInt() }
-						FontWeightLevel.set(level)
-					}
-				},
-				modifier = Modifier
-					.widthIn(max = 400.dp),
-				valueRange = remember { 0f..FontWeightLevel.entries.lastIndex.toFloat() },
-				steps = FontWeightLevel.entries.size - 2
-			)
-		}
-	)
 }
 
 /**

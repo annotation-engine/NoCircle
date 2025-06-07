@@ -336,14 +336,6 @@
 		"de": "Sprache",
 		"ru": "Язык"
 	},
-	"SettingsSwitchFontWeight": {
-		"zh": "字重",
-		"en": "Font Weight",
-		"ja": "フォントの太さ",
-		"fr": "Graisse de police",
-		"de": "Schriftgewicht",
-		"ru": "Насыщенность шрифта"
-	},
 	"SettingsSwitchIconType": {
 		"zh": "图标",
 		"en": "Icon",
@@ -401,12 +393,12 @@
 		"ru": "Память"
 	},
 	"SettingsUseMemory": {
-		"zh": "点击释放内存，当前已使用：{}",
-		"en": "Tap to free memory. Currently used: {}",
-		"ja": "タップしてメモリを解放します。現在の使用量：{}",
-		"de": "Tippen Sie, um Speicher freizugeben. Derzeit verwendet: {}",
-		"fr": "Appuyez pour libérer la mémoire. Utilisation actuelle : {}",
-		"ru": "Нажмите, чтобы освободить память. Использовано: {}"
+		"zh": "当前使用：{}",
+		"en": "Currently using: {}",
+		"ja": "現在の使用量：{}",
+		"fr": "Utilisation actuelle : {}",
+		"de": "Aktuelle Nutzung: {}",
+		"ru": "Текущее использование: {}"
 	},
 	"Appearance": {
 		"zh": "外观",

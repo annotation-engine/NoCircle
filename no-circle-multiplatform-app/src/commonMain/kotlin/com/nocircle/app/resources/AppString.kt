@@ -46,7 +46,6 @@ enum class AppString : NoString {
 	SettingsLogoutTitle,
 	SettingsLogoutContent,
 	SettingsSwitchLanguage,
-	SettingsSwitchFontWeight,
 	SettingsSwitchIconType,
 	SettingsRounded,
 	SettingsOutlined,

@@ -48,7 +48,7 @@ fun RegisterPage() {
 			modifier = Modifier
 				.fillMaxSize()
 				.verticalScroll(verticalScroll),
-			contentAlignment = if (isCompat) Alignment.TopCenter else Alignment.Center
+			contentAlignment = Alignment.Center
 		) {
 			Column(
 				modifier = Modifier
