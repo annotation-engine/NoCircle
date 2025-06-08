@@ -30,7 +30,7 @@ import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.complex.NoAlertModalBottomSheet
 import com.nocircle.compose.complex.NoOption
-import com.nocircle.compose.foundation.NoButtons
+import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoDropdownMenu
@@ -228,7 +228,7 @@ private fun Logout(
 					popup = NoPopUp.All
 				)
 			},
-			confirmColors = NoButtons.ErrorColors,
+			confirmColors = NoButtonColors.ErrorColors,
 			icon = {
 				NoIcon(
 					icon = AppIcon.Warning.value,

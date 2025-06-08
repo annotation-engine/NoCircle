@@ -57,5 +57,6 @@ data class SearchUserVO(
 	val username: String,
 	val nickname: String?,
 	val avatarUrl: String?,
-	val labels: List<LabelVO>
+	val labels: List<LabelVO>,
+	val isOwner: Boolean,
 )

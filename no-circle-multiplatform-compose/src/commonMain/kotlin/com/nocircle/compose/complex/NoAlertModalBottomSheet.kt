@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtonColors
-import com.nocircle.compose.foundation.NoButtons
 import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.resources.ComposeString
 import kotlinx.coroutines.launch
@@ -34,8 +33,8 @@ fun NoAlertModalBottomSheet(
 	contentColor: Color = contentColorFor(containerColor),
 	tonalElevation: Dp = 0.dp,
 	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) },
-	confirmColors: NoButtonColors = NoButtons.PrimaryColors,
-	cancelColors: NoButtonColors = NoButtons.SurfaceContainerColors,
+	confirmColors: NoButtonColors = NoButtonColors.PrimaryColors,
+	cancelColors: NoButtonColors = NoButtonColors.SurfaceContainerHighColors,
 	icon: @Composable (() -> Unit)? = null,
 	showCloseButton: Boolean = true,
 ) {

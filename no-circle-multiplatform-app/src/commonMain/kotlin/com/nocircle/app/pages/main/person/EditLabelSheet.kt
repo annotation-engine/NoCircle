@@ -18,7 +18,7 @@ import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.getDisplayLength
 import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoButton
-import com.nocircle.compose.foundation.NoButtons
+import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoTextField
 import com.nocircle.compose.material3.LocalSnackbarHostState
@@ -166,9 +166,7 @@ private fun Label(
 	selected: Boolean,
 	onClick: () -> Unit,
 ) {
-	val color by remember(label.color) {
-		derivedStateOf { Color(label.color) }
-	}
+	val color = Color(label.color)
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()
@@ -402,7 +400,7 @@ private fun ControlBottomBar(
 			NoButton(
 				text = AppString.LabelDelete.value(),
 				modifier = Modifier.weight(1f),
-				colors = NoButtons.ErrorColors
+				colors = NoButtonColors.ErrorColors
 			) {
 				val success = viewModel.deleteLabelById(selected.id)
 				if (success) {
@@ -423,7 +421,7 @@ private fun ControlBottomBar(
 			NoButton(
 				text = AppString.LabelCancel.value(),
 				modifier = Modifier.weight(1f),
-				colors = NoButtons.SurfaceContainerColors
+				colors = NoButtonColors.SurfaceContainerHighColors
 			) {
 				sheetState.hide()
 				onDismissRequest()

@@ -29,11 +29,11 @@ private val NoKoinModule = module {
 	single { MainViewModel() }
 	single { FriendsViewModel() }
 	single { FriendsListViewModel() }
-	viewModel { AddUserSheetViewModel() }
+	single { AddUserSheetViewModel() }
 	single { PersonViewModel() }
 	single { SettingsViewModel() }
 	single { AppearanceViewModel() }
-	viewModel { EditLabelViewModel() }
+	single { EditLabelViewModel() }
 }
 
 @Composable

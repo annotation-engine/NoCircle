@@ -123,7 +123,7 @@ fun LoginPage() {
 				NoButton(
 					text = AppString.LoginToRegister.value(),
 					modifier = Modifier.fillMaxWidth(),
-					colors = NoButtons.SecondaryContainerColors
+					colors = NoButtonColors.SecondaryContainerColors
 				) {
 					controller.navigate(route = RegisterRoute)
 				}

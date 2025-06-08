@@ -37,6 +37,10 @@ class AddUserSheetViewModel : NoViewModel() {
 		}
 	}
 	
+	suspend fun sendFriendRequest(userId: Int) {
+		
+	}
+	
 	private suspend fun getFriendByUsernameOrNickname(username: String) {
 		if (username.isBlank()) {
 			_result.value = null
@@ -46,7 +50,7 @@ class AddUserSheetViewModel : NoViewModel() {
 		if (result.success) {
 			_result.value = result.data
 		} else {
-			showNoErrorSnackbar(result.msg)
+			_result.value = null
 		}
 	}
 }

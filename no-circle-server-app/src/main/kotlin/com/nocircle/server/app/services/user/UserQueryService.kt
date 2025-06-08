@@ -18,36 +18,36 @@ object UserQueryService : NoService<UserQueryService.SearchUser> {
 	
 	override val path = "/user/query"
 	
-	override val method = HttpMethod.Companion.Get
+	override val method = HttpMethod.Get
 	
-	override suspend fun receive(call: RoutingCall) = noParameters {
-		this["friendUsername"] = call.queryParameters.getString("username")
+	override val auth = true
+	
+	override suspend fun receive(call: RoutingCall) = noParameters(call) {
+		this["queryUsername"] = call.queryParameters.getString("username")
 	}
 	
 	override suspend fun process(parameters: NoParameters): ApiResult<SearchUser> {
-		val username: String by parameters
-		val friendUsername: String by parameters
-		if (username == friendUsername) {
-			return ApiResult.failure("不能搜索自己")
-		}
+		val queryUsername: String by parameters
+		if (queryUsername.isBlank()) return ApiResult.failure("用户名不能为空")
 		val searchUser = transaction {
-			val user = Users.getByUsername(friendUsername) ?: return@transaction null
+			val user = Users.getByUsername(queryUsername) ?: return@transaction null
 			val userId = user.id.value
 			val labels = UserLabels.getListByUserId(userId).map {
 				Label(it.id.value, it.label, it.color)
 			}
 			SearchUser(
-				userId = userId,
+				userId = user.id.value,
 				username = user.username,
 				nickname = user.nickname,
 				avatarUrl = user.avatarUrl,
 				labels = labels,
+				isOwner = parameters.userId == userId
 			)
 		}
 		return if (searchUser != null) {
 			ApiResult.success(searchUser, "用户搜索成功")
 		} else {
-			ApiResult.success("未搜索到用户")
+			ApiResult.failure("未搜索到用户")
 		}
 	}
 	
@@ -57,7 +57,8 @@ object UserQueryService : NoService<UserQueryService.SearchUser> {
 		val username: String,
 		val nickname: String?,
 		val avatarUrl: String?,
-		val labels: List<Label>
+		val labels: List<Label>,
+		val isOwner: Boolean
 	)
 	
 	@Serializable

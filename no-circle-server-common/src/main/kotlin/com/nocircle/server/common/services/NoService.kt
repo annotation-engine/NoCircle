@@ -19,11 +19,8 @@ interface NoService<out R : Any> {
 	
 	val roles get() = arrayOf<String?>(null)
 	
-	suspend fun receive(call: RoutingCall): NoParameters {
-		return if (auth) {
-			noParameters(call) {}
-		} else NoParameters.None
-	}
+	suspend fun receive(call: RoutingCall): NoParameters =
+		if (auth) noParameters(call) {} else NoParameters.None
 	
 	suspend fun process(parameters: NoParameters): ApiResult<R>
 }
@@ -75,7 +72,6 @@ inline fun noParameters(
 ): NoParameters = NoParameters().apply {
 	if (call != null) {
 		this["userId"] = call.principal.userId
-		this["username"] = call.principal.username
 	}
 	block()
 }

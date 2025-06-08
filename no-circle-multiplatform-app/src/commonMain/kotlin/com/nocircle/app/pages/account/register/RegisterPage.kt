@@ -133,7 +133,7 @@ fun RegisterPage() {
 				NoButton(
 					text = AppString.RegisterBackToLogin.value(),
 					modifier = Modifier.fillMaxWidth(),
-					colors = NoButtons.SecondaryContainerColors
+					colors = NoButtonColors.SecondaryContainerColors
 				) {
 					controller.popBackStack()
 				}

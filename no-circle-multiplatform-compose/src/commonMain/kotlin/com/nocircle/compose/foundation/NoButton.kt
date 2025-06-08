@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.nocircle.compose.foundation.NoButtons.colors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -80,97 +81,12 @@ object NoButtons {
 		disabledContainerColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
 		disabledContentColor: Color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
 	): NoButtonColors = NoButtonColors(containerColor, contentColor, disabledContainerColor, disabledContentColor)
-	
-	val PrimaryColors: NoButtonColors
-		@Composable
-		get() = colors()
-	
-	val PrimaryContainerColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.primaryContainer,
-			contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-			disabledContentColor = MaterialTheme.colorScheme.primaryContainer.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
-		)
-	
-	val SecondaryColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.secondary,
-			contentColor = MaterialTheme.colorScheme.onSecondary,
-			disabledContentColor = MaterialTheme.colorScheme.secondary.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onSecondary.copy(0.8f)
-		)
-	
-	val SecondaryContainerColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.secondaryContainer,
-			contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-			disabledContentColor = MaterialTheme.colorScheme.secondaryContainer.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(0.8f)
-		)
-	
-	val TertiaryColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.tertiary,
-			contentColor = MaterialTheme.colorScheme.onTertiary,
-			disabledContentColor = MaterialTheme.colorScheme.tertiary.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
-		)
-	
-	val TertiaryContainerColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-			contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-			disabledContentColor = MaterialTheme.colorScheme.tertiaryContainer.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onTertiaryContainer.copy(0.8f)
-		)
-	
-	val ErrorColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.error,
-			contentColor = MaterialTheme.colorScheme.onError,
-			disabledContentColor = MaterialTheme.colorScheme.error.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onError.copy(0.8f)
-		)
-	
-	val ErrorContainerColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.errorContainer,
-			contentColor = MaterialTheme.colorScheme.onErrorContainer,
-			disabledContentColor = MaterialTheme.colorScheme.errorContainer.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onErrorContainer.copy(0.8f)
-		)
-	
-	val SurfaceColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.surface,
-			contentColor = MaterialTheme.colorScheme.onSurface,
-			disabledContentColor = MaterialTheme.colorScheme.surface.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
-		)
-	
-	val SurfaceContainerColors: NoButtonColors
-		@Composable
-		get() = colors(
-			containerColor = MaterialTheme.colorScheme.surfaceContainer,
-			contentColor = MaterialTheme.colorScheme.onSurface,
-			disabledContentColor = MaterialTheme.colorScheme.surfaceContainer.copy(0.8f),
-			disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
-		)
 }
 
 @Immutable
 object NoButtonDefaults {
 	
-	val DefaultButtonColors @Composable get() = NoButtons.colors()
+	val DefaultButtonColors @Composable get() = NoButtonColors.PrimaryColors
 }
 
 @Immutable
@@ -179,4 +95,129 @@ class NoButtonColors internal constructor(
 	val contentColor: Color,
 	val disabledContainerColor: Color,
 	val disabledContentColor: Color,
-)
+) {
+	
+	companion object {
+		
+		val PrimaryColors: NoButtonColors
+			@Composable
+			get() = colors()
+		
+		val PrimaryContainerColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.primaryContainer,
+				contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+				disabledContentColor = MaterialTheme.colorScheme.primaryContainer.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.8f)
+			)
+		
+		val SecondaryColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.secondary,
+				contentColor = MaterialTheme.colorScheme.onSecondary,
+				disabledContentColor = MaterialTheme.colorScheme.secondary.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onSecondary.copy(0.8f)
+			)
+		
+		val SecondaryContainerColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.secondaryContainer,
+				contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+				disabledContentColor = MaterialTheme.colorScheme.secondaryContainer.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(0.8f)
+			)
+		
+		val TertiaryColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.tertiary,
+				contentColor = MaterialTheme.colorScheme.onTertiary,
+				disabledContentColor = MaterialTheme.colorScheme.tertiary.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onTertiary.copy(0.8f)
+			)
+		
+		val TertiaryContainerColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+				contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+				disabledContentColor = MaterialTheme.colorScheme.tertiaryContainer.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onTertiaryContainer.copy(0.8f)
+			)
+		
+		val ErrorColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.error,
+				contentColor = MaterialTheme.colorScheme.onError,
+				disabledContentColor = MaterialTheme.colorScheme.error.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onError.copy(0.8f)
+			)
+		
+		val ErrorContainerColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.errorContainer,
+				contentColor = MaterialTheme.colorScheme.onErrorContainer,
+				disabledContentColor = MaterialTheme.colorScheme.errorContainer.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onErrorContainer.copy(0.8f)
+			)
+		
+		val SurfaceColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.surface,
+				contentColor = MaterialTheme.colorScheme.onSurface,
+				disabledContentColor = MaterialTheme.colorScheme.surface.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+			)
+		
+		val SurfaceContainerColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.surfaceContainer,
+				contentColor = MaterialTheme.colorScheme.onSurface,
+				disabledContentColor = MaterialTheme.colorScheme.surfaceContainer.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+			)
+		
+		val SurfaceContainerHighColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+				contentColor = MaterialTheme.colorScheme.onSurface,
+				disabledContentColor = MaterialTheme.colorScheme.surfaceContainerHigh.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+			)
+		
+		val SurfaceContainerHighestColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+				contentColor = MaterialTheme.colorScheme.onSurface,
+				disabledContentColor = MaterialTheme.colorScheme.surfaceContainerHighest.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+			)
+		
+		val SurfaceContainerLowColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+				contentColor = MaterialTheme.colorScheme.onSurface,
+				disabledContentColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+			)
+		
+		val SurfaceContainerLowestColors: NoButtonColors
+			@Composable
+			get() = colors(
+				containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+				contentColor = MaterialTheme.colorScheme.onSurface,
+				disabledContentColor = MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.8f),
+				disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+			)
+	}
+}
