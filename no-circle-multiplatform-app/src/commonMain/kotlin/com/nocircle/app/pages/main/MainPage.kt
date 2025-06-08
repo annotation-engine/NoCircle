@@ -377,12 +377,12 @@ private fun LightingEffect(
 				.offset(y = offsetY)
 				.fillMaxWidth()
 				.height(150.dp)
-				.blur(40.dp),
+				.blur(36.dp),
 			contentAlignment = Alignment.CenterStart
 		) {
 			Box(
 				modifier = Modifier
-					.offset(x = (-20).dp)
+					.offset(x = (-10).dp)
 					.size(40.dp)
 					.clip(CircleShape)
 					.background(MaterialTheme.colorScheme.primary)
