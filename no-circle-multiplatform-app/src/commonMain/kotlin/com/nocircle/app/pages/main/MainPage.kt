@@ -266,7 +266,7 @@ private fun LeftNavigationBar(
 				.fillMaxHeight()
 				.background(MaterialTheme.colorScheme.surfaceContainer)
 		) {
-			var menuItemTop by remember { mutableStateOf(Dp.Hairline) }
+			var menuItemTop by remember { mutableStateOf(Dp.Unspecified) }
 			LightingEffect(
 				subRoute = subRoute,
 				menuItemTop = menuItemTop,
@@ -282,7 +282,7 @@ private fun LeftNavigationBar(
 					)
 			) {
 				val controller = LocalNavController.current
-				var popStackEnabled by remember { mutableStateOf(true) }
+				var popStackEnabled by remember { mutableStateOf(false) }
 				DisposableEffect(Unit) {
 					val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
 						popStackEnabled = controller.currentRoute != MainRoute::class
@@ -365,27 +365,29 @@ private fun LightingEffect(
 	subRoute: MainSubRoute,
 	menuItemTop: Dp
 ) {
-	val targetOffsetY by remember(subRoute, menuItemTop) {
-		derivedStateOf {
-			menuItemTop + (LeftNavigationItemHeight + ItemSpacing) * subRoute.ordinal - 75.dp + LeftNavigationItemHeight / 2
+	if (menuItemTop != Dp.Unspecified) {
+		val targetOffsetY by remember(subRoute, menuItemTop) {
+			derivedStateOf {
+				menuItemTop + (LeftNavigationItemHeight + ItemSpacing) * subRoute.ordinal - 75.dp + LeftNavigationItemHeight / 2
+			}
 		}
-	}
-	val offsetY by animateDpAsState(targetOffsetY)
-	Box(
-		modifier = Modifier
-			.offset(y = offsetY)
-			.fillMaxWidth()
-			.height(150.dp)
-			.blur(40.dp),
-		contentAlignment = Alignment.CenterStart
-	) {
+		val offsetY by animateDpAsState(targetOffsetY)
 		Box(
 			modifier = Modifier
-				.offset(x = (-20).dp)
-				.size(40.dp)
-				.clip(CircleShape)
-				.background(MaterialTheme.colorScheme.primary)
-		)
+				.offset(y = offsetY)
+				.fillMaxWidth()
+				.height(150.dp)
+				.blur(40.dp),
+			contentAlignment = Alignment.CenterStart
+		) {
+			Box(
+				modifier = Modifier
+					.offset(x = (-20).dp)
+					.size(40.dp)
+					.clip(CircleShape)
+					.background(MaterialTheme.colorScheme.primary)
+			)
+		}
 	}
 }
 

@@ -5,7 +5,8 @@ import java.util.logging.Logger
 
 private val loggerCache = mutableMapOf<String, Logger>()
 
-internal actual fun NoLog.log(tag: String, level: LogLevel, message: String) {
+@Suppress("NOTHING_TO_INLINE")
+internal actual inline fun NoLog.log(tag: String, level: LogLevel, message: String) {
 	val logger = loggerCache.getOrPut(tag) { Logger.getLogger(tag) }
 	logger.log(level.toJavaLevel(), message)
 }

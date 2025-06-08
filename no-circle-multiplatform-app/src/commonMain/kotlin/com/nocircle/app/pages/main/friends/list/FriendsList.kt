@@ -84,7 +84,7 @@ private fun FriendsSearch(
 			showAddFriendSheet = true
 		}
 		if (showAddFriendSheet) {
-			AddFriendSheet(
+			AddUserSheet(
 				onDismissRequest = {
 					showAddFriendSheet = false
 				}

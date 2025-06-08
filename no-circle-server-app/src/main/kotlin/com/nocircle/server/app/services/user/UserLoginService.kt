@@ -19,7 +19,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.toJavaDuration
 
 /**
- * 用户登录服务
+ * 用户登录
  */
 object UserLoginService : NoService<UserLoginService.UserLogin> {
 	

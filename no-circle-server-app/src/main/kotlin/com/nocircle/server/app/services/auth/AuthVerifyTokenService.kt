@@ -1,15 +1,15 @@
 package com.nocircle.server.app.services.auth
 
 import com.nocircle.server.app.tables.user.UserLogins
-import com.nocircle.server.common.annotations.Schedule
-import com.nocircle.server.common.annotations.ServiceSchedule
 import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.services.NoParameters
 import com.nocircle.server.common.services.NoService
 import io.ktor.http.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
-@ServiceSchedule(Schedule.Release)
+/**
+ * 授权验证
+ */
 object AuthVerifyTokenService : NoService<Boolean> {
 	
 	override val path = "/auth/verifyToken"

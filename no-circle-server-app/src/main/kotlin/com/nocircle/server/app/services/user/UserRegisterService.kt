@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
- * 用户注册服务
+ * 用户注册
  */
 object UserRegisterService : NoService<Unit> {
 	

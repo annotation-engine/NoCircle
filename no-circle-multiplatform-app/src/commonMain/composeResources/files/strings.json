@@ -175,7 +175,48 @@
 		"de": "Suchen",
 		"ru": "Поиск"
 	},
-	"PersonAccount": "ID: {}",
+	"FriendsSearchTitle": {
+		"zh": "添加好友",
+		"en": "Add Friend",
+		"ja": "友達を追加",
+		"fr": "Ajouter un ami",
+		"de": "Freund hinzufügen",
+		"ru": "Добавить друга"
+	},
+	"FriendsSearchHint": {
+		"zh": "搜索用户完整用户名",
+		"en": "Search by full username",
+		"ja": "ユーザーの完全なユーザー名を検索",
+		"fr": "Rechercher par nom d'utilisateur complet",
+		"de": "Nach vollständigem Benutzernamen suchen",
+		"ru": "Поиск по полному имени пользователя"
+	},
+	"FriendsSearchPleaseInputUsername": {
+		"zh": "请输入用户名",
+		"en": "Please enter username",
+		"ja": "ユーザー名を入力してください",
+		"fr": "Veuillez entrer un nom d'utilisateur",
+		"de": "Bitte Benutzernamen eingeben",
+		"ru": "Пожалуйста, введите имя пользователя"
+	},
+	"FriendsSearchNotFoundUser": {
+		"zh": "未搜索到用户",
+		"en": "User not found",
+		"ja": "ユーザーが見つかりません",
+		"fr": "Utilisateur non trouvé",
+		"de": "Benutzer nicht gefunden",
+		"ru": "Пользователь не найден"
+	},
+	"FriendsSearchNotNickname": {
+		"zh": "该用户未设置昵称",
+		"en": "This user has no nickname",
+		"ja": "このユーザーはニックネームを設定していません",
+		"fr": "Cet utilisateur n'a pas de surnom",
+		"de": "Dieser Benutzer hat keinen Spitznamen festgelegt",
+		"ru": "У этого пользователя нет псевдонима"
+	},
+	"FriendsID": "ID: {}",
+	"PersonID": "ID: {}",
 	"PersonSettingsSubtitle": {
 		"zh": "外观、语言、图标、字重、内存、退出登录",
 		"en": "Appearance, Language, Icons, Font Weight, Memory, Logout",

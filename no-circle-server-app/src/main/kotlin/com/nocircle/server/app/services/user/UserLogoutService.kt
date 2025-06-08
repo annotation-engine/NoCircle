@@ -8,7 +8,7 @@ import com.nocircle.server.common.services.NoService
 import io.ktor.http.*
 
 /**
- * 用户登出服务
+ * 用户登出
  */
 object UserLogoutService : NoService<Unit> {
 	

@@ -27,6 +27,12 @@ interface UserApi {
 	@BearerAuth
 	@GET("detail")
 	suspend fun queryDetail(): ResultBody<UserDetailVO>?
+	
+	@BearerAuth
+	@GET("query")
+	suspend fun queryUserByUsername(
+		@Query username: String
+	): ResultBody<SearchUserVO>?
 }
 
 @Immutable
@@ -42,4 +48,14 @@ data class UserDetailVO(
 	val nickname: String?,
 	val avatarUrl: String?,
 	val lastLoginTime: String?,
+)
+
+@Immutable
+@Serializable
+data class SearchUserVO(
+	val userId: Int,
+	val username: String,
+	val nickname: String?,
+	val avatarUrl: String?,
+	val labels: List<LabelVO>
 )

@@ -22,7 +22,7 @@ abstract class NoViewModel : ViewModel() {
 		this.snackbarVisualsSharedFlow.collect(collector)
 	}
 	
-	suspend fun showNoSnackbar(
+	protected suspend fun showNoSnackbar(
 		message: String,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
@@ -42,7 +42,7 @@ abstract class NoViewModel : ViewModel() {
 		)
 	}
 	
-	suspend fun showNoSnackbar(
+	protected suspend fun showNoSnackbar(
 		message: StringResource,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
@@ -62,7 +62,7 @@ abstract class NoViewModel : ViewModel() {
 		)
 	}
 	
-	suspend fun showNoErrorSnackbar(
+	protected suspend fun showNoErrorSnackbar(
 		message: String,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
@@ -81,7 +81,7 @@ abstract class NoViewModel : ViewModel() {
 		)
 	}
 	
-	suspend fun showNoErrorSnackbar(
+	protected suspend fun showNoErrorSnackbar(
 		message: StringResource,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
@@ -100,7 +100,7 @@ abstract class NoViewModel : ViewModel() {
 		)
 	}
 	
-	suspend fun autoShowNoSnackbar(success: Boolean, message: String) {
+	protected suspend fun autoShowNoSnackbar(success: Boolean, message: String) {
 		if (success) {
 			showNoSnackbar(message)
 		} else {
@@ -108,8 +108,12 @@ abstract class NoViewModel : ViewModel() {
 		}
 	}
 	
-	protected suspend fun networkError(): Boolean {
+	protected suspend inline fun <reified T : Any> networkError(): T {
 		this.showNoErrorSnackbar(ComposeString.NetworkConnectError.getString())
-		return false
+		return when (T::class) {
+			Boolean::class -> false
+			Unit::class -> Unit
+			else -> error("不支持的类型")
+		} as T
 	}
 }

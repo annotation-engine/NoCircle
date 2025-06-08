@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
- * 添加标签
+ * 更新标签
  */
 object LabelUpdateService : NoService<Unit> {
 	
@@ -48,7 +48,7 @@ object LabelUpdateService : NoService<Unit> {
 				return@transaction Code.NoChange
 			}
 			
-			val labels = UserLabels.getListByUserIdAndNotId(userId, id)
+			val labels = UserLabels.getListByUserIdAndNeqId(userId, id)
 			if (labels.find { it.label == label } != null) {
 				return@transaction Code.AlreadyExists
 			}

@@ -8,6 +8,9 @@ import io.ktor.http.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
+/**
+ * 查询标签
+ */
 object LabelQueryService : NoService<List<LabelQueryService.Label>> {
 	
 	override val path = "/label/query"

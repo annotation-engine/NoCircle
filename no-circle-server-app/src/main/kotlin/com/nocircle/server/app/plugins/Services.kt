@@ -5,10 +5,7 @@ import com.nocircle.server.app.services.label.LabelAddService
 import com.nocircle.server.app.services.label.LabelDeleteService
 import com.nocircle.server.app.services.label.LabelQueryService
 import com.nocircle.server.app.services.label.LabelUpdateService
-import com.nocircle.server.app.services.user.UserDetailService
-import com.nocircle.server.app.services.user.UserLoginService
-import com.nocircle.server.app.services.user.UserLogoutService
-import com.nocircle.server.app.services.user.UserRegisterService
+import com.nocircle.server.app.services.user.*
 import com.nocircle.server.common.utils.group
 import com.nocircle.server.common.utils.plusAssign
 import com.nocircle.server.common.utils.services
@@ -24,6 +21,7 @@ fun Application.configureServices() {
 			this += UserRegisterService
 			this += UserLogoutService
 			this += UserDetailService
+			this += UserQueryService
 		}
 		group {
 			this += LabelAddService

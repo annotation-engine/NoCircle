@@ -75,6 +75,7 @@ inline fun noParameters(
 ): NoParameters = NoParameters().apply {
 	if (call != null) {
 		this["userId"] = call.principal.userId
+		this["username"] = call.principal.username
 	}
 	block()
 }

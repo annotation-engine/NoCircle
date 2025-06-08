@@ -17,52 +17,52 @@ object NoLog {
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(TAG, LogLevel.Verbose, store, *messages)
+		this.log(LogLevel.Verbose, store, *messages)
 	}
 	
 	fun debug(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(TAG, LogLevel.Debug, store, *messages)
+		this.log(LogLevel.Debug, store, *messages)
 	}
 	
 	fun info(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(TAG, LogLevel.Info, store, *messages)
+		this.log(LogLevel.Info, store, *messages)
 	}
 	
 	fun warn(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(TAG, LogLevel.Warn, store, *messages)
+		this.log(LogLevel.Warn, store, *messages)
 	}
 	
 	fun error(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(TAG, LogLevel.Error, store, *messages)
+		this.log(LogLevel.Error, store, *messages)
 	}
 	
 	fun assert(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(TAG, LogLevel.Assert, store, *messages)
+		this.log(LogLevel.Assert, store, *messages)
 	}
 	
 	@OptIn(ExperimentalTime::class)
-	private fun log(tag: String, level: LogLevel, store: Boolean, vararg messages: Any?) {
+	private fun log(level: LogLevel, store: Boolean, vararg messages: Any?) {
 		val message = messages.joinToString()
-		this.log(tag, level, message)
+		this.log(TAG, level, message)
 		if (store) {
 			CoroutineScope(Dispatchers.IO).launch {
 				val entity = LogEntity(
-					name = tag,
+					name = TAG,
 					level = level.toString(),
 					content = message,
 					timestamp = Clock.System.now().toEpochMilliseconds()
@@ -73,7 +73,7 @@ object NoLog {
 	}
 }
 
-internal expect fun NoLog.log(tag: String, level: LogLevel, message: String)
+internal expect inline fun NoLog.log(tag: String, level: LogLevel, message: String)
 
 internal enum class LogLevel {
 	Verbose,

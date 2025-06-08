@@ -32,7 +32,7 @@ object UserLabels : BaseTable("tb_user_label") {
 		return UserLabel.wrapRows(query).toList()
 	}
 	
-	fun getListByUserIdAndNotId(userId: Int, id: Int): List<UserLabel> {
+	fun getListByUserIdAndNeqId(userId: Int, id: Int): List<UserLabel> {
 		val query = UserLabels.selectAll()
 			.where { (UserLabels.userId eq userId) and (UserLabels.id neq id) }
 			.logicExists(UserLabels)

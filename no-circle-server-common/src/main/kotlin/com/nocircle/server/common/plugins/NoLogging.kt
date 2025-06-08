@@ -17,7 +17,7 @@ val NoLogging = createApplicationPlugin(
 		call.attributes.put(DurationTimeKey, System.currentTimeMillis())
 	}
 	onCallRespond { call, value ->
-		NoLog.buildInfo {
+		val message = buildString {
 			append(call.response.status())
 			append(": ")
 			append(call.request.httpMethod)
@@ -30,16 +30,17 @@ val NoLogging = createApplicationPlugin(
 			}
 			if (this@onCallRespond.pluginConfig.responseBody) {
 				append(" - Response: ")
-				val message = when (value) {
+				val responseBody = when (value) {
 					is TextContent -> "[Text]\n${value.text}"
 					is OutgoingContent.ByteArrayContent -> "[ByteArray]\n${value.bytes().toString(Charsets.UTF_8)}"
 					is OutgoingContent.ReadChannelContent -> "[ReadChannel]"
 					is String -> "[String]\n$value"
-					else -> return@buildInfo
+					else -> return@buildString
 				}
-				append(message)
+				append(responseBody)
 			}
 		}
+		NoLog.info(message)
 	}
 }
 

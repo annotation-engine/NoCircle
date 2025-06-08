@@ -10,6 +10,9 @@ import io.ktor.http.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
+/**
+ * 用户详情
+ */
 object UserDetailService : NoService<UserDetailService.UserDetail> {
 
     override val path = "/user/detail"

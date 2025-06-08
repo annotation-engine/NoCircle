@@ -34,19 +34,25 @@ import org.koin.compose.viewmodel.koinViewModel
 fun PersonPage() {
 	val verticalScrollState = rememberScrollState()
 	NoScaffold { paddingValues ->
-		Column(
+		Box(
 			modifier = Modifier
-				.widthIn(max = 840.dp)
-				.fillMaxSize()
-				.verticalScroll(verticalScrollState)
-				.padding(paddingValues)
-				.padding(16.dp)
+				.fillMaxSize(),
+			contentAlignment = Alignment.TopCenter
 		) {
-			UserDetailCard()
-			Spacer(modifier = Modifier.height(16.dp))
-			LastLoginTime()
-			Spacer(modifier = Modifier.height(16.dp))
-			OptionList()
+			Column(
+				modifier = Modifier
+					.widthIn(max = 840.dp)
+					.fillMaxSize()
+					.verticalScroll(verticalScrollState)
+					.padding(paddingValues)
+					.padding(16.dp)
+			) {
+				UserDetailCard()
+				Spacer(modifier = Modifier.height(16.dp))
+				LastLoginTime()
+				Spacer(modifier = Modifier.height(16.dp))
+				OptionList()
+			}
 		}
 	}
 }
@@ -86,7 +92,7 @@ private fun UserDetailCard() {
 				)
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
-					text = AppString.PersonAccount.value().format(userDetail?.username ?: ""),
+					text = AppString.PersonID.value().format(userDetail?.username ?: ""),
 					color = MaterialTheme.colorScheme.outline,
 					style = MaterialTheme.typography.bodyMedium,
 				)
