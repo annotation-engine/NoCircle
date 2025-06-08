@@ -6,7 +6,7 @@ import kotlin.native.runtime.GC
 import kotlin.native.runtime.NativeRuntimeApi
 
 @OptIn(ExperimentalForeignApi::class)
-actual fun getUsedMemory(): Long {
+actual suspend fun getUsedMemory(): Long {
 	return memScoped {
 		val info = alloc<mach_task_basic_info>()
 		val count = alloc<mach_msg_type_number_tVar>()
@@ -24,6 +24,6 @@ actual fun getUsedMemory(): Long {
 }
 
 @OptIn(NativeRuntimeApi::class)
-actual fun freeMemory() {
+actual suspend fun freeMemory() {
 	GC.collect()
 }

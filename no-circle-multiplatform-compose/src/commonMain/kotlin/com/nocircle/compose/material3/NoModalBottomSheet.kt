@@ -24,10 +24,11 @@ fun NoModalBottomSheet(
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),
 	tonalElevation: Dp = 0.dp,
-	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(16.dp, 16.dp, 16.dp, 16.dp) },
+	contentWindowInsets: @Composable () -> WindowInsets = NoModalBottomSheetDefaults.ContentWindowInsets,
 	icon: @Composable (() -> Unit)? = null,
 	title: @Composable (() -> Unit)? = null,
 	showCloseButton: Boolean = true,
+	contentMaxWidth: Dp = NoModalBottomSheetDefaults.ContentMaxWidth,
 	content: @Composable ColumnScope.() -> Unit
 ) {
 	ModalBottomSheet(
@@ -37,13 +38,16 @@ fun NoModalBottomSheet(
 		sheetState = sheetState,
 		containerColor = containerColor,
 		contentColor = contentColor,
-		shape = MaterialTheme.shapes.medium,
+		shape = MaterialTheme.shapes.large,
 		tonalElevation = tonalElevation,
 		dragHandle = {},
 		contentWindowInsets = contentWindowInsets
 	) {
 		Box {
-			Column {
+			Column(
+				modifier = Modifier
+					.fillMaxWidth()
+			) {
 				if (icon != null || title != null || showCloseButton) {
 					CompositionLocalProvider(
 						LocalTextStyle provides MaterialTheme.typography.titleLarge,
@@ -74,10 +78,17 @@ fun NoModalBottomSheet(
 						Spacer(modifier = Modifier.height(32.dp))
 					}
 				}
-				CompositionLocalProvider(
-					LocalSnackbarHostState provides snackbarHostState
+				Column(
+					modifier = Modifier
+						.align(Alignment.CenterHorizontally)
+						.widthIn(max = contentMaxWidth)
+						.fillMaxWidth()
 				) {
-					content()
+					CompositionLocalProvider(
+						LocalSnackbarHostState provides snackbarHostState
+					) {
+						content()
+					}
 				}
 			}
 			NoSnackbarHost(
@@ -95,3 +106,10 @@ fun NoModalBottomSheet(
 fun rememberNoModalBottomSheetState() = rememberModalBottomSheetState(
 	skipPartiallyExpanded = true
 )
+
+object NoModalBottomSheetDefaults {
+	
+	val ContentMaxWidth = 450.dp
+	
+	val ContentWindowInsets = @Composable { WindowInsets(16.dp, 16.dp, 16.dp, 16.dp) }
+}

@@ -57,105 +57,98 @@ fun EditLabelSheet(
 		LaunchedEffect(Unit) {
 			viewModel.snackbarCollect(hostState::showNoSnackbar)
 		}
-		Column(
-			modifier = Modifier
-				.align(Alignment.CenterHorizontally)
-				.widthIn(max = 450.dp)
-				.fillMaxWidth()
-		) {
-			var selected by remember { mutableStateOf<LabelVO?>(null) }
-			val labels by personViewModel.labels.collectAsState()
-			var label by remember { mutableStateOf("") }
-			var addLabel by remember { mutableStateOf("") }
-			val primary = MaterialTheme.colorScheme.primary
-			var color by remember(primary) { mutableStateOf(primary) }
-			var maxLength by remember { mutableIntStateOf(0) }
-			val showAddLabel by remember(labels) {
-				derivedStateOf {
-					labels.getOverlength() > 0 && labels.size < MAX_COUNT
-				}
+		var selected by remember { mutableStateOf<LabelVO?>(null) }
+		val labels by personViewModel.labels.collectAsState()
+		var label by remember { mutableStateOf("") }
+		var addLabel by remember { mutableStateOf("") }
+		val primary = MaterialTheme.colorScheme.primary
+		var color by remember(primary) { mutableStateOf(primary) }
+		var maxLength by remember { mutableIntStateOf(0) }
+		val showAddLabel by remember(labels) {
+			derivedStateOf {
+				labels.getOverlength() > 0 && labels.size < MAX_COUNT
 			}
-			LaunchedEffect(labels) {
-				addLabel = ""
-				val overlength = labels.getOverlength()
-				selected = if (labels.size < MAX_COUNT && overlength > 0) null else labels.last()
-				maxLength = overlength + if (selected != null) selected!!.label.getDisplayLength() else 0
-				color = primary
-				label = selected?.label ?: ""
-			}
-			LaunchedEffect(selected) {
-				label = selected?.label ?: addLabel
-				maxLength = labels.getOverlength() + if (selected != null) selected!!.label.getDisplayLength() else 0
-			}
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.height(48.dp)
-					.horizontalScroll(
-						state = rememberScrollState(),
-						reverseScrolling = true
-					)
-			) {
-				labels.fastForEachIndexed { index, label ->
-					Label(
-						label = label,
-						selected = selected == label,
-						onClick = { selected = label },
-					)
-					if (index < labels.lastIndex) {
-						Spacer(modifier = Modifier.width(2.dp))
-					}
-				}
-				if (showAddLabel) {
-					Spacer(modifier = Modifier.width(2.dp))
-					AddLabel(
-						selected = selected == null,
-						onClick = { selected = null },
-					)
-				}
-			}
-			Spacer(modifier = Modifier.height(24.dp))
-			NoTextField(
-				value = label,
-				onValueChange = {
-					val length = it.getDisplayLength()
-					if (length <= maxLength) {
-						label = it
-						if (selected == null) {
-							addLabel = it
-						}
-					}
-				},
-				modifier = Modifier.fillMaxWidth(),
-				placeholder = { Text(AppString.LabelPleaseInputLabelName.value()) },
-				leadingIcon = {
-					NoIcon(
-						icon = if (selected == null) AppIcon.Add.value else AppIcon.Edit.value
-					)
-				},
-				suffix = { Text("${label.getDisplayLength()} / $maxLength") }
-			)
-			Spacer(modifier = Modifier.height(24.dp))
-			ColorSliders(
-				selected = selected,
-				color = color,
-				onColorChange = { color = it },
-			)
-			Spacer(modifier = Modifier.height(24.dp))
-			LabelPreview(
-				color = color,
-				label = label,
-				onColorChange = { color = it }
-			)
-			Spacer(modifier = Modifier.height(24.dp))
-			ControlBottomBar(
-				selected = selected,
-				color = color,
-				label = label,
-				sheetState = sheetState,
-				onDismissRequest = onDismissRequest
-			)
 		}
+		LaunchedEffect(labels) {
+			addLabel = ""
+			val overlength = labels.getOverlength()
+			selected = if (labels.size < MAX_COUNT && overlength > 0) null else labels.last()
+			maxLength = overlength + if (selected != null) selected!!.label.getDisplayLength() else 0
+			color = primary
+			label = selected?.label ?: ""
+		}
+		LaunchedEffect(selected) {
+			label = selected?.label ?: addLabel
+			maxLength = labels.getOverlength() + if (selected != null) selected!!.label.getDisplayLength() else 0
+		}
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.height(48.dp)
+				.horizontalScroll(
+					state = rememberScrollState(),
+					reverseScrolling = true
+				)
+		) {
+			labels.fastForEachIndexed { index, label ->
+				Label(
+					label = label,
+					selected = selected == label,
+					onClick = { selected = label },
+				)
+				if (index < labels.lastIndex) {
+					Spacer(modifier = Modifier.width(2.dp))
+				}
+			}
+			if (showAddLabel) {
+				Spacer(modifier = Modifier.width(2.dp))
+				AddLabel(
+					selected = selected == null,
+					onClick = { selected = null },
+				)
+			}
+		}
+		Spacer(modifier = Modifier.height(24.dp))
+		NoTextField(
+			value = label,
+			onValueChange = {
+				val length = it.getDisplayLength()
+				if (length <= maxLength) {
+					label = it
+					if (selected == null) {
+						addLabel = it
+					}
+				}
+			},
+			modifier = Modifier.fillMaxWidth(),
+			placeholder = { Text(AppString.LabelPleaseInputLabelName.value()) },
+			leadingIcon = {
+				NoIcon(
+					icon = if (selected == null) AppIcon.Add.value else AppIcon.Edit.value
+				)
+			},
+			suffix = { Text("${label.getDisplayLength()} / $maxLength") }
+		)
+		Spacer(modifier = Modifier.height(24.dp))
+		ColorSliders(
+			selected = selected,
+			color = color,
+			onColorChange = { color = it },
+		)
+		Spacer(modifier = Modifier.height(24.dp))
+		LabelPreview(
+			color = color,
+			label = label,
+			onColorChange = { color = it }
+		)
+		Spacer(modifier = Modifier.height(24.dp))
+		ControlBottomBar(
+			selected = selected,
+			color = color,
+			label = label,
+			sheetState = sheetState,
+			onDismissRequest = onDismissRequest
+		)
 	}
 }
 

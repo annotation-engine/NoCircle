@@ -27,22 +27,20 @@ import com.nocircle.common.resources.value
 import com.nocircle.compose.complex.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.material3.NoScaffold
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun PersonPage() {
 	val verticalScrollState = rememberScrollState()
-	Box(
-		modifier = Modifier
-			.fillMaxSize(),
-		contentAlignment = Alignment.TopCenter
-	) {
+	NoScaffold { paddingValues ->
 		Column(
 			modifier = Modifier
 				.widthIn(max = 840.dp)
 				.fillMaxSize()
 				.verticalScroll(verticalScrollState)
-				.padding(horizontal = 16.dp, vertical = 32.dp)
+				.padding(paddingValues)
+				.padding(16.dp)
 		) {
 			UserDetailCard()
 			Spacer(modifier = Modifier.height(16.dp))

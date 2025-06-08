@@ -1,10 +1,12 @@
 package com.nocircle.app.pages.main.friends.list
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoIcon
@@ -27,6 +29,7 @@ fun AddFriendSheet(
 		NoTextField(
 			value = search,
 			onValueChange = viewModel::updateSearch,
+			modifier = Modifier.fillMaxWidth(),
 			leadingIcon = { NoIcon(AppIcon.Search.value) },
 			placeholder = { Text("搜索用户昵称或者ID") }
 		)

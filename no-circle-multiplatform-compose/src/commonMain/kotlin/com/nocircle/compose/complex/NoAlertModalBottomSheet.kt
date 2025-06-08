@@ -51,54 +51,45 @@ fun NoAlertModalBottomSheet(
 		title = title,
 		showCloseButton = showCloseButton
 	) {
-		Column(
-			modifier = Modifier
-				.widthIn(
-					max = 450.dp
-				)
-				.fillMaxWidth()
-				.align(Alignment.CenterHorizontally)
+		CompositionLocalProvider(
+			LocalTextStyle provides MaterialTheme.typography.bodyLarge,
+			LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
 		) {
-			CompositionLocalProvider(
-				LocalTextStyle provides MaterialTheme.typography.bodyLarge,
-				LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
+			Row(
+				verticalAlignment = Alignment.CenterVertically
 			) {
-				Row(
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					content()
+				content()
+			}
+		}
+		Spacer(modifier = Modifier.height(32.dp))
+		val coroutineScope = rememberCoroutineScope()
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+		) {
+			NoButton(
+				text = cancelText,
+				modifier = Modifier
+					.weight(1f),
+				colors = cancelColors
+			) {
+				coroutineScope.launch {
+					onCancel()
+					sheetState.hide()
+					onDismissRequest()
 				}
 			}
-			Spacer(modifier = Modifier.height(32.dp))
-			val coroutineScope = rememberCoroutineScope()
-			Row(
+			Spacer(modifier = Modifier.width(16.dp))
+			NoButton(
+				text = confirmText,
 				modifier = Modifier
-					.fillMaxWidth()
+					.weight(1f),
+				colors = confirmColors
 			) {
-				NoButton(
-					text = cancelText,
-					modifier = Modifier
-						.weight(1f),
-					colors = cancelColors
-				) {
-					coroutineScope.launch {
-						onCancel()
-						sheetState.hide()
-						onDismissRequest()
-					}
-				}
-				Spacer(modifier = Modifier.width(16.dp))
-				NoButton(
-					text = confirmText,
-					modifier = Modifier
-						.weight(1f),
-					colors = confirmColors
-				) {
-					coroutineScope.launch {
-						onConfirm()
-						sheetState.hide()
-						onDismissRequest()
-					}
+				coroutineScope.launch {
+					onConfirm()
+					sheetState.hide()
+					onDismissRequest()
 				}
 			}
 		}

@@ -11,20 +11,13 @@ import kotlin.time.ExperimentalTime
 
 object NoLog {
 	
-	private const val TAG = "NoCircleTAG"
+	private const val TAG = "NoCircle"
 	
 	fun verbose(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
 		this.log(TAG, LogLevel.Verbose, store, *messages)
-	}
-	
-	fun verbose(
-		store: Boolean = false,
-		provider: () -> Any?
-	) {
-		this.log(TAG, LogLevel.Verbose, store, provider())
 	}
 	
 	fun debug(
@@ -34,25 +27,11 @@ object NoLog {
 		this.log(TAG, LogLevel.Debug, store, *messages)
 	}
 	
-	fun debug(
-		store: Boolean = false,
-		provider: () -> Any?
-	) {
-		this.log(TAG, LogLevel.Debug, store, provider())
-	}
-	
 	fun info(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
 		this.log(TAG, LogLevel.Info, store, *messages)
-	}
-	
-	fun info(
-		store: Boolean = false,
-		provider: () -> Any?
-	) {
-		this.log(TAG, LogLevel.Info, store, provider())
 	}
 	
 	fun warn(
@@ -62,13 +41,6 @@ object NoLog {
 		this.log(TAG, LogLevel.Warn, store, *messages)
 	}
 	
-	fun warn(
-		store: Boolean = false,
-		provider: () -> Any?
-	) {
-		this.log(TAG, LogLevel.Warn, store, provider())
-	}
-	
 	fun error(
 		vararg messages: Any?,
 		store: Boolean = false,
@@ -76,25 +48,11 @@ object NoLog {
 		this.log(TAG, LogLevel.Error, store, *messages)
 	}
 	
-	fun error(
-		store: Boolean = false,
-		provider: () -> Any?
-	) {
-		this.log(TAG, LogLevel.Error, store, provider())
-	}
-	
 	fun assert(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
 		this.log(TAG, LogLevel.Assert, store, *messages)
-	}
-	
-	fun assert(
-		store: Boolean = false,
-		provider: () -> Any?
-	) {
-		this.log(TAG, LogLevel.Assert, store, provider())
 	}
 	
 	@OptIn(ExperimentalTime::class)

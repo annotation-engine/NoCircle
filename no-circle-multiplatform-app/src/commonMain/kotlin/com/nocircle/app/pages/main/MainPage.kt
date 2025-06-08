@@ -9,18 +9,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -69,47 +73,43 @@ fun MainPage() {
 	NoScaffold(
 		snackbarHostState = hostState,
 	) {
-		Box(
-			modifier = Modifier
-				.fillMaxSize()
-		) {
-			val isCompat = WindowWidthSizes.isCompact
-			val subRoute by viewModel.mainSubRoute.collectAsState()
-			LocalNavControllerProvider { controller ->
-				val onSubRouteChange = { route: MainSubRoute ->
-					if (subRoute != route) {
-						viewModel.mainSubRoute.value = route
+		val isCompat = WindowWidthSizes.isCompact
+		val subRoute by viewModel.mainSubRoute.collectAsState()
+		LocalNavControllerProvider { controller ->
+			val onSubRouteChange = { route: MainSubRoute ->
+				if (subRoute != route) {
+					viewModel.mainSubRoute.value = route
+				}
+				if (controller.currentRoute != MainRoute::class) {
+					controller.navigate(route = MainRoute, popup = NoPopUp.All)
+				}
+			}
+			NoNavHost(
+				navController = controller,
+				startDestination = MainRoute,
+				modifier = Modifier
+					.padding(start = if (isCompat) Dp.Hairline else LeftNavigationWidth)
+					.background(MaterialTheme.colorScheme.surface)
+					.fillMaxSize(),
+				navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
+				navPopTransition = if (isCompat) NavPopTransition.HorizontalSlide else NavPopTransition.Fade,
+			) {
+				composable<MainRoute>(
+					content = {
+						MainPage(
+							subRoute = subRoute,
+							onSubRouteChange = onSubRouteChange
+						)
 					}
-					if (controller.currentRoute != MainRoute::class) {
-						controller.navigate(route = MainRoute, popup = NoPopUp.All)
-					}
-				}
-				NoNavHost(
-					navController = controller,
-					startDestination = MainRoute,
-					modifier = Modifier
-						.padding(start = if (isCompat) Dp.Hairline else LeftNavigationWidth)
-						.fillMaxSize(),
-					navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
-					navPopTransition = if (isCompat) NavPopTransition.HorizontalSlide else NavPopTransition.Fade,
-				) {
-					composable<MainRoute>(
-						content = {
-							MainPage(
-								subRoute = subRoute,
-								onSubRouteChange = onSubRouteChange
-							)
-						}
-					)
-					composable<SettingsRoute> { SettingsPage() }
-					composable<AppearanceRoute> { AppearancePage() }
-				}
-				if (!isCompat) {
-					LeftNavigationBar(
-						subRoute = subRoute,
-						onSubRouteChange = onSubRouteChange
-					)
-				}
+				)
+				composable<SettingsRoute> { SettingsPage() }
+				composable<AppearanceRoute> { AppearancePage() }
+			}
+			if (!isCompat) {
+				LeftNavigationBar(
+					subRoute = subRoute,
+					onSubRouteChange = onSubRouteChange
+				)
 			}
 		}
 	}
@@ -120,41 +120,38 @@ private fun MainPage(
 	subRoute: MainSubRoute,
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	NoScaffold {
-		val isCompat = WindowWidthSizes.isCompact
-		Column(
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+	) {
+		Crossfade(
+			targetState = subRoute,
 			modifier = Modifier
-				.fillMaxSize()
-				.padding(
-					top = if (isCompat) it.calculateTopPadding() else Dp.Hairline
-				)
-		) {
-			Crossfade(
-				targetState = subRoute,
-				modifier = Modifier
-					.fillMaxWidth()
-					.weight(1f),
-				animationSpec = tween(durationMillis = 100),
-				label = "MainPageCrossfade",
-			) { target ->
-				when (target) {
-					MainSubRoute.Home -> HomePage()
-					MainSubRoute.Friends -> FriendsPage()
-					MainSubRoute.Groups -> GroupsPage()
-					MainSubRoute.Person -> PersonPage()
-				}
+				.fillMaxWidth()
+				.weight(1f),
+			animationSpec = tween(durationMillis = 100),
+			label = "MainPageCrossfade",
+		) { target ->
+			when (target) {
+				MainSubRoute.Home -> HomePage()
+				MainSubRoute.Friends -> FriendsPage()
+				MainSubRoute.Groups -> GroupsPage()
+				MainSubRoute.Person -> PersonPage()
 			}
-			if (WindowWidthSizes.isCompact) {
-				BottomNavigationBar(
-					subRoute = subRoute,
-					onSubRouteChange = onSubRouteChange
-				)
-			}
+		}
+		if (WindowWidthSizes.isCompact) {
+			BottomNavigationBar(
+				subRoute = subRoute,
+				onSubRouteChange = onSubRouteChange
+			)
 		}
 	}
 }
 
 private val ItemSpacing = 6.dp
+private val LeftNavigationWidth = 72.dp
+private val LeftExpendedNavigationWidth = 160.dp
+private val LeftNavigationItemHeight = 48.dp
 
 @Composable
 private fun BottomNavigationBar(
@@ -235,8 +232,6 @@ private fun BottomNavigationBar(
 	}
 }
 
-private val LeftNavigationWidth = 72.dp
-
 @Composable
 private fun LeftNavigationBar(
 	subRoute: MainSubRoute,
@@ -245,7 +240,7 @@ private fun LeftNavigationBar(
 	val viewModel = koinViewModel<MainViewModel>()
 	val isLeftNavigationBarExpended by viewModel.isLeftNavigationBarExpended.collectAsState()
 	val width by animateDpAsState(
-		targetValue = if (isLeftNavigationBarExpended) 180.dp else LeftNavigationWidth
+		targetValue = if (isLeftNavigationBarExpended) LeftExpendedNavigationWidth else LeftNavigationWidth
 	)
 	val alpha by animateFloatAsState(
 		targetValue = if (isLeftNavigationBarExpended) 0.25f else 0f
@@ -265,85 +260,132 @@ private fun LeftNavigationBar(
 		)
 	}
 	NoWindowDraggableArea {
-		Column(
+		BoxWithConstraints(
 			modifier = Modifier
 				.width(width)
 				.fillMaxHeight()
 				.background(MaterialTheme.colorScheme.surfaceContainer)
-				.padding(
-					top = 36.dp,
-					start = 12.dp,
-					end = 12.dp,
-					bottom = 12.dp
-				)
 		) {
-			val controller = LocalNavController.current
-			var popStackEnabled by remember { mutableStateOf(true) }
-			DisposableEffect(Unit) {
-				val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
-					popStackEnabled = controller.currentRoute != MainRoute::class
-				}
-				controller.addOnDestinationChangedListener(listener)
-				onDispose {
-					controller.removeOnDestinationChangedListener(listener)
-				}
-			}
-			val previousText = AppString.MainPrevious.value()
-			LeftToolItem(
-				title = previousText,
-				icon = AppIcon.ArrowBack.value,
-				tooltipText = previousText,
-				isExpended = isLeftNavigationBarExpended,
-				onClick = { controller.popBackStack() },
-				enabled = popStackEnabled
+			var menuItemTop by remember { mutableStateOf(Dp.Hairline) }
+			LightingEffect(
+				subRoute = subRoute,
+				menuItemTop = menuItemTop,
 			)
-			Spacer(modifier = Modifier.height(8.dp))
-			Spacer(modifier = Modifier.weight(1f))
-			MainSubRoute.entries.forEachIndexed { index, route ->
-				LeftMenuItem(
-					title = route.title.value(),
-					icon = route.icon.value,
-					tooltipText = route.title.value(),
+			Column(
+				modifier = Modifier
+					.fillMaxSize()
+					.padding(
+						top = 36.dp,
+						start = 12.dp,
+						end = 12.dp,
+						bottom = 12.dp
+					)
+			) {
+				val controller = LocalNavController.current
+				var popStackEnabled by remember { mutableStateOf(true) }
+				DisposableEffect(Unit) {
+					val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
+						popStackEnabled = controller.currentRoute != MainRoute::class
+					}
+					controller.addOnDestinationChangedListener(listener)
+					onDispose {
+						controller.removeOnDestinationChangedListener(listener)
+					}
+				}
+				val previousText = AppString.MainPrevious.value()
+				LeftToolItem(
+					title = previousText,
+					icon = AppIcon.ArrowBack.value,
+					tooltipText = previousText,
 					isExpended = isLeftNavigationBarExpended,
 					onClick = {
-						onSubRouteChange(route)
+						viewModel.isLeftNavigationBarExpended.value = false
+						controller.popBackStack()
 					},
-					selected = subRoute == route
+					enabled = popStackEnabled
 				)
-				if (index < MainSubRoute.entries.lastIndex) {
-					Spacer(modifier = Modifier.height(ItemSpacing))
-				}
-			}
-			Spacer(modifier = Modifier.weight(1f))
-			Spacer(modifier = Modifier.height(8.dp))
-			val coroutineScope = rememberCoroutineScope()
-			val isDark = ThemeMode.current.isDark
-			val themeModeText =
-				if (isDark) AppString.AppearanceThemeModeLight.value() else AppString.AppearanceThemeModeDark.value()
-			LeftToolItem(
-				title = themeModeText,
-				icon = if (isDark) AppIcon.LightMode.value else AppIcon.DarkMode.value,
-				tooltipText = themeModeText,
-				isExpended = isLeftNavigationBarExpended,
-				onClick = {
-					coroutineScope.launch(Dispatchers.IO) {
-						ThemeMode.set(if (isDark) ThemeMode.Light else ThemeMode.Dark)
+				Spacer(modifier = Modifier.height(8.dp))
+				Spacer(modifier = Modifier.weight(1f))
+				val density = LocalDensity.current
+				MainSubRoute.entries.forEachIndexed { index, route ->
+					LeftMenuItem(
+						title = route.title.value(),
+						icon = route.icon.value,
+						tooltipText = route.title.value(),
+						isExpended = isLeftNavigationBarExpended,
+						onClick = {
+							viewModel.isLeftNavigationBarExpended.value = false
+							onSubRouteChange(route)
+						},
+						modifier = if (index > 0) Modifier else Modifier.onGloballyPositioned {
+							menuItemTop = with(density) { it.positionInWindow().y.toDp() }
+						},
+						selected = subRoute == route
+					)
+					if (index < MainSubRoute.entries.lastIndex) {
+						Spacer(modifier = Modifier.height(ItemSpacing))
 					}
-				},
-				iconRotate = if (isDark) 90f else 0f,
-			)
-			Spacer(modifier = Modifier.width(6.dp))
-			LeftToolItem(
-				title = AppString.MainCollapse.value(),
-				icon = AppIcon.KeyboardDoubleArrowRight.value,
-				tooltipText = AppString.MainExpand.value(),
-				isExpended = isLeftNavigationBarExpended,
-				onClick = {
-					viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
-				},
-				iconRotate = if (isLeftNavigationBarExpended) -180f else 0f,
-			)
+				}
+				Spacer(modifier = Modifier.weight(1f))
+				Spacer(modifier = Modifier.height(8.dp))
+				val coroutineScope = rememberCoroutineScope()
+				val isDark = ThemeMode.current.isDark
+				val themeModeText =
+					if (isDark) AppString.AppearanceThemeModeLight.value() else AppString.AppearanceThemeModeDark.value()
+				LeftToolItem(
+					title = themeModeText,
+					icon = if (isDark) AppIcon.LightMode.value else AppIcon.DarkMode.value,
+					tooltipText = themeModeText,
+					isExpended = isLeftNavigationBarExpended,
+					onClick = {
+						coroutineScope.launch(Dispatchers.IO) {
+							ThemeMode.set(if (isDark) ThemeMode.Light else ThemeMode.Dark)
+						}
+					},
+					iconRotate = if (isDark) 90f else 0f,
+				)
+				Spacer(modifier = Modifier.width(6.dp))
+				LeftToolItem(
+					title = AppString.MainCollapse.value(),
+					icon = AppIcon.KeyboardDoubleArrowRight.value,
+					tooltipText = AppString.MainExpand.value(),
+					isExpended = isLeftNavigationBarExpended,
+					onClick = {
+						viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
+					},
+					iconRotate = if (isLeftNavigationBarExpended) -180f else 0f,
+				)
+			}
 		}
+	}
+}
+
+@Composable
+private fun LightingEffect(
+	subRoute: MainSubRoute,
+	menuItemTop: Dp
+) {
+	val targetOffsetY by remember(subRoute, menuItemTop) {
+		derivedStateOf {
+			menuItemTop + (LeftNavigationItemHeight + ItemSpacing) * subRoute.ordinal - 75.dp + LeftNavigationItemHeight / 2
+		}
+	}
+	val offsetY by animateDpAsState(targetOffsetY)
+	Box(
+		modifier = Modifier
+			.offset(y = offsetY)
+			.fillMaxWidth()
+			.height(150.dp)
+			.blur(40.dp),
+		contentAlignment = Alignment.CenterStart
+	) {
+		Box(
+			modifier = Modifier
+				.offset(x = (-20).dp)
+				.size(40.dp)
+				.clip(CircleShape)
+				.background(MaterialTheme.colorScheme.primary)
+		)
 	}
 }
 
@@ -357,6 +399,7 @@ private fun LeftMenuItem(
 	tooltipText: String,
 	isExpended: Boolean,
 	onClick: () -> Unit,
+	modifier: Modifier = Modifier,
 	selected: Boolean = false
 ) {
 	LeftItemWithExpended(
@@ -376,9 +419,9 @@ private fun LeftMenuItem(
 			},
 		)
 		Row(
-			modifier = Modifier
+			modifier = modifier
 				.fillMaxWidth()
-				.height(48.dp)
+				.height(LeftNavigationItemHeight)
 				.clip(MaterialTheme.shapes.small)
 				.background(
 					color = containerColor,
@@ -433,7 +476,7 @@ private fun LeftToolItem(
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
-				.height(48.dp)
+				.height(LeftNavigationItemHeight)
 				.clip(MaterialTheme.shapes.small)
 				.clickable(
 					enabled = enabled,

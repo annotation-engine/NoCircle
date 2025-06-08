@@ -64,5 +64,6 @@ enum class AppIcon(
 		filled = { Icons.AutoMirrored.Filled.ArrowBack },
 		sharp = { Icons.AutoMirrored.Sharp.ArrowBack },
 		twoTone = { Icons.AutoMirrored.TwoTone.ArrowBack },
-	)
+	),
+	Memory({ Memory }, { Memory }, { Memory }, { Memory }, { Memory }),
 }

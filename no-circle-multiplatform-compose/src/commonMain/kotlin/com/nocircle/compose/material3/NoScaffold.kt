@@ -32,11 +32,11 @@ fun NoScaffold(
 		containerColor = containerColor,
 		contentColor = contentColor,
 		contentWindowInsets = contentWindowInsets
-	) {
+	) { paddingValues ->
 		CompositionLocalProvider(
 			LocalSnackbarHostState provides snackbarHostState
 		) {
-			content(it)
+			content(paddingValues)
 		}
 	}
 }

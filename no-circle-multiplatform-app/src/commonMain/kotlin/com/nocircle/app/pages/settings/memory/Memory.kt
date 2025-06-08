@@ -1,12 +1,12 @@
 package com.nocircle.app.pages.settings.memory
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Memory
 import androidx.compose.runtime.*
+import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.resources.value
 import com.nocircle.compose.complex.NoOption
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun Memory() {
@@ -17,18 +17,21 @@ fun Memory() {
 			delay(1000L)
 		}
 	}
+	val coroutineScope = rememberCoroutineScope()
 	NoOption(
 		title = AppString.SettingsMemory.value(),
-		icon = Icons.Rounded.Memory,
+		icon = AppIcon.Memory.value,
 		subtitle = AppString.SettingsUseMemory.value(usedMemory)
 	) {
-		freeMemory()
+		coroutineScope.launch {
+			freeMemory()
+		}
 	}
 }
 
-expect fun getUsedMemory(): Long
+expect suspend fun getUsedMemory(): Long
 
-expect fun freeMemory()
+expect suspend fun freeMemory()
 
 private const val KB = 1024.0
 private const val MB = KB * 1024.0

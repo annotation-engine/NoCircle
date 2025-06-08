@@ -1,10 +1,16 @@
 package com.nocircle.app.pages.settings.memory
 
-actual fun getUsedMemory(): Long {
-	val runtime = Runtime.getRuntime()
-	return runtime.totalMemory() - runtime.freeMemory()
+import android.os.Debug
+
+private val memoryInfo = Debug.MemoryInfo()
+
+actual suspend fun getUsedMemory(): Long {
+	Debug.getMemoryInfo(memoryInfo)
+	return memoryInfo.totalPss * KB
 }
 
-actual fun freeMemory() {
+private const val KB = 1024L
+
+actual suspend fun freeMemory() {
 	System.gc()
 }
