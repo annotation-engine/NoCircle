@@ -255,10 +255,15 @@ private fun <T : Any> SettingsOptions(
 	content: @Composable (item: T) -> Unit
 ) {
 	var singleLine by remember { mutableStateOf(true) }
-	val displayCount = when (calculateWindowWidthSize()) {
-		WindowWidthSizeClass.Compact -> 2
-		WindowWidthSizeClass.Medium -> 3
-		else -> 4
+	val windowWidthSize = calculateWindowWidthSize()
+	val displayCount by remember(windowWidthSize) {
+		derivedStateOf {
+			when (windowWidthSize) {
+				WindowWidthSizeClass.Compact -> 2
+				WindowWidthSizeClass.Medium -> 3
+				else -> 4
+			}
+		}
 	}
 	Row(
 		modifier = Modifier
@@ -459,7 +464,7 @@ private fun <T> SingleLineOptions(
 	val lazyListState = rememberLazyListState()
 	val scrollOffset = with(density) { (-6).dp.roundToPx() }
 	LaunchedEffect(Unit) {
-		lazyListState.scrollToItem(items.indexOf(current), scrollOffset = scrollOffset)
+		lazyListState.requestScrollToItem(items.indexOf(current), scrollOffset = scrollOffset)
 	}
 	LazyRow(
 		modifier = Modifier

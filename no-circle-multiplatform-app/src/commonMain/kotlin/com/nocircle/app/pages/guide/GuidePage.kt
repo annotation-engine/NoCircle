@@ -1,13 +1,8 @@
 package com.nocircle.app.pages.guide
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.pages.account.login.LoginRoute
@@ -24,10 +18,15 @@ import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
+import com.nocircle.compose.animation.animateDpOffsetAsState
+import com.nocircle.compose.expends.offset
 import com.nocircle.compose.material3.NoScaffold
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Serializable
 data object GuideRoute : NoRoute
@@ -57,38 +56,29 @@ fun GuidePage() {
 		verify = viewModel.verifyToken()
 		toNextPage()
 	}
-	NoScaffold {
+	NoScaffold { paddingValues ->
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
+				.padding(paddingValues)
 		) {
 			Box(
 				modifier = Modifier
 					.align(Alignment.Center)
-					.size(100.dp)
+					.size(220.dp)
 			) {
-				Circle(
-					color = Color(0xFF3DDC97),
-					initStatus = 0
-				)
-				Circle(
-					color = Color(0xFFFFB74D),
-					initStatus = 1
-				)
-				Circle(
-					color = Color(0xFFFF6B6B),
-					initStatus = 2
-				)
-				Circle(
-					color = Color(0xFF7E57C2),
-					initStatus = 3
-				)
+				colors.forEachIndexed { index, color ->
+					Circle(
+						color = color,
+						initStatus = index
+					)
+				}
 			}
 			Text(
 				text = "© 2025 NoCircle. All rights reserved.",
 				modifier = Modifier
 					.align(Alignment.BottomCenter)
-					.offset(y = (-12).dp),
+					.offset(y = (-16).dp),
 				style = MaterialTheme.typography.bodySmall,
 				color = MaterialTheme.colorScheme.outline
 			)
@@ -96,40 +86,58 @@ fun GuidePage() {
 	}
 }
 
+private const val DELAY = 400L
+
 @Composable
 private fun Circle(
 	color: Color,
 	initStatus: Int
 ) {
-	var offset by remember { mutableStateOf(getOffset(initStatus)) }
+	var targetOffset by remember { mutableStateOf(getOffset(initStatus)) }
 	var status by remember { mutableIntStateOf(initStatus) }
 	LaunchedEffect(Unit) {
+		delay((DELAY / offsets.size) * initStatus)
 		while (true) {
-			delay(500)
 			status++
-			offset = getOffset(status)
+			targetOffset = getOffset(status)
+			delay(DELAY)
 		}
 	}
-	val x by animateDpAsState(
-		targetValue = offset.x,
-		animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessMediumLow)
-	)
-	val y by animateDpAsState(
-		targetValue = offset.y,
-		animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessMediumLow)
+	val offset by animateDpOffsetAsState(
+		targetValue = targetOffset,
+		animationSpec = tween(
+			durationMillis = DELAY.toInt()
+		)
 	)
 	Box(
 		modifier = Modifier
-			.offset(x = x, y = y)
+			.offset(offset)
 			.size(20.dp)
 			.clip(CircleShape)
 			.background(color)
 	)
 }
 
-private fun getOffset(status: Int): DpOffset = when (status % 4) {
-	0 -> DpOffset(Dp.Hairline, Dp.Hairline)
-	1 -> DpOffset(Dp.Hairline, 80.dp)
-	2 -> DpOffset(80.dp, 80.dp)
-	else -> DpOffset(80.dp, Dp.Hairline)
+private val colors = arrayOf(Color(0xFF3DDC97), Color(0xFFFFB74D), Color(0xFFFF6B6B), Color(0xFF7E57C2), Color(0xFF42A5F5))
+
+private fun getOffset(status: Int): DpOffset = offsets[status % offsets.size]
+
+private val offsets by lazy {
+	val c = 100f
+	val sin54 = sin(54f.toRadians())
+	val r = 100f / (1 + sin54)
+	val angles = arrayOf(-90f, 54f, 198f, -18f, 126f)
+	angles.map { angle ->
+		val rad = angle.toRadians()
+		val x = c + r * cos(rad)
+		val y = c + r * sin(rad)
+		DpOffset(
+			x = x.dp,
+			y = y.dp,
+		)
+	}
+}
+
+private fun Float.toRadians(): Float {
+	return (this * PI / 180f).toFloat()
 }
