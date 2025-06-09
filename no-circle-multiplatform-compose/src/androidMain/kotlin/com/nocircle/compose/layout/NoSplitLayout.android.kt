@@ -1,4 +1,4 @@
-package com.nocircle.compose.complex
+package com.nocircle.compose.layout
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier

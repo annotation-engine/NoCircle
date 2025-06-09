@@ -1,9 +1,11 @@
-package com.nocircle.compose.complex
+package com.nocircle.compose.layout
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -11,13 +13,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.expends.toDpSize
 import com.nocircle.compose.range.DpRange
 
 @Composable
@@ -31,11 +36,11 @@ fun NoSplitLayout(
 	content: @Composable BoxScope.(isCompat: Boolean) -> Unit,
 ) {
 	val isCompact = WindowWidthSizes.isCompact
-	var width by remember { mutableStateOf(Dp.Hairline) }
+	var size by remember { mutableStateOf(DpSize.Unspecified) }
 	val density = LocalDensity.current
-	LaunchedEffect(width) {
+	LaunchedEffect(size.width) {
 		if (!isCompact) {
-			val newContentWidth = width - expendedMinWidth - 1.dp
+			val newContentWidth = size.width - expendedMinWidth - 1.dp
 			if (contentWidth > newContentWidth) {
 				onContentWidthChange(newContentWidth)
 			}
@@ -45,7 +50,7 @@ fun NoSplitLayout(
 		modifier = modifier
 			.fillMaxSize()
 			.onSizeChanged {
-				width = with(density) { it.width.toDp() }
+				size = it.toDpSize(density)
 			}
 	) {
 		Box(
@@ -72,41 +77,85 @@ fun NoSplitLayout(
 			val isHighlight by remember(isHovered || isDragging) {
 				derivedStateOf { isHovered || isDragging }
 			}
-			val paddingHorizontal by animateDpAsState(
-				targetValue = if (isHighlight) 3.25.dp else 4.dp
-			)
-			val lineColor by animateColorAsState(
+			var centerPercent by remember { mutableStateOf(0f) }
+			val color by animateColorAsState(
 				targetValue = if (isHighlight) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
+			)
+			var isFocused by remember { mutableStateOf(false) }
+			val bothEndsAlpha by animateFloatAsState(
+				targetValue = when {
+					!isHighlight -> 1f
+					else -> 0.05f
+				}
+			)
+			val centerAlpha by animateFloatAsState(
+				targetValue = if (isFocused || !isHighlight) 1f else 0.5f
+			)
+			val lineBrush by remember(color, centerPercent, centerAlpha, bothEndsAlpha) {
+				derivedStateOf {
+					Brush.verticalGradient(
+						0f to color.copy(alpha = bothEndsAlpha),
+						centerPercent to color.copy(alpha = centerAlpha),
+						1f to color.copy(alpha = bothEndsAlpha),
+					)
+				}
+			}
+			val paddingHorizontal by animateDpAsState(
+				targetValue = if (isHighlight) 7.5.dp else 8.dp
 			)
 			Box(
 				modifier = Modifier
-					.offset(x = contentWidth - 4.dp)
-					.width(9.dp)
+					.offset(x = contentWidth - 8.dp)
+					.width(17.dp)
 					.fillMaxHeight()
 					.pointerResizeHorizontalHoverIcon()
 					.hoverable(interactionSource)
-					.pointerInput(width, expendedMinWidth, contentWidthRange) {
+					.pointerInput(size.width, expendedMinWidth, contentWidthRange) {
 						var contentWidth = Dp.Hairline
 						detectDragGestures(
 							onDragStart = {
 								isDragging = true
+								isFocused = true
 								contentWidth = currentContentWidth
 							},
 							onDragEnd = {
 								isDragging = false
+								isFocused = false
 							},
 							onDragCancel = {
 								isDragging = false
+								isFocused = false
 							},
 							onDrag = { change, dragAmount ->
 								contentWidth += dragAmount.x.toDp()
-								val newContentWidth = contentWidth.coerceIn(contentWidthRange.start, min(width - expendedMinWidth - 1.dp, contentWidthRange.endInclusive))
+								val newContentWidth = contentWidth.coerceIn(contentWidthRange.start, min(size.width - expendedMinWidth - 1.dp, contentWidthRange.endInclusive))
 								onContentWidthChange(newContentWidth)
 							}
 						)
 					}
+					.pointerInput(Unit) {
+						detectTapGestures(
+							onPress = {
+								isFocused = true
+							},
+							onTap = {
+								isFocused = false
+							}
+						)
+					}
+					.pointerInput(Unit) {
+						awaitPointerEventScope {
+							while (true) {
+								val event = awaitPointerEvent()
+								val y = event.changes.firstOrNull()?.position?.y
+								if (y != null) {
+									centerPercent = y / size.height.toPx()
+								}
+							}
+						}
+					}
 					.padding(horizontal = paddingHorizontal)
-					.background(color = lineColor)
+					.background(lineBrush)
 			)
 		}
 	}

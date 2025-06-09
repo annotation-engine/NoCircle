@@ -24,7 +24,7 @@ import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.format
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.resources.value
-import com.nocircle.compose.complex.NoOption
+import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold

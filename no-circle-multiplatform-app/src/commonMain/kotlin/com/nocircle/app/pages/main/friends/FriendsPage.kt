@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.nocircle.app.pages.main.friends.list.FriendsList
-import com.nocircle.compose.complex.NoSplitLayout
+import com.nocircle.compose.layout.NoSplitLayout
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

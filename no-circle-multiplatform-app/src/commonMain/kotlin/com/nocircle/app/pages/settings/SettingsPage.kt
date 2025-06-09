@@ -28,8 +28,8 @@ import com.nocircle.common.resources.IconType
 import com.nocircle.common.resources.SupportedLanguage
 import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
-import com.nocircle.compose.complex.NoAlertModalBottomSheet
-import com.nocircle.compose.complex.NoOption
+import com.nocircle.compose.layout.NoAlertModalBottomSheet
+import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton

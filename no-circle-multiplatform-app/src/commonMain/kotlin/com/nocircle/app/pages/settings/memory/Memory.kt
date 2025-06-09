@@ -4,7 +4,7 @@ import androidx.compose.runtime.*
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.resources.value
-import com.nocircle.compose.complex.NoOption
+import com.nocircle.compose.layout.NoOption
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
