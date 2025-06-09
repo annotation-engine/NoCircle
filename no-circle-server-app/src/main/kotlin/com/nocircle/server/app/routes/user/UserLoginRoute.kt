@@ -1,4 +1,4 @@
-package com.nocircle.server.app.services.user
+package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.plugins.UserToken
 import com.nocircle.server.app.plugins.redisson
@@ -8,9 +8,9 @@ import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
-import com.nocircle.server.common.services.noParameters
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
+import com.nocircle.server.common.route.noParameters
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -21,7 +21,7 @@ import kotlin.time.toJavaDuration
 /**
  * 用户登录
  */
-object UserLoginService : NoService<UserLoginService.UserLogin> {
+object UserLoginRoute : NoRoute<UserLoginRoute.UserLogin> {
 	
 	override val path = "/user/login"
 	

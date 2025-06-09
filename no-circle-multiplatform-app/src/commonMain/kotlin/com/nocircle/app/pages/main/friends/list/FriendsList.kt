@@ -64,7 +64,7 @@ private fun FriendsSearch(
 			modifier = Modifier
 				.weight(1f)
 				.height(size),
-			prefix = { NoIcon(icon = AppIcon.Search.value) },
+			prefix = { NoIcon(icon = AppIcon.Search.value()) },
 			placeholder = {
 				Text(
 					text = AppString.FriendsSearch.value(),
@@ -76,7 +76,7 @@ private fun FriendsSearch(
 		Spacer(modifier = Modifier.width(if (isCompat) 12.dp else 8.dp))
 		var showAddFriendSheet by remember { mutableStateOf(false) }
 		NoIconButton(
-			icon = AppIcon.Add.value,
+			icon = AppIcon.Add.value(),
 			modifier = Modifier.size(size),
 			tint = MaterialTheme.colorScheme.onSurfaceVariant,
 			containerColor = MaterialTheme.colorScheme.surfaceContainerHigh

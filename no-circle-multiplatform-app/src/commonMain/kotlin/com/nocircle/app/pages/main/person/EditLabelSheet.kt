@@ -46,7 +46,7 @@ fun EditLabelSheet(
 		},
 		icon = {
 			NoIcon(
-				icon = AppIcon.Edit.value,
+				icon = AppIcon.Edit.value(),
 				tint = MaterialTheme.colorScheme.onSurface
 			)
 		}
@@ -124,7 +124,7 @@ fun EditLabelSheet(
 			placeholder = { Text(AppString.LabelPleaseInputLabelName.value()) },
 			leadingIcon = {
 				NoIcon(
-					icon = if (selected == null) AppIcon.Add.value else AppIcon.Edit.value
+					icon = if (selected == null) AppIcon.Add.value() else AppIcon.Edit.value()
 				)
 			},
 			suffix = { Text("${label.getDisplayLength()} / $maxLength") }
@@ -219,7 +219,7 @@ private fun AddLabel(
 		contentAlignment = Alignment.Center
 	) {
 		NoIcon(
-			icon = AppIcon.Add.value,
+			icon = AppIcon.Add.value(),
 			tint = MaterialTheme.colorScheme.onSurface,
 		)
 	}

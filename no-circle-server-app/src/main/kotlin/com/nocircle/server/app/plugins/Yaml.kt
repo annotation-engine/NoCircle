@@ -1,8 +1,8 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.common.utils.ConstructorParameterFormat
-import com.nocircle.server.common.utils.NoLog
-import com.nocircle.server.common.utils.loadYaml
+import com.nocircle.server.common.log.ConstructorParameterFormat
+import com.nocircle.server.common.log.NoLog
+import com.nocircle.server.common.log.loadYaml
 import io.ktor.server.application.*
 import kotlin.system.measureTimeMillis
 import kotlin.time.Duration

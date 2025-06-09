@@ -1,6 +1,6 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.common.utils.NoLog
+import com.nocircle.server.common.log.NoLog
 import org.redisson.Redisson
 import org.redisson.api.RedissonClient
 import org.redisson.config.Config

@@ -11,6 +11,7 @@ import com.nocircle.app.pages.main.friends.list.AddUserSheetViewModel
 import com.nocircle.app.pages.main.friends.list.FriendsListViewModel
 import com.nocircle.app.pages.main.person.EditLabelViewModel
 import com.nocircle.app.pages.main.person.PersonViewModel
+import com.nocircle.app.pages.main.person.request.FriendAddRequestViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
@@ -34,6 +35,7 @@ private val NoKoinModule = module {
 	single { SettingsViewModel() }
 	single { AppearanceViewModel() }
 	single { EditLabelViewModel() }
+	single { FriendAddRequestViewModel() }
 }
 
 @Composable

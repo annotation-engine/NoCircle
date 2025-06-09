@@ -1,10 +1,15 @@
 package com.nocircle.compose.resources
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.sharp.ArrowBack
 import androidx.compose.material.icons.automirrored.sharp.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material.icons.automirrored.twotone.ArrowForwardIos
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Close
@@ -42,4 +47,11 @@ internal enum class ComposeIcon(
 		sharp = { Icons.AutoMirrored.Sharp.ArrowForwardIos },
 		twoTone = { Icons.AutoMirrored.TwoTone.ArrowForwardIos },
 	),
+	ArrowBack(
+		rounded = { Icons.AutoMirrored.Rounded.ArrowBack },
+		outlined = { Icons.AutoMirrored.Outlined.ArrowBack },
+		filled = { Icons.AutoMirrored.Filled.ArrowBack },
+		sharp = { Icons.AutoMirrored.Sharp.ArrowBack },
+		twoTone = { Icons.AutoMirrored.TwoTone.ArrowBack },
+	)
 }

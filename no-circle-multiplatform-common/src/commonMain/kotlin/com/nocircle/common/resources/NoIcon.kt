@@ -21,9 +21,8 @@ interface NoIcon {
 	val twoTone: TwoToneIcon
 }
 
-val NoIcon.value: ImageVector
-	@Composable
-	get() = value(IconType.current)
+@Composable
+fun NoIcon.value(): ImageVector = value(IconType.current)
 
 fun NoIcon.getIcon(): ImageVector = this.value(IconType.value)
 

@@ -65,7 +65,7 @@ fun GuidePage() {
 			Box(
 				modifier = Modifier
 					.align(Alignment.Center)
-					.size(220.dp)
+					.size(260.dp)
 			) {
 				colors.forEachIndexed { index, color ->
 					Circle(
@@ -123,9 +123,9 @@ private val colors = arrayOf(Color(0xFF3DDC97), Color(0xFFFFB74D), Color(0xFFFF6
 private fun getOffset(status: Int): DpOffset = offsets[status % offsets.size]
 
 private val offsets by lazy {
-	val c = 100f
+	val c = 120f
 	val sin54 = sin(54f.toRadians())
-	val r = 100f / (1 + sin54)
+	val r = c / (1 + sin54)
 	val angles = arrayOf(-90f, 54f, 198f, -18f, 126f)
 	angles.map { angle ->
 		val rad = angle.toRadians()

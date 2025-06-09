@@ -18,4 +18,7 @@ kotlin {
 
 dependencies {
 	implementation(libs.bundles.server.common)
+	implementation("io.ktor:ktor-server-core:3.1.3")
+	implementation("io.ktor:ktor-server-websockets:3.1.3")
+	implementation("io.ktor:ktor-server-core:3.1.3")
 }

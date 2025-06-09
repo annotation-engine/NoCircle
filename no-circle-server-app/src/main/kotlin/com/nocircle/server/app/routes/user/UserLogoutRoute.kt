@@ -1,16 +1,16 @@
-package com.nocircle.server.app.services.user
+package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.plugins.UserToken
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
 import io.ktor.http.*
 
 /**
  * 用户登出
  */
-object UserLogoutService : NoService<Unit> {
+object UserLogoutRoute : NoRoute<Unit> {
 	
 	override val path = "/user/logout"
 	

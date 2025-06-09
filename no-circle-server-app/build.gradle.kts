@@ -11,7 +11,7 @@ group = "com.nocircle.server.app"
 version = property("no-circle.version.name").toString()
 
 application {
-	mainClass = "io.ktor.server.cio.EngineMain"
+	mainClass = "io.ktor.server.netty.EngineMain"
 	
 	applicationDefaultJvmArgs = listOf("-Dio.ktor.development=true")
 }

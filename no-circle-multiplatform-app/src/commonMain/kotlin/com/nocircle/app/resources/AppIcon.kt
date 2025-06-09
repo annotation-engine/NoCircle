@@ -45,7 +45,6 @@ enum class AppIcon(
 	Edit({ Edit }, { Edit }, { Edit }, { Edit }, { Edit }),
 	Cookie({ Cookie }, { Cookie }, { Cookie }, { Cookie }, { Cookie }),
 	Language({ Language }, { Language }, { Language }, { Language }, { Language }),
-	LineWeight({ LineWeight }, { LineWeight }, { LineWeight }, { LineWeight }, { LineWeight }),
 	Warning({ Warning }, { Warning }, { Warning }, { Warning }, { Warning }),
 	Contrast({ Contrast }, { Contrast }, { Contrast }, { Contrast }, { Contrast }),
 	ColorLens({ ColorLens }, { ColorLens }, { ColorLens }, { ColorLens }, { ColorLens }),
@@ -66,4 +65,5 @@ enum class AppIcon(
 		twoTone = { Icons.AutoMirrored.TwoTone.ArrowBack },
 	),
 	Memory({ Memory }, { Memory }, { Memory }, { Memory }, { Memory }),
+	GroupAdd({ GroupAdd }, { GroupAdd }, { GroupAdd }, { GroupAdd }, { GroupAdd }),
 }

@@ -79,7 +79,7 @@ fun LoginPage() {
 					onValueChange = viewModel::updateUsername,
 					modifier = Modifier.fillMaxWidth(),
 					placeholder = { Text(AppString.LoginPleaseInputUsername.value()) },
-					leadingIcon = { NoIcon(AppIcon.AccountBox.value) })
+					leadingIcon = { NoIcon(AppIcon.AccountBox.value()) })
 				Spacer(modifier = Modifier.height(24.dp))
 				
 				val password by viewModel.password.collectAsState()
@@ -89,10 +89,10 @@ fun LoginPage() {
 					onValueChange = viewModel::updatePassword,
 					modifier = Modifier.fillMaxWidth(),
 					placeholder = { Text(AppString.LoginPleaseInputPassword.value()) },
-					leadingIcon = { NoIcon(AppIcon.Lock.value) },
+					leadingIcon = { NoIcon(AppIcon.Lock.value()) },
 					trailingIcon = {
 						NoIconButton(
-							icon = if (showPassword) AppIcon.Visibility.value else AppIcon.VisibilityOff.value,
+							icon = if (showPassword) AppIcon.Visibility.value() else AppIcon.VisibilityOff.value(),
 							shape = CircleShape
 						) {
 							viewModel.showPassword.not()

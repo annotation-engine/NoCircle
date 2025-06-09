@@ -1,11 +1,11 @@
-package com.nocircle.server.app.services.label
+package com.nocircle.server.app.routes.label
 
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.common.expends.getDisplayLength
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
-import com.nocircle.server.common.services.noParameters
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
+import com.nocircle.server.common.route.noParameters
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -14,7 +14,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 添加标签
  */
-object LabelAddService : NoService<Unit> {
+object LabelAddRoute : NoRoute<Unit> {
 	
 	private const val MAX_COUNT = 4
 	private const val MAX_TOTAL_LENGTH = 20

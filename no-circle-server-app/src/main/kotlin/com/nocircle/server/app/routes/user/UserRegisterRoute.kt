@@ -1,10 +1,10 @@
-package com.nocircle.server.app.services.user
+package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
-import com.nocircle.server.common.services.noParameters
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
+import com.nocircle.server.common.route.noParameters
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -13,7 +13,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户注册
  */
-object UserRegisterService : NoService<Unit> {
+object UserRegisterRoute : NoRoute<Unit> {
 	
 	override val path = "/user/register"
 	

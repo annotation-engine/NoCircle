@@ -36,6 +36,8 @@ import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.person.PersonPage
+import com.nocircle.app.pages.main.person.request.FriendAddRequestPage
+import com.nocircle.app.pages.main.person.request.FriendAddRequestRoute
 import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
@@ -94,16 +96,15 @@ fun MainPage() {
 				navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
 				navPopTransition = if (isCompat) NavPopTransition.HorizontalSlide else NavPopTransition.Fade,
 			) {
-				composable<MainRoute>(
-					content = {
-						MainPage(
-							subRoute = subRoute,
-							onSubRouteChange = onSubRouteChange
-						)
-					}
-				)
+				composable<MainRoute> {
+					MainPage(
+						subRoute = subRoute,
+						onSubRouteChange = onSubRouteChange
+					)
+				}
 				composable<SettingsRoute> { SettingsPage() }
 				composable<AppearanceRoute> { AppearancePage() }
+				composable<FriendAddRequestRoute> { FriendAddRequestPage() }
 			}
 			if (!isCompat) {
 				LeftNavigationBar(
@@ -210,7 +211,7 @@ private fun BottomNavigationBar(
 					horizontalArrangement = Arrangement.Center
 				) {
 					NoIcon(
-						icon = it.icon.value,
+						icon = it.icon.value(),
 						tint = color,
 						modifier = Modifier
 							.size(24.dp)
@@ -295,7 +296,7 @@ private fun LeftNavigationBar(
 				val previousText = AppString.MainPrevious.value()
 				LeftToolItem(
 					title = previousText,
-					icon = AppIcon.ArrowBack.value,
+					icon = AppIcon.ArrowBack.value(),
 					tooltipText = previousText,
 					isExpended = isLeftNavigationBarExpended,
 					onClick = {
@@ -310,7 +311,7 @@ private fun LeftNavigationBar(
 				MainSubRoute.entries.forEachIndexed { index, route ->
 					LeftMenuItem(
 						title = route.title.value(),
-						icon = route.icon.value,
+						icon = route.icon.value(),
 						tooltipText = route.title.value(),
 						isExpended = isLeftNavigationBarExpended,
 						onClick = {
@@ -334,7 +335,7 @@ private fun LeftNavigationBar(
 					if (isDark) AppString.AppearanceThemeModeLight.value() else AppString.AppearanceThemeModeDark.value()
 				LeftToolItem(
 					title = themeModeText,
-					icon = if (isDark) AppIcon.LightMode.value else AppIcon.DarkMode.value,
+					icon = if (isDark) AppIcon.LightMode.value() else AppIcon.DarkMode.value(),
 					tooltipText = themeModeText,
 					isExpended = isLeftNavigationBarExpended,
 					onClick = {
@@ -347,7 +348,7 @@ private fun LeftNavigationBar(
 				Spacer(modifier = Modifier.width(6.dp))
 				LeftToolItem(
 					title = AppString.MainCollapse.value(),
-					icon = AppIcon.KeyboardDoubleArrowRight.value,
+					icon = AppIcon.KeyboardDoubleArrowRight.value(),
 					tooltipText = AppString.MainExpand.value(),
 					isExpended = isLeftNavigationBarExpended,
 					onClick = {

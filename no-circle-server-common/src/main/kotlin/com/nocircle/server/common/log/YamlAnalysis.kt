@@ -1,4 +1,4 @@
-package com.nocircle.server.common.utils
+package com.nocircle.server.common.log
 
 import io.ktor.server.config.*
 import kotlin.reflect.KClass

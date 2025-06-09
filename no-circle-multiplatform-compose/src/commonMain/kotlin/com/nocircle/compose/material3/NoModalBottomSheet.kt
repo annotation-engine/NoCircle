@@ -34,7 +34,7 @@ fun NoModalBottomSheet(
 	ModalBottomSheet(
 		onDismissRequest = onDismissRequest,
 		modifier = modifier
-			.padding(12.dp),
+			.padding(16.dp),
 		sheetState = sheetState,
 		containerColor = containerColor,
 		contentColor = contentColor,
@@ -67,7 +67,7 @@ fun NoModalBottomSheet(
 							Spacer(modifier = Modifier.weight(1f))
 							if (showCloseButton) {
 								NoIconButton(
-									icon = ComposeIcon.Close.value,
+									icon = ComposeIcon.Close.value(),
 									tint = MaterialTheme.colorScheme.onSurface
 								) {
 									sheetState.hide()
@@ -111,5 +111,5 @@ object NoModalBottomSheetDefaults {
 	
 	val ContentMaxWidth = 450.dp
 	
-	val ContentWindowInsets = @Composable { WindowInsets(16.dp, 16.dp, 16.dp, 16.dp) }
+	val ContentWindowInsets = @Composable { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) }
 }

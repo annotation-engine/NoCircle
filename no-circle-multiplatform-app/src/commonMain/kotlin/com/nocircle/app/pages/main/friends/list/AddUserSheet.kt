@@ -34,7 +34,7 @@ fun AddUserSheet(
 	NoModalBottomSheet(
 		onDismissRequest = onDismissRequest,
 		sheetState = sheetState,
-		icon = { NoIcon(AppIcon.Add.value) },
+		icon = { NoIcon(AppIcon.Add.value()) },
 		title = { Text(AppString.FriendsSearchTitle.value()) }
 	) {
 		val viewModel = koinViewModel<AddUserSheetViewModel>()
@@ -43,7 +43,7 @@ fun AddUserSheet(
 			value = username,
 			onValueChange = viewModel::updateSearch,
 			modifier = Modifier.fillMaxWidth(),
-			leadingIcon = { NoIcon(AppIcon.Search.value) },
+			leadingIcon = { NoIcon(AppIcon.Search.value()) },
 			placeholder = { Text(AppString.FriendsSearchHint.value()) }
 		)
 		Spacer(modifier = Modifier.height(16.dp))
@@ -63,27 +63,16 @@ fun AddUserSheet(
 					onDismissRequest = onDismissRequest,
 				)
 			} else {
-				Box(
-					modifier = Modifier
-						.fillMaxWidth()
-						.height(60.dp)
-						.background(
-							color = MaterialTheme.colorScheme.surfaceContainerHigh,
-							shape = MaterialTheme.shapes.small
-						),
-					contentAlignment = Alignment.Center
-				) {
-					val hintString by remember(username) {
-						derivedStateOf {
-							if (username.isBlank()) AppString.FriendsSearchPleaseInputUsername else AppString.FriendsSearchNotFoundUser
-						}
+				val hintString by remember(username) {
+					derivedStateOf {
+						if (username.isBlank()) AppString.FriendsSearchPleaseInputUsername else AppString.FriendsSearchNotFoundUser
 					}
-					Text(
-						text = hintString.value(),
-						style = MaterialTheme.typography.bodyMedium,
-						color = MaterialTheme.colorScheme.outline
-					)
 				}
+				Text(
+					text = hintString.value(),
+					style = MaterialTheme.typography.bodyLarge,
+					color = MaterialTheme.colorScheme.outline
+				)
 			}
 		}
 	}

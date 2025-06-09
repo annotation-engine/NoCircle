@@ -1,9 +1,9 @@
-package com.nocircle.server.app.services.label
+package com.nocircle.server.app.routes.label
 
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -11,7 +11,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 查询标签
  */
-object LabelQueryService : NoService<List<LabelQueryService.Label>> {
+object LabelQueryRoute : NoRoute<List<LabelQueryRoute.Label>> {
 	
 	override val path = "/label/query"
 	

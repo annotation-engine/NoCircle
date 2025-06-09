@@ -42,7 +42,6 @@ import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.common.windowsize.calculateWindowWidthSize
 import com.nocircle.compose.foundation.NoIcon
-import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import kotlinx.coroutines.Dispatchers
@@ -57,20 +56,14 @@ data object AppearanceRoute : NoRoute
 
 @Composable
 fun AppearancePage() {
+	val controller = LocalNavController.current
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
 				title = { Text(AppString.Appearance.value()) },
-				navigationIcon = {
-					if (WindowWidthSizes.isCompact) {
-						val controller = LocalNavController.current
-						NoIconButton(
-							icon = AppIcon.ArrowBack.value
-						) {
-							controller.popBackStack()
-						}
-					}
-				}
+				onNavigationIconClick = if (WindowWidthSizes.isCompact) {
+					{ controller.popBackStack() }
+				} else null
 			)
 		},
 	) { paddingValues ->
@@ -109,7 +102,7 @@ private fun ColorSchemeContrastOptions() {
 	val current = ColorSchemeContrast.current
 	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
-		icon = AppIcon.Contrast.value,
+		icon = AppIcon.Contrast.value(),
 		title = AppString.AppearanceContrast.value(),
 		items = ColorSchemeContrast.entries,
 		current = current
@@ -136,7 +129,7 @@ private fun ColorSchemeGroupOptions() {
 	val current = ColorSchemeGroup.current
 	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
-		icon = AppIcon.ColorLens.value,
+		icon = AppIcon.ColorLens.value(),
 		title = AppString.AppearanceTheme.value(),
 		items = ColorSchemeGroup.allColorSchemeGroups,
 		current = current
@@ -177,7 +170,7 @@ private fun ThemeModeOptions() {
 	val current = ThemeMode.current
 	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
-		icon = AppIcon.DarkMode.value,
+		icon = AppIcon.DarkMode.value(),
 		title = AppString.AppearanceThemeMode.value(),
 		current = current,
 		items = ThemeMode.entries
@@ -308,7 +301,7 @@ private fun <T : Any> SettingsOptions(
 					targetValue = if (singleLine) 0f else 90f
 				)
 				NoIcon(
-					icon = AppIcon.KeyboardArrowRight.value,
+					icon = AppIcon.KeyboardArrowRight.value(),
 					modifier = Modifier
 						.rotate(degrees),
 					tint = MaterialTheme.colorScheme.primary

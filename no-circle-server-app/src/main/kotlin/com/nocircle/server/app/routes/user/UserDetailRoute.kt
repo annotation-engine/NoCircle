@@ -1,11 +1,11 @@
-package com.nocircle.server.app.services.user
+package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.tables.user.UserLogins
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.expends.format
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -13,7 +13,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户详情
  */
-object UserDetailService : NoService<UserDetailService.UserDetail> {
+object UserDetailRoute : NoRoute<UserDetailRoute.UserDetail> {
 
     override val path = "/user/detail"
 

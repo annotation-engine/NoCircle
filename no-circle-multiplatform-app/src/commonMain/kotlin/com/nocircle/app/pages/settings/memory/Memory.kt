@@ -1,27 +1,31 @@
 package com.nocircle.app.pages.settings.memory
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.resources.value
+import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.layout.NoOption
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun Memory() {
-	var usedMemory by remember { mutableStateOf("---") }
-	LaunchedEffect(Unit) {
-		while (true) {
-			usedMemory = getUsedMemory().format()
-			delay(1000L)
-		}
-	}
 	val coroutineScope = rememberCoroutineScope()
 	NoOption(
-		title = AppString.SettingsMemory.value(),
-		icon = AppIcon.Memory.value,
-		subtitle = AppString.SettingsUseMemory.value(usedMemory)
+		title = { Text(AppString.SettingsMemory.value()) },
+		icon = { NoIcon(AppIcon.Memory.value()) },
+		actions = {
+			var usedMemory by remember { mutableStateOf("--") }
+			LaunchedEffect(Unit) {
+				while (true) {
+					usedMemory = getUsedMemory().format()
+					delay(1000L)
+				}
+			}
+			Text(AppString.SettingsUseMemory.value(usedMemory))
+		}
 	) {
 		coroutineScope.launch {
 			freeMemory()

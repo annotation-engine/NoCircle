@@ -1,16 +1,16 @@
-package com.nocircle.server.app.services.auth
+package com.nocircle.server.app.routes.auth
 
 import com.nocircle.server.app.tables.user.UserLogins
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
 import io.ktor.http.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 授权验证
  */
-object AuthVerifyTokenService : NoService<Boolean> {
+object AuthVerifyTokenRoute : NoRoute<Boolean> {
 	
 	override val path = "/auth/verifyToken"
 	

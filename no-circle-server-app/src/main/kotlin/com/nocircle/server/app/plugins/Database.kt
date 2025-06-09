@@ -3,7 +3,7 @@ package com.nocircle.server.app.plugins
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.app.tables.user.UserLogins
 import com.nocircle.server.app.tables.user.Users
-import com.nocircle.server.common.utils.NoLog
+import com.nocircle.server.common.log.NoLog
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction

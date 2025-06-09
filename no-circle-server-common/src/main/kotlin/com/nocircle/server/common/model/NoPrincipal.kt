@@ -1,5 +1,6 @@
 package com.nocircle.server.common.model
 
+import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 
@@ -8,5 +9,8 @@ data class NoPrincipal(
 	val username: String,
 )
 
-val RoutingCall.principal: NoPrincipal
-	get() = this.principal<NoPrincipal>()!!
+val RoutingCall.noPrincipal: NoPrincipal?
+	get() = this.principal<NoPrincipal>()
+
+val ApplicationCall.noPrincipal: NoPrincipal?
+	get() = this.principal<NoPrincipal>()

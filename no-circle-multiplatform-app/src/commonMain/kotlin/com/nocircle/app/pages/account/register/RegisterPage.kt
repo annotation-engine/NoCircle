@@ -68,7 +68,7 @@ fun RegisterPage() {
 					onValueChange = viewModel::updateUsername,
 					modifier = Modifier.fillMaxWidth(),
 					placeholder = { Text(AppString.RegisterPleaseInputUsername.value()) },
-					leadingIcon = { NoIcon(AppIcon.AccountBox.value) }
+					leadingIcon = { NoIcon(AppIcon.AccountBox.value()) }
 				)
 				Spacer(modifier = Modifier.height(24.dp))
 				
@@ -79,10 +79,10 @@ fun RegisterPage() {
 					onValueChange = viewModel::updatePassword,
 					modifier = Modifier.fillMaxWidth(),
 					placeholder = { Text(AppString.RegisterPleaseInputPassword.value()) },
-					leadingIcon = { NoIcon(AppIcon.Lock.value) },
+					leadingIcon = { NoIcon(AppIcon.Lock.value()) },
 					trailingIcon = {
 						NoIconButton(
-							icon = if (showPassword.value) AppIcon.Visibility.value else AppIcon.VisibilityOff.value,
+							icon = if (showPassword.value) AppIcon.Visibility.value() else AppIcon.VisibilityOff.value(),
 							tint = MaterialTheme.colorScheme.primary,
 							shape = CircleShape
 						) {
@@ -100,10 +100,10 @@ fun RegisterPage() {
 					onValueChange = viewModel::updateConfirmPassword,
 					modifier = Modifier.fillMaxWidth(),
 					placeholder = { Text(AppString.RegisterPleaseConfirmPassword.value()) },
-					leadingIcon = { NoIcon(AppIcon.Lock.value) },
+					leadingIcon = { NoIcon(AppIcon.Lock.value()) },
 					trailingIcon = {
 						NoIconButton(
-							icon = if (showConfirmPassword.value) AppIcon.Visibility.value else AppIcon.VisibilityOff.value,
+							icon = if (showConfirmPassword.value) AppIcon.Visibility.value() else AppIcon.VisibilityOff.value(),
 							tint = MaterialTheme.colorScheme.primary,
 							shape = CircleShape
 						) {

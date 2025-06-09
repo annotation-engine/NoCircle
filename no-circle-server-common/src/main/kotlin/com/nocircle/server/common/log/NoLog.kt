@@ -1,4 +1,4 @@
-package com.nocircle.server.common.utils
+package com.nocircle.server.common.log
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

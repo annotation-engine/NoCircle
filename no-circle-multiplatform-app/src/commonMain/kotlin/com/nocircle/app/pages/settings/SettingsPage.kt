@@ -28,11 +28,10 @@ import com.nocircle.common.resources.IconType
 import com.nocircle.common.resources.SupportedLanguage
 import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
-import com.nocircle.compose.layout.NoAlertModalBottomSheet
-import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
-import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.layout.NoAlertModalBottomSheet
+import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.material3.NoDropdownMenu
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
@@ -52,15 +51,9 @@ fun SettingsPage() {
 		topBar = {
 			NoTopAppBar(
 				title = { Text(AppString.Settings.value()) },
-				navigationIcon = {
-					if (WindowWidthSizes.isCompact) {
-						NoIconButton(
-							icon = AppIcon.ArrowBack.value
-						) {
-							controller.popBackStack()
-						}
-					}
-				}
+				onNavigationIconClick = if (WindowWidthSizes.isCompact) {
+					{ controller.popBackStack() }
+				} else null
 			)
 		},
 	) { paddingValues ->
@@ -103,9 +96,9 @@ fun SettingsPage() {
 private fun NavToAppearance() {
 	val controller = LocalNavController.current
 	NoOption(
-		title = AppString.Appearance.value(),
-		subtitle = AppString.SettingsAppearanceSubtitle.value(),
-		icon = AppIcon.Cookie.value
+		title = { Text(AppString.Appearance.value()) },
+		icon = { NoIcon(AppIcon.Cookie.value()) },
+		actions = { Text(AppString.SettingsAppearanceSubtitle.value()) }
 	) {
 		controller.navigate(route = AppearanceRoute)
 	}
@@ -140,16 +133,9 @@ private fun SwitchLanguage() {
 		}
 	) {
 		NoOption(
-			title = AppString.SettingsSwitchLanguage.value(),
-			icon = AppIcon.Language.value,
-			action = {
-				Text(
-					text = language.displayName,
-					color = MaterialTheme.colorScheme.outline,
-					style = MaterialTheme.typography.bodyMedium,
-				)
-			},
-			showForwardIcon = true
+			title = { Text(AppString.SettingsSwitchLanguage.value()) },
+			icon = { NoIcon(AppIcon.Language.value()) },
+			actions = { Text(language.displayName) },
 		)
 	}
 }
@@ -179,17 +165,9 @@ private fun SwitchIconType() {
 		}
 	) {
 		NoOption(
-			title = AppString.SettingsSwitchIconType.value(),
-			icon = AppIcon.ShapeLine.value,
-			action = {
-				val iconType = IconType.current
-				Text(
-					text = iconType.getAppString().value(),
-					color = MaterialTheme.colorScheme.outline,
-					style = MaterialTheme.typography.bodyMedium,
-				)
-			},
-			showForwardIcon = true
+			title = { Text(AppString.SettingsSwitchIconType.value()) },
+			icon = { NoIcon(AppIcon.ShapeLine.value()) },
+			actions = { Text(IconType.current.getAppString().value()) }
 		)
 	}
 }
@@ -231,7 +209,7 @@ private fun Logout(
 			confirmColors = NoButtonColors.ErrorColors,
 			icon = {
 				NoIcon(
-					icon = AppIcon.Warning.value,
+					icon = AppIcon.Warning.value(),
 					tint = MaterialTheme.colorScheme.error
 				)
 			}

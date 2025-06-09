@@ -1,10 +1,10 @@
-package com.nocircle.server.app.services.label
+package com.nocircle.server.app.routes.label
 
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
-import com.nocircle.server.common.services.noParameters
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
+import com.nocircle.server.common.route.noParameters
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -13,7 +13,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 删除标签
  */
-object LabelDeleteService : NoService<Unit> {
+object LabelDeleteRoute : NoRoute<Unit> {
 	
 	override val path = "/label/delete"
 	

@@ -11,15 +11,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
+import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.desktop.NoWindowDraggableArea
+import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.resources.ComposeIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoTopAppBar(
 	modifier: Modifier = Modifier,
 	title: (@Composable () -> Unit)? = null,
-	navigationIcon: @Composable (() -> Unit)? = null,
+	onNavigationIconClick: (() -> Unit)? = null,
 	actions: @Composable (RowScope.() -> Unit)? = null,
 	contentPadding: PaddingValues = NoTopAppBarDefaults.contentPadding,
 	colors: NoTopAppBarColors = NoTopAppBarDefaults.topAppBarColors
@@ -52,19 +55,22 @@ fun NoTopAppBar(
 				.padding(contentPadding),
 			verticalAlignment = Alignment.CenterVertically,
 		) {
-			if (navigationIcon != null) {
-				CompositionLocalProvider(
-					LocalContentColor provides colors.navigationIconContentColor,
-					content = navigationIcon
-				)
-				Spacer(Modifier.width(8.dp))
+			if (onNavigationIconClick != null) {
+				NoIconButton(
+					icon = ComposeIcon.ArrowBack.value(),
+					tint = colors.navigationIconContentColor
+				) {
+					onNavigationIconClick()
+				}
 			}
 			if (title != null) {
+				Spacer(Modifier.width(8.dp))
 				CompositionLocalProvider(
 					LocalContentColor provides colors.titleContentColor,
 					LocalTextStyle provides MaterialTheme.typography.titleLarge,
 					content = title
 				)
+				Spacer(Modifier.width(8.dp))
 			}
 			Spacer(Modifier.weight(1f))
 			if (actions != null) {

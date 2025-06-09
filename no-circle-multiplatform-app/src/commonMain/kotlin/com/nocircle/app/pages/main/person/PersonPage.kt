@@ -18,15 +18,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import com.nocircle.app.pages.main.person.request.FriendAddRequestRoute
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.format
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.resources.value
-import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.foundation.NoAsyncImage
+import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.material3.NoScaffold
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -50,6 +52,8 @@ fun PersonPage() {
 				UserDetailCard()
 				Spacer(modifier = Modifier.height(16.dp))
 				LastLoginTime()
+				Spacer(modifier = Modifier.height(16.dp))
+				FriendAddRequest()
 				Spacer(modifier = Modifier.height(16.dp))
 				OptionList()
 			}
@@ -119,7 +123,7 @@ private fun UserDetailCard() {
 						Spacer(modifier = Modifier.width(6.dp))
 					}
 					EditLabel(
-						icon = if (it.size < 4) AppIcon.Add.value else AppIcon.Remove.value
+						icon = if (it.size < 4) AppIcon.Add.value() else AppIcon.Remove.value()
 					)
 				}
 			}
@@ -178,12 +182,25 @@ private fun LastLoginTime() {
 	val viewModel = koinViewModel<PersonViewModel>()
 	val userDetail by viewModel.userDetail.collectAsState()
 	val lastLoginTime = userDetail?.lastLoginTime
-	if (lastLoginTime != null) {
-		NoOption(
-			title = AppString.PersonLastLoginTime.value(),
-			subtitle = lastLoginTime,
-			icon = AppIcon.AccessTime.value
-		)
+	NoOption(
+		title = { Text(AppString.PersonLastLoginTime.value()) },
+		icon = { NoIcon(AppIcon.AccessTime.value()) },
+		actions = {
+			Text(lastLoginTime ?: "--")
+		},
+		showSuffixIcon = false
+	)
+}
+
+@Composable
+private fun FriendAddRequest() {
+	val controller = LocalNavController.current
+	NoOption(
+		title = { Text("好友请求消息") },
+		icon = { NoIcon(AppIcon.GroupAdd.value()) },
+		actions = { Text("您有1条好友请求消息未查看") }
+	) {
+		controller.navigate(route = FriendAddRequestRoute)
 	}
 }
 
@@ -191,9 +208,9 @@ private fun LastLoginTime() {
 private fun OptionList() {
 	val controller = LocalNavController.current
 	NoOption(
-		title = AppString.Settings.value(),
-		subtitle = AppString.PersonSettingsSubtitle.value(),
-		icon = AppIcon.Settings.value
+		title = { Text(AppString.Settings.value()) },
+		icon = { NoIcon(AppIcon.Settings.value()) },
+		actions = { Text(AppString.PersonSettingsSubtitle.value()) }
 	) {
 		controller.navigate(route = SettingsRoute)
 	}

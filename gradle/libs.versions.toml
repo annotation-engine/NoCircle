@@ -46,10 +46,11 @@ ktorfitx-ksp = { group = "cn.vividcode.multiplatform", name = "ktorfitx-ksp", ve
 # Ktor Server
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 ktor-server-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-websockets = { group = "io.ktor", name = "ktor-server-websockets-jvm", version.ref = "ktor" }
 ktor-server-auth = { group = "io.ktor", name = "ktor-server-auth-jvm", version.ref = "ktor" }
 ktor-server-auth-jwt = { group = "io.ktor", name = "ktor-server-auth-jwt-jvm", version.ref = "ktor" }
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation-jvm", version.ref = "ktor" }
-ktor-server-cio = { group = "io.ktor", name = "ktor-server-cio-jvm", version.ref = "ktor" }
+ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml-jvm", version.ref = "ktor" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages-jvm", version.ref = "ktor" }
 exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
@@ -146,10 +147,11 @@ multiplatform-common-desktop = [
 server-app = [
     'kotlin-reflect',
     'ktor-server-core',
+    'ktor-server-websockets',
     'ktor-server-auth',
     'ktor-server-auth-jwt',
     'ktor-server-content-negotiation',
-    'ktor-server-cio',
+    'ktor-server-netty',
     'ktor-server-config-yaml',
     'ktor-server-status-pages',
     'ktor-serialization-kotlinx-json',
@@ -166,6 +168,7 @@ server-app = [
 server-common = [
     'kotlin-reflect',
     'ktor-server-core',
+    'ktor-server-websockets',
     'ktor-server-auth',
     'ktor-server-auth-jwt',
     'ktor-server-config-yaml',

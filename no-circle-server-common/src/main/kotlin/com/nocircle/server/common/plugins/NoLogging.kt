@@ -1,6 +1,6 @@
 package com.nocircle.server.common.plugins
 
-import com.nocircle.server.common.utils.NoLog
+import com.nocircle.server.common.log.NoLog
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

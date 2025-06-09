@@ -1,11 +1,11 @@
-package com.nocircle.server.app.services.user
+package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.services.NoParameters
-import com.nocircle.server.common.services.NoService
-import com.nocircle.server.common.services.noParameters
+import com.nocircle.server.common.route.NoParameters
+import com.nocircle.server.common.route.NoRoute
+import com.nocircle.server.common.route.noParameters
 import io.ktor.http.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
@@ -14,7 +14,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户搜索
  */
-object UserQueryService : NoService<UserQueryService.SearchUser> {
+object UserQueryRoute : NoRoute<UserQueryRoute.SearchUser> {
 	
 	override val path = "/user/query"
 	

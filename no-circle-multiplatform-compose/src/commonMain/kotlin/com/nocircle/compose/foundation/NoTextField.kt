@@ -251,7 +251,7 @@ object NoTextFieldDefaults {
 		unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0f),
 		unfocusedPrefixColor = MaterialTheme.colorScheme.outline,
 		unfocusedSuffixColor = MaterialTheme.colorScheme.outline,
-		unfocusedTextColor = MaterialTheme.colorScheme.outline,
+		unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
 		unfocusedLeadingIconColor = MaterialTheme.colorScheme.outline,
 		unfocusedTrailingIconColor = MaterialTheme.colorScheme.outline
 	)
