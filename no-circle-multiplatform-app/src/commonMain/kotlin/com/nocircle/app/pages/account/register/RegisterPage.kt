@@ -57,7 +57,7 @@ fun RegisterPage() {
 			) {
 				Spacer(modifier = Modifier.height(80.dp))
 				Text(
-					text = AppString.Register.value(),
+					text = AppString.REGISTER.value(),
 					style = MaterialTheme.typography.displayLarge
 				)
 				Spacer(modifier = Modifier.height(40.dp))
@@ -67,7 +67,7 @@ fun RegisterPage() {
 					value = username,
 					onValueChange = viewModel::updateUsername,
 					modifier = Modifier.fillMaxWidth(),
-					placeholder = { Text(AppString.RegisterPleaseInputUsername.value()) },
+					placeholder = { Text(AppString.REGISTER_PLEASE_INPUT_USERNAME.value()) },
 					leadingIcon = { NoIcon(AppIcon.AccountBox.value()) }
 				)
 				Spacer(modifier = Modifier.height(24.dp))
@@ -78,7 +78,7 @@ fun RegisterPage() {
 					value = password,
 					onValueChange = viewModel::updatePassword,
 					modifier = Modifier.fillMaxWidth(),
-					placeholder = { Text(AppString.RegisterPleaseInputPassword.value()) },
+					placeholder = { Text(AppString.REGISTER_PLEASE_INPUT_PASSWORD.value()) },
 					leadingIcon = { NoIcon(AppIcon.Lock.value()) },
 					trailingIcon = {
 						NoIconButton(
@@ -99,7 +99,7 @@ fun RegisterPage() {
 					value = confirmPassword.value,
 					onValueChange = viewModel::updateConfirmPassword,
 					modifier = Modifier.fillMaxWidth(),
-					placeholder = { Text(AppString.RegisterPleaseConfirmPassword.value()) },
+					placeholder = { Text(AppString.REGISTER_PLEASE_CONFIRM_PASSWORD.value()) },
 					leadingIcon = { NoIcon(AppIcon.Lock.value()) },
 					trailingIcon = {
 						NoIconButton(
@@ -119,7 +119,7 @@ fun RegisterPage() {
 				
 				val controller = LocalNavController.current
 				NoButton(
-					text = AppString.Register.value(),
+					text = AppString.REGISTER.value(),
 					modifier = Modifier.fillMaxWidth()
 				) {
 					val success = viewModel.register()
@@ -131,7 +131,7 @@ fun RegisterPage() {
 				}
 				Spacer(modifier = Modifier.height(24.dp))
 				NoButton(
-					text = AppString.RegisterBackToLogin.value(),
+					text = AppString.REGISTER_BACK_TO_LOGIN_PAGE.value(),
 					modifier = Modifier.fillMaxWidth(),
 					colors = NoButtonColors.SecondaryContainerColors
 				) {

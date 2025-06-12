@@ -10,7 +10,7 @@ jwt:
   audience: "NoCircle"
   realm: "NoCircle"
   secret: "oB25pdw7tBo6pVIqGdeiFuizxixUbFuQ"
-  timeout: "1d"
+  timeout: "7d"
 mysql:
   url: "jdbc:mysql://localhost:3306/no_circle"
   user: "root"

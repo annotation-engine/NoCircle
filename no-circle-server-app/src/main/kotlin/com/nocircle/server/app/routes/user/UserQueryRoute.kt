@@ -1,5 +1,7 @@
 package com.nocircle.server.app.routes.user
 
+import com.nocircle.server.app.tables.friend.FriendAddRequests
+import com.nocircle.server.app.tables.friend.FriendRelationships
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.model.ApiResult
@@ -27,13 +29,22 @@ object UserQueryRoute : NoRoute<UserQueryRoute.SearchUser> {
 	}
 	
 	override suspend fun process(parameters: NoParameters): ApiResult<SearchUser> {
+		val userId = parameters.userId
 		val queryUsername: String by parameters
 		if (queryUsername.isBlank()) return ApiResult.failure("用户名不能为空")
 		val searchUser = transaction {
-			val user = Users.getByUsername(queryUsername) ?: return@transaction null
-			val userId = user.id.value
-			val labels = UserLabels.getListByUserId(userId).map {
+			val user = Users.getOneByUsername(queryUsername) ?: return@transaction null
+			val targetId = user.id.value
+			val labels = UserLabels.getListByUserId(targetId).map {
 				Label(it.id.value, it.label, it.color)
+			}
+			val pair = if (userId == targetId) {
+				Relationship.OWNER to false
+			} else {
+				val isFriend = FriendRelationships.isFriend(userId, targetId)
+				val relationship = if (isFriend) Relationship.FRIEND else Relationship.STRANGER
+				val isAlreadySend = FriendAddRequests.isExistsBySenderIdAndReceiverId(userId, targetId)
+				relationship to isAlreadySend
 			}
 			SearchUser(
 				userId = user.id.value,
@@ -41,7 +52,8 @@ object UserQueryRoute : NoRoute<UserQueryRoute.SearchUser> {
 				nickname = user.nickname,
 				avatarUrl = user.avatarUrl,
 				labels = labels,
-				isOwner = parameters.userId == userId
+				relationship = pair.first,
+				isAlreadySend = pair.second
 			)
 		}
 		return if (searchUser != null) {
@@ -58,7 +70,8 @@ object UserQueryRoute : NoRoute<UserQueryRoute.SearchUser> {
 		val nickname: String?,
 		val avatarUrl: String?,
 		val labels: List<Label>,
-		val isOwner: Boolean
+		val relationship: Relationship,
+		val isAlreadySend: Boolean
 	)
 	
 	@Serializable
@@ -67,4 +80,10 @@ object UserQueryRoute : NoRoute<UserQueryRoute.SearchUser> {
 		val label: String,
 		val color: Int,
 	)
+	
+	enum class Relationship {
+		FRIEND,
+		OWNER,
+		STRANGER
+	}
 }

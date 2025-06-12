@@ -22,9 +22,9 @@ object UserDetailRoute : NoRoute<UserDetailRoute.UserDetail> {
     override val auth = true
 
     override suspend fun process(parameters: NoParameters): ApiResult<UserDetail> {
-        val userId: Int by parameters
+        val userId = parameters.userId
         val data = transaction {
-            val user = Users.getById(userId) ?: return@transaction null
+            val user = Users.getOneById(userId) ?: return@transaction null
             val lastLoginTime = UserLogins.getLastLoginByUserId(userId)?.loginTime
             UserDetail(
                 username = user.username,

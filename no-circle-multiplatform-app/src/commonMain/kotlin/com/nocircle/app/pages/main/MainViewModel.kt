@@ -1,14 +1,20 @@
 package com.nocircle.app.pages.main
 
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
+import com.nocircle.app.websockets.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class MainViewModel : NoViewModel() {
 	
-	val mainSubRoute = MutableStateFlow(MainSubRoute.Home)
+	val mainSubRoute = MutableStateFlow(MainSubRoute.HOME)
 	
 	val isLeftNavigationBarExpended = MutableStateFlow(false)
 	
-	val leftNavigationBarWidth = MutableStateFlow(72.dp)
+	init {
+		viewModelScope.launch {
+			WebSocketScheduler.keepAlive()
+		}
+	}
 }

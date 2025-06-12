@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 fun Memory() {
 	val coroutineScope = rememberCoroutineScope()
 	NoOption(
-		title = { Text(AppString.SettingsMemory.value()) },
+		title = { Text(AppString.SETTINGS_MEMORY.value()) },
 		icon = { NoIcon(AppIcon.Memory.value()) },
 		actions = {
 			var usedMemory by remember { mutableStateOf("--") }
@@ -24,7 +24,7 @@ fun Memory() {
 					delay(1000L)
 				}
 			}
-			Text(AppString.SettingsUseMemory.value(usedMemory))
+			Text(AppString.SETTINGS_USE_MEMORY.value(usedMemory))
 		}
 	) {
 		coroutineScope.launch {

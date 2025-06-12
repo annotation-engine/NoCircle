@@ -36,8 +36,8 @@ import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.person.PersonPage
-import com.nocircle.app.pages.main.person.request.FriendAddRequestPage
-import com.nocircle.app.pages.main.person.request.FriendAddRequestRoute
+import com.nocircle.app.pages.main.person.message.MessageCenterPage
+import com.nocircle.app.pages.main.person.message.MessageCenterRoute
 import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
@@ -46,6 +46,7 @@ import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.ThemeMode
 import com.nocircle.common.navigation.*
+import com.nocircle.common.resources.IconGroup
 import com.nocircle.common.resources.getString
 import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
@@ -69,7 +70,7 @@ fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
 	LaunchedEffect(Unit) {
-		hostState.showNoSnackbar(AppString.LoginSuccess.getString())
+		hostState.showNoSnackbar(AppString.LOGIN_SUCCESS.getString())
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
@@ -83,7 +84,7 @@ fun MainPage() {
 					viewModel.mainSubRoute.value = route
 				}
 				if (controller.currentRoute != MainRoute::class) {
-					controller.navigate(route = MainRoute, popup = NoPopUp.All)
+					controller.navigate(route = MainRoute, popup = NoPopUp.ALL)
 				}
 			}
 			NoNavHost(
@@ -104,7 +105,7 @@ fun MainPage() {
 				}
 				composable<SettingsRoute> { SettingsPage() }
 				composable<AppearanceRoute> { AppearancePage() }
-				composable<FriendAddRequestRoute> { FriendAddRequestPage() }
+				composable<MessageCenterRoute> { MessageCenterPage() }
 			}
 			if (!isCompat) {
 				LeftNavigationBar(
@@ -134,10 +135,10 @@ private fun MainPage(
 			label = "MainPageCrossfade",
 		) { target ->
 			when (target) {
-				MainSubRoute.Home -> HomePage()
-				MainSubRoute.Friends -> FriendsPage()
-				MainSubRoute.Groups -> GroupsPage()
-				MainSubRoute.Person -> PersonPage()
+				MainSubRoute.HOME -> HomePage()
+				MainSubRoute.FRIENDS -> FriendsPage()
+				MainSubRoute.GROUPS -> GroupsPage()
+				MainSubRoute.PERSON -> PersonPage()
 			}
 		}
 		if (WindowWidthSizes.isCompact) {
@@ -211,7 +212,7 @@ private fun BottomNavigationBar(
 					horizontalArrangement = Arrangement.Center
 				) {
 					NoIcon(
-						icon = it.icon.value(),
+						icon = it.iconGroup.value(),
 						tint = color,
 						modifier = Modifier
 							.size(24.dp)
@@ -293,7 +294,7 @@ private fun LeftNavigationBar(
 						controller.removeOnDestinationChangedListener(listener)
 					}
 				}
-				val previousText = AppString.MainPrevious.value()
+				val previousText = AppString.MAIN_PREVIOUS.value()
 				LeftToolItem(
 					title = previousText,
 					icon = AppIcon.ArrowBack.value(),
@@ -311,7 +312,7 @@ private fun LeftNavigationBar(
 				MainSubRoute.entries.forEachIndexed { index, route ->
 					LeftMenuItem(
 						title = route.title.value(),
-						icon = route.icon.value(),
+						icon = route.iconGroup.value(),
 						tooltipText = route.title.value(),
 						isExpended = isLeftNavigationBarExpended,
 						onClick = {
@@ -332,7 +333,7 @@ private fun LeftNavigationBar(
 				val coroutineScope = rememberCoroutineScope()
 				val isDark = ThemeMode.current.isDark
 				val themeModeText =
-					if (isDark) AppString.AppearanceThemeModeLight.value() else AppString.AppearanceThemeModeDark.value()
+					if (isDark) AppString.APPEARANCE_THEME_MODE_LIGHT.value() else AppString.APPEARANCE_THEME_MODE_DARK.value()
 				LeftToolItem(
 					title = themeModeText,
 					icon = if (isDark) AppIcon.LightMode.value() else AppIcon.DarkMode.value(),
@@ -340,16 +341,16 @@ private fun LeftNavigationBar(
 					isExpended = isLeftNavigationBarExpended,
 					onClick = {
 						coroutineScope.launch(Dispatchers.IO) {
-							ThemeMode.set(if (isDark) ThemeMode.Light else ThemeMode.Dark)
+							ThemeMode.set(if (isDark) ThemeMode.LIGHT else ThemeMode.DARK)
 						}
 					},
 					iconRotate = if (isDark) 90f else 0f,
 				)
 				Spacer(modifier = Modifier.width(6.dp))
 				LeftToolItem(
-					title = AppString.MainCollapse.value(),
+					title = AppString.MAIN_COLLAPSE.value(),
 					icon = AppIcon.KeyboardDoubleArrowRight.value(),
-					tooltipText = AppString.MainExpand.value(),
+					tooltipText = AppString.MAIN_EXPEND.value(),
 					isExpended = isLeftNavigationBarExpended,
 					onClick = {
 						viewModel.isLeftNavigationBarExpended.value = !isLeftNavigationBarExpended
@@ -556,22 +557,22 @@ private fun LeftItemWithExpended(
 
 enum class MainSubRoute(
 	val title: AppString,
-	val icon: AppIcon
+	val iconGroup: IconGroup
 ) {
-	Home(
-		title = AppString.MainHome,
-		icon = AppIcon.Home
+	HOME(
+		title = AppString.MAIN_HOME,
+		iconGroup = AppIcon.Home
 	),
-	Friends(
-		title = AppString.MainFriends,
-		icon = AppIcon.People
+	FRIENDS(
+		title = AppString.MAIN_FRIENDS,
+		iconGroup = AppIcon.Group
 	),
-	Groups(
-		title = AppString.MainGroups,
-		icon = AppIcon.Diversity2
+	GROUPS(
+		title = AppString.MAIN_GROUPS,
+		iconGroup = AppIcon.Diversity2
 	),
-	Person(
-		title = AppString.MainPerson,
-		icon = AppIcon.Person
+	PERSON(
+		title = AppString.MAIN_PERSON,
+		iconGroup = AppIcon.Person
 	)
 }

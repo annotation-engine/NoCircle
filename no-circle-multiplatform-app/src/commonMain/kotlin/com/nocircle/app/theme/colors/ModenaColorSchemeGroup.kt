@@ -11,7 +11,7 @@ import com.nocircle.app.resources.AppString
 @Immutable
 object ModenaColorSchemeGroup : ColorSchemeGroup {
 	
-	override val name = AppString.AppearanceThemeModena
+	override val name = AppString.APPEARANCE_THEME_MODENA
 	
 	override val lightStandardContrast by lazy {
 		darkColorScheme(

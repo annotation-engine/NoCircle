@@ -1,6 +1,7 @@
 package com.nocircle.server.common.route
 
 import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.server.common.model.noPrincipal
 import io.ktor.http.*
 import io.ktor.server.routing.*
@@ -27,7 +28,9 @@ interface NoRoute<out R : Any> {
 
 private val DefaultRoles = arrayOf<String?>(null)
 
-class NoParameters {
+class NoParameters(
+	private val noPrincipal: NoPrincipal? = null
+) {
 	
 	companion object {
 		val None = NoParameters()
@@ -35,7 +38,9 @@ class NoParameters {
 	
 	private val parameters = mutableMapOf<String, Any?>()
 	
-	val userId by lazy { parameters["userId"] as Int }
+	val userId by lazy { noPrincipal!!.userId }
+	
+	val username by lazy { noPrincipal!!.username }
 	
 	operator fun <T> set(key: String, value: T) {
 		this.parameters[key] = value
@@ -71,9 +76,4 @@ class NoParameters {
 inline fun noParameters(
 	call: RoutingCall? = null,
 	block: NoParameters.() -> Unit
-): NoParameters = NoParameters().apply {
-	call?.noPrincipal?.userId?.let {
-		this["userId"] = it
-	}
-	block()
-}
+): NoParameters = NoParameters(call?.noPrincipal).apply(block)

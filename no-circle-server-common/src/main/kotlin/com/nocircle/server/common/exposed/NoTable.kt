@@ -6,7 +6,7 @@ import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-abstract class BaseTable(
+abstract class NoTable(
 	name: String,
 	columnName: String = "id"
 ) : IntIdTable(name, columnName) {
@@ -21,7 +21,10 @@ abstract class BaseTable(
 		.default(false)
 }
 
-abstract class BaseIntEntity(id: EntityID<Int>, table: BaseTable) : IntEntity(id) {
+abstract class NoIntEntity(
+	id: EntityID<Int>,
+	table: NoTable
+) : IntEntity(id) {
 	
 	val createTime by table.deleteFlag
 	

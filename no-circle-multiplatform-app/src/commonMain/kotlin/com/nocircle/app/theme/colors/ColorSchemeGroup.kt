@@ -63,14 +63,14 @@ sealed interface ColorSchemeGroup {
 enum class ColorSchemeContrast(
 	val title: AppString,
 ) {
-	Standard(AppString.AppearanceContrastStandard),
-	Medium(AppString.AppearanceContrastMedium),
-	High(AppString.AppearanceContrastHigh);
+	STANDARD(AppString.APPEARANCE_CONTRAST_STANDARD),
+	MEDIUM(AppString.APPEARANCE_CONTRAST_MEDIUM),
+	HIGH(AppString.APPEARANCE_CONTRAST_HIGH);
 	
 	companion object : StatusFlowConfig<ColorSchemeContrast>() {
 		
 		override suspend fun getConfigFromStorage(): ColorSchemeContrast {
-			return ColorSchemeContrastConfigKey.get() ?: Standard
+			return ColorSchemeContrastConfigKey.get() ?: STANDARD
 		}
 		
 		override suspend fun setConfigToStorage(oldConfig: ColorSchemeContrast, newConfig: ColorSchemeContrast) {
@@ -82,14 +82,14 @@ enum class ColorSchemeContrast(
 enum class ThemeMode(
 	val title: AppString
 ) {
-	Light(AppString.AppearanceThemeModeLight),
-	Dark(AppString.AppearanceThemeModeDark),
-	System(AppString.AppearanceThemeModeSystem);
+	LIGHT(AppString.APPEARANCE_THEME_MODE_LIGHT),
+	DARK(AppString.APPEARANCE_THEME_MODE_DARK),
+	SYSTEM(AppString.APPEARANCE_THEME_MODE_SYSTEM);
 	
 	companion object : StatusFlowConfig<ThemeMode>() {
 		
 		override suspend fun getConfigFromStorage(): ThemeMode {
-			return ThemeModeConfigKey.get() ?: System
+			return ThemeModeConfigKey.get() ?: SYSTEM
 		}
 		
 		override suspend fun setConfigToStorage(oldConfig: ThemeMode, newConfig: ThemeMode) {
@@ -101,9 +101,9 @@ enum class ThemeMode(
 		@Composable
 		@ReadOnlyComposable
 		get() = when (this) {
-			Light -> false
-			Dark -> true
-			System -> isSystemInDarkTheme()
+			LIGHT -> false
+			DARK -> true
+			SYSTEM -> isSystemInDarkTheme()
 		}
 }
 
@@ -122,9 +122,9 @@ fun getColorScheme(
 	val isDark = themeMode.isDark
 	return remember(group, contrast, isDark) {
 		when (contrast) {
-			Standard -> if (isDark) group.darkStandardContrast else group.lightStandardContrast
-			Medium -> if (isDark) group.darkMediumContrast else group.lightMediumContrast
-			High -> if (isDark) group.darkHighContrast else group.lightHighContrast
+			STANDARD -> if (isDark) group.darkStandardContrast else group.lightStandardContrast
+			MEDIUM -> if (isDark) group.darkMediumContrast else group.lightMediumContrast
+			HIGH -> if (isDark) group.darkHighContrast else group.lightHighContrast
 		}
 	}
 }

@@ -6,15 +6,15 @@ import com.nocircle.common.config.set
 import com.nocircle.common.flow.StatusFlowConfig
 
 enum class IconType {
-	Rounded,
-	Outlined,
-	Filled,
-	Sharp,
-	TwoTone;
+	ROUNDED,
+	OUTLINED,
+	FILLED,
+	SHARP,
+	TWO_TONE;
 	
 	companion object : StatusFlowConfig<IconType>() {
 		override suspend fun getConfigFromStorage(): IconType {
-			return IconTypeConfigKey.get() ?: Rounded
+			return IconTypeConfigKey.get() ?: ROUNDED
 		}
 		
 		override suspend fun setConfigToStorage(oldConfig: IconType, newConfig: IconType) {

@@ -11,9 +11,9 @@ actual inline fun <reified T : RoomDatabase> getDatabaseBuilder(dbName: String):
 	val dbName = if (dbName.endsWith(".db")) dbName else "$dbName.db"
 	val appName = "NoCircle"
 	val paths = when (NoDevice.Name) {
-		DeviceName.MacOS -> Paths.get(System.getProperty("user.home"), "Library", "Application Support", appName, "data")
-		DeviceName.Linux -> Paths.get(System.getProperty("user.home"), ".local", "share", appName)
-		DeviceName.Windows -> Paths.get(System.getenv("LOCALAPPDATA"), appName, "data")
+		DeviceName.MACOS -> Paths.get(System.getProperty("user.home"), "Library", "Application Support", appName, "data")
+		DeviceName.LINUX -> Paths.get(System.getProperty("user.home"), ".local", "share", appName)
+		DeviceName.WINDOWS -> Paths.get(System.getenv("LOCALAPPDATA"), appName, "data")
 		else -> error("Unknown device.")
 	}
 	val absolutePath = paths.resolve(dbName).absolutePathString()

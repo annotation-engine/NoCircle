@@ -69,7 +69,7 @@ private class RouteScopeImpl(
 				NoLog.info("[${it.method}] $split ${it.path}${if (it.auth) " *" else ""}")
 			}
 		}
-		NoLog.info("[ROUTE] [TOTAL] ${routeList.size} used for ${(millis + totalMillis) / 1000f} seconds")
+		NoLog.info("[TOTAL] ${routeList.size} used for ${(millis + totalMillis) / 1000f} seconds")
 	}
 }
 

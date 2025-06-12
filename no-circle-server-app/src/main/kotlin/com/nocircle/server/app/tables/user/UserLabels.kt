@@ -8,7 +8,7 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 
-object UserLabels : BaseTable("tb_user_label") {
+object UserLabels : NoTable("tb_user_label") {
 	
 	val userId = integer("user_id")
 		.references(Users.id)
@@ -17,7 +17,7 @@ object UserLabels : BaseTable("tb_user_label") {
 	
 	val color = integer("color")
 	
-	fun getById(id: Int): UserLabel? {
+	fun getOneById(id: Int): UserLabel? {
 		val row = UserLabels.selectAll()
 			.where { UserLabels.id eq id }
 			.logicExists(UserLabels)
@@ -39,7 +39,7 @@ object UserLabels : BaseTable("tb_user_label") {
 		return UserLabel.wrapRows(query).toList()
 	}
 	
-	fun insert(userId: Int, label: String, color: Int): Boolean {
+	fun insertOne(userId: Int, label: String, color: Int): Boolean {
 		val insert = UserLabels.insert {
 			it[this.userId] = userId
 			it[this.label] = label
@@ -48,7 +48,7 @@ object UserLabels : BaseTable("tb_user_label") {
 		return insert.insertedCount == 1
 	}
 	
-	fun update(userId: Int, id: Int, label: String, color: Int): Boolean {
+	fun updateOne(userId: Int, id: Int, label: String, color: Int): Boolean {
 		val count = UserLabels.logicUpdate(
 			where = { (UserLabels.id eq id) and (UserLabels.userId eq userId) }
 		) {
@@ -58,7 +58,7 @@ object UserLabels : BaseTable("tb_user_label") {
 		return count == 1
 	}
 	
-	fun delete(userId: Int, id: Int): Boolean {
+	fun deleteOne(userId: Int, id: Int): Boolean {
 		val count = UserLabels.logicDeleteWhere {
 			(UserLabels.id eq id) and (UserLabels.userId eq userId)
 		}
@@ -66,7 +66,7 @@ object UserLabels : BaseTable("tb_user_label") {
 	}
 }
 
-class UserLabel(id: EntityID<Int>) : BaseIntEntity(id, UserLabels) {
+class UserLabel(id: EntityID<Int>) : NoIntEntity(id, UserLabels) {
 	
 	companion object : IntEntityClass<UserLabel>(UserLabels)
 	

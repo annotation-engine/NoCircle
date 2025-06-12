@@ -1,6 +1,5 @@
 package com.nocircle.compose.resources
 
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -26,32 +25,15 @@ import androidx.compose.material.icons.sharp.Info
 import androidx.compose.material.icons.twotone.Cancel
 import androidx.compose.material.icons.twotone.Close
 import androidx.compose.material.icons.twotone.Info
-import androidx.compose.runtime.Immutable
-import com.nocircle.common.resources.*
+import com.nocircle.common.resources.autoMirroredIconGroup
+import com.nocircle.common.resources.iconGroup
 
-@Immutable
-internal enum class ComposeIcon(
-	override val rounded: RoundedIcon,
-	override val outlined: OutlinedIcon,
-	override val filled: FilledIcon,
-	override val sharp: SharpIcon,
-	override val twoTone: TwoToneIcon,
-) : NoIcon {
-	Info({ Info }, { Info }, { Info }, { Info }, { Info }),
-	Close({ Close }, { Close }, { Close }, { Close }, { Close }),
-	Cancel({ Cancel }, { Cancel }, { Cancel }, { Cancel }, { Cancel }),
-	ArrowForwardIos(
-		rounded = { Icons.AutoMirrored.Rounded.ArrowForwardIos },
-		outlined = { Icons.AutoMirrored.Outlined.ArrowForwardIos },
-		filled = { Icons.AutoMirrored.Filled.ArrowForwardIos },
-		sharp = { Icons.AutoMirrored.Sharp.ArrowForwardIos },
-		twoTone = { Icons.AutoMirrored.TwoTone.ArrowForwardIos },
-	),
-	ArrowBack(
-		rounded = { Icons.AutoMirrored.Rounded.ArrowBack },
-		outlined = { Icons.AutoMirrored.Outlined.ArrowBack },
-		filled = { Icons.AutoMirrored.Filled.ArrowBack },
-		sharp = { Icons.AutoMirrored.Sharp.ArrowBack },
-		twoTone = { Icons.AutoMirrored.TwoTone.ArrowBack },
-	)
+internal object ComposeIcon {
+	
+	val Info = iconGroup({ Info }, { Info }, { Info }, { Info }, { Info })
+	val Close = iconGroup({ Close }, { Close }, { Close }, { Close }, { Close })
+	val Cancel = iconGroup({ Cancel }, { Cancel }, { Cancel }, { Cancel }, { Cancel })
+	
+	val ArrowForwardIos = autoMirroredIconGroup({ ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos })
+	val ArrowBack = autoMirroredIconGroup({ ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack })
 }

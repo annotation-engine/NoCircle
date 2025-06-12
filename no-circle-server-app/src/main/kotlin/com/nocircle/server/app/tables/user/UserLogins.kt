@@ -1,7 +1,7 @@
 package com.nocircle.server.app.tables.user
 
-import com.nocircle.server.common.exposed.BaseIntEntity
-import com.nocircle.server.common.exposed.BaseTable
+import com.nocircle.server.common.exposed.NoIntEntity
+import com.nocircle.server.common.exposed.NoTable
 import kotlinx.datetime.Clock
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
@@ -10,7 +10,7 @@ import org.jetbrains.exposed.v1.datetime.timestamp
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 
-object UserLogins : BaseTable("tb_user_login") {
+object UserLogins : NoTable("tb_user_login") {
 	
 	val userId = integer("user_id")
 	
@@ -18,12 +18,9 @@ object UserLogins : BaseTable("tb_user_login") {
 	
 	val method = enumerationByName<Method>("method", 8)
 	
-	enum class Method {
-		Password,
-		Token
-	}
+	enum class Method { PASSWORD, TOKEN }
 	
-	fun insert(userId: Int, method: Method): Boolean {
+	fun insertOne(userId: Int, method: Method): Boolean {
 		val insert = UserLogins.insert {
 			it[this.userId] = userId
 			it[this.method] = method
@@ -43,7 +40,7 @@ object UserLogins : BaseTable("tb_user_login") {
 	}
 }
 
-class UserLogin(id: EntityID<Int>) : BaseIntEntity(id, UserLogins) {
+class UserLogin(id: EntityID<Int>) : NoIntEntity(id, UserLogins) {
 	
 	companion object : IntEntityClass<UserLogin>(UserLogins)
 	

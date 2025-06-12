@@ -4,5 +4,5 @@ actual object NoDevice {
 	
 	actual val Name = DeviceName.IOS
 	
-	actual val Type = DeviceType.Mobile
+	actual val Type = DeviceType.MOBILE
 }

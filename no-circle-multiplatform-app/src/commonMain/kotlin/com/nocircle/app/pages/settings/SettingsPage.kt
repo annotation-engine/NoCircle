@@ -50,7 +50,7 @@ fun SettingsPage() {
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
-				title = { Text(AppString.Settings.value()) },
+				title = { Text(AppString.SETTINGS.value()) },
 				onNavigationIconClick = if (WindowWidthSizes.isCompact) {
 					{ controller.popBackStack() }
 				} else null
@@ -96,9 +96,9 @@ fun SettingsPage() {
 private fun NavToAppearance() {
 	val controller = LocalNavController.current
 	NoOption(
-		title = { Text(AppString.Appearance.value()) },
+		title = { Text(AppString.APPEARANCE.value()) },
 		icon = { NoIcon(AppIcon.Cookie.value()) },
-		actions = { Text(AppString.SettingsAppearanceSubtitle.value()) }
+		actions = { Text(AppString.SETTINGS_APPEARANCE_SUBTITLE.value()) }
 	) {
 		controller.navigate(route = AppearanceRoute)
 	}
@@ -133,7 +133,7 @@ private fun SwitchLanguage() {
 		}
 	) {
 		NoOption(
-			title = { Text(AppString.SettingsSwitchLanguage.value()) },
+			title = { Text(AppString.SETTINGS_SWITCH_LANGUAGE.value()) },
 			icon = { NoIcon(AppIcon.Language.value()) },
 			actions = { Text(language.displayName) },
 		)
@@ -165,7 +165,7 @@ private fun SwitchIconType() {
 		}
 	) {
 		NoOption(
-			title = { Text(AppString.SettingsSwitchIconType.value()) },
+			title = { Text(AppString.SETTINGS_SWITCH_ICON_TYPE.value()) },
 			icon = { NoIcon(AppIcon.ShapeLine.value()) },
 			actions = { Text(IconType.current.getAppString().value()) }
 		)
@@ -174,11 +174,11 @@ private fun SwitchIconType() {
 
 @Stable
 private fun IconType.getAppString(): AppString = when (this) {
-	IconType.Rounded -> AppString.SettingsRounded
-	IconType.Outlined -> AppString.SettingsOutlined
-	IconType.Filled -> AppString.SettingsFilled
-	IconType.Sharp -> AppString.SettingsSharp
-	IconType.TwoTone -> AppString.SettingsTwoTone
+	IconType.ROUNDED -> AppString.SETTINGS_ROUNDED
+	IconType.OUTLINED -> AppString.SETTINGS_OUTLINED
+	IconType.FILLED -> AppString.SETTINGS_FILLED
+	IconType.SHARP -> AppString.SETTINGS_SHARP
+	IconType.TWO_TONE -> AppString.SETTINGS_TWO_TONE
 }
 
 /**
@@ -193,17 +193,17 @@ private fun Logout(
 	if (showLogoutModal) {
 		NoAlertModalBottomSheet(
 			title = {
-				Text(AppString.SettingsLogoutTitle.value())
+				Text(AppString.SETTINGS_LOGOUT_TITLE.value())
 			},
 			content = {
-				Text(AppString.SettingsLogoutContent.value())
+				Text(AppString.SETTINGS_LOGOUT_CONTENT.value())
 			},
 			onDismissRequest = { showLogoutModal = false },
 			onConfirm = {
 				viewModel.logout()
 				rootController?.navigate(
 					route = LoginRoute,
-					popup = NoPopUp.All
+					popup = NoPopUp.ALL
 				)
 			},
 			confirmColors = NoButtonColors.ErrorColors,
@@ -229,7 +229,7 @@ private fun Logout(
 		contentAlignment = Alignment.Center
 	) {
 		Text(
-			text = AppString.SettingsLogout.value(),
+			text = AppString.SETTINGS_LOGOUT.value(),
 			style = MaterialTheme.typography.bodyLarge,
 			color = MaterialTheme.colorScheme.onError
 		)

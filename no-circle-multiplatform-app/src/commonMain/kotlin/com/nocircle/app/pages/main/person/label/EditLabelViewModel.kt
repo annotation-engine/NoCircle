@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person
+package com.nocircle.app.pages.main.person.label
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -19,7 +19,7 @@ class EditLabelViewModel : NoViewModel() {
 	
 	suspend fun addLabel(label: String, color: Color): Boolean {
 		if (label.isBlank()) {
-			showNoErrorSnackbar(AppString.LabelMustNotEmpty.getString())
+			showNoErrorSnackbar(AppString.LABEL_MUST_NOT_EMPTY.getString())
 			return false
 		}
 		val result = ktorfitx.labelApi.addLabel(label, color.toArgb()) ?: return networkError()
@@ -29,7 +29,7 @@ class EditLabelViewModel : NoViewModel() {
 	
 	suspend fun updateLabel(id: Int, label: String, color: Color): Boolean {
 		if (label.isBlank()) {
-			showNoErrorSnackbar(AppString.LabelMustNotEmpty.getString())
+			showNoErrorSnackbar(AppString.LABEL_MUST_NOT_EMPTY.getString())
 			return false
 		}
 		val result = ktorfitx.labelApi.updateLabel(id, label, color.toArgb()) ?: return networkError()

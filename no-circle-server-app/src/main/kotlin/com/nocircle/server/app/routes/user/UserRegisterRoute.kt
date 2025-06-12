@@ -31,7 +31,7 @@ object UserRegisterRoute : NoRoute<Unit> {
 		val success = transaction {
 			val exists = Users.isExistsByUsername(username)
 			if (exists) return@transaction false
-			Users.insert(username, password)
+			Users.insertOne(username, password)
 		}
 		return if (success) {
 			ApiResult.success("用户注册成功，前往登录")

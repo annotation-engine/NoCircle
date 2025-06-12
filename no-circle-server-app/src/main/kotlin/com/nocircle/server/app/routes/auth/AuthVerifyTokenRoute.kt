@@ -21,7 +21,7 @@ object AuthVerifyTokenRoute : NoRoute<Boolean> {
 	override suspend fun process(parameters: NoParameters): ApiResult<Boolean> {
 		val userId = parameters.userId
 		transaction {
-			UserLogins.insert(userId, UserLogins.Method.Token)
+			UserLogins.insertOne(userId, UserLogins.Method.TOKEN)
 		}
 		return ApiResult.success("验证成功")
 	}

@@ -17,18 +17,18 @@ class SettingsViewModel : NoViewModel() {
 enum class FontWeightLevel(
 	vararg val weights: Int
 ) {
-	UltraThin(100, 100, 100, 100, 200, 300, 400, 500, 600),
-	ExtraThin(100, 100, 100, 200, 300, 400, 500, 600, 700),
-	Thin(100, 100, 200, 300, 400, 500, 600, 700, 800),
-	Medium(100, 200, 300, 400, 500, 600, 700, 800, 900),
-	Bold(200, 300, 400, 500, 600, 700, 800, 900, 900),
-	ExtraBold(300, 400, 500, 600, 700, 800, 900, 900, 900),
-	UltraBold(400, 500, 600, 700, 800, 900, 900, 900, 900), ;
+	ULTRA_THIN(100, 100, 100, 100, 200, 300, 400, 500, 600),
+	EXTRA_THIN(100, 100, 100, 200, 300, 400, 500, 600, 700),
+	THIN(100, 100, 200, 300, 400, 500, 600, 700, 800),
+	MEDIUM(100, 200, 300, 400, 500, 600, 700, 800, 900),
+	BOLD(200, 300, 400, 500, 600, 700, 800, 900, 900),
+	EXTRA_BOLD(300, 400, 500, 600, 700, 800, 900, 900, 900),
+	ULTRA_BOLD(400, 500, 600, 700, 800, 900, 900, 900, 900), ;
 	
 	companion object : StatusFlowConfig<FontWeightLevel>() {
 		
 		override suspend fun getConfigFromStorage(): FontWeightLevel {
-			return FontWeightLevelConfigKey.get() ?: Medium
+			return FontWeightLevelConfigKey.get() ?: MEDIUM
 		}
 		
 		override suspend fun setConfigToStorage(oldConfig: FontWeightLevel, newConfig: FontWeightLevel) {

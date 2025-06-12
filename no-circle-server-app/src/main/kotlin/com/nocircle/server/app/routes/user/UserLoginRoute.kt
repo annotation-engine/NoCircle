@@ -37,14 +37,14 @@ object UserLoginRoute : NoRoute<UserLoginRoute.UserLogin> {
 		val username: String by parameters
 		val password: String by parameters
 		val user = transaction {
-			Users.getByUsername(username)
+			Users.getOneByUsername(username)
 		}
 		if (user == null || !PasswordUtils.verity(password, user.password)) {
 			return ApiResult.failure("用户名或密码错误")
 		}
 		
 		transaction {
-			UserLogins.insert(user.id.value, UserLogins.Method.Password)
+			UserLogins.insertOne(user.id.value, UserLogins.Method.PASSWORD)
 		}
 		
 		val token = JWTUtils.generate(user.id.value, user.username)

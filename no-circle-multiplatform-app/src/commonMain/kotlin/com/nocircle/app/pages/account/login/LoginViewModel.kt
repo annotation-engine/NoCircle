@@ -35,11 +35,11 @@ class LoginViewModel() : NoViewModel() {
         val username = this._username.value
         val password = this._password.value
         if (username.isEmpty()) {
-            showNoSnackbar(AppString.LoginPleaseInputUsername.getString())
+            showNoSnackbar(AppString.LOGIN_PLEASE_INPUT_USERNAME.getString())
             return false
         }
         if (password.isEmpty()) {
-            showNoSnackbar(AppString.LoginPleaseInputPassword.getString())
+            showNoSnackbar(AppString.LOGIN_PLEASE_INPUT_PASSWORD.getString())
             return false
         }
         val result = ktorfitx.userApi.login(username, password) ?: return networkError()

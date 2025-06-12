@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.nocircle.app.pages.main.friends.list.add.AddFriendSheet
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.device.DeviceType
@@ -67,7 +68,7 @@ private fun FriendsSearch(
 			prefix = { NoIcon(icon = AppIcon.Search.value()) },
 			placeholder = {
 				Text(
-					text = AppString.FriendsSearch.value(),
+					text = AppString.FRIENDS_SEARCH.value(),
 					overflow = TextOverflow.Ellipsis,
 					maxLines = 1
 				)
@@ -84,7 +85,7 @@ private fun FriendsSearch(
 			showAddFriendSheet = true
 		}
 		if (showAddFriendSheet) {
-			AddUserSheet(
+			AddFriendSheet(
 				onDismissRequest = {
 					showAddFriendSheet = false
 				}

@@ -41,21 +41,21 @@ fun NoSnackbar(
 ) {
 	val visuals = snackbarData.visuals as? NoSnackbarVisuals ?: return
 	val containerColor = when (visuals.colors) {
-		Primary -> MaterialTheme.colorScheme.primaryContainer
-		Secondary -> MaterialTheme.colorScheme.secondaryContainer
-		Tertiary -> MaterialTheme.colorScheme.tertiaryContainer
-		Error -> MaterialTheme.colorScheme.errorContainer
-		Surface -> MaterialTheme.colorScheme.surfaceContainer
+		PRIMARY -> MaterialTheme.colorScheme.primaryContainer
+		SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
+		TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
+		ERROR -> MaterialTheme.colorScheme.errorContainer
+		SURFACE -> MaterialTheme.colorScheme.surfaceContainer
 		null -> containerColor
 	}
 	val contentColor = visuals.colors?.let { contentColorFor(containerColor) } ?: contentColor
 	val prefixIconColor = visuals.colors?.let { contentColorFor(containerColor) } ?: prefixIconColor
 	val actionColor = when (visuals.colors) {
-		Primary -> MaterialTheme.colorScheme.primaryContainer
-		Secondary -> MaterialTheme.colorScheme.secondaryContainer
-		Tertiary -> MaterialTheme.colorScheme.tertiaryContainer
-		Error -> MaterialTheme.colorScheme.errorContainer
-		Surface -> MaterialTheme.colorScheme.surfaceContainer
+		PRIMARY -> MaterialTheme.colorScheme.primaryContainer
+		SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
+		TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
+		ERROR -> MaterialTheme.colorScheme.errorContainer
+		SURFACE -> MaterialTheme.colorScheme.surfaceContainer
 		null -> actionColor
 	}
 	val actionContentColor = visuals.colors?.let { contentColorFor(actionColor) } ?: actionContentColor
@@ -148,11 +148,11 @@ data class NoSnackbarVisuals internal constructor(
 ) : SnackbarVisuals
 
 enum class NoSnackbarColors {
-	Primary,
-	Secondary,
-	Tertiary,
-	Error,
-	Surface
+	PRIMARY,
+	SECONDARY,
+	TERTIARY,
+	ERROR,
+	SURFACE
 }
 
 suspend fun SnackbarHostState.showNoSnackbar(

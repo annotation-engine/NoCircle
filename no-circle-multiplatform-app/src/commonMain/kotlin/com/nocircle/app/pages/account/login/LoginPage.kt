@@ -45,7 +45,7 @@ fun LoginPage() {
 			val username = controller.getResult<String>("username")
 			if (username != null) {
 				viewModel.updateUsername(username)
-				hostState.showNoSnackbar(AppString.RegisterSuccess.getString())
+				hostState.showNoSnackbar(AppString.REGISTER_SUCCESS.getString())
 			}
 		}
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
@@ -68,7 +68,7 @@ fun LoginPage() {
 			) {
 				Spacer(modifier = Modifier.height(80.dp))
 				Text(
-					text = AppString.Login.value(),
+					text = AppString.LOGIN.value(),
 					style = MaterialTheme.typography.displayLarge
 				)
 				Spacer(modifier = Modifier.height(40.dp))
@@ -78,7 +78,7 @@ fun LoginPage() {
 					value = username,
 					onValueChange = viewModel::updateUsername,
 					modifier = Modifier.fillMaxWidth(),
-					placeholder = { Text(AppString.LoginPleaseInputUsername.value()) },
+					placeholder = { Text(AppString.LOGIN_PLEASE_INPUT_USERNAME.value()) },
 					leadingIcon = { NoIcon(AppIcon.AccountBox.value()) })
 				Spacer(modifier = Modifier.height(24.dp))
 				
@@ -88,7 +88,7 @@ fun LoginPage() {
 					value = password,
 					onValueChange = viewModel::updatePassword,
 					modifier = Modifier.fillMaxWidth(),
-					placeholder = { Text(AppString.LoginPleaseInputPassword.value()) },
+					placeholder = { Text(AppString.LOGIN_PLEASE_INPUT_PASSWORD.value()) },
 					leadingIcon = { NoIcon(AppIcon.Lock.value()) },
 					trailingIcon = {
 						NoIconButton(
@@ -106,7 +106,7 @@ fun LoginPage() {
 				Spacer(modifier = Modifier.height(36.dp))
 				
 				NoButton(
-					text = AppString.Login.value(),
+					text = AppString.LOGIN.value(),
 					modifier = Modifier.fillMaxWidth()
 				) {
 					val success = viewModel.login()
@@ -114,14 +114,14 @@ fun LoginPage() {
 						launch(Dispatchers.Main) {
 							controller.navigate(
 								route = MainRoute,
-								popup = NoPopUp.All
+								popup = NoPopUp.ALL
 							)
 						}
 					}
 				}
 				Spacer(modifier = Modifier.height(24.dp))
 				NoButton(
-					text = AppString.LoginToRegister.value(),
+					text = AppString.LOGIN_TO_REGISTER_PAGE.value(),
 					modifier = Modifier.fillMaxWidth(),
 					colors = NoButtonColors.SecondaryContainerColors
 				) {

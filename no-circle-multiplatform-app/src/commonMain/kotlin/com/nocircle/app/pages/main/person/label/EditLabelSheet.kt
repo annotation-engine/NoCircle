@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person
+package com.nocircle.app.pages.main.person.label
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.api.LabelVO
+import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.getDisplayLength
@@ -39,7 +40,7 @@ fun EditLabelSheet(
 		sheetState = sheetState,
 		title = {
 			Text(
-				text = AppString.LabelTitle.value(),
+				text = AppString.LABEL_TITLE.value(),
 				color = MaterialTheme.colorScheme.onSurface,
 				style = MaterialTheme.typography.titleLarge
 			)
@@ -121,7 +122,7 @@ fun EditLabelSheet(
 				}
 			},
 			modifier = Modifier.fillMaxWidth(),
-			placeholder = { Text(AppString.LabelPleaseInputLabelName.value()) },
+			placeholder = { Text(AppString.LABEL_PLEASE_INPUT_LABEL_NAME.value()) },
 			leadingIcon = {
 				NoIcon(
 					icon = if (selected == null) AppIcon.Add.value() else AppIcon.Edit.value()
@@ -237,7 +238,7 @@ private fun ColorSliders(
 		onColorChange(selected?.color?.let { Color(it) } ?: addColor)
 	}
 	ColorSlider(
-		title = AppString.LabelRed.value(),
+		title = AppString.LABEL_RED.value(),
 		value = color.red * 255f,
 		onValueChange = {
 			val color = color.copy(red = it / 255f)
@@ -250,7 +251,7 @@ private fun ColorSliders(
 	)
 	Spacer(modifier = Modifier.height(4.dp))
 	ColorSlider(
-		title = AppString.LabelGreen.value(),
+		title = AppString.LABEL_GREEN.value(),
 		value = color.green * 255f,
 		onValueChange = {
 			val color = color.copy(green = it / 255f)
@@ -263,7 +264,7 @@ private fun ColorSliders(
 	)
 	Spacer(modifier = Modifier.height(4.dp))
 	ColorSlider(
-		title = AppString.LabelBlue.value(),
+		title = AppString.LABEL_BLUE.value(),
 		value = color.blue * 255f,
 		onValueChange = {
 			val color = color.copy(blue = it / 255f)
@@ -330,7 +331,7 @@ private fun LabelPreview(
 		verticalAlignment = Alignment.CenterVertically,
 	) {
 		Text(
-			text = AppString.LabelPreview.value(),
+			text = AppString.LABEL_PREVIEW.value(),
 			color = MaterialTheme.colorScheme.onSurface,
 			style = MaterialTheme.typography.bodyMedium,
 		)
@@ -349,7 +350,7 @@ private fun LabelPreview(
 			contentAlignment = Alignment.Center
 		) {
 			Text(
-				text = label.ifBlank { AppString.Label.value() },
+				text = label.ifBlank { AppString.LABEL.value() },
 				color = if (color.luminance() > 0.5f) Color.Black else Color.White,
 				style = MaterialTheme.typography.bodyMedium,
 			)
@@ -398,7 +399,7 @@ private fun ControlBottomBar(
 		val personViewModel = koinViewModel<PersonViewModel>()
 		if (selected != null) {
 			NoButton(
-				text = AppString.LabelDelete.value(),
+				text = AppString.LABEL_DELETE.value(),
 				modifier = Modifier.weight(1f),
 				colors = NoButtonColors.ErrorColors
 			) {
@@ -409,7 +410,7 @@ private fun ControlBottomBar(
 			}
 			Spacer(modifier = Modifier.width(16.dp))
 			NoButton(
-				text = AppString.LabelUpdate.value(),
+				text = AppString.LABEL_UPDATE.value(),
 				modifier = Modifier.weight(1f),
 			) {
 				val success = viewModel.updateLabel(selected.id, label, color)
@@ -419,7 +420,7 @@ private fun ControlBottomBar(
 			}
 		} else {
 			NoButton(
-				text = AppString.LabelCancel.value(),
+				text = AppString.LABEL_CANCEL.value(),
 				modifier = Modifier.weight(1f),
 				colors = NoButtonColors.SurfaceContainerHighColors
 			) {
@@ -428,7 +429,7 @@ private fun ControlBottomBar(
 			}
 			Spacer(modifier = Modifier.width(16.dp))
 			NoButton(
-				text = AppString.LabelAdd.value(),
+				text = AppString.LABEL_ADD.value(),
 				modifier = Modifier.weight(1f)
 			) {
 				val success = viewModel.addLabel(label, color)

@@ -1,5 +1,7 @@
 package com.nocircle.server.app.plugins
 
+import com.nocircle.server.app.tables.friend.FriendAddRequests
+import com.nocircle.server.app.tables.friend.FriendRelationships
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.app.tables.user.UserLogins
 import com.nocircle.server.app.tables.user.Users
@@ -18,12 +20,16 @@ fun configureDatabase() {
 			password = yaml.mysql.password
 		)
 		transaction(database) {
-			SchemaUtils.create(
-				Users,
-				UserLabels,
-				UserLogins
-			)
+			SchemaUtils.create(*tables)
 		}
 	}
 	NoLog.info("Mysql connected used for ${millis / 1_000f} seconds.")
 }
+
+private val tables = arrayOf(
+	Users,
+	UserLabels,
+	UserLogins,
+	FriendAddRequests,
+	FriendRelationships
+)

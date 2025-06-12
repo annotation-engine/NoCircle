@@ -4,11 +4,12 @@ import cn.vividcode.multiplatform.ktorfitx.api.ktorfit
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.get
-import com.nocircle.common.device.DeviceName.Android
+import com.nocircle.common.device.DeviceName.ANDROID
 import com.nocircle.common.device.NoDevice
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.websocket.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -18,7 +19,7 @@ val ktorfitx = ktorfit {
 		runBlocking { TokenConfigKey.get() }
 	}
 	baseUrl = when (NoDevice.Name) {
-		Android -> "http://10.0.2.2:8080/api/"
+		ANDROID -> "http://10.0.2.2:8080/api/"
 		else -> "http://127.0.0.1:8080/api/"
 	}
 	httpClient(HttpClientEngineFactory) {
@@ -33,6 +34,7 @@ val ktorfitx = ktorfit {
 			socketTimeoutMillis = 10_000L
 			connectTimeoutMillis = 10_000L
 		}
+		install(WebSockets)
 	}
 }
 

@@ -12,10 +12,10 @@ internal actual inline fun NoLog.log(tag: String, level: LogLevel, message: Stri
 }
 
 private fun LogLevel.toJavaLevel(): Level = when (this) {
-	LogLevel.Verbose -> Level.FINEST
-	LogLevel.Debug -> Level.FINE
-	LogLevel.Info -> Level.INFO
-	LogLevel.Warn -> Level.WARNING
-	LogLevel.Error -> Level.SEVERE
-	LogLevel.Assert -> Level.SEVERE
+	LogLevel.VERBOSE -> Level.FINEST
+	LogLevel.DEBUG -> Level.FINE
+	LogLevel.INFO -> Level.INFO
+	LogLevel.WARN -> Level.WARNING
+	LogLevel.ERROR -> Level.SEVERE
+	LogLevel.ASSERT -> Level.SEVERE
 }

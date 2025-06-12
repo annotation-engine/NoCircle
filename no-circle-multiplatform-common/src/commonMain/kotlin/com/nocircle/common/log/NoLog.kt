@@ -11,48 +11,48 @@ import kotlin.time.ExperimentalTime
 
 object NoLog {
 	
-	private const val TAG = "NoCircle"
+	private const val TAG = "NoCircleTag"
 	
 	fun verbose(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(LogLevel.Verbose, store, *messages)
+		this.log(LogLevel.VERBOSE, store, *messages)
 	}
 	
 	fun debug(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(LogLevel.Debug, store, *messages)
+		this.log(LogLevel.DEBUG, store, *messages)
 	}
 	
 	fun info(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(LogLevel.Info, store, *messages)
+		this.log(LogLevel.INFO, store, *messages)
 	}
 	
 	fun warn(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(LogLevel.Warn, store, *messages)
+		this.log(LogLevel.WARN, store, *messages)
 	}
 	
 	fun error(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(LogLevel.Error, store, *messages)
+		this.log(LogLevel.ERROR, store, *messages)
 	}
 	
 	fun assert(
 		vararg messages: Any?,
 		store: Boolean = false,
 	) {
-		this.log(LogLevel.Assert, store, *messages)
+		this.log(LogLevel.ASSERT, store, *messages)
 	}
 	
 	@OptIn(ExperimentalTime::class)
@@ -76,10 +76,10 @@ object NoLog {
 internal expect inline fun NoLog.log(tag: String, level: LogLevel, message: String)
 
 internal enum class LogLevel {
-	Verbose,
-	Debug,
-	Info,
-	Warn,
-	Error,
-	Assert
+	VERBOSE,
+	DEBUG,
+	INFO,
+	WARN,
+	ERROR,
+	ASSERT
 }

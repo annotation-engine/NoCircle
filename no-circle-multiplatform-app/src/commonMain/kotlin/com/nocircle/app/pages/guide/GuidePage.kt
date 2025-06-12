@@ -43,7 +43,7 @@ fun GuidePage() {
 			already = true
 			controller.navigate(
 				route = if (verify!!) MainRoute else LoginRoute,
-				popup = NoPopUp.Current
+				popup = NoPopUp.CURRENT
 			)
 		}
 	}

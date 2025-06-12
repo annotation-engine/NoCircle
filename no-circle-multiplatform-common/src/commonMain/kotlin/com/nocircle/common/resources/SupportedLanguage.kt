@@ -9,27 +9,27 @@ enum class SupportedLanguage(
 	val language: String,
 	val displayName: String
 ) {
-	Chinese(
+	CHINESE(
 		language = "zh",
 		displayName = "简体中文",
 	),
-	English(
+	ENGLISH(
 		language = "en",
 		displayName = "English",
 	),
-	Japanese(
+	JAPANESE(
 		language = "ja",
 		displayName = "日本語",
 	),
-	French(
+	FRENCH(
 		language = "fr",
 		displayName = "Français"
 	),
-	German(
+	GERMAN(
 		language = "de",
 		displayName = "Deutsch"
 	),
-	Russian(
+	RUSSIAN(
 		language = "ru",
 		displayName = "Русский"
 	);
@@ -37,7 +37,7 @@ enum class SupportedLanguage(
 	companion object : StatusFlowConfig<SupportedLanguage>() {
 		
 		override suspend fun getConfigFromStorage(): SupportedLanguage {
-			return SupportedLanguageConfigKey.get() ?: Chinese
+			return SupportedLanguageConfigKey.get() ?: CHINESE
 		}
 		
 		override suspend fun setConfigToStorage(oldConfig: SupportedLanguage, newConfig: SupportedLanguage) {

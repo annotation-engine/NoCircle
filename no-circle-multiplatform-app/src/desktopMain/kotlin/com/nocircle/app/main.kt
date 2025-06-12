@@ -25,8 +25,8 @@ import kotlin.reflect.KClass
 
 fun main() {
 	application {
-		var minSize by remember { mutableStateOf(ScreenConfig.Guide.minSize) }
-		var config by remember { mutableStateOf(ScreenConfig.Guide) }
+		var minSize by remember { mutableStateOf(ScreenConfig.EXTRA_SMALL.minSize) }
+		var config by remember { mutableStateOf(ScreenConfig.EXTRA_SMALL) }
 		val windowState by animateWindowStateAsState(
 			targetValue = config.size,
 			finishedListener = {
@@ -64,7 +64,7 @@ private fun FrameWindowScope.WindowEffect(
 	onConfigChange: (ScreenConfig) -> Unit,
 ) {
 	LaunchedEffect(Unit) {
-		if (NoDevice.Name == DeviceName.MacOS) {
+		if (NoDevice.Name == DeviceName.MACOS) {
 			window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
 			window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
 		}
@@ -81,7 +81,7 @@ private fun FrameWindowScope.WindowEffect(
 		}
 		val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
 			val currentRoute = controller.currentRoute
-			val config = ScreenConfig.entries.find { currentRoute in it.routes } ?: ScreenConfig.Medium
+			val config = ScreenConfig.entries.find { currentRoute in it.routes } ?: ScreenConfig.MEDIUM
 			onConfigChange(config)
 		}
 		rootController!!.addOnDestinationChangedListener(listener)
@@ -98,17 +98,17 @@ private enum class ScreenConfig(
 	val resizable: Boolean = true,
 	val minSize: DpSize = size,
 ) {
-	Guide(
+	EXTRA_SMALL(
 		size = DpSize(340.dp, 340.dp),
 		routes = arrayOf(GuideRoute::class),
 		resizable = false
 	),
-	Small(
+	SMALL(
 		size = DpSize(340.dp, 520.dp),
 		routes = arrayOf(LoginRoute::class, RegisterRoute::class),
 		resizable = false
 	),
-	Medium(
+	MEDIUM(
 		size = DpSize(800.dp, 600.dp),
 		routes = arrayOf(MainRoute::class),
 		minSize = DpSize(380.dp, 540.dp)

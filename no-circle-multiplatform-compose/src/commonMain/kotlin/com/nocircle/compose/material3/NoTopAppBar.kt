@@ -35,7 +35,7 @@ fun NoTopAppBar(
 			WindowInsets(
 				top = when {
 					!isCompat -> paddingValues.calculateTopPadding() / 2
-					deviceType == DeviceType.Desktop -> paddingValues.calculateTopPadding() + 20.dp
+					deviceType == DeviceType.DESKTOP -> paddingValues.calculateTopPadding() + 20.dp
 					else -> paddingValues.calculateTopPadding()
 				}
 			)

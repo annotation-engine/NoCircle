@@ -9,29 +9,29 @@ expect object NoDevice {
 
 enum class DeviceName {
 	
-	Android,
+	ANDROID,
 	
 	IOS,
 	
-	MacOS,
+	MACOS,
 	
-	Linux,
+	LINUX,
 	
-	Windows,
+	WINDOWS,
 	
-	Unknown
+	UNKNOWN
 }
 
 enum class DeviceType {
 	
-	Mobile,
+	MOBILE,
 	
-	Desktop;
+	DESKTOP;
 	
 	companion object {
 		
-		val isMobile by lazy { NoDevice.Type == Mobile }
+		val isMobile by lazy { NoDevice.Type == MOBILE }
 		
-		val isDesktop by lazy { NoDevice.Type == Desktop }
+		val isDesktop by lazy { NoDevice.Type == DESKTOP }
 	}
 }

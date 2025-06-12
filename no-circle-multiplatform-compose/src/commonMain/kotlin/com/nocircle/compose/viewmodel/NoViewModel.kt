@@ -76,7 +76,7 @@ abstract class NoViewModel : ViewModel() {
 				prefixIcon,
 				withDismissAction,
 				duration,
-				colors = NoSnackbarColors.Error
+				colors = NoSnackbarColors.ERROR
 			)
 		)
 	}
@@ -95,7 +95,7 @@ abstract class NoViewModel : ViewModel() {
 				prefixIcon,
 				withDismissAction,
 				duration,
-				colors = NoSnackbarColors.Error
+				colors = NoSnackbarColors.ERROR
 			)
 		)
 	}
@@ -109,7 +109,7 @@ abstract class NoViewModel : ViewModel() {
 	}
 	
 	protected suspend inline fun <reified T : Any> networkError(): T {
-		this.showNoErrorSnackbar(ComposeString.NetworkConnectError.getString())
+		this.showNoErrorSnackbar(ComposeString.NETWORK_CONNECT_ERROR.getString())
 		return when (T::class) {
 			Boolean::class -> false
 			Unit::class -> Unit

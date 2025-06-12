@@ -63,7 +63,7 @@ value class NoNavHostController internal constructor(
 	fun <R : NoRoute> navigate(
 		route: R,
 		data: Map<String, Any?>? = null,
-		popup: NoPopUp = NoPopUp.None,
+		popup: NoPopUp = NoPopUp.NONE,
 		singleTop: Boolean = true,
 	) {
 		val entry = original.currentBackStackEntry ?: return
@@ -75,13 +75,13 @@ value class NoNavHostController internal constructor(
 		handle[FROM_ROUTE_KEY] = original.currentDestination?.route
 		
 		when (popup) {
-			NoPopUp.None -> {
+			NoPopUp.NONE -> {
 				original.navigate(route) {
 					this.launchSingleTop = singleTop
 				}
 			}
 			
-			NoPopUp.Current -> {
+			NoPopUp.CURRENT -> {
 				val currentRoute = this.currentRoute
 				original.navigate(route) {
 					this.launchSingleTop = singleTop
@@ -93,7 +93,7 @@ value class NoNavHostController internal constructor(
 				}
 			}
 			
-			NoPopUp.All -> {
+			NoPopUp.ALL -> {
 				original.navigate(route) {
 					this.launchSingleTop = singleTop
 					popUpTo(0) {
@@ -143,9 +143,9 @@ value class NoNavHostController internal constructor(
 }
 
 enum class NoPopUp {
-	None,
-	Current,
-	All
+	NONE,
+	CURRENT,
+	ALL
 }
 
 @Composable

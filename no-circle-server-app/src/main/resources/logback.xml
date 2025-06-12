@@ -7,6 +7,6 @@
 	<root level="OFF">
 		<appender-ref ref="STDOUT" />
 	</root>
-	<logger name="NoCircle" level="INFO" />
+	<logger name="NoCircleTag" level="INFO" />
 	<logger name="Application" level="INFO" />
 </configuration>

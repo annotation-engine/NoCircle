@@ -1,6 +1,7 @@
 package com.nocircle.server.app.plugins
 
 import com.nocircle.server.app.routes.auth.AuthVerifyTokenRoute
+import com.nocircle.server.app.routes.friend.FriendAddRequestRoute
 import com.nocircle.server.app.routes.label.LabelAddRoute
 import com.nocircle.server.app.routes.label.LabelDeleteRoute
 import com.nocircle.server.app.routes.label.LabelQueryRoute
@@ -28,6 +29,9 @@ fun Application.configureRoutes() {
 			this += LabelDeleteRoute
 			this += LabelUpdateRoute
 			this += LabelQueryRoute
+		}
+		group {
+			this += FriendAddRequestRoute
 		}
 	}
 }

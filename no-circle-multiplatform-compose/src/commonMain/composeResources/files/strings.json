@@ -1,5 +1,5 @@
 {
-	"NetworkConnectError": {
+	"NETWORK_CONNECT_ERROR": {
 		"zh": "网络连接错误",
 		"en": "Network connection error",
 		"ja": "ネットワーク接続エラー",
@@ -7,7 +7,7 @@
 		"de": "Netzwerkverbindungsfehler",
 		"ru": "Ошибка сетевого подключения"
 	},
-	"Confirm": {
+	"CONFIRM": {
 		"zh": "确定",
 		"en": "Confirm",
 		"ja": "確認",
@@ -15,7 +15,7 @@
 		"de": "Bestätigen",
 		"ru": "Подтвердить"
 	},
-	"Cancel": {
+	"CANCEL": {
 		"zh": "取消",
 		"en": "Cancel",
 		"ja": "キャンセル",

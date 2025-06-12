@@ -5,6 +5,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CenterFocusWeak
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -18,7 +20,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.pages.main.person.request.FriendAddRequestRoute
+import com.nocircle.app.pages.main.person.label.EditLabelSheet
+import com.nocircle.app.pages.main.person.message.MessageCenterRoute
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
@@ -96,7 +99,7 @@ private fun UserDetailCard() {
 				)
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
-					text = AppString.PersonID.value().format(userDetail?.username ?: ""),
+					text = AppString.PERSON_ID.value().format(userDetail?.username ?: ""),
 					color = MaterialTheme.colorScheme.outline,
 					style = MaterialTheme.typography.bodyMedium,
 				)
@@ -183,7 +186,7 @@ private fun LastLoginTime() {
 	val userDetail by viewModel.userDetail.collectAsState()
 	val lastLoginTime = userDetail?.lastLoginTime
 	NoOption(
-		title = { Text(AppString.PersonLastLoginTime.value()) },
+		title = { Text(AppString.PERSON_LAST_LOGIN_TIME.value()) },
 		icon = { NoIcon(AppIcon.AccessTime.value()) },
 		actions = {
 			Text(lastLoginTime ?: "--")
@@ -194,13 +197,14 @@ private fun LastLoginTime() {
 
 @Composable
 private fun FriendAddRequest() {
+	Icons.Rounded.CenterFocusWeak
 	val controller = LocalNavController.current
 	NoOption(
-		title = { Text("好友请求消息") },
-		icon = { NoIcon(AppIcon.GroupAdd.value()) },
-		actions = { Text("您有1条好友请求消息未查看") }
+		title = { Text(AppString.MESSAGE_CENTER_TITLE.value()) },
+		icon = { NoIcon(AppIcon.Email.value()) },
+		actions = { Text(AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NO_NEWS.value()) }
 	) {
-		controller.navigate(route = FriendAddRequestRoute)
+		controller.navigate(route = MessageCenterRoute)
 	}
 }
 
@@ -208,9 +212,9 @@ private fun FriendAddRequest() {
 private fun OptionList() {
 	val controller = LocalNavController.current
 	NoOption(
-		title = { Text(AppString.Settings.value()) },
+		title = { Text(AppString.SETTINGS.value()) },
 		icon = { NoIcon(AppIcon.Settings.value()) },
-		actions = { Text(AppString.PersonSettingsSubtitle.value()) }
+		actions = { Text(AppString.PERSON_SETTINGS_SUBTITLE.value()) }
 	) {
 		controller.navigate(route = SettingsRoute)
 	}

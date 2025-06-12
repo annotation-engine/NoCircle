@@ -30,7 +30,7 @@ object LabelDeleteRoute : NoRoute<Unit> {
 		val userId = parameters.userId
 		val id: Int by parameters
 		val success = transaction {
-			UserLabels.delete(userId, id)
+			UserLabels.deleteOne(userId, id)
 		}
 		return if (success) {
 			ApiResult.success("标签删除成功")

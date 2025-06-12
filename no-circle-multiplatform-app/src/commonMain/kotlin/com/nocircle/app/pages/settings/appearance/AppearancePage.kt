@@ -60,7 +60,7 @@ fun AppearancePage() {
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
-				title = { Text(AppString.Appearance.value()) },
+				title = { Text(AppString.APPEARANCE.value()) },
 				onNavigationIconClick = if (WindowWidthSizes.isCompact) {
 					{ controller.popBackStack() }
 				} else null
@@ -103,7 +103,7 @@ private fun ColorSchemeContrastOptions() {
 	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
 		icon = AppIcon.Contrast.value(),
-		title = AppString.AppearanceContrast.value(),
+		title = AppString.APPEARANCE_CONTRAST.value(),
 		items = ColorSchemeContrast.entries,
 		current = current
 	) { contrast ->
@@ -112,7 +112,7 @@ private fun ColorSchemeContrastOptions() {
 			selected = current == contrast,
 			colorScheme = colorScheme,
 			name = contrast.title.value(),
-			preview = AppString.AppearanceContrastPreview.value()
+			preview = AppString.APPEARANCE_CONTRAST_PREVIEW.value()
 		) {
 			coroutineScope.launch(Dispatchers.IO) {
 				ColorSchemeContrast.set(contrast)
@@ -130,7 +130,7 @@ private fun ColorSchemeGroupOptions() {
 	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
 		icon = AppIcon.ColorLens.value(),
-		title = AppString.AppearanceTheme.value(),
+		title = AppString.APPEARANCE_THEME.value(),
 		items = ColorSchemeGroup.allColorSchemeGroups,
 		current = current
 	) { group ->
@@ -139,7 +139,7 @@ private fun ColorSchemeGroupOptions() {
 			selected = current == group,
 			colorScheme = colorScheme,
 			name = group.name.value(),
-			preview = AppString.AppearanceThemePreview.value()
+			preview = AppString.APPEARANCE_THEME_PREVIEW.value()
 		) {
 			coroutineScope.launch(Dispatchers.IO) {
 				ColorSchemeGroup.set(group)
@@ -171,17 +171,17 @@ private fun ThemeModeOptions() {
 	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
 		icon = AppIcon.DarkMode.value(),
-		title = AppString.AppearanceThemeMode.value(),
+		title = AppString.APPEARANCE_THEME_MODE.value(),
 		current = current,
 		items = ThemeMode.entries
 	) { themeMode ->
-		if (themeMode != ThemeMode.System) {
+		if (themeMode != ThemeMode.SYSTEM) {
 			val colorScheme = getColorScheme(themeMode = themeMode)
 			ColorSchemeCard(
 				selected = current == themeMode,
 				colorScheme = colorScheme,
 				name = themeMode.title.value(),
-				preview = AppString.AppearanceThemeModePreview.value()
+				preview = AppString.APPEARANCE_THEME_MODE_PREVIEW.value()
 			) {
 				coroutineScope.launch(Dispatchers.IO) {
 					ThemeMode.set(themeMode)
@@ -193,7 +193,7 @@ private fun ThemeModeOptions() {
 					.clip(MaterialTheme.shapes.large)
 					.clickable {
 						coroutineScope.launch(Dispatchers.IO) {
-							ThemeMode.set(ThemeMode.System)
+							ThemeMode.set(ThemeMode.SYSTEM)
 						}
 					}
 			) {
@@ -217,15 +217,15 @@ private fun ThemeModeOptions() {
 					}
 					val themeMode by remember(isDarkPreview, isDark) {
 						derivedStateOf {
-							if ((isDarkPreview && isDark) || (!isDarkPreview && !isDark)) ThemeMode.Dark else ThemeMode.Light
+							if ((isDarkPreview && isDark) || (!isDarkPreview && !isDark)) ThemeMode.DARK else ThemeMode.LIGHT
 						}
 					}
 					val colorScheme = getColorScheme(themeMode = themeMode)
 					ColorSchemeCard(
-						selected = current == ThemeMode.System,
+						selected = current == ThemeMode.SYSTEM,
 						colorScheme = colorScheme,
-						name = ThemeMode.System.title.value(),
-						preview = AppString.AppearanceThemeModePreview.value(),
+						name = ThemeMode.SYSTEM.title.value(),
+						preview = AppString.APPEARANCE_THEME_MODE_PREVIEW.value(),
 						modifier = Modifier.clip(shape)
 					)
 				}
@@ -292,7 +292,7 @@ private fun <T : Any> SettingsOptions(
 				verticalAlignment = Alignment.CenterVertically,
 			) {
 				Text(
-					text = if (singleLine) AppString.AppearanceMultiLine.value(items.size) else AppString.AppearanceSingleLine.value(),
+					text = if (singleLine) AppString.APPEARANCE_MULTI_LINE.value(items.size) else AppString.APPEARANCE_SINGLE_LINE.value(),
 					color = MaterialTheme.colorScheme.primary,
 					style = MaterialTheme.typography.bodyMedium
 				)

@@ -13,8 +13,8 @@ import org.jetbrains.exposed.v1.jdbc.updateReturning
 fun Query.exists(): Boolean = !this.empty()
 
 fun Query.logicExists(
-	table: BaseTable,
-	vararg tables: BaseTable
+	table: NoTable,
+	vararg tables: NoTable
 ): Query {
 	return this.andWhere {
 		tables.fold(table.deleteFlag eq false) { acc, table ->
@@ -23,7 +23,7 @@ fun Query.logicExists(
 	}
 }
 
-fun <T : BaseTable> T.logicUpdate(
+fun <T : NoTable> T.logicUpdate(
 	limit: Int? = null,
 	body: T.(UpdateStatement) -> Unit
 ): Int {
@@ -36,7 +36,7 @@ fun <T : BaseTable> T.logicUpdate(
 	}
 }
 
-fun <T : BaseTable> T.logicUpdate(
+fun <T : NoTable> T.logicUpdate(
 	where: SqlExpressionBuilder.() -> Op<Boolean>,
 	limit: Int? = null,
 	body: T.(UpdateStatement) -> Unit
@@ -50,7 +50,7 @@ fun <T : BaseTable> T.logicUpdate(
 	}
 }
 
-fun <T : BaseTable> T.logicUpdateReturning(
+fun <T : NoTable> T.logicUpdateReturning(
 	returning: List<Expression<*>> = columns,
 	body: T.(UpdateStatement) -> Unit
 ): ReturningBlockingExecutable {
@@ -63,7 +63,7 @@ fun <T : BaseTable> T.logicUpdateReturning(
 	}
 }
 
-fun <T : BaseTable> T.logicUpdateReturning(
+fun <T : NoTable> T.logicUpdateReturning(
 	returning: List<Expression<*>> = columns,
 	where: SqlExpressionBuilder.() -> Op<Boolean>,
 	body: T.(UpdateStatement) -> Unit
@@ -77,7 +77,7 @@ fun <T : BaseTable> T.logicUpdateReturning(
 	}
 }
 
-fun <T : BaseTable> T.logicDeleteWhere(
+fun <T : NoTable> T.logicDeleteWhere(
 	limit: Int? = null,
 	op: T.(ISqlExpressionBuilder) -> Op<Boolean>
 ): Int {
@@ -89,7 +89,7 @@ fun <T : BaseTable> T.logicDeleteWhere(
 	}
 }
 
-fun <T : BaseTable> T.logicDeleteReturning(
+fun <T : NoTable> T.logicDeleteReturning(
 	returning: List<Expression<*>> = columns,
 	where: SqlExpressionBuilder.() -> Op<Boolean>
 ): ReturningBlockingExecutable {
@@ -101,7 +101,7 @@ fun <T : BaseTable> T.logicDeleteReturning(
 	}
 }
 
-fun <T : BaseTable> T.logicDeleteAll(): Int {
+fun <T : NoTable> T.logicDeleteAll(): Int {
 	return this.logicDeleteWhere {
 		this.deleteFlag eq false
 	}

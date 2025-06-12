@@ -58,5 +58,12 @@ data class SearchUserVO(
 	val nickname: String?,
 	val avatarUrl: String?,
 	val labels: List<LabelVO>,
-	val isOwner: Boolean,
+	val relationship: RelationshipVO,
+	val isAlreadySend: Boolean
 )
+
+enum class RelationshipVO {
+	FRIEND,
+	OWNER,
+	STRANGER
+}

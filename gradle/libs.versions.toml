@@ -1,6 +1,6 @@
 [versions]
 android-compileSdk = "36"
-android-minSdk = "26"
+android-minSdk = "24"
 android-targetSdk = "36"
 kotlin = "2.1.21"
 agp = "8.10.1"
@@ -10,16 +10,16 @@ kotlinx-coroutines-swing = "1.10.2"
 room = "2.7.1"
 sqlite = "2.5.1"
 navigation-compose = "2.9.0-beta02"
-koin = "4.1.0-RC1"
+koin = "4.1.0"
 ktor = "3.1.3"
-ktorfitx = "3.1.3-2.4.1"
+ktorfitx = "3.1.3-2.5.1"
 exposed = "1.0.0-beta-2"
 mysql = "9.3.0"
 coil3 = "3.2.0"
 logback-classic = "1.5.18"
 hutool = "5.8.38"
 redisson = "3.49.0"
-ksp = "2.1.21-2.0.1"
+ksp = "2.1.21-2.0.2"
 hot-reload = "1.0.0-alpha10"
 
 [libraries]
@@ -41,6 +41,7 @@ ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.r
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorfitx-api = { group = "cn.vividcode.multiplatform", name = "ktorfitx-api", version.ref = "ktorfitx" }
+ktorfitx-websockets = { group = "cn.vividcode.multiplatform", name = "ktorfitx-websockets", version.ref = "ktorfitx" }
 ktorfitx-ksp = { group = "cn.vividcode.multiplatform", name = "ktorfitx-ksp", version.ref = "ktorfitx" }
 
 # Ktor Server
@@ -92,7 +93,8 @@ multiplatform-app = [
     'room-paging',
     'coil-compose',
     'coil-network-ktor3',
-    'ktorfitx-api'
+    'ktorfitx-api',
+    'ktorfitx-websockets'
 ]
 
 multiplatform-app-desktop = [

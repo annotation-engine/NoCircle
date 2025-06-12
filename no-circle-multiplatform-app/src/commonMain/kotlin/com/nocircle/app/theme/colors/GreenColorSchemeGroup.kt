@@ -8,7 +8,7 @@ import com.nocircle.app.resources.AppString
 @Immutable
 object GreenColorSchemeGroup : ColorSchemeGroup {
 	
-	override val name = AppString.AppearanceThemeGreen
+	override val name = AppString.APPEARANCE_THEME_GREEN
 	
 	override val lightStandardContrast by lazy {
 		darkColorScheme(

@@ -41,23 +41,23 @@ class RegisterViewModel : NoViewModel() {
         val password = this.password.value
         val confirmPassword = this.confirmPassword.value
         if (username.isEmpty()) {
-            showNoSnackbar(AppString.RegisterPleaseInputPassword.getString())
+            showNoSnackbar(AppString.REGISTER_PLEASE_INPUT_PASSWORD.getString())
             return false
         }
         if (username.length < 8) {
-            showNoSnackbar(AppString.RegisterUsernameLengthAtLeast8.getString())
+            showNoSnackbar(AppString.REGISTER_USERNAME_LENGTH_AT_LEAST_8.getString())
             return false
         }
         if (password.isEmpty()) {
-            showNoSnackbar(AppString.RegisterPleaseInputPassword.getString())
+            showNoSnackbar(AppString.REGISTER_PLEASE_INPUT_PASSWORD.getString())
             return false
         }
         if (password.length < 8) {
-            showNoSnackbar(AppString.RegisterPasswordLengthAtLeast8.getString())
+            showNoSnackbar(AppString.REGISTER_PASSWORD_LENGTH_AT_LEAST_8.getString())
             return false
         }
         if (password != confirmPassword) {
-            showNoSnackbar(AppString.RegisterPasswordsAreInconsistentTwice.getString())
+            showNoSnackbar(AppString.REGISTER_PASSWORD_ARE_INCONSISTENT_TWICE.getString())
             return false
         }
         val result = ktorfitx.userApi.register(username, password) ?: return networkError()

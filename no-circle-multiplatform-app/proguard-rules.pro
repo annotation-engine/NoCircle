@@ -2,13 +2,13 @@
 # 项目配置
 # ================================================================================
 
+#noinspection ShrinkerUnresolvedReference
 -keep class com.nocircle.app.MainKt {
     public static void main(java.lang.String[]);
 }
--keep class * implements com.nocircle.common.navigation.NoRoute { *; }
+
 -keep class * implements com.nocircle.common.config.ConfigKey { *; }
 -keep class com.nocircle.common.room.** { *; }
--keep class com.nocircle.common.navigation.** { *; }
 
 # ================================================================================
 # Kotlin 配置

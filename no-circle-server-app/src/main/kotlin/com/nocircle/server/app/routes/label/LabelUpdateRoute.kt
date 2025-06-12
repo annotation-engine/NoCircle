@@ -36,45 +36,45 @@ object LabelUpdateRoute : NoRoute<Unit> {
 		val id: Int by parameters
 		val label: String by parameters
 		val color: Int by parameters
-		val code = transaction {
+		val status = transaction {
 			val displayLength = label.getDisplayLength()
 			if (displayLength == 0) {
-				return@transaction Code.Empty
+				return@transaction Status.EMPTY
 			}
-			val userLabel = UserLabels.getById(id)
-				?: return@transaction Code.NotFound
+			val userLabel = UserLabels.getOneById(id)
+				?: return@transaction Status.NOT_FOUND
 			
 			if (userLabel.label == label && userLabel.color == color) {
-				return@transaction Code.NoChange
+				return@transaction Status.NO_CHANGE
 			}
 			
 			val labels = UserLabels.getListByUserIdAndNeqId(userId, id)
 			if (labels.find { it.label == label } != null) {
-				return@transaction Code.AlreadyExists
+				return@transaction Status.ALREADY_EXISTS
 			}
 			val totalLength = labels.sumOf { it.label.getDisplayLength() } + displayLength
 			if (totalLength > MAX_TOTAL_LENGTH) {
-				return@transaction Code.LengthLimit
+				return@transaction Status.LENGTH_LIMIT
 			}
-			val success = UserLabels.update(userId, id, label, color)
-			if (success) Code.Success else Code.Failure
+			val success = UserLabels.updateOne(userId, id, label, color)
+			if (success) Status.SUCCESS else Status.FAILURE
 		}
-		return if (code == Code.Success) {
-			ApiResult.success(code.msg)
+		return if (status == Status.SUCCESS) {
+			ApiResult.success(status.msg)
 		} else {
-			ApiResult.failure(code.msg)
+			ApiResult.failure(status.msg)
 		}
 	}
 	
-	private enum class Code(
+	private enum class Status(
 		val msg: String
 	) {
-		Success("标签修改成功"),
-		Failure("标签修改失败"),
-		NotFound("未找到标签"),
-		NoChange("标签无需修改"),
-		AlreadyExists("标签已存在"),
-		LengthLimit("超过总长度限制"),
-		Empty("标签不能为空")
+		SUCCESS("标签修改成功"),
+		FAILURE("标签修改失败"),
+		NOT_FOUND("未找到标签"),
+		NO_CHANGE("标签无需修改"),
+		ALREADY_EXISTS("标签已存在"),
+		LENGTH_LIMIT("超过总长度限制"),
+		EMPTY("标签不能为空")
 	}
 }

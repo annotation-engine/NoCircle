@@ -8,8 +8,8 @@ import io.ktor.server.response.*
 
 fun Application.configureStatusPages() {
 	install(StatusPages) {
-		val status = HttpStatusCode.allStatusCodes.filterNot {
-			it == HttpStatusCode.OK
+		val status = HttpStatusCode.allStatusCodes.filter {
+			it.value in 300..599
 		}.toTypedArray()
 		status(*status) {
 			call.respond(HttpStatusCode.OK, ApiResult.httpStatus(it))
