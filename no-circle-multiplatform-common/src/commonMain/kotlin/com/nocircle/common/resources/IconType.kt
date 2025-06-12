@@ -4,7 +4,9 @@ import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.common.flow.StatusFlowConfig
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class IconType {
 	ROUNDED,
 	OUTLINED,
@@ -13,6 +15,7 @@ enum class IconType {
 	TWO_TONE;
 	
 	companion object : StatusFlowConfig<IconType>() {
+		
 		override suspend fun getConfigFromStorage(): IconType {
 			return IconTypeConfigKey.get() ?: ROUNDED
 		}

@@ -12,6 +12,7 @@ import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.common.flow.StatusFlowConfig
+import kotlinx.serialization.Serializable
 
 @Immutable
 sealed interface ColorSchemeGroup {
@@ -60,6 +61,7 @@ sealed interface ColorSchemeGroup {
 	}
 }
 
+@Serializable
 enum class ColorSchemeContrast(
 	val title: AppString,
 ) {
@@ -79,6 +81,7 @@ enum class ColorSchemeContrast(
 	}
 }
 
+@Serializable
 enum class ThemeMode(
 	val title: AppString
 ) {

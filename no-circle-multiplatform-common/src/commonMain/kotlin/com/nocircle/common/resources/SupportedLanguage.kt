@@ -4,7 +4,9 @@ import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.common.flow.StatusFlowConfig
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class SupportedLanguage(
 	val language: String,
 	val displayName: String

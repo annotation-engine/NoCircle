@@ -1,7 +1,9 @@
 package com.nocircle.app.resources
 
 import com.nocircle.common.resources.NoString
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class AppString : NoString {
 	LOGIN,
 	LOGIN_PLEASE_INPUT_USERNAME,

@@ -13,7 +13,7 @@ object UserLabels : NoTable("tb_user_label") {
 	val userId = integer("user_id")
 		.references(Users.id)
 	
-	val label = varchar("label", 16)
+	val label = varchar("label", 20)
 	
 	val color = integer("color")
 	

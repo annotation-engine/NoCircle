@@ -189,7 +189,7 @@ private fun LastLoginTime() {
 		title = { Text(AppString.PERSON_LAST_LOGIN_TIME.value()) },
 		icon = { NoIcon(AppIcon.AccessTime.value()) },
 		actions = {
-			Text(lastLoginTime ?: "--")
+			Text(lastLoginTime ?: "-----")
 		},
 		showSuffixIcon = false
 	)

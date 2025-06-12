@@ -17,7 +17,7 @@ fun Memory() {
 		title = { Text(AppString.SETTINGS_MEMORY.value()) },
 		icon = { NoIcon(AppIcon.Memory.value()) },
 		actions = {
-			var usedMemory by remember { mutableStateOf("--") }
+			var usedMemory by remember { mutableStateOf("-----") }
 			LaunchedEffect(Unit) {
 				while (true) {
 					usedMemory = getUsedMemory().format()

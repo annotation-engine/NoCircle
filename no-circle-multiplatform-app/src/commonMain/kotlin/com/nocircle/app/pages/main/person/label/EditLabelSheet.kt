@@ -175,7 +175,7 @@ private fun Label(
 			.clickable { onClick() }
 			.border(
 				width = 2.dp,
-				color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
+				color = if (selected) color else Color.Transparent,
 				shape = MaterialTheme.shapes.small
 			)
 			.padding(5.dp)
