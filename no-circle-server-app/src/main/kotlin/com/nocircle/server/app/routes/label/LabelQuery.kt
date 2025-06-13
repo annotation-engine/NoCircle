@@ -28,7 +28,7 @@ fun Route.getQuery() = get("query") {
 private data class Label(
 	val id: Int,
 	val label: String,
-	val color: Int,
+	val color: String
 )
 
 /**

@@ -3,7 +3,6 @@ package com.nocircle.server.app.routes.label
 import com.nocircle.server.app.plugins.LabelContext
 import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.common.expends.getDisplayLength
-import com.nocircle.server.common.exposed.getInt
 import com.nocircle.server.common.exposed.getString
 import com.nocircle.server.common.model.Status
 import com.nocircle.server.common.model.noPrincipal
@@ -21,7 +20,7 @@ fun Route.postAdd() = post("add") {
 	val userId = call.noPrincipal!!.userId
 	val parameters = call.receiveParameters()
 	val label = parameters.getString("label")
-	val color = parameters.getInt("color")
+	val color = parameters.getString("color")
 	val status = transaction {
 		val displayLength = label.getDisplayLength()
 		if (displayLength == 0) {
@@ -35,7 +34,7 @@ fun Route.postAdd() = post("add") {
 			return@transaction AddStatus.ALREADY_EXISTS
 		}
 		val totalLength = labels.sumOf { it.label.getDisplayLength() } + displayLength
-		if (totalLength > MAX_TOTAL_LENGTH) {
+		if (totalLength > MAX_TOTAL_DISPLAY_LENGTH) {
 			return@transaction AddStatus.LENGTH_LIMIT
 		}
 		val success = UserLabels.insertOne(userId, label, color)
@@ -45,7 +44,7 @@ fun Route.postAdd() = post("add") {
 }
 
 private const val MAX_COUNT = 4
-private const val MAX_TOTAL_LENGTH = 20
+private const val MAX_TOTAL_DISPLAY_LENGTH = 20
 
 /**
  * 200X

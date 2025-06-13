@@ -26,7 +26,7 @@ interface LabelApi {
 	suspend fun updateLabel(
 		@Field id: Int,
 		@Field label: String,
-		@Field color: Int,
+		@Field color: String,
 	): ResultBody<Unit>?
 	
 	@BearerAuth
@@ -39,5 +39,5 @@ interface LabelApi {
 data class LabelVO(
 	val id: Int,
 	val label: String,
-	val color: Int,
+	val color: String,
 )

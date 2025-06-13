@@ -22,7 +22,7 @@ fun Route.postUpdate() = post("update") {
 	val parameters = call.receiveParameters()
 	val id = parameters.getInt("id")
 	val label = parameters.getString("label")
-	val color = parameters.getInt("color")
+	val color = parameters.getString("color")
 	val status = transaction {
 		val displayLength = label.getDisplayLength()
 		if (displayLength == 0) {
@@ -40,7 +40,7 @@ fun Route.postUpdate() = post("update") {
 			return@transaction UpdateStatus.ALREADY_EXISTS
 		}
 		val totalLength = labels.sumOf { it.label.getDisplayLength() } + displayLength
-		if (totalLength > MAX_TOTAL_LENGTH) {
+		if (totalLength > MAX_TOTAL_DISPLAY_LENGTH) {
 			return@transaction UpdateStatus.LENGTH_LIMIT
 		}
 		val success = UserLabels.updateOne(userId, id, label, color)
@@ -49,7 +49,7 @@ fun Route.postUpdate() = post("update") {
 	call.respond(status)
 }
 
-private const val MAX_TOTAL_LENGTH = 20
+private const val MAX_TOTAL_DISPLAY_LENGTH = 20
 
 /**
  * 203X

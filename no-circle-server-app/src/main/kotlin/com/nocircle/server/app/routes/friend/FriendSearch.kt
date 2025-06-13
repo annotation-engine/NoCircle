@@ -64,7 +64,7 @@ private data class SearchUser(
 private data class Label(
 	val id: Int,
 	val label: String,
-	val color: Int,
+	val color: String,
 )
 
 private enum class Relationship {

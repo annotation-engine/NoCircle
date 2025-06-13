@@ -26,6 +26,7 @@ import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.format
+import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoAsyncImage
@@ -121,7 +122,7 @@ private fun UserDetailCard() {
 					it.fastForEachIndexed { index, label ->
 						Label(
 							label = label.label,
-							color = label.color,
+							color = hexToColor(label.color)
 						)
 						Spacer(modifier = Modifier.width(6.dp))
 					}
@@ -137,9 +138,8 @@ private fun UserDetailCard() {
 @Composable
 private fun Label(
 	label: String,
-	color: Int,
+	color: Color,
 ) {
-	val color = Color(color)
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()

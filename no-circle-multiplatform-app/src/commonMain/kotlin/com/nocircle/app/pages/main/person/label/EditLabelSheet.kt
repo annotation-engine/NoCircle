@@ -17,6 +17,7 @@ import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.getDisplayLength
+import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtonColors
@@ -58,30 +59,34 @@ fun EditLabelSheet(
 		LaunchedEffect(Unit) {
 			viewModel.snackbarCollect(hostState::showNoSnackbar)
 		}
-		var selected by remember { mutableStateOf<LabelVO?>(null) }
+		var selectedId by remember { mutableStateOf<Int?>(null) }
 		val labels by personViewModel.labels.collectAsState()
 		var label by remember { mutableStateOf("") }
-		var addLabel by remember { mutableStateOf("") }
+		var color by remember { mutableStateOf(Color.Transparent) }
+		var newLabel by remember { mutableStateOf("") }
 		val primary = MaterialTheme.colorScheme.primary
-		var color by remember(primary) { mutableStateOf(primary) }
-		var maxLength by remember { mutableIntStateOf(0) }
-		val showAddLabel by remember(labels) {
-			derivedStateOf {
-				labels.getOverlength() > 0 && labels.size < MAX_COUNT
+		var newColor by remember(primary) { mutableStateOf(primary) }
+		LaunchedEffect(labels) {
+			if (selectedId != null) {
+				if (labels.all { it.id != selectedId }) {
+					selectedId = if (labels.size >= MAX_COUNT) labels.last().id else null
+				}
+			} else {
+				selectedId = if (labels.isNotEmpty()) labels.last().id else null
+				newLabel = ""
+				newColor = primary
 			}
 		}
-		LaunchedEffect(labels) {
-			addLabel = ""
-			val overlength = labels.getOverlength()
-			selected = if (labels.size < MAX_COUNT && overlength > 0) null else labels.last()
-			maxLength = overlength + if (selected != null) selected!!.label.getDisplayLength() else 0
-			color = primary
-			label = selected?.label ?: ""
+		LaunchedEffect(selectedId) {
+			if (selectedId != null) {
+				label = labels.first { it.id == selectedId }.label
+				color = hexToColor(labels.first { it.id == selectedId }.color)
+			} else {
+				label = newLabel
+				color = newColor
+			}
 		}
-		LaunchedEffect(selected) {
-			label = selected?.label ?: addLabel
-			maxLength = labels.getOverlength() + if (selected != null) selected!!.label.getDisplayLength() else 0
-		}
+		
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -94,30 +99,34 @@ fun EditLabelSheet(
 			labels.fastForEachIndexed { index, label ->
 				Label(
 					label = label,
-					selected = selected == label,
-					onClick = { selected = label },
+					selected = label.id == selectedId,
+					onClick = { selectedId = label.id },
 				)
 				if (index < labels.lastIndex) {
 					Spacer(modifier = Modifier.width(2.dp))
 				}
 			}
+			val showAddLabel by remember(labels) {
+				derivedStateOf { labels.size < MAX_COUNT && labels.getLabelTotalDisplayLength() < MAX_TOTAL_DISPLAY_LENGTH }
+			}
 			if (showAddLabel) {
 				Spacer(modifier = Modifier.width(2.dp))
 				AddLabel(
-					selected = selected == null,
-					onClick = { selected = null },
+					selected = selectedId == null,
+					onClick = { selectedId = null },
 				)
 			}
 		}
 		Spacer(modifier = Modifier.height(24.dp))
 		NoTextField(
 			value = label,
-			onValueChange = {
-				val length = it.getDisplayLength()
-				if (length <= maxLength) {
-					label = it
-					if (selected == null) {
-						addLabel = it
+			onValueChange = { value ->
+				val length = value.getDisplayLength()
+				val total = length + labels.getLabelTotalDisplayLength { it.id != selectedId }
+				if (total <= MAX_TOTAL_DISPLAY_LENGTH) {
+					label = value
+					if (selectedId == null) {
+						newLabel = value
 					}
 				}
 			},
@@ -125,14 +134,17 @@ fun EditLabelSheet(
 			placeholder = { Text(AppString.LABEL_PLEASE_INPUT_LABEL_NAME.value()) },
 			leadingIcon = {
 				NoIcon(
-					icon = if (selected == null) AppIcon.Add.value() else AppIcon.Edit.value()
+					icon = if (selectedId == null) AppIcon.Add.value() else AppIcon.Edit.value()
 				)
 			},
-			suffix = { Text("${label.getDisplayLength()} / $maxLength") }
+			suffix = {
+				val total = labels.getLabelTotalDisplayLength { it.id != selectedId }
+				val maxLength = MAX_TOTAL_DISPLAY_LENGTH - total
+				Text("${label.getDisplayLength()} / $maxLength")
+			}
 		)
 		Spacer(modifier = Modifier.height(24.dp))
 		ColorSliders(
-			selected = selected,
 			color = color,
 			onColorChange = { color = it },
 		)
@@ -143,8 +155,8 @@ fun EditLabelSheet(
 			onColorChange = { color = it }
 		)
 		Spacer(modifier = Modifier.height(24.dp))
-		ControlBottomBar(
-			selected = selected,
+		BottomButtons(
+			selectedId = selectedId,
 			color = color,
 			label = label,
 			sheetState = sheetState,
@@ -153,13 +165,15 @@ fun EditLabelSheet(
 	}
 }
 
-@Stable
-private fun List<LabelVO>.getOverlength(): Int {
-	return MAX_TOTAL_LENGTH - this.sumOf { it.label.getDisplayLength() }
-}
-
 private const val MAX_COUNT = 4
-private const val MAX_TOTAL_LENGTH = 20
+private const val MAX_TOTAL_DISPLAY_LENGTH = 20
+
+private fun List<LabelVO>.getLabelTotalDisplayLength(
+	predicate: ((LabelVO) -> Boolean)? = null
+): Int {
+	val list = if (predicate != null) this.filter(predicate) else this
+	return list.sumOf { it.label.getDisplayLength() }
+}
 
 @Composable
 private fun Label(
@@ -167,7 +181,7 @@ private fun Label(
 	selected: Boolean,
 	onClick: () -> Unit,
 ) {
-	val color = Color(label.color)
+	val color = hexToColor(label.color)
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()
@@ -228,24 +242,15 @@ private fun AddLabel(
 
 @Composable
 private fun ColorSliders(
-	selected: LabelVO?,
 	color: Color,
 	onColorChange: (Color) -> Unit
 ) {
-	val primary = MaterialTheme.colorScheme.primary
-	var addColor by remember(primary) { mutableStateOf(primary) }
-	LaunchedEffect(selected) {
-		onColorChange(selected?.color?.let { Color(it) } ?: addColor)
-	}
 	ColorSlider(
 		title = AppString.LABEL_RED.value(),
 		value = color.red * 255f,
 		onValueChange = {
 			val color = color.copy(red = it / 255f)
 			onColorChange(color)
-			if (selected == null) {
-				addColor = color
-			}
 		},
 		color = color
 	)
@@ -256,9 +261,6 @@ private fun ColorSliders(
 		onValueChange = {
 			val color = color.copy(green = it / 255f)
 			onColorChange(color)
-			if (selected == null) {
-				addColor = color
-			}
 		},
 		color = color
 	)
@@ -269,9 +271,6 @@ private fun ColorSliders(
 		onValueChange = {
 			val color = color.copy(blue = it / 255f)
 			onColorChange(color)
-			if (selected == null) {
-				addColor = color
-			}
 		},
 		color = color
 	)
@@ -384,8 +383,8 @@ private fun LabelPreview(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ControlBottomBar(
-	selected: LabelVO?,
+private fun BottomButtons(
+	selectedId: Int?,
 	color: Color,
 	label: String,
 	sheetState: SheetState,
@@ -397,13 +396,13 @@ private fun ControlBottomBar(
 	) {
 		val viewModel = koinViewModel<EditLabelViewModel>()
 		val personViewModel = koinViewModel<PersonViewModel>()
-		if (selected != null) {
+		if (selectedId != null) {
 			NoButton(
 				text = AppString.LABEL_DELETE.value(),
 				modifier = Modifier.weight(1f),
 				colors = NoButtonColors.ErrorColors
 			) {
-				val success = viewModel.deleteLabelById(selected.id)
+				val success = viewModel.deleteLabelById(selectedId)
 				if (success) {
 					personViewModel.loadLabels()
 				}
@@ -413,7 +412,7 @@ private fun ControlBottomBar(
 				text = AppString.LABEL_UPDATE.value(),
 				modifier = Modifier.weight(1f),
 			) {
-				val success = viewModel.updateLabel(selected.id, label, color)
+				val success = viewModel.updateLabel(selectedId, label, color)
 				if (success) {
 					personViewModel.loadLabels()
 				}

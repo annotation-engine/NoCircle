@@ -23,6 +23,7 @@ import com.nocircle.app.api.SearchUserVO
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.format
+import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.LocalSnackbarHostState
@@ -150,7 +151,7 @@ private fun UserCard(
 				searchUser.labels.fastForEachIndexed { index, label ->
 					Label(
 						label = label.label,
-						color = label.color,
+						color = hexToColor(label.color),
 					)
 					if (index < searchUser.labels.lastIndex) {
 						Spacer(modifier = Modifier.width(6.dp))
@@ -195,9 +196,8 @@ private fun UserCard(
 @Composable
 private fun Label(
 	label: String,
-	color: Int,
+	color: Color,
 ) {
-	val color = Color(color)
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()

@@ -4,20 +4,20 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
 @Stable
-fun String.hexToColor(): Color {
-	val colorLong = this.removePrefix("#").toLong(16)
-	return when (this.length) {
-		7 -> Color(colorLong or 0x00000000FF000000)
-		9 -> Color(colorLong)
-		else -> error("Illegal color type!")
-	}
+fun colorToHex(color: Color): String {
+	val a = (color.alpha * 255).toInt().toString(radix = 16).padStart(2, '0')
+	val r = (color.red * 255).toInt().toString(radix = 16).padStart(2, '0')
+	val g = (color.green * 255).toInt().toString(radix = 16).padStart(2, '0')
+	val b = (color.blue * 255).toInt().toString(radix = 16).padStart(2, '0')
+	return "#$a$r$g$b"
 }
 
 @Stable
-fun Color.toHexString(): String {
-	val a = (alpha * 255).toInt().toString(radix = 16)
-	val r = (red * 255).toInt().toString(radix = 16)
-	val g = (green * 255).toInt().toString(radix = 16)
-	val b = (blue * 255).toInt().toString(radix = 16)
-	return "#$a$r$g$b"
+fun hexToColor(hex: String): Color {
+	val cleanedHex = hex.removePrefix("#")
+	return when (cleanedHex.length) {
+		6 -> Color(cleanedHex.toLong(16) or 0xFF000000)
+		8 -> Color(cleanedHex.toLong(16))
+		else -> error("$hex is a illegal color type!")
+	}
 }

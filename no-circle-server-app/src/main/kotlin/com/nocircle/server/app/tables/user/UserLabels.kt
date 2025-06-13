@@ -15,7 +15,7 @@ object UserLabels : NoTable("tb_user_label") {
 	
 	val label = varchar("label", 20)
 	
-	val color = integer("color")
+	val color = char("color", 9)
 	
 	fun getOneById(id: Int): UserLabel? {
 		val row = UserLabels.selectAll()
@@ -39,7 +39,7 @@ object UserLabels : NoTable("tb_user_label") {
 		return UserLabel.wrapRows(query).toList()
 	}
 	
-	fun insertOne(userId: Int, label: String, color: Int): Boolean {
+	fun insertOne(userId: Int, label: String, color: String): Boolean {
 		val insert = UserLabels.insert {
 			it[this.userId] = userId
 			it[this.label] = label
@@ -48,7 +48,7 @@ object UserLabels : NoTable("tb_user_label") {
 		return insert.insertedCount == 1
 	}
 	
-	fun updateOne(userId: Int, id: Int, label: String, color: Int): Boolean {
+	fun updateOne(userId: Int, id: Int, label: String, color: String): Boolean {
 		val count = UserLabels.logicUpdate(
 			where = { (UserLabels.id eq id) and (UserLabels.userId eq userId) }
 		) {
