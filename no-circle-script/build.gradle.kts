@@ -15,8 +15,8 @@ kotlin {
 	jvmToolchain(21)
 	
 	compilerOptions {
-		languageVersion = KotlinVersion.KOTLIN_2_1
-		apiVersion = KotlinVersion.KOTLIN_2_1
-		freeCompilerArgs.addAll("-Xexpect-actual-classes")
+		languageVersion = KotlinVersion.KOTLIN_2_2
+		apiVersion = KotlinVersion.KOTLIN_2_2
+		freeCompilerArgs.addAll("-Xexpect-actual-classes", "-Xcontext-parameters")
 	}
 }

@@ -2,8 +2,7 @@ package com.nocircle.app.pages.main.friends.list.add
 
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.SearchUserVO
-import com.nocircle.app.api.impl.friendApi
-import com.nocircle.app.api.impl.userApi
+import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.compose.viewmodel.NoViewModel
@@ -55,7 +54,7 @@ class AddFriendViewModel : NoViewModel() {
 			_result.value = null
 			return
 		}
-		val result = ktorfitx.userApi.queryUserByUsername(username) ?: return networkError()
+		val result = ktorfitx.friendApi.searchByUsername(username) ?: return networkError()
 		if (result.success) {
 			_result.value = result.data
 		} else {

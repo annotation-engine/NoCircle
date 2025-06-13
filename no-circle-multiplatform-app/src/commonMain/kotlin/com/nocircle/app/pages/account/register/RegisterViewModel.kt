@@ -1,6 +1,6 @@
 package com.nocircle.app.pages.account.register
 
-import com.nocircle.app.api.impl.userApi
+import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString

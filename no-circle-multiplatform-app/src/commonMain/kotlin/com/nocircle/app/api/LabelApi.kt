@@ -11,22 +11,22 @@ interface LabelApi {
 	@BearerAuth
 	@POST("add")
 	suspend fun addLabel(
-		@Form label: String,
-		@Form color: Int,
+		@Field label: String,
+		@Field color: Int,
 	): ResultBody<Unit>?
 	
 	@BearerAuth
 	@POST("delete")
 	suspend fun deleteLabelById(
-		@Form id: Int
+		@Field id: Int
 	): ResultBody<Unit>?
 	
 	@BearerAuth
 	@POST("update")
 	suspend fun updateLabel(
-		@Form id: Int,
-		@Form label: String,
-		@Form color: Int,
+		@Field id: Int,
+		@Field label: String,
+		@Field color: Int,
 	): ResultBody<Unit>?
 	
 	@BearerAuth

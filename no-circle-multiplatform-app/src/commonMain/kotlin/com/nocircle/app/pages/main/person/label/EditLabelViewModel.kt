@@ -2,7 +2,7 @@ package com.nocircle.app.pages.main.person.label
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.nocircle.app.api.impl.labelApi
+import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString

@@ -22,8 +22,8 @@ kotlin {
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_1
-			apiVersion = KotlinVersion.KOTLIN_2_1
+			languageVersion = KotlinVersion.KOTLIN_2_2
+			apiVersion = KotlinVersion.KOTLIN_2_2
 		}
 	}
 	
@@ -42,8 +42,8 @@ kotlin {
 	jvm("desktop") {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_1
-			apiVersion = KotlinVersion.KOTLIN_2_1
+			languageVersion = KotlinVersion.KOTLIN_2_2
+			apiVersion = KotlinVersion.KOTLIN_2_2
 		}
 	}
 	
@@ -83,9 +83,9 @@ kotlin {
 		kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 	}
 	compilerOptions {
-		languageVersion = KotlinVersion.KOTLIN_2_1
-		apiVersion = KotlinVersion.KOTLIN_2_1
-		freeCompilerArgs.addAll("-Xexpect-actual-classes")
+		languageVersion = KotlinVersion.KOTLIN_2_2
+		apiVersion = KotlinVersion.KOTLIN_2_2
+		freeCompilerArgs.addAll("-Xexpect-actual-classes", "-Xcontext-parameters")
 	}
 }
 

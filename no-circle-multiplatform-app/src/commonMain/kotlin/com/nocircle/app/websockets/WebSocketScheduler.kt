@@ -1,6 +1,6 @@
 package com.nocircle.app.websockets
 
-import com.nocircle.app.api.impl.keepAliveApi
+import com.nocircle.app.api.impls.keepAliveApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.common.log.NoLog
 import io.ktor.websocket.*

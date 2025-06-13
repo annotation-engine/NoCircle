@@ -1,28 +1,32 @@
 package com.nocircle.server.app.routes.auth
 
+import com.nocircle.server.app.plugins.AuthContext
 import com.nocircle.server.app.tables.user.UserLogins
-import com.nocircle.server.common.model.ApiResult
-import com.nocircle.server.common.route.NoParameters
-import com.nocircle.server.common.route.NoRoute
-import io.ktor.http.*
+import com.nocircle.server.common.model.Status
+import com.nocircle.server.common.model.noPrincipal
+import com.nocircle.server.common.model.respond
+import com.nocircle.server.common.routes.AuthenticateContext
+import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 授权验证
  */
-object AuthVerifyTokenRoute : NoRoute<Boolean> {
-	
-	override val path = "/auth/verifyToken"
-	
-	override val method = HttpMethod.Post
-	
-	override val auth = true
-	
-	override suspend fun process(parameters: NoParameters): ApiResult<Boolean> {
-		val userId = parameters.userId
-		transaction {
-			UserLogins.insertOne(userId, UserLogins.Method.TOKEN)
-		}
-		return ApiResult.success("验证成功")
+context(_: AuthContext, _: AuthenticateContext)
+fun Route.postVerifyToken(): Route = post("verifyToken") {
+	val userId = call.noPrincipal!!.userId
+	transaction {
+		UserLogins.insertOne(userId, UserLogins.Method.TOKEN)
 	}
+	call.respond(VerifyTokenStatus.SUCCESS)
+}
+
+/**
+ * 0 - 999
+ */
+enum class VerifyTokenStatus(
+	override val msg: String,
+	override val code: Int
+) : Status {
+	SUCCESS("验证成功", 0)
 }

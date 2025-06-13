@@ -10,14 +10,14 @@ interface UserApi {
 	
 	@POST("login")
 	suspend fun login(
-		@Form username: String,
-		@Form password: String
+		@Field username: String,
+		@Field password: String
 	): ResultBody<LoginVO>?
 	
 	@POST("register")
 	suspend fun register(
-		@Form username: String,
-		@Form password: String,
+		@Field username: String,
+		@Field password: String,
 	): ResultBody<Unit>?
 	
 	@BearerAuth
@@ -27,12 +27,6 @@ interface UserApi {
 	@BearerAuth
 	@GET("detail")
 	suspend fun queryDetail(): ResultBody<UserDetailVO>?
-	
-	@BearerAuth
-	@GET("query")
-	suspend fun queryUserByUsername(
-		@Query username: String
-	): ResultBody<SearchUserVO>?
 }
 
 @Immutable

@@ -3,8 +3,8 @@ package com.nocircle.app.pages.main.person
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.LabelVO
 import com.nocircle.app.api.UserDetailVO
-import com.nocircle.app.api.impl.labelApi
-import com.nocircle.app.api.impl.userApi
+import com.nocircle.app.api.impls.labelApi
+import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.compose.viewmodel.NoViewModel
