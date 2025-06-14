@@ -1,8 +1,8 @@
 package com.nocircle.app.pages.main.person
 
 import androidx.lifecycle.viewModelScope
-import com.nocircle.app.api.LabelVO
-import com.nocircle.app.api.UserDetailVO
+import com.nocircle.app.api.LabelDTO
+import com.nocircle.app.api.UserDetailDTO
 import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 
 class PersonViewModel : NoViewModel() {
 	
-	private val _userDetail = MutableStateFlow<UserDetailVO?>(null)
+	private val _userDetail = MutableStateFlow<UserDetailDTO?>(null)
 	val userDetail = _userDetail.asStateFlow()
 	
-	private val _labels = MutableStateFlow<List<LabelVO>>(emptyList())
+	private val _labels = MutableStateFlow<List<LabelDTO>>(emptyList())
 	val labels = _labels.asStateFlow()
 	
 	init {

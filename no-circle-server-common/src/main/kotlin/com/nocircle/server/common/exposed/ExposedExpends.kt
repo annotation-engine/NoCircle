@@ -4,13 +4,19 @@ import kotlinx.datetime.Clock
 import org.jetbrains.exposed.v1.core.*
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.statements.UpdateStatement
-import org.jetbrains.exposed.v1.jdbc.Query
-import org.jetbrains.exposed.v1.jdbc.andWhere
+import org.jetbrains.exposed.v1.jdbc.*
 import org.jetbrains.exposed.v1.jdbc.statements.ReturningBlockingExecutable
-import org.jetbrains.exposed.v1.jdbc.update
-import org.jetbrains.exposed.v1.jdbc.updateReturning
 
 fun Query.exists(): Boolean = !this.empty()
+
+fun <T : NoTable> T.selectWithout(
+	column: Expression<*>,
+	vararg columns: Expression<*>
+): Query {
+	val withoutColumns = columns.toList() + column
+	val columns = this.columns.filter { it !in withoutColumns }
+	return this.select(columns)
+}
 
 fun Query.logicExists(
 	table: NoTable,

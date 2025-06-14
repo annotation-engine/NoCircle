@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.api.RelationshipVO
-import com.nocircle.app.api.SearchUserVO
+import com.nocircle.app.api.SearchUserDTO
+import com.nocircle.app.api.SearchUserDTO.RelationshipDTO.*
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.format
@@ -88,7 +88,7 @@ fun AddFriendSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserCard(
-	searchUser: SearchUserVO
+	searchUser: SearchUserDTO
 ) {
 	Row(
 		modifier = Modifier
@@ -129,9 +129,9 @@ private fun UserCard(
 			val iconGroup by remember(searchUser.relationship) {
 				derivedStateOf {
 					when (searchUser.relationship) {
-						RelationshipVO.FRIEND -> AppIcon.Group
-						RelationshipVO.OWNER -> AppIcon.Person
-						RelationshipVO.STRANGER -> AppIcon.GroupAdd
+						FRIEND -> AppIcon.Group
+						OWNER -> AppIcon.Person
+						STRANGER -> AppIcon.GroupAdd
 					}
 				}
 			}
@@ -165,14 +165,14 @@ private fun UserCard(
 	Spacer(modifier = Modifier.height(16.dp))
 	val viewModel = koinViewModel<AddFriendViewModel>()
 	var enabled by remember(searchUser.relationship, searchUser.isAlreadySend) {
-		mutableStateOf(searchUser.relationship == RelationshipVO.STRANGER && !searchUser.isAlreadySend)
+		mutableStateOf(searchUser.relationship == STRANGER && !searchUser.isAlreadySend)
 	}
 	var buttonString by remember(searchUser.relationship, searchUser.isAlreadySend) {
 		mutableStateOf(
 			value = when (searchUser.relationship) {
-				RelationshipVO.FRIEND -> AppString.FRIENDS_ADD_FRIEND_ALREADY_FRIEND
-				RelationshipVO.OWNER -> AppString.FRIENDS_ADD_FRIEND_NOT_ADD_OWNER
-				RelationshipVO.STRANGER -> when (searchUser.isAlreadySend) {
+				FRIEND -> AppString.FRIENDS_ADD_FRIEND_ALREADY_FRIEND
+				OWNER -> AppString.FRIENDS_ADD_FRIEND_NOT_ADD_OWNER
+				STRANGER -> when (searchUser.isAlreadySend) {
 					true -> AppString.FRIENDS_ADD_FRIEND_ALREADY_SEND_REQUEST
 					false -> AppString.FRIENDS_ADD_FRIEND_SEND_REQUEST
 				}

@@ -1,21 +1,16 @@
-package com.nocircle.server.app.tables.user
+package com.nocircle.server.app.dao
 
-import com.nocircle.server.common.exposed.*
+import com.nocircle.server.app.tables.UserLabel
+import com.nocircle.server.app.tables.UserLabels
+import com.nocircle.server.common.exposed.logicDeleteWhere
+import com.nocircle.server.common.exposed.logicExists
+import com.nocircle.server.common.exposed.logicUpdate
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.and
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
-import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 
-object UserLabels : NoTable("tb_user_label") {
-	
-	val userId = integer("user_id")
-		.references(Users.id)
-	
-	val label = varchar("label", 20)
-	
-	val color = char("color", 9)
+object UserLabelDao {
 	
 	fun getOneById(id: Int): UserLabel? {
 		val row = UserLabels.selectAll()
@@ -64,13 +59,4 @@ object UserLabels : NoTable("tb_user_label") {
 		}
 		return count == 1
 	}
-}
-
-class UserLabel(id: EntityID<Int>) : NoIntEntity(id, UserLabels) {
-	
-	companion object : IntEntityClass<UserLabel>(UserLabels)
-	
-	var label by UserLabels.label
-	
-	var color by UserLabels.color
 }

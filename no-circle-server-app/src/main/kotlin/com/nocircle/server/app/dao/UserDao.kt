@@ -1,26 +1,17 @@
-package com.nocircle.server.app.tables.user
+package com.nocircle.server.app.dao
 
+import com.nocircle.server.app.tables.User
+import com.nocircle.server.app.tables.Users
 import com.nocircle.server.app.utils.PasswordUtils
-import com.nocircle.server.common.exposed.NoIntEntity
-import com.nocircle.server.common.exposed.NoTable
 import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicExists
-import org.jetbrains.exposed.v1.core.dao.id.EntityID
-import org.jetbrains.exposed.v1.dao.IntEntityClass
+import com.nocircle.server.common.exposed.selectWithout
 import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
 
-object Users : NoTable("tb_user") {
+object UserDao {
 	
-	val username = varchar("username", 20)
-	
-	val password = char("password", 98)
-	
-	val nickname = varchar("nickname", 20)
-		.nullable()
-	
-	val avatarUrl = varchar("avatar_url", 255)
-		.nullable()
 	
 	fun insertOne(username: String, password: String): Boolean {
 		val insert = Users.insert {
@@ -31,11 +22,19 @@ object Users : NoTable("tb_user") {
 	}
 	
 	fun getOneById(id: Int): User? {
-		val row = Users.selectAll()
+		val row = Users.selectWithout(Users.password)
 			.where { Users.id eq id }
 			.logicExists(Users)
 			.singleOrNull() ?: return null
 		return User.wrapRow(row)
+	}
+	
+	fun getListByIds(ids: List<Int>): List<User> {
+		if (ids.isEmpty()) return emptyList()
+		val query = Users.selectWithout(Users.password)
+			.where { Users.id inList ids }
+			.logicExists(Users)
+		return User.wrapRows(query).toList()
 	}
 	
 	fun getOneByUsername(username: String): User? {
@@ -47,29 +46,16 @@ object Users : NoTable("tb_user") {
 	}
 	
 	fun isExistsByUsername(username: String): Boolean {
-		return Users.selectAll()
+		return Users.select(Users.id)
 			.where { Users.username eq username }
 			.logicExists(Users)
 			.exists()
 	}
 	
 	fun isExistsByUserId(userId: Int): Boolean {
-		return Users.selectAll()
+		return Users.select(Users.id)
 			.where { Users.id eq userId }
 			.logicExists(Users)
 			.exists()
 	}
-}
-
-class User(id: EntityID<Int>) : NoIntEntity(id, Users) {
-	
-	companion object : IntEntityClass<User>(Users)
-	
-	var username by Users.username
-	
-	var password by Users.password
-	
-	val nickname by Users.nickname
-	
-	val avatarUrl by Users.avatarUrl
 }

@@ -12,16 +12,16 @@ data class ApiResult<out T : Any>(
 	val data: T?
 )
 
-interface Status {
+interface NoStatus {
 	val msg: String
 	val code: Int
 }
 
-suspend inline fun <reified T : Any> ApplicationCall.respond(
+suspend inline fun <reified T : Any> ApplicationCall.respondDTO(
 	data: T,
-	status: Status
+	status: NoStatus
 ) = this.respond(HttpStatusCode.OK, ApiResult(status.code, status.msg, data))
 
-suspend inline fun ApplicationCall.respond(
-	status: Status
+suspend inline fun ApplicationCall.respondDTO(
+	status: NoStatus
 ) = this.respond(HttpStatusCode.OK, ApiResult(status.code, status.msg, null))

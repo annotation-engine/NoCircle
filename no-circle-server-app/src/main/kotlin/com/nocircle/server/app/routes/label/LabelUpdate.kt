@@ -1,13 +1,13 @@
 package com.nocircle.server.app.routes.label
 
+import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.LabelContext
-import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.common.expends.getDisplayLength
 import com.nocircle.server.common.exposed.getInt
 import com.nocircle.server.common.exposed.getString
-import com.nocircle.server.common.model.Status
+import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respond
+import com.nocircle.server.common.model.respondDTO
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -27,14 +27,14 @@ fun Route.postUpdate() = post("update") {
 		if (displayLength == 0) {
 			return@transaction UpdateStatus.EMPTY
 		}
-		val userLabel = UserLabels.getOneById(id)
+		val userLabel = UserLabelDao.getOneById(id)
 			?: return@transaction UpdateStatus.NOT_FOUND
 		
 		if (userLabel.label == label && userLabel.color == color) {
 			return@transaction UpdateStatus.NO_CHANGE
 		}
 		
-		val labels = UserLabels.getListByUserIdAndNeqId(userId, id)
+		val labels = UserLabelDao.getListByUserIdAndNeqId(userId, id)
 		if (labels.find { it.label == label } != null) {
 			return@transaction UpdateStatus.ALREADY_EXISTS
 		}
@@ -42,10 +42,10 @@ fun Route.postUpdate() = post("update") {
 		if (totalLength > MAX_TOTAL_DISPLAY_LENGTH) {
 			return@transaction UpdateStatus.LENGTH_LIMIT
 		}
-		val success = UserLabels.updateOne(userId, id, label, color)
+		val success = UserLabelDao.updateOne(userId, id, label, color)
 		if (success) UpdateStatus.SUCCESS else UpdateStatus.FAILURE
 	}
-	call.respond(status)
+	call.respondDTO(status)
 }
 
 private const val MAX_TOTAL_DISPLAY_LENGTH = 20
@@ -56,7 +56,7 @@ private const val MAX_TOTAL_DISPLAY_LENGTH = 20
 private enum class UpdateStatus(
 	override val msg: String,
 	override val code: Int
-) : Status {
+) : NoStatus {
 	SUCCESS("标签修改成功", 0),
 	FAILURE("标签修改失败", 1130),
 	NOT_FOUND("未找到标签", 1131),

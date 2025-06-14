@@ -31,12 +31,12 @@ interface LabelApi {
 	
 	@BearerAuth
 	@GET("query")
-	suspend fun queryLabels(): ResultBody<List<LabelVO>>?
+	suspend fun queryLabels(): ResultBody<List<LabelDTO>>?
 }
 
 @Immutable
 @Serializable
-data class LabelVO(
+data class LabelDTO(
 	val id: Int,
 	val label: String,
 	val color: String,

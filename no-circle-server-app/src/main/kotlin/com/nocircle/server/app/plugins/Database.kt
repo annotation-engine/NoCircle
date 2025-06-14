@@ -1,10 +1,10 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.app.tables.friend.FriendAddRequests
-import com.nocircle.server.app.tables.friend.FriendRelationships
-import com.nocircle.server.app.tables.user.UserLabels
-import com.nocircle.server.app.tables.user.UserLogins
-import com.nocircle.server.app.tables.user.Users
+import com.nocircle.server.app.tables.FriendRequests
+import com.nocircle.server.app.tables.FriendRelationships
+import com.nocircle.server.app.tables.UserLabels
+import com.nocircle.server.app.tables.UserLogins
+import com.nocircle.server.app.tables.Users
 import com.nocircle.server.common.log.NoLog
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.SchemaUtils
@@ -30,6 +30,6 @@ private val tables = arrayOf(
 	Users,
 	UserLabels,
 	UserLogins,
-	FriendAddRequests,
+	FriendRequests,
 	FriendRelationships
 )

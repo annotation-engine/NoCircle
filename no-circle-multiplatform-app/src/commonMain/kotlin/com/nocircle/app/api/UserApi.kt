@@ -12,7 +12,7 @@ interface UserApi {
 	suspend fun login(
 		@Field username: String,
 		@Field password: String
-	): ResultBody<LoginVO>?
+	): ResultBody<LoginDTO>?
 	
 	@POST("register")
 	suspend fun register(
@@ -26,38 +26,20 @@ interface UserApi {
 	
 	@BearerAuth
 	@GET("detail")
-	suspend fun queryDetail(): ResultBody<UserDetailVO>?
+	suspend fun queryDetail(): ResultBody<UserDetailDTO>?
 }
 
 @Immutable
 @Serializable
-data class LoginVO(
+data class LoginDTO(
 	val token: String,
 )
 
 @Immutable
 @Serializable
-data class UserDetailVO(
+data class UserDetailDTO(
 	val username: String,
 	val nickname: String?,
 	val avatarUrl: String?,
 	val lastLoginTime: String?,
 )
-
-@Immutable
-@Serializable
-data class SearchUserVO(
-	val userId: Int,
-	val username: String,
-	val nickname: String?,
-	val avatarUrl: String?,
-	val labels: List<LabelVO>,
-	val relationship: RelationshipVO,
-	val isAlreadySend: Boolean
-)
-
-enum class RelationshipVO {
-	FRIEND,
-	OWNER,
-	STRANGER
-}

@@ -1,10 +1,10 @@
 package com.nocircle.server.app.routes.user
 
+import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.plugins.UserContext
-import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.exposed.getString
-import com.nocircle.server.common.model.Status
-import com.nocircle.server.common.model.respond
+import com.nocircle.server.common.model.NoStatus
+import com.nocircle.server.common.model.respondDTO
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -19,14 +19,14 @@ fun Route.postRegister() = post("register") {
 	val password = parameters.getString("password")
 	
 	val status = transaction {
-		val exists = Users.isExistsByUsername(username)
+		val exists = UserDao.isExistsByUsername(username)
 		if (exists) {
 			return@transaction RegisterStatus.USER_ALREADY_EXISTS
 		}
-		val success = Users.insertOne(username, password)
+		val success = UserDao.insertOne(username, password)
 		if (success) RegisterStatus.SUCCESS else RegisterStatus.FAILURE
 	}
-	call.respond(status)
+	call.respondDTO(status)
 }
 
 /**
@@ -35,7 +35,7 @@ fun Route.postRegister() = post("register") {
 private enum class RegisterStatus(
 	override val msg: String,
 	override val code: Int
-) : Status {
+) : NoStatus {
 	SUCCESS("用户注册成功，请前往登录", 0),
 	USER_ALREADY_EXISTS("用户已经存在，请前往登录", 1030),
 	FAILURE("注册失败", 1031)

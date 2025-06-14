@@ -31,18 +31,3 @@ fun Application.routeContexts(vararg contexts: RouteContext) {
 		}
 	}
 }
-
-//fun <RC : RouteContext> Route.route(
-//	context: RC,
-//	routes: context(RC) Route.() -> Unit = {},
-//	authRoutes: context(RC) Route.() -> Unit,
-//) {
-//	route(context.path) {
-//		context(context) {
-//			routes()
-//			authenticate {
-//				authRoutes()
-//			}
-//		}
-//	}
-//}

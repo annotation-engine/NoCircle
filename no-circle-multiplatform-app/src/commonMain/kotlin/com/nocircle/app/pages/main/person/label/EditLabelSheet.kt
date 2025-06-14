@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.api.LabelVO
+import com.nocircle.app.api.LabelDTO
 import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
@@ -168,8 +168,8 @@ fun EditLabelSheet(
 private const val MAX_COUNT = 4
 private const val MAX_TOTAL_DISPLAY_LENGTH = 20
 
-private fun List<LabelVO>.getLabelTotalDisplayLength(
-	predicate: ((LabelVO) -> Boolean)? = null
+private fun List<LabelDTO>.getLabelTotalDisplayLength(
+	predicate: ((LabelDTO) -> Boolean)? = null
 ): Int {
 	val list = if (predicate != null) this.filter(predicate) else this
 	return list.sumOf { it.label.getDisplayLength() }
@@ -177,7 +177,7 @@ private fun List<LabelVO>.getLabelTotalDisplayLength(
 
 @Composable
 private fun Label(
-	label: LabelVO,
+	label: LabelDTO,
 	selected: Boolean,
 	onClick: () -> Unit,
 ) {

@@ -1,12 +1,12 @@
 package com.nocircle.server.app.routes.label
 
+import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.LabelContext
-import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.common.expends.getDisplayLength
 import com.nocircle.server.common.exposed.getString
-import com.nocircle.server.common.model.Status
+import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respond
+import com.nocircle.server.common.model.respondDTO
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -25,7 +25,7 @@ fun Route.postAdd() = post("add") {
 		if (displayLength == 0) {
 			return@transaction AddStatus.EMPTY
 		}
-		val labels = UserLabels.getListByUserId(userId)
+		val labels = UserLabelDao.getListByUserId(userId)
 		if (labels.size >= MAX_COUNT) {
 			return@transaction AddStatus.TOTAL_LIMIT
 		}
@@ -36,10 +36,10 @@ fun Route.postAdd() = post("add") {
 		if (totalLength > MAX_TOTAL_DISPLAY_LENGTH) {
 			return@transaction AddStatus.LENGTH_LIMIT
 		}
-		val success = UserLabels.insertOne(userId, label, color)
+		val success = UserLabelDao.insertOne(userId, label, color)
 		if (success) AddStatus.SUCCESS else AddStatus.FAILURE
 	}
-	call.respond(status)
+	call.respondDTO(status)
 }
 
 private const val MAX_COUNT = 4
@@ -51,7 +51,7 @@ private const val MAX_TOTAL_DISPLAY_LENGTH = 20
 private enum class AddStatus(
 	override val msg: String,
 	override val code: Int
-) : Status {
+) : NoStatus {
 	SUCCESS("标签添加成功", 0),
 	FAILURE("标签添加失败", 1100),
 	ALREADY_EXISTS("标签已存在", 1101),

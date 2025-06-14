@@ -1,14 +1,14 @@
 package com.nocircle.server.app.routes.friend
 
+import com.nocircle.server.app.dao.FriendRelationshipDao
+import com.nocircle.server.app.dao.FriendRequestDao
+import com.nocircle.server.app.dao.UserDao
+import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendContext
-import com.nocircle.server.app.tables.friend.FriendAddRequests
-import com.nocircle.server.app.tables.friend.FriendRelationships
-import com.nocircle.server.app.tables.user.UserLabels
-import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.exposed.getString
-import com.nocircle.server.common.model.Status
+import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respond
+import com.nocircle.server.common.model.respondDTO
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -21,23 +21,23 @@ fun Route.getSearch() = get("search") {
 	val userId = call.noPrincipal!!.userId
 	val queryUsername = call.queryParameters.getString("username")
 	if (queryUsername.isBlank()) {
-		return@get call.respond(SearchStatus.USERNAME_NOT_EMPTY)
+		return@get call.respondDTO(SearchStatus.USERNAME_NOT_EMPTY)
 	}
 	val searchUser = transaction {
-		val user = Users.getOneByUsername(queryUsername) ?: return@transaction null
+		val user = UserDao.getOneByUsername(queryUsername) ?: return@transaction null
 		val targetId = user.id.value
-		val labels = UserLabels.getListByUserId(targetId).map {
-			Label(it.id.value, it.label, it.color)
+		val labels = UserLabelDao.getListByUserId(targetId).map {
+			LabelDTO(it.id.value, it.label, it.color)
 		}
 		val pair = if (userId == targetId) {
-			Relationship.OWNER to false
+			RelationshipDTO.OWNER to false
 		} else {
-			val isFriend = FriendRelationships.isFriend(userId, targetId)
-			val relationship = if (isFriend) Relationship.FRIEND else Relationship.STRANGER
-			val isAlreadySend = FriendAddRequests.isExistsBySenderIdAndReceiverId(userId, targetId)
+			val isFriend = FriendRelationshipDao.isFriend(userId, targetId)
+			val relationship = if (isFriend) RelationshipDTO.FRIEND else RelationshipDTO.STRANGER
+			val isAlreadySend = FriendRequestDao.isExistsBySenderIdAndReceiverId(userId, targetId)
 			relationship to isAlreadySend
 		}
-		SearchUser(
+		SearchUserDTO(
 			userId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
@@ -46,30 +46,30 @@ fun Route.getSearch() = get("search") {
 			relationship = pair.first,
 			isAlreadySend = pair.second
 		)
-	} ?: return@get call.respond(SearchStatus.NOT_FOUND)
+	} ?: return@get call.respondDTO(SearchStatus.NOT_FOUND)
 	
-	call.respond(searchUser, SearchStatus.SUCCESS)
+	call.respondDTO(searchUser, SearchStatus.SUCCESS)
 }
 
 @Serializable
-private data class SearchUser(
+private data class SearchUserDTO(
 	val userId: Int,
 	val username: String,
 	val nickname: String?,
 	val avatarUrl: String?,
-	val labels: List<Label>,
-	val relationship: Relationship,
+	val labels: List<LabelDTO>,
+	val relationship: RelationshipDTO,
 	val isAlreadySend: Boolean
 )
 
 @Serializable
-private data class Label(
+private data class LabelDTO(
 	val id: Int,
 	val label: String,
 	val color: String,
 )
 
-private enum class Relationship {
+private enum class RelationshipDTO {
 	FRIEND,
 	OWNER,
 	STRANGER
@@ -81,7 +81,7 @@ private enum class Relationship {
 private enum class SearchStatus(
 	override val msg: String,
 	override val code: Int
-) : Status {
+) : NoStatus {
 	SUCCESS("搜索成功", 0),
 	USERNAME_NOT_EMPTY("用户名不能为空", 1200),
 	NOT_FOUND("未搜索到该用户", 1201)
