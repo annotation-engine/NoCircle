@@ -4,7 +4,10 @@ import com.nocircle.server.common.plugins.NoLogging
 import io.ktor.server.application.*
 
 fun Application.configureLogging() {
-	install(NoLogging) {
-		this.responseBody = true
+	val logger = yaml.logger
+	if (logger.enabled) {
+		install(NoLogging) {
+			this.responseBody = logger.responseBody
+		}
 	}
 }

@@ -45,5 +45,5 @@ val NoLogging = createApplicationPlugin(
 }
 
 data class NoLoggingConfig(
-	var responseBody: Boolean = true
+	var responseBody: Boolean = false
 )

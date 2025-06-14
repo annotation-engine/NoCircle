@@ -21,6 +21,7 @@ class YamlConfig private constructor(
 	val mysql: MysqlConfig,
 	val security: SecurityConfig,
 	val redis: RedisConfig,
+	val logger: LoggerConfig
 )
 
 class JwtConfig private constructor(
@@ -58,4 +59,9 @@ class SecurityConfig private constructor(
 class RedisConfig private constructor(
 	val address: String,
 	val database: Int,
+)
+
+class LoggerConfig private constructor(
+	val enabled: Boolean,
+	val responseBody: Boolean
 )

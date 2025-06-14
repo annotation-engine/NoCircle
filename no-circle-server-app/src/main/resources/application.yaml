@@ -25,3 +25,6 @@ security:
 redis:
   address: 'redis://localhost:6379'
   database: 4
+logger:
+  enabled: true
+  responseBody: false
