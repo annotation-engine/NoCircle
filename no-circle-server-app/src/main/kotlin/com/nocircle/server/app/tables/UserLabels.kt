@@ -19,7 +19,9 @@ class UserLabel(id: EntityID<Int>) : NoIntEntity(id, UserLabels) {
 	
 	companion object : IntEntityClass<UserLabel>(UserLabels)
 	
-	var label by UserLabels.label
+	val userId by UserLabels.userId
 	
-	var color by UserLabels.color
+	val label by UserLabels.label
+	
+	val color by UserLabels.color
 }

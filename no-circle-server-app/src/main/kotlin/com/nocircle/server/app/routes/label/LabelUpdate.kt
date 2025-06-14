@@ -60,7 +60,7 @@ private enum class UpdateStatus(
 	SUCCESS("标签修改成功", 0),
 	FAILURE("标签修改失败", 1130),
 	NOT_FOUND("未找到标签", 1131),
-	NO_CHANGE("标签无需修改", 1132),
+	NO_CHANGE("标签未发生修改", 1132),
 	ALREADY_EXISTS("标签已存在", 1133),
 	LENGTH_LIMIT("超过总长度限制", 1134),
 	EMPTY("标签不能为空", 1135)

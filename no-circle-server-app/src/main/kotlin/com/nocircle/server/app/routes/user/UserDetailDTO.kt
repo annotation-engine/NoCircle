@@ -3,7 +3,7 @@ package com.nocircle.server.app.routes.user
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLoginDao
 import com.nocircle.server.app.plugins.UserContext
-import com.nocircle.server.common.expends.format
+import com.nocircle.server.common.expends.formatToShanghai
 import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.noPrincipal
 import com.nocircle.server.common.model.respondDTO
@@ -24,7 +24,7 @@ fun Route.getDetail() = get("detail") {
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
-			lastLoginTime = lastLoginTime?.format()
+			lastLoginTime = lastLoginTime?.formatToShanghai()
 		)
 	} ?: return@get call.respondDTO(DetailStatus.FAILURE)
 	
