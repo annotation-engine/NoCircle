@@ -9,12 +9,14 @@ import com.nocircle.server.common.exposed.getString
 import com.nocircle.server.common.model.Status
 import com.nocircle.server.common.model.noPrincipal
 import com.nocircle.server.common.model.respond
-import com.nocircle.server.common.routes.AuthenticateContext
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
-context(_: FriendContext, _: AuthenticateContext)
+/**
+ * 搜索好友
+ */
+context(_: FriendContext)
 fun Route.getSearch() = get("search") {
 	val userId = call.noPrincipal!!.userId
 	val queryUsername = call.queryParameters.getString("username")
@@ -74,13 +76,13 @@ private enum class Relationship {
 }
 
 /**
- * 300X
+ * 120x
  */
 private enum class SearchStatus(
 	override val msg: String,
 	override val code: Int
 ) : Status {
 	SUCCESS("搜索成功", 0),
-	USERNAME_NOT_EMPTY("用户名不能为空", 3000),
-	NOT_FOUND("未搜索到该用户", 3001)
+	USERNAME_NOT_EMPTY("用户名不能为空", 1200),
+	NOT_FOUND("未搜索到该用户", 1201)
 }

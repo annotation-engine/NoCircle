@@ -5,7 +5,6 @@ import com.nocircle.server.app.tables.user.UserLabels
 import com.nocircle.server.common.model.Status
 import com.nocircle.server.common.model.noPrincipal
 import com.nocircle.server.common.model.respond
-import com.nocircle.server.common.routes.AuthenticateContext
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -13,7 +12,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 查询标签
  */
-context(_: LabelContext, _: AuthenticateContext)
+context(_: LabelContext)
 fun Route.getQuery() = get("query") {
 	val userId = call.noPrincipal!!.userId
 	val data = transaction {
@@ -32,7 +31,7 @@ private data class Label(
 )
 
 /**
- * 202X
+ * 112x
  */
 private enum class QueryStatus(
 	override val msg: String,

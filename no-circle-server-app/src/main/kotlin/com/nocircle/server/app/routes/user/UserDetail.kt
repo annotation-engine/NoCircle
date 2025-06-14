@@ -7,7 +7,6 @@ import com.nocircle.server.common.expends.format
 import com.nocircle.server.common.model.Status
 import com.nocircle.server.common.model.noPrincipal
 import com.nocircle.server.common.model.respond
-import com.nocircle.server.common.routes.AuthenticateContext
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -15,7 +14,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户详情
  */
-context(_: UserContext, _: AuthenticateContext)
+context(_: UserContext)
 fun Route.getDetail() = get("detail") {
 	val userId = call.noPrincipal!!.userId
 	val userDetail = transaction {

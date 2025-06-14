@@ -7,7 +7,6 @@ import com.nocircle.server.common.exposed.getString
 import com.nocircle.server.common.model.Status
 import com.nocircle.server.common.model.noPrincipal
 import com.nocircle.server.common.model.respond
-import com.nocircle.server.common.routes.AuthenticateContext
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -15,7 +14,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 添加标签
  */
-context(_: LabelContext, _: AuthenticateContext)
+context(_: LabelContext)
 fun Route.postAdd() = post("add") {
 	val userId = call.noPrincipal!!.userId
 	val parameters = call.receiveParameters()
@@ -47,16 +46,16 @@ private const val MAX_COUNT = 4
 private const val MAX_TOTAL_DISPLAY_LENGTH = 20
 
 /**
- * 200X
+ * 110x
  */
 private enum class AddStatus(
 	override val msg: String,
 	override val code: Int
 ) : Status {
 	SUCCESS("标签添加成功", 0),
-	FAILURE("标签添加失败", 2000),
-	ALREADY_EXISTS("标签已存在", 2001),
-	TOTAL_LIMIT("超过最大数量限制", 2002),
-	LENGTH_LIMIT("超过总长度限制", 2003),
-	EMPTY("标签不能为空", 2004)
+	FAILURE("标签添加失败", 1100),
+	ALREADY_EXISTS("标签已存在", 1101),
+	TOTAL_LIMIT("超过最大数量限制", 1102),
+	LENGTH_LIMIT("超过总长度限制", 1103),
+	EMPTY("标签不能为空", 1104)
 }

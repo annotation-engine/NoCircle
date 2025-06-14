@@ -1,43 +1,22 @@
-# 无圈
+# No Circle
 
-## 项目简介
+## 服务端状态码
 
-致力于打造冲破社交壁垒的产品，认识更多的人，结交更多的好朋友，让爱好相同的人聚集在一起。
+### 10xx - 用户
 
-## 技术栈
+- 100x: [用户登录](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/user/UserLogin.kt)
+- 101x: [用户登出](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/user/UserLogout.kt)
+- 102x: [用户详情](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/user/UserDetail.kt)
+- 103X: [用户注册](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/user/UserRegister.kt)
 
-项目采用前后端分离架构，前端采用 Kotlin Multiplatform 技术，实现在 MacOS, Windows, Linux, Android, IOS 上运行本项目
+### 11xx - 标签
 
-### Kotlin Multiplatform
+- 110x: [添加标签](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/label/LabelAdd.kt)
+- 111x: [删除标签](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/label/LabelDelete.kt)
+- 112x: [查询标签](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/label/LabelQuery.kt)
+- 113x: [更新标签](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/label/LabelUpdate.kt)
 
-前端采用以下技术：
+### 12xx - 好友
 
-1. Compose Multiplatform
-2. Navigation Compose
-3. Material3 Window Size Class
-4. Coil3
-5. Room
-6. Koin
-7. Ktor Client
-8. Ktorfitx
-9. Kotlin Serialization
-10. Hot Reload
-
-### Ktor Server
-
-后端采用以下技术：
-
-1. Kotlin Reflect
-2. Ktor Server
-3. Kotlin Serialization
-4. Exposed
-5. Redisson
-6. Hutool (Crypto)
-7. Logback Classic
-
-### 命名规范
-
-1. 查询：getById, getListById
-2. 新增：insert, batchInsert
-3. 删除：deleteById, batchDeleteById
-4. 修改：updateById, batchUpdateById
+- 120x: [搜索好友](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/friend/FriendSearch.kt)
+- 121x: [添加好友请求](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/friend/FriendAddRequest.kt)

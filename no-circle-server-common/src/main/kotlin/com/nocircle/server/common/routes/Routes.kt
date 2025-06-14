@@ -1,39 +1,48 @@
 package com.nocircle.server.common.routes
 
+import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
-import kotlin.reflect.full.createInstance
 
-interface RouteContext {
+abstract class RouteContext(
 	val path: String
+) {
+	
+	open fun Route.routes() {
+	
+	}
+	
+	open fun Route.authenticates() {
+	
+	}
 }
 
-sealed interface AuthenticateContext
-
-private object AuthenticateContextImpl : AuthenticateContext
-
-val AuthenticateContextInstance: AuthenticateContext = AuthenticateContextImpl
-
-inline fun <reified C : RouteContext> Route.authenticateRoute(
-	crossinline build: context(C, AuthenticateContext) Route.() -> Unit
-) {
-	val context = C::class.objectInstance ?: C::class.createInstance()
-	authenticate {
-		route(context.path) {
-			context(context, AuthenticateContextInstance) {
-				build()
+fun Application.routeContexts(vararg contexts: RouteContext) {
+	routing {
+		contexts.forEach {
+			with(it) {
+				route(it.path) {
+					routes()
+					authenticate {
+						authenticates()
+					}
+				}
 			}
 		}
 	}
 }
 
-inline fun <reified C : RouteContext> Route.route(
-	crossinline build: context(C) Route.() -> Unit
-) {
-	val context = C::class.objectInstance ?: C::class.createInstance()
-	route(context.path) {
-		context(context) {
-			build()
-		}
-	}
-}
+//fun <RC : RouteContext> Route.route(
+//	context: RC,
+//	routes: context(RC) Route.() -> Unit = {},
+//	authRoutes: context(RC) Route.() -> Unit,
+//) {
+//	route(context.path) {
+//		context(context) {
+//			routes()
+//			authenticate {
+//				authRoutes()
+//			}
+//		}
+//	}
+//}

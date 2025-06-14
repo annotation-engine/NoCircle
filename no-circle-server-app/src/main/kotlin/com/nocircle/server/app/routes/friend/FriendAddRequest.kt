@@ -8,7 +8,6 @@ import com.nocircle.server.common.exposed.getInt
 import com.nocircle.server.common.model.Status
 import com.nocircle.server.common.model.noPrincipal
 import com.nocircle.server.common.model.respond
-import com.nocircle.server.common.routes.AuthenticateContext
 import com.nocircle.server.common.websockets.getSession
 import com.nocircle.server.common.websockets.sendMessage
 import io.ktor.server.request.*
@@ -18,7 +17,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 添加好友请求
  */
-context(_: FriendContext, _: AuthenticateContext)
+context(_: FriendContext)
 fun Route.postAddRequest() = post("addRequest") {
 	val userId = call.noPrincipal!!.userId
 	val receiverId = call.receiveParameters().getInt("receiverId")
@@ -45,15 +44,15 @@ private suspend fun sendToReceiver(senderId: Int, receiverId: Int) {
 }
 
 /**
- * 301X
+ * 121x
  */
 private enum class AddRequestStatus(
 	override val msg: String,
 	override val code: Int
 ) : Status {
 	SUCCESS("添加请求已发送", 0),
-	CANNOT_ADD_ONESELF("不能添加自己为好友", 3010),
-	USER_NOT_FOUND("对方用户不存在", 3011),
-	REPEATED("请勿重复发送", 3012),
-	FAILURE("添加请求发送失败", 3013)
+	CANNOT_ADD_ONESELF("不能添加自己为好友", 1210),
+	USER_NOT_FOUND("对方用户不存在", 1211),
+	REPEATED("请勿重复发送", 1212),
+	FAILURE("添加请求发送失败", 1213)
 }

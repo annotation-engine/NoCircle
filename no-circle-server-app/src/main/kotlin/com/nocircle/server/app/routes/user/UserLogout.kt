@@ -6,13 +6,12 @@ import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.common.model.Status
 import com.nocircle.server.common.model.noPrincipal
 import com.nocircle.server.common.model.respond
-import com.nocircle.server.common.routes.AuthenticateContext
 import io.ktor.server.routing.*
 
 /**
  * 用户登出
  */
-context(_: UserContext, _: AuthenticateContext)
+context(_: UserContext)
 fun Route.postLogout() = post("logout") {
 	val userId = call.noPrincipal!!.userId
 	val bucket = redisson.getBucket<String>("${UserToken.prefix}$userId")
@@ -21,7 +20,7 @@ fun Route.postLogout() = post("logout") {
 }
 
 /**
- * 101X
+ * 101x
  */
 private enum class LogoutStatus(
 	override val msg: String,

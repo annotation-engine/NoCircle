@@ -1,5 +1,6 @@
 package com.nocircle.server.app.routes.user
 
+import com.nocircle.server.app.plugins.UserContext
 import com.nocircle.server.app.plugins.UserToken
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.app.plugins.yaml
@@ -19,6 +20,7 @@ import kotlin.time.toJavaDuration
 /**
  * 用户登录
  */
+context(_: UserContext)
 fun Route.postLogin() = post("login") {
 	val parameters = call.receiveParameters()
 	val username = parameters.getString("username")

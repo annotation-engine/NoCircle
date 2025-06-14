@@ -7,54 +7,67 @@ import com.nocircle.server.app.routes.label.getQuery
 import com.nocircle.server.app.routes.label.postAdd
 import com.nocircle.server.app.routes.label.postDelete
 import com.nocircle.server.app.routes.label.postUpdate
+import com.nocircle.server.app.routes.message.query
 import com.nocircle.server.app.routes.user.getDetail
 import com.nocircle.server.app.routes.user.postLogin
 import com.nocircle.server.app.routes.user.postLogout
 import com.nocircle.server.app.routes.user.postRegister
 import com.nocircle.server.common.routes.RouteContext
-import com.nocircle.server.common.routes.authenticateRoute
-import com.nocircle.server.common.routes.route
+import com.nocircle.server.common.routes.routeContexts
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Application.configureRoutes() {
-	routing {
-		route<UserContext> {
-			postLogin()
-			postRegister()
-		}
-		authenticateRoute<AuthContext> {
-			postVerifyToken()
-		}
-		authenticateRoute<UserContext> {
-			getDetail()
-			postLogout()
-		}
-		authenticateRoute<LabelContext> {
-			postAdd()
-			postDelete()
-			postUpdate()
-			getQuery()
-		}
-		authenticateRoute<FriendContext> {
-			getSearch()
-			postAddRequest()
-		}
+	routeContexts(
+		AuthContext,
+		UserContext,
+		LabelContext,
+		FriendContext,
+		MessageContext
+	)
+}
+
+object AuthContext : RouteContext("auth") {
+	
+	override fun Route.authenticates() {
+		postVerifyToken()
 	}
 }
 
-object AuthContext : RouteContext {
-	override val path = "auth"
+object UserContext : RouteContext("user") {
+	
+	override fun Route.routes() {
+		postLogin()
+		postRegister()
+	}
+	
+	override fun Route.authenticates() {
+		getDetail()
+		postLogout()
+	}
 }
 
-object UserContext : RouteContext {
-	override val path = "user"
+object LabelContext : RouteContext("label") {
+	
+	override fun Route.authenticates() {
+		postAdd()
+		postDelete()
+		postUpdate()
+		getQuery()
+	}
 }
 
-object LabelContext : RouteContext {
-	override val path = "label"
+object FriendContext : RouteContext("friend") {
+	
+	override fun Route.authenticates() {
+		getSearch()
+		postAddRequest()
+	}
 }
 
-object FriendContext : RouteContext {
-	override val path = "friend"
+object MessageContext : RouteContext("message") {
+	
+	override fun Route.authenticates() {
+		query()
+	}
 }

@@ -1,5 +1,6 @@
 package com.nocircle.server.app.routes.user
 
+import com.nocircle.server.app.plugins.UserContext
 import com.nocircle.server.app.tables.user.Users
 import com.nocircle.server.common.exposed.getString
 import com.nocircle.server.common.model.Status
@@ -11,6 +12,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户注册
  */
+context(_: UserContext)
 fun Route.postRegister() = post("register") {
 	val parameters = call.receiveParameters()
 	val username = parameters.getString("username")
