@@ -43,7 +43,7 @@ class AddFriendViewModel : NoViewModel() {
 	suspend fun sendFriendAddRequest(receiverId: Int): Boolean {
 		if (friendAddRequestMutex.isLocked) return false
 		friendAddRequestMutex.lock()
-		val result = ktorfitx.friendApi.requestAdd(receiverId) ?: return networkError()
+		val result = ktorfitx.friendApi.addRequest(receiverId) ?: return networkError()
 		autoShowNoSnackbar(result.success, result.msg)
 		friendAddRequestMutex.unlock()
 		return result.success

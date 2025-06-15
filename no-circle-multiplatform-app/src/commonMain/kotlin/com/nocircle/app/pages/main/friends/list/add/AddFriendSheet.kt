@@ -95,9 +95,9 @@ private fun UserCard(
 			.fillMaxWidth()
 			.background(
 				color = MaterialTheme.colorScheme.surfaceContainerHigh,
-				shape = MaterialTheme.shapes.small
+				shape = MaterialTheme.shapes.medium
 			)
-			.padding(16.dp)
+			.padding(12.dp)
 			.height(100.dp)
 	) {
 		NoAsyncImage(
@@ -108,7 +108,7 @@ private fun UserCard(
 			placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceDim),
 			contentScale = ContentScale.Crop
 		)
-		Spacer(modifier = Modifier.width(16.dp))
+		Spacer(modifier = Modifier.width(12.dp))
 		Box(
 			modifier = Modifier
 				.fillMaxSize()

@@ -25,15 +25,15 @@ import androidx.compose.material.icons.sharp.Info
 import androidx.compose.material.icons.twotone.Cancel
 import androidx.compose.material.icons.twotone.Close
 import androidx.compose.material.icons.twotone.Info
-import com.nocircle.common.resources.autoMirroredIconGroup
-import com.nocircle.common.resources.iconGroup
+import com.nocircle.common.resources.autoMirroredIcons
+import com.nocircle.common.resources.icons
 
 internal object ComposeIcon {
 	
-	val Info = iconGroup({ Info }, { Info }, { Info }, { Info }, { Info })
-	val Close = iconGroup({ Close }, { Close }, { Close }, { Close }, { Close })
-	val Cancel = iconGroup({ Cancel }, { Cancel }, { Cancel }, { Cancel }, { Cancel })
+	val Info = icons({ Info }, { Info }, { Info }, { Info }, { Info })
+	val Close = icons({ Close }, { Close }, { Close }, { Close }, { Close })
+	val Cancel = icons({ Cancel }, { Cancel }, { Cancel }, { Cancel }, { Cancel })
 	
-	val ArrowForwardIos = autoMirroredIconGroup({ ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos })
-	val ArrowBack = autoMirroredIconGroup({ ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack })
+	val ArrowForwardIos = autoMirroredIcons({ ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos }, { ArrowForwardIos })
+	val ArrowBack = autoMirroredIcons({ ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack })
 }

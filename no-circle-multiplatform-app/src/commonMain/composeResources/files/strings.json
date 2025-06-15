@@ -1,724 +1,388 @@
 {
 	"LOGIN": {
 		"zh": "登录",
-		"en": "Login",
-		"ja": "ログイン",
-		"fr": "Connexion",
-		"de": "Anmelden",
-		"ru": "Войти"
+		"en": "Login"
 	},
 	"LOGIN_PLEASE_INPUT_USERNAME": {
 		"zh": "请输入用户名",
-		"en": "Please enter username",
-		"ja": "ユーザー名を入力してください",
-		"fr": "Veuillez saisir le nom d'utilisateur",
-		"de": "Bitte Benutzernamen eingeben",
-		"ru": "Пожалуйста, введите имя пользователя"
+		"en": "Please enter username"
 	},
 	"LOGIN_PLEASE_INPUT_PASSWORD": {
 		"zh": "请输入密码",
-		"en": "Please enter password",
-		"ja": "パスワードを入力してください",
-		"fr": "Veuillez saisir le mot de passe",
-		"de": "Bitte Passwort eingeben",
-		"ru": "Пожалуйста, введите пароль"
+		"en": "Please enter password"
 	},
 	"LOGIN_TO_REGISTER_PAGE": {
 		"zh": "去注册",
-		"en": "Go to register",
-		"ja": "登録へ",
-		"fr": "Aller à l'inscription",
-		"de": "Zur Registrierung",
-		"ru": "Перейти к регистрации"
+		"en": "Go to register"
 	},
 	"LOGIN_SUCCESS": {
 		"zh": "登录成功",
-		"en": "Login successful",
-		"ja": "ログイン成功",
-		"fr": "Connexion réussie",
-		"de": "Anmeldung erfolgreich",
-		"ru": "Вход выполнен успешно"
+		"en": "Login successful"
 	},
 	"REGISTER": {
 		"zh": "注册",
-		"en": "Register",
-		"ja": "登録",
-		"fr": "Inscription",
-		"de": "Registrieren",
-		"ru": "Регистрация"
+		"en": "Register"
 	},
 	"REGISTER_PLEASE_INPUT_USERNAME": {
 		"zh": "请输入用户名",
-		"en": "Please enter username",
-		"ja": "ユーザー名を入力してください",
-		"fr": "Veuillez saisir le nom d'utilisateur",
-		"de": "Bitte Benutzernamen eingeben",
-		"ru": "Пожалуйста, введите имя пользователя"
+		"en": "Please enter username"
 	},
 	"REGISTER_PLEASE_INPUT_PASSWORD": {
 		"zh": "请输入密码",
-		"en": "Please enter password",
-		"ja": "パスワードを入力してください",
-		"fr": "Veuillez saisir le mot de passe",
-		"de": "Bitte Passwort eingeben",
-		"ru": "Пожалуйста, введите пароль"
+		"en": "Please enter password"
 	},
 	"REGISTER_PLEASE_CONFIRM_PASSWORD": {
 		"zh": "请确认密码",
-		"en": "Please confirm password",
-		"ja": "パスワードを確認してください",
-		"fr": "Veuillez confirmer le mot de passe",
-		"de": "Bitte Passwort bestätigen",
-		"ru": "Пожалуйста, подтвердите пароль"
+		"en": "Please confirm password"
 	},
 	"REGISTER_BACK_TO_LOGIN_PAGE": {
 		"zh": "返回登录",
-		"en": "Back to login",
-		"ja": "ログインに戻る",
-		"fr": "Retour à la connexion",
-		"de": "Zurück zur Anmeldung",
-		"ru": "Вернуться к входу"
+		"en": "Back to login"
 	},
 	"REGISTER_USERNAME_LENGTH_AT_LEAST_8": {
 		"zh": "用户名至少是8位",
-		"en": "Username must be at least 8 characters",
-		"ja": "ユーザー名は8文字以上でなければなりません",
-		"fr": "Le nom d'utilisateur doit comporter au moins 8 caractères",
-		"de": "Benutzername muss mindestens 8 Zeichen lang sein",
-		"ru": "Имя пользователя должно содержать не менее 8 символов"
+		"en": "Username must be at least 8 characters"
 	},
 	"REGISTER_PASSWORD_LENGTH_AT_LEAST_8": {
 		"zh": "密码至少是8位",
-		"en": "Password must be at least 8 characters",
-		"ja": "パスワードは8文字以上でなければなりません",
-		"fr": "Le mot de passe doit comporter au moins 8 caractères",
-		"de": "Passwort muss mindestens 8 Zeichen lang sein",
-		"ru": "Пароль должен содержать не менее 8 символов"
+		"en": "Password must be at least 8 characters"
 	},
 	"REGISTER_PASSWORD_ARE_INCONSISTENT_TWICE": {
 		"zh": "两次密码不一致",
-		"en": "Passwords do not match",
-		"ja": "パスワードが一致しません",
-		"fr": "Les mots de passe ne correspondent pas",
-		"de": "Passwörter stimmen nicht überein",
-		"ru": "Пароли не совпадают"
+		"en": "Passwords do not match"
 	},
 	"REGISTER_SUCCESS": {
 		"zh": "注册成功，请前往登录",
-		"en": "Registration successful, please proceed to login",
-		"ja": "登録成功しました。ログインしてください",
-		"fr": "Inscription réussie, veuillez vous connecter",
-		"de": "Registrierung erfolgreich, bitte melden Sie sich an",
-		"ru": "Регистрация успешна, пожалуйста, войдите"
+		"en": "Registration successful, please proceed to login"
 	},
 	"MAIN_HOME": {
 		"zh": "主页",
-		"en": "Home",
-		"ja": "ホーム",
-		"fr": "Accueil",
-		"de": "Startseite",
-		"ru": "Главная"
+		"en": "Home"
 	},
 	"MAIN_FRIENDS": {
 		"zh": "好友",
-		"en": "Friends",
-		"ja": "友達",
-		"fr": "Amis",
-		"de": "Freunde",
-		"ru": "Друзья"
+		"en": "Friends"
 	},
 	"MAIN_GROUPS": {
 		"zh": "群组",
-		"en": "Groups",
-		"ja": "グループ",
-		"fr": "Groupes",
-		"de": "Gruppen",
-		"ru": "Группы"
+		"en": "Groups"
 	},
 	"MAIN_PERSON": {
 		"zh": "我的",
-		"en": "Profile",
-		"ja": "私の",
-		"fr": "Profil",
-		"de": "Mein Profil",
-		"ru": "Мой профиль"
+		"en": "Profile"
 	},
 	"MAIN_PREVIOUS": {
 		"zh": "上一页",
-		"en": "Previous",
-		"ja": "前のページ",
-		"fr": "Page précédente",
-		"de": "Zurück",
-		"ru": "Предыдущая"
+		"en": "Previous"
 	},
 	"MAIN_COLLAPSE": {
 		"zh": "收起",
-		"en": "Collapse",
-		"ja": "折りたたむ",
-		"fr": "Réduire",
-		"de": "Einklappen",
-		"ru": "Свернуть"
+		"en": "Collapse"
 	},
 	"MAIN_EXPEND": {
 		"zh": "展开",
-		"en": "Expand",
-		"ja": "展開",
-		"fr": "Développer",
-		"de": "Ausklappen",
-		"ru": "Развернуть"
+		"en": "Expand"
 	},
 	"FRIENDS_SEARCH": {
 		"zh": "搜索",
-		"en": "Search",
-		"ja": "検索",
-		"fr": "Rechercher",
-		"de": "Suchen",
-		"ru": "Поиск"
+		"en": "Search"
 	},
 	"FRIENDS_ADD_FRIEND_TITLE": {
 		"zh": "添加好友",
-		"en": "Add Friend",
-		"ja": "友達を追加",
-		"fr": "Ajouter un ami",
-		"de": "Freund hinzufügen",
-		"ru": "Добавить друга"
+		"en": "Add Friend"
 	},
 	"FRIENDS_ADD_FRIEND_HINT": {
 		"zh": "搜索用户完整用户名",
-		"en": "Search by full username",
-		"ja": "ユーザーの完全なユーザー名を検索",
-		"fr": "Rechercher par nom d'utilisateur complet",
-		"de": "Nach vollständigem Benutzernamen suchen",
-		"ru": "Поиск по полному имени пользователя"
+		"en": "Search by full username"
 	},
 	"FRIENDS_ADD_FRIEND_PLEASE_INPUT_USERNAME": {
 		"zh": "请输入用户名",
-		"en": "Please enter username",
-		"ja": "ユーザー名を入力してください",
-		"fr": "Veuillez entrer un nom d'utilisateur",
-		"de": "Bitte Benutzernamen eingeben",
-		"ru": "Пожалуйста, введите имя пользователя"
+		"en": "Please enter username"
 	},
 	"FRIENDS_ADD_FRIEND_NOT_FOUND_USER": {
 		"zh": "未搜索到用户",
-		"en": "User not found",
-		"ja": "ユーザーが見つかりません",
-		"fr": "Utilisateur non trouvé",
-		"de": "Benutzer nicht gefunden",
-		"ru": "Пользователь не найден"
+		"en": "User not found"
 	},
 	"FRIENDS_ADD_FRIEND_NOT_NICKNAME": {
 		"zh": "该用户未设置昵称",
-		"en": "This user has no nickname",
-		"ja": "このユーザーはニックネームを設定していません",
-		"fr": "Cet utilisateur n'a pas de surnom",
-		"de": "Dieser Benutzer hat keinen Spitznamen festgelegt",
-		"ru": "У этого пользователя нет псевдонима"
+		"en": "This user has no nickname"
 	},
 	"FRIENDS_ADD_FRIEND_ID": "ID: {}",
 	"FRIENDS_ADD_FRIEND_ALREADY_FRIEND": {
 		"zh": "你们已经是好友了",
-		"en": "You are already friends",
-		"ja": "あなたたちはすでに友達です",
-		"fr": "Vous êtes déjà amis",
-		"de": "Ihr seid bereits Freunde",
-		"ru": "Вы уже друзья"
+		"en": "You are already friends"
 	},
 	"FRIENDS_ADD_FRIEND_NOT_ADD_OWNER": {
 		"zh": "你不能添加自己",
-		"en": "You cannot add yourself",
-		"ja": "自分自身を追加することはできません",
-		"fr": "Vous ne pouvez pas vous ajouter vous-même",
-		"de": "Du kannst dich nicht selbst hinzufügen",
-		"ru": "Нельзя добавить себя"
+		"en": "You cannot add yourself"
 	},
 	"FRIENDS_ADD_FRIEND_ALREADY_SEND_REQUEST": {
 		"zh": "已经发送过好友申请了",
-		"en": "Friend request has already been sent",
-		"ja": "すでに友達申請を送信しています",
-		"fr": "La demande d'ami a déjà été envoyée",
-		"de": "Freundschaftsanfrage wurde bereits gesendet",
-		"ru": "Запрос на добавление в друзья уже отправлен"
+		"en": "Friend request has already been sent"
 	},
 	"FRIENDS_ADD_FRIEND_SEND_REQUEST": {
 		"zh": "点击发送好友申请",
-		"en": "Click to send a friend request",
-		"ja": "クリックして友達申請を送信",
-		"fr": "Cliquez pour envoyer une demande d'ami",
-		"de": "Klicken Sie, um eine Freundschaftsanfrage zu senden",
-		"ru": "Нажмите, чтобы отправить запрос на добавление в друзья"
+		"en": "Click to send a friend request"
 	},
 	"FRIENDS_ADD_FRIEND_SEND_SUCCESS": {
 		"zh": "已发送好友申请",
-		"en": "Friend request sent successfully",
-		"ja": "友達申請が正常に送信されました",
-		"fr": "Demande d'ami envoyée avec succès",
-		"de": "Freundschaftsanfrage erfolgreich gesendet",
-		"ru": "Запрос на добавление в друзья успешно отправлен"
+		"en": "Friend request sent successfully"
 	},
 	"PERSON_ID": "ID: {}",
 	"PERSON_SETTINGS_SUBTITLE": {
 		"zh": "外观、语言、图标、内存、退出登录",
-		"en": "Appearance, Language, Icons, Memory, Log Out",
-		"ja": "外観、言語、アイコン、メモリ、ログアウト",
-		"fr": "Apparence, Langue, Icônes, Mémoire, Déconnexion",
-		"de": "Aussehen, Sprache, Symbole, Speicher, Abmelden",
-		"ru": "Внешний вид, Язык, Иконки, Память, Выйти"
+		"en": "Appearance, Language, Icons, Memory, Log Out"
 	},
 	"PERSON_LAST_LOGIN_TIME": {
 		"zh": "上次登录时间",
-		"en": "Last login time",
-		"ja": "最終ログイン時間",
-		"fr": "Dernière connexion",
-		"de": "Letzte Anmeldung",
-		"ru": "Последнее время входа"
+		"en": "Last login time"
 	},
 	"PERSON_MESSAGE_CENTER_SUBTITLE_NEWS": {
 		"zh": "您有{}条消息待处理",
-		"en": "You have {} pending messages",
-		"ja": "未処理のメッセージが{}件あります",
-		"fr": "Vous avez {} messages en attente",
-		"de": "Sie haben {} ausstehende Nachrichten",
-		"ru": "У вас {} непрочитанных сообщений"
+		"en": "You have {} pending messages"
 	},
 	"PERSON_MESSAGE_CENTER_SUBTITLE_NO_NEWS": {
 		"zh": "暂无待处理的消息",
-		"en": "No pending messages at the moment",
-		"ja": "現在、未処理のメッセージはありません",
-		"fr": "Aucun message en attente pour le moment",
-		"de": "Derzeit keine ausstehenden Nachrichten",
-		"ru": "Нет непрочитанных сообщений"
+		"en": "No pending messages at the moment"
 	},
 	"LABEL": {
 		"zh": "标签",
-		"en": "Label",
-		"ja": "ラベル",
-		"fr": "Étiquette",
-		"de": "Label",
-		"ru": "Метка"
+		"en": "Label"
 	},
 	"LABEL_TITLE": {
 		"zh": "编辑个人标签",
-		"en": "Edit Personal Label",
-		"ja": "個人ラベルを編集",
-		"fr": "Modifier l'étiquette personnelle",
-		"de": "Persönliches Label bearbeiten",
-		"ru": "Редактировать личную метку"
+		"en": "Edit Personal Label"
 	},
 	"LABEL_PLEASE_INPUT_LABEL_NAME": {
 		"zh": "请输入标签名称",
-		"en": "Please enter label name",
-		"ja": "ラベル名を入力してください",
-		"fr": "Veuillez saisir le nom de l'étiquette",
-		"de": "Bitte Labelnamen eingeben",
-		"ru": "Пожалуйста, введите название метки"
+		"en": "Please enter label name"
 	},
 	"LABEL_RED": {
 		"zh": "红",
-		"en": "Red",
-		"ja": "赤",
-		"fr": "Rouge",
-		"de": "Rot",
-		"ru": "Красный"
+		"en": "Red"
 	},
 	"LABEL_GREEN": {
 		"zh": "绿",
-		"en": "Green",
-		"ja": "緑",
-		"fr": "Vert",
-		"de": "Grün",
-		"ru": "Зеленый"
+		"en": "Green"
 	},
 	"LABEL_BLUE": {
 		"zh": "蓝",
-		"en": "Blue",
-		"ja": "青",
-		"fr": "Bleu",
-		"de": "Blau",
-		"ru": "Синий"
+		"en": "Blue"
 	},
 	"LABEL_PREVIEW": {
 		"zh": "预览",
-		"en": "Preview",
-		"ja": "プレビュー",
-		"fr": "Aperçu",
-		"de": "Vorschau",
-		"ru": "Предпросмотр"
+		"en": "Preview"
 	},
 	"LABEL_DELETE": {
 		"zh": "删除",
-		"en": "Delete",
-		"ja": "削除",
-		"fr": "Supprimer",
-		"de": "Löschen",
-		"ru": "Удалить"
+		"en": "Delete"
 	},
 	"LABEL_UPDATE": {
 		"zh": "修改",
-		"en": "Update",
-		"ja": "更新",
-		"fr": "Modifier",
-		"de": "Aktualisieren",
-		"ru": "Обновить"
+		"en": "Update"
 	},
 	"LABEL_CANCEL": {
 		"zh": "取消",
-		"en": "Cancel",
-		"ja": "キャンセル",
-		"fr": "Annuler",
-		"de": "Abbrechen",
-		"ru": "Отмена"
+		"en": "Cancel"
 	},
 	"LABEL_ADD": {
 		"zh": "添加",
-		"en": "Add",
-		"ja": "追加",
-		"fr": "Ajouter",
-		"de": "Hinzufügen",
-		"ru": "Добавить"
+		"en": "Add"
 	},
 	"LABEL_MUST_NOT_EMPTY": {
 		"zh": "标签不能为空",
-		"en": "Label must not be empty",
-		"ja": "ラベルは空にできません",
-		"fr": "L'étiquette ne doit pas être vide",
-		"de": "Label darf nicht leer sein",
-		"ru": "Метка не должна быть пустой"
+		"en": "Label must not be empty"
 	},
 	"SETTINGS": {
 		"zh": "设置",
-		"en": "Settings",
-		"ja": "設定",
-		"fr": "Paramètres",
-		"de": "Einstellungen",
-		"ru": "Настройки"
+		"en": "Settings"
 	},
 	"SETTINGS_APPEARANCE_SUBTITLE": {
 		"zh": "对比度，深浅色模式，主题色",
-		"en": "Contrast, Light/Dark Mode, Theme Color",
-		"ja": "コントラスト、ライト/ダークモード、テーマカラー",
-		"fr": "Contraste, mode clair/sombre, couleur du thème",
-		"de": "Kontrast, Hell/Dunkel-Modus, Themenfarbe",
-		"ru": "Контраст, светлый/тёмный режим, цвет темы"
+		"en": "Contrast, Light/Dark Mode, Theme Color"
 	},
 	"SETTINGS_LOGOUT": {
 		"zh": "退出登录",
-		"en": "Logout",
-		"ja": "ログアウト",
-		"fr": "Déconnexion",
-		"de": "Abmelden",
-		"ru": "Выйти"
+		"en": "Logout"
 	},
 	"SETTINGS_LOGOUT_TITLE": {
 		"zh": "您确定要退出账号吗？",
-		"en": "Are you sure you want to logout?",
-		"ja": "ログアウトしてもよろしいですか？",
-		"fr": "Êtes-vous sûr de vouloir vous déconnecter ?",
-		"de": "Sind Sie sicher, dass Sie sich abmelden möchten?",
-		"ru": "Вы уверены, что хотите выйти?"
+		"en": "Are you sure you want to logout?"
 	},
 	"SETTINGS_LOGOUT_CONTENT": {
 		"zh": "退出当前账号后，您需要重新登录",
-		"en": "You will need to login again after logging out",
-		"ja": "ログアウト後は再度ログインが必要です",
-		"fr": "Vous devrez vous reconnecter après la déconnexion",
-		"de": "Sie müssen sich nach dem Abmelden erneut anmelden",
-		"ru": "После выхода потребуется повторный вход"
+		"en": "You will need to login again after logging out"
 	},
 	"SETTINGS_SWITCH_LANGUAGE": {
 		"zh": "语言",
-		"en": "Language",
-		"ja": "言語",
-		"fr": "Langue",
-		"de": "Sprache",
-		"ru": "Язык"
+		"en": "Language"
 	},
 	"SETTINGS_SWITCH_ICON_TYPE": {
 		"zh": "图标",
-		"en": "Icon",
-		"ja": "アイコン",
-		"fr": "Icône",
-		"de": "Symbol",
-		"ru": "Иконка"
+		"en": "Icon"
 	},
 	"SETTINGS_ROUNDED": {
 		"zh": "圆润",
-		"en": "Rounded",
-		"ja": "ラウンド",
-		"fr": "Arrondi",
-		"de": "Abgerundet",
-		"ru": "Скруглённый"
+		"en": "Rounded"
 	},
 	"SETTINGS_OUTLINED": {
 		"zh": "轮廓",
-		"en": "Outlined",
-		"ja": "アウトライン",
-		"fr": "Contour",
-		"de": "Umrissen",
-		"ru": "Контур"
+		"en": "Outlined"
 	},
 	"SETTINGS_FILLED": {
 		"zh": "填充",
-		"en": "Filled",
-		"ja": "塗りつぶし",
-		"fr": "Plein",
-		"de": "Ausgefüllt",
-		"ru": "Заливка"
+		"en": "Filled"
 	},
 	"SETTINGS_SHARP": {
 		"zh": "锐利",
-		"en": "Sharp",
-		"ja": "シャープ",
-		"fr": "Net",
-		"de": "Scharf",
-		"ru": "Резкий"
+		"en": "Sharp"
 	},
 	"SETTINGS_TWO_TONE": {
 		"zh": "双色",
-		"en": "Two Tone",
-		"ja": "ツートーン",
-		"de": "Zweifarbig",
-		"fr": "Deux tons",
-		"ru": "Двухцветный"
+		"en": "Two Tone"
 	},
 	"SETTINGS_MEMORY": {
 		"zh": "内存",
-		"en": "Memory",
-		"ja": "メモリ",
-		"fr": "Mémoire",
-		"de": "Speicher",
-		"ru": "Память"
+		"en": "Memory"
 	},
 	"SETTINGS_USE_MEMORY": {
 		"zh": "当前使用：{}",
-		"en": "Currently using: {}",
-		"ja": "現在の使用量：{}",
-		"fr": "Utilisation actuelle : {}",
-		"de": "Aktuelle Nutzung: {}",
-		"ru": "Текущее использование: {}"
+		"en": "Currently using: {}"
 	},
 	"APPEARANCE": {
 		"zh": "外观",
-		"en": "Appearance",
-		"ja": "外観",
-		"fr": "Apparence",
-		"de": "Aussehen",
-		"ru": "Внешний вид"
+		"en": "Appearance"
 	},
 	"APPEARANCE_SINGLE_LINE": {
 		"zh": "单行显示",
-		"en": "Single Line",
-		"ja": "一行表示",
-		"fr": "Une seule ligne",
-		"de": "Einzeilig",
-		"ru": "Одна строка"
+		"en": "Single Line"
 	},
 	"APPEARANCE_MULTI_LINE": {
 		"zh": "全部显示 ({})",
-		"en": "Show All ({})",
-		"ja": "すべて表示 ({})",
-		"fr": "Afficher tout ({})",
-		"de": "Alle anzeigen ({})",
-		"ru": "Показать все ({})"
+		"en": "Show All ({})"
 	},
 	"APPEARANCE_CONTRAST": {
 		"zh": "对比度",
-		"en": "Contrast",
-		"ja": "コントラスト",
-		"fr": "Contraste",
-		"de": "Kontrast",
-		"ru": "Контраст"
+		"en": "Contrast"
 	},
 	"APPEARANCE_CONTRAST_STANDARD": {
 		"zh": "标准对比度",
-		"en": "Standard Contrast",
-		"ja": "標準コントラスト",
-		"fr": "Contraste standard",
-		"de": "Standardkontrast",
-		"ru": "Стандартный контраст"
+		"en": "Standard Contrast"
 	},
 	"APPEARANCE_CONTRAST_MEDIUM": {
 		"zh": "中对比度",
-		"en": "Medium Contrast",
-		"ja": "中間のコントラスト",
-		"fr": "Contraste moyen",
-		"de": "Mittlerer Kontrast",
-		"ru": "Средний контраст"
+		"en": "Medium Contrast"
 	},
 	"APPEARANCE_CONTRAST_HIGH": {
 		"zh": "高对比度",
-		"en": "High Contrast",
-		"ja": "高コントラスト",
-		"fr": "Contraste élevé",
-		"de": "Hoher Kontrast",
-		"ru": "Высокий контраст"
+		"en": "High Contrast"
 	},
 	"APPEARANCE_CONTRAST_PREVIEW": {
 		"zh": "对比度预览",
-		"en": "Contrast Preview",
-		"ja": "コントラストプレビュー",
-		"fr": "Aperçu du contraste",
-		"de": "Kontrastvorschau",
-		"ru": "Предпросмотр контраста"
+		"en": "Contrast Preview"
 	},
 	"APPEARANCE_THEME_MODE": {
 		"zh": "深浅色模式",
-		"en": "Dark and Light Mode",
-		"ja": "ダークモードとライトモード",
-		"fr": "Mode sombre et clair",
-		"de": "Dunkel- und Hellmodus",
-		"ru": "Тёмный и светлый режим"
+		"en": "Dark and Light Mode"
 	},
 	"APPEARANCE_THEME_MODE_LIGHT": {
 		"zh": "浅色主题",
-		"en": "Light Theme",
-		"ja": "ライトテーマ",
-		"fr": "Thème clair",
-		"de": "Hellthema",
-		"ru": "Светлая тема"
+		"en": "Light Theme"
 	},
 	"APPEARANCE_THEME_MODE_DARK": {
 		"zh": "深色主题",
-		"en": "Dark Theme",
-		"ja": "ダークテーマ",
-		"fr": "Thème sombre",
-		"de": "Dunkelthema",
-		"ru": "Тёмная тема"
+		"en": "Dark Theme"
 	},
 	"APPEARANCE_THEME_MODE_SYSTEM": {
 		"zh": "跟随系统",
-		"en": "Follow System",
-		"ja": "システムに従う",
-		"fr": "Suivre le système",
-		"de": "Systemeinstellungen folgen",
-		"ru": "Следовать системе"
+		"en": "Follow System"
 	},
 	"APPEARANCE_THEME_MODE_PREVIEW": {
 		"zh": "深浅色预览",
-		"en": "Theme Mode Preview",
-		"ja": "テーマモードプレビュー",
-		"fr": "Aperçu du mode thème",
-		"de": "Vorschau Themenmodus",
-		"ru": "Предпросмотр режима темы"
+		"en": "Theme Mode Preview"
 	},
 	"APPEARANCE_THEME": {
 		"zh": "主题色",
-		"en": "Theme Color",
-		"ja": "テーマカラー",
-		"fr": "Couleur du thème",
-		"de": "Themenfarbe",
-		"ru": "Цвет темы"
+		"en": "Theme Color"
 	},
 	"APPEARANCE_THEME_RED": {
 		"zh": "山霞红",
-		"en": "Mountain Red",
-		"ja": "山霞の赤",
-		"fr": "Rouge montagne",
-		"de": "Bergrot",
-		"ru": "Горный красный"
+		"en": "Mountain Red"
 	},
 	"APPEARANCE_THEME_PURPLE": {
 		"zh": "云暮紫",
-		"en": "Cloud Purple",
-		"ja": "雲暮れの紫",
-		"fr": "Pourpre nuageux",
-		"de": "Wolkenlila",
-		"ru": "Облачный пурпурный"
+		"en": "Cloud Purple"
 	},
 	"APPEARANCE_THEME_MODENA": {
 		"zh": "岭夜紫",
-		"en": "Ridge Night Purple",
-		"ja": "峰の夜の紫",
-		"fr": "Pourpre de la nuit de la crête",
-		"de": "Grat Nacht Lila",
-		"ru": "Фиолетовый ночного хребта"
+		"en": "Ridge Night Purple"
 	},
 	"APPEARANCE_THEME_BLUE": {
 		"zh": "天远蓝",
-		"en": "Sky Blue",
-		"ja": "空の青",
-		"fr": "Bleu ciel",
-		"de": "Himmelblau",
-		"ru": "Небесно-голубой"
+		"en": "Sky Blue"
 	},
 	"APPEARANCE_THEME_LIGHT_BLUE": {
 		"zh": "晨岚蓝",
-		"en": "Morning Mist Blue",
-		"ja": "朝の霧の青",
-		"fr": "Bleu brume matinale",
-		"de": "Morgennebelblau",
-		"ru": "Голубой утренний туман"
+		"en": "Morning Mist Blue"
 	},
 	"APPEARANCE_THEME_CYAN": {
 		"zh": "岸水青",
-		"en": "Shore Cyan",
-		"ja": "岸のシアン",
-		"fr": "Cyan du rivage",
-		"de": "Ufercyan",
-		"ru": "Береговой циан"
+		"en": "Shore Cyan"
 	},
 	"APPEARANCE_THEME_TURQUOISE": {
 		"zh": "湖翠青",
-		"en": "Lake Turquoise",
-		"ja": "湖のターコイズ",
-		"fr": "Turquoise du lac",
-		"de": "See-Türkis",
-		"ru": "Озёрный бирюзовый"
+		"en": "Lake Turquoise"
 	},
 	"APPEARANCE_THEME_GREEN": {
 		"zh": "径幽绿",
-		"en": "Path Green",
-		"ja": "小道の緑",
-		"fr": "Vert chemin",
-		"de": "Weggrün",
-		"ru": "Тропиновый зелёный"
+		"en": "Path Green"
 	},
 	"APPEARANCE_THEME_LIGHT_GREEN": {
 		"zh": "野新绿",
-		"en": "Fresh Wild Green",
-		"ja": "野生の新緑",
-		"fr": "Vert sauvage frais",
-		"de": "Frisches Wildgrün",
-		"ru": "Свежая дикая зелень"
+		"en": "Fresh Wild Green"
 	},
 	"APPEARANCE_THEME_STONE_GRAY": {
 		"zh": "崖烟灰",
-		"en": "Cliff Gray",
-		"ja": "崖の灰色",
-		"fr": "Gris falaise",
-		"de": "Kliffgrau",
-		"ru": "Серый утёса"
+		"en": "Cliff Gray"
 	},
 	"APPEARANCE_THEME_YELLOW": {
 		"zh": "原暖黄",
-		"en": "Warm Yellow",
-		"ja": "暖かい黄色",
-		"fr": "Jaune chaud",
-		"de": "Warmes Gelb",
-		"ru": "Тёплый жёлтый"
+		"en": "Warm Yellow"
 	},
 	"APPEARANCE_THEME_AMBER": {
 		"zh": "林暮黄",
-		"en": "Forest Amber",
-		"ja": "森の琥珀色",
-		"fr": "Ambre forestier",
-		"de": "Waldbernstein",
-		"ru": "Лесной янтарь"
+		"en": "Forest Amber"
 	},
 	"APPEARANCE_THEME_PREVIEW": {
 		"zh": "主题色预览",
-		"en": "Theme Color Preview",
-		"ja": "テーマカラーのプレビュー",
-		"fr": "Aperçu de la couleur du thème",
-		"de": "Vorschau der Themenfarbe",
-		"ru": "Предпросмотр цвета темы"
+		"en": "Theme Color Preview"
 	},
 	"MESSAGE_CENTER_TITLE": {
 		"zh": "消息中心",
-		"en": "Message Center",
-		"ja": "メッセージセンター",
-		"fr": "Centre de messages",
-		"de": "Nachrichtenzentrum",
-		"ru": "Центр сообщений"
+		"en": "Message Center"
+	},
+	"MESSAGE_CENTER_SENT_REQUEST": {
+		"zh": "我发送的",
+		"en": "Sent Requests"
+	},
+	"MESSAGE_CENTER_RECEIVED_REQUEST": {
+		"zh": "我收到的",
+		"en": "Received Requests"
+	},
+	"MESSAGE_CENTER_AGREED": {
+		"zh": "已同意",
+		"en": "Agreed"
+	},
+	"MESSAGE_CENTER_REJECTED": {
+		"zh": "已拒绝",
+		"en": "Rejected"
+	},
+	"MESSAGE_CENTER_WAITING": {
+		"zh": "等待中",
+		"en": "Waiting"
+	},
+	"MESSAGE_CENTER_CANCELED": {
+		"zh": "等待中",
+		"en": "Canceled"
 	}
 }

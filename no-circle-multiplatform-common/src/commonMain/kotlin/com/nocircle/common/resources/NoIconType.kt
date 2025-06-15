@@ -7,23 +7,23 @@ import com.nocircle.common.flow.StatusFlowConfig
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class IconType {
+enum class NoIconType {
 	ROUNDED,
 	OUTLINED,
 	FILLED,
 	SHARP,
 	TWO_TONE;
 	
-	companion object : StatusFlowConfig<IconType>() {
+	companion object Companion : StatusFlowConfig<NoIconType>() {
 		
-		override suspend fun getConfigFromStorage(): IconType {
+		override suspend fun getConfigFromStorage(): NoIconType {
 			return IconTypeConfigKey.get() ?: ROUNDED
 		}
 		
-		override suspend fun setConfigToStorage(oldConfig: IconType, newConfig: IconType) {
+		override suspend fun setConfigToStorage(oldConfig: NoIconType, newConfig: NoIconType) {
 			IconTypeConfigKey.set(newConfig)
 		}
 	}
 }
 
-private object IconTypeConfigKey : ConfigKey<IconType>("iconType")
+private object IconTypeConfigKey : ConfigKey<NoIconType>("iconType")

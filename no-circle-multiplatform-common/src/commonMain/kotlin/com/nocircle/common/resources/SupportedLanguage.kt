@@ -18,22 +18,6 @@ enum class SupportedLanguage(
 	ENGLISH(
 		language = "en",
 		displayName = "English",
-	),
-	JAPANESE(
-		language = "ja",
-		displayName = "日本語",
-	),
-	FRENCH(
-		language = "fr",
-		displayName = "Français"
-	),
-	GERMAN(
-		language = "de",
-		displayName = "Deutsch"
-	),
-	RUSSIAN(
-		language = "ru",
-		displayName = "Русский"
 	);
 	
 	companion object : StatusFlowConfig<SupportedLanguage>() {

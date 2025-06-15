@@ -16,13 +16,13 @@ interface FriendApi {
 	
 	@BearerAuth
 	@POST("request/add")
-	suspend fun requestAdd(
+	suspend fun addRequest(
 		@Field receiverId: Int
 	): ResultBody<Unit>?
 	
 	@BearerAuth
-	@POST("request/query")
-	suspend fun requestQuery(): ResultBody<FriendRequestDTO>
+	@GET("request/query")
+	suspend fun queryRequest(): ResultBody<FriendRequestDTO>?
 }
 
 @Immutable
@@ -48,29 +48,29 @@ data class SearchUserDTO(
 @Immutable
 @Serializable
 data class FriendRequestDTO(
-	val sentRequests: List<SentRequestDTO>,
-	val receivedRequests: List<ReceivedRequestDTO>
+	val sentRequests: List<RequestDTO>,
+	val receivedRequests: List<RequestDTO>
 ) {
 	
 	@Immutable
 	@Serializable
-	data class SentRequestDTO(
-		val receiverId: Int,
+	data class RequestDTO(
+		val id: Int,
 		val username: String,
 		val nickname: String?,
 		val avatarUrl: String?,
-		val status: String,
+		val status: RequestStatus,
+		val labels: List<LabelDTO>,
 		val updateTime: String
 	)
 	
+	@Serializable
+	enum class RequestStatus { AGREED, REJECTED, WAITING, CANCELED }
+	
 	@Immutable
 	@Serializable
-	data class ReceivedRequestDTO(
-		val senderId: Int,
-		val username: String,
-		val nickname: String?,
-		val avatarUrl: String?,
-		val status: String,
-		val updateTime: String
+	data class LabelDTO(
+		val label: String,
+		val color: String,
 	)
 }

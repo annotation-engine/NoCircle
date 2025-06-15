@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
-import com.nocircle.app.theme.colors.ThemeMode
-import com.nocircle.app.theme.colors.getColorScheme
+import com.nocircle.app.theme.groups.ThemeMode
+import com.nocircle.app.theme.groups.getColorScheme
 
 @Composable
 fun NoMaterialTheme(

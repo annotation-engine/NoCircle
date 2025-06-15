@@ -2,6 +2,7 @@ package com.nocircle.app.pages.settings.memory
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.style.TextOverflow
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.resources.value
@@ -24,7 +25,11 @@ fun Memory() {
 					delay(1000L)
 				}
 			}
-			Text(AppString.SETTINGS_USE_MEMORY.value(usedMemory))
+			Text(
+				text = AppString.SETTINGS_USE_MEMORY.value(usedMemory),
+				overflow = TextOverflow.Ellipsis,
+				maxLines = 1
+			)
 		}
 	) {
 		coroutineScope.launch {

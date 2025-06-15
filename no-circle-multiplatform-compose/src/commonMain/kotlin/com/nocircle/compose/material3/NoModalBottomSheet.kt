@@ -38,7 +38,7 @@ fun NoModalBottomSheet(
 		sheetState = sheetState,
 		containerColor = containerColor,
 		contentColor = contentColor,
-		shape = MaterialTheme.shapes.large,
+		shape = MaterialTheme.shapes.medium,
 		tonalElevation = tonalElevation,
 		dragHandle = {},
 		contentWindowInsets = contentWindowInsets

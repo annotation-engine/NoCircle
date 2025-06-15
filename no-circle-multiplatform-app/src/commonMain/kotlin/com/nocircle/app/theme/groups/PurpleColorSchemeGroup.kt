@@ -1,4 +1,4 @@
-package com.nocircle.app.theme.colors
+package com.nocircle.app.theme.groups
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Immutable

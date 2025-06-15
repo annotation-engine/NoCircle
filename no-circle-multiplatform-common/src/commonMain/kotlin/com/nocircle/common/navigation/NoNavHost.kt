@@ -2,13 +2,17 @@ package com.nocircle.common.navigation
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nocircle.common.expends.noLocalProvidedFor
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass
@@ -42,7 +46,7 @@ fun NoNavHost(
 }
 
 val LocalNavController = staticCompositionLocalOf<NoNavHostController> {
-	error("CompositionLocal LocalNavController not present")
+	noLocalProvidedFor("LocalNavController")
 }
 
 @Immutable

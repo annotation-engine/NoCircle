@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.pages.account.login.LoginRoute
@@ -24,7 +25,7 @@ import com.nocircle.app.rootController
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoPopUp
 import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.resources.IconType
+import com.nocircle.common.resources.NoIconType
 import com.nocircle.common.resources.SupportedLanguage
 import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
@@ -98,7 +99,13 @@ private fun NavToAppearance() {
 	NoOption(
 		title = { Text(AppString.APPEARANCE.value()) },
 		icon = { NoIcon(AppIcon.Cookie.value()) },
-		actions = { Text(AppString.SETTINGS_APPEARANCE_SUBTITLE.value()) }
+		actions = {
+			Text(
+				text = AppString.SETTINGS_APPEARANCE_SUBTITLE.value(),
+				overflow = TextOverflow.Ellipsis,
+				maxLines = 1
+			)
+		}
 	) {
 		controller.navigate(route = AppearanceRoute)
 	}
@@ -135,7 +142,13 @@ private fun SwitchLanguage() {
 		NoOption(
 			title = { Text(AppString.SETTINGS_SWITCH_LANGUAGE.value()) },
 			icon = { NoIcon(AppIcon.Language.value()) },
-			actions = { Text(language.displayName) },
+			actions = {
+				Text(
+					text = language.displayName,
+					overflow = TextOverflow.Ellipsis,
+					maxLines = 1
+				)
+			},
 		)
 	}
 }
@@ -151,12 +164,12 @@ private fun SwitchIconType() {
 		onExpandedChange = { expanded = it },
 		menuItems = {
 			val coroutineScope = rememberCoroutineScope()
-			IconType.entries.fastForEach {
+			NoIconType.entries.fastForEach {
 				DropdownMenuItem(
 					text = { Text(it.getAppString().value()) },
 					onClick = {
 						coroutineScope.launch(Dispatchers.IO) {
-							IconType.set(it)
+							NoIconType.set(it)
 						}
 						expanded = false
 					}
@@ -167,18 +180,24 @@ private fun SwitchIconType() {
 		NoOption(
 			title = { Text(AppString.SETTINGS_SWITCH_ICON_TYPE.value()) },
 			icon = { NoIcon(AppIcon.ShapeLine.value()) },
-			actions = { Text(IconType.current.getAppString().value()) }
+			actions = {
+				Text(
+					text = NoIconType.current.getAppString().value(),
+					overflow = TextOverflow.Ellipsis,
+					maxLines = 1
+				)
+			}
 		)
 	}
 }
 
 @Stable
-private fun IconType.getAppString(): AppString = when (this) {
-	IconType.ROUNDED -> AppString.SETTINGS_ROUNDED
-	IconType.OUTLINED -> AppString.SETTINGS_OUTLINED
-	IconType.FILLED -> AppString.SETTINGS_FILLED
-	IconType.SHARP -> AppString.SETTINGS_SHARP
-	IconType.TWO_TONE -> AppString.SETTINGS_TWO_TONE
+private fun NoIconType.getAppString(): AppString = when (this) {
+	NoIconType.ROUNDED -> AppString.SETTINGS_ROUNDED
+	NoIconType.OUTLINED -> AppString.SETTINGS_OUTLINED
+	NoIconType.FILLED -> AppString.SETTINGS_FILLED
+	NoIconType.SHARP -> AppString.SETTINGS_SHARP
+	NoIconType.TWO_TONE -> AppString.SETTINGS_TWO_TONE
 }
 
 /**

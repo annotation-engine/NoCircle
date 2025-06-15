@@ -32,10 +32,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.theme.colors.ColorSchemeContrast
-import com.nocircle.app.theme.colors.ColorSchemeGroup
-import com.nocircle.app.theme.colors.ThemeMode
-import com.nocircle.app.theme.colors.getColorScheme
+import com.nocircle.app.theme.groups.ColorSchemeContrast
+import com.nocircle.app.theme.groups.ColorSchemeGroup
+import com.nocircle.app.theme.groups.ThemeMode
+import com.nocircle.app.theme.groups.getColorScheme
 import com.nocircle.common.navigation.LocalNavController
 import com.nocircle.common.navigation.NoRoute
 import com.nocircle.common.resources.value

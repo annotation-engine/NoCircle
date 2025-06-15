@@ -5,8 +5,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CenterFocusWeak
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -18,10 +16,14 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastFilter
 import androidx.compose.ui.util.fastForEachIndexed
+import com.nocircle.app.api.FriendRequestDTO
 import com.nocircle.app.pages.main.person.label.EditLabelSheet
 import com.nocircle.app.pages.main.person.message.MessageCenterRoute
+import com.nocircle.app.pages.main.person.message.MessageCenterViewModel
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
@@ -33,7 +35,9 @@ import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.layout.NoOption
+import com.nocircle.compose.material3.LocalSnackbarHostState
 import com.nocircle.compose.material3.NoScaffold
+import com.nocircle.compose.material3.showNoSnackbar
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -73,9 +77,9 @@ private fun UserDetailCard() {
 			.fillMaxWidth()
 			.background(
 				color = MaterialTheme.colorScheme.surfaceContainer,
-				shape = MaterialTheme.shapes.small
+				shape = MaterialTheme.shapes.medium
 			)
-			.padding(16.dp)
+			.padding(12.dp)
 			.height(100.dp)
 	) {
 		val userDetail by viewModel.userDetail.collectAsState()
@@ -87,7 +91,7 @@ private fun UserDetailCard() {
 			placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceDim),
 			contentScale = ContentScale.Crop
 		)
-		Spacer(modifier = Modifier.width(16.dp))
+		Spacer(modifier = Modifier.width(12.dp))
 		Box(
 			modifier = Modifier
 				.fillMaxSize()
@@ -189,7 +193,11 @@ private fun LastLoginTime() {
 		title = { Text(AppString.PERSON_LAST_LOGIN_TIME.value()) },
 		icon = { NoIcon(AppIcon.AccessTime.value()) },
 		actions = {
-			Text(lastLoginTime ?: "-----")
+			Text(
+				text = lastLoginTime ?: "-----",
+				overflow = TextOverflow.Ellipsis,
+				maxLines = 1
+			)
 		},
 		showSuffixIcon = false
 	)
@@ -197,12 +205,38 @@ private fun LastLoginTime() {
 
 @Composable
 private fun FriendAddRequest() {
-	Icons.Rounded.CenterFocusWeak
 	val controller = LocalNavController.current
+	val viewModel = koinViewModel<MessageCenterViewModel>()
+	val hostState = LocalSnackbarHostState.current
+	LaunchedEffect(Unit) {
+		viewModel.snackbarCollect(hostState::showNoSnackbar)
+	}
+	LaunchedEffect(Unit) {
+		viewModel.loadFriendRequest()
+	}
+	val receivedRequests by viewModel.receivedRequests.collectAsState()
+	val receivedWaitingCount by remember(receivedRequests) {
+		derivedStateOf {
+			receivedRequests.fastFilter { it.status == FriendRequestDTO.RequestStatus.WAITING }.size
+		}
+	}
 	NoOption(
 		title = { Text(AppString.MESSAGE_CENTER_TITLE.value()) },
-		icon = { NoIcon(AppIcon.Email.value()) },
-		actions = { Text(AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NO_NEWS.value()) }
+		icon = {
+			val iconGroup by remember(receivedWaitingCount) {
+				derivedStateOf {
+					if (receivedWaitingCount == 0) AppIcon.Email else AppIcon.MarkEmailUnread
+				}
+			}
+			NoIcon(iconGroup.value())
+		},
+		actions = {
+			Text(
+				text = if (receivedWaitingCount == 0) AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NO_NEWS.value() else AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NEWS.value(receivedWaitingCount),
+				overflow = TextOverflow.Ellipsis,
+				maxLines = 1
+			)
+		}
 	) {
 		controller.navigate(route = MessageCenterRoute)
 	}
@@ -214,7 +248,13 @@ private fun OptionList() {
 	NoOption(
 		title = { Text(AppString.SETTINGS.value()) },
 		icon = { NoIcon(AppIcon.Settings.value()) },
-		actions = { Text(AppString.PERSON_SETTINGS_SUBTITLE.value()) }
+		actions = {
+			Text(
+				text = AppString.PERSON_SETTINGS_SUBTITLE.value(),
+				overflow = TextOverflow.Ellipsis,
+				maxLines = 1
+			)
+		}
 	) {
 		controller.navigate(route = SettingsRoute)
 	}

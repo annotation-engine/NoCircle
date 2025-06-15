@@ -26,14 +26,14 @@ fun NoOption(
 	modifier: Modifier = Modifier,
 	showSuffixIcon: Boolean = true,
 	containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
-	shape: Shape = MaterialTheme.shapes.small,
+	shape: Shape = MaterialTheme.shapes.medium,
 	onClick: (() -> Unit)? = null,
 ) {
 	Row(
 		modifier = modifier
 			.fillMaxWidth()
 			.height(60.dp)
-			.clip(MaterialTheme.shapes.small)
+			.clip(shape)
 			.background(
 				color = containerColor,
 				shape = shape

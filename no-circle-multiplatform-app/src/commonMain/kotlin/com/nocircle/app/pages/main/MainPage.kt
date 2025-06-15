@@ -23,7 +23,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
@@ -31,7 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEachIndexed
+import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
@@ -44,9 +43,9 @@ import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.theme.colors.ThemeMode
+import com.nocircle.app.theme.groups.ThemeMode
 import com.nocircle.common.navigation.*
-import com.nocircle.common.resources.IconGroup
+import com.nocircle.common.resources.NoIcons
 import com.nocircle.common.resources.getString
 import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
@@ -55,6 +54,8 @@ import com.nocircle.compose.desktop.NoTooltipPlacement
 import com.nocircle.compose.desktop.NoWindowDraggableArea
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
+import com.nocircle.compose.material3.NoTab
+import com.nocircle.compose.material3.NoTabRow
 import com.nocircle.compose.material3.showNoSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -133,8 +134,8 @@ private fun MainPage(
 				.weight(1f),
 			animationSpec = tween(durationMillis = 100),
 			label = "MainPageCrossfade",
-		) { target ->
-			when (target) {
+		) { subRoute ->
+			when (subRoute) {
 				MainSubRoute.HOME -> HomePage()
 				MainSubRoute.FRIENDS -> FriendsPage()
 				MainSubRoute.GROUPS -> GroupsPage()
@@ -160,75 +161,26 @@ private fun BottomNavigationBar(
 	subRoute: MainSubRoute,
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	Box(
+	NoTabRow(
+		selectedTabIndex = subRoute.ordinal,
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(12.dp)
-			.height(56.dp)
+			.padding(16.dp)
 	) {
-		val density = LocalDensity.current
-		var width by remember { mutableStateOf(Dp.Unspecified) }
-		if (width != Dp.Unspecified) {
-			val sliderWidth by remember(width) {
-				derivedStateOf {
-					val size = MainSubRoute.entries.size
-					(width - ItemSpacing * (size - 1)) / size
-				}
-			}
-			val offsetXTarget by remember(sliderWidth, subRoute) {
-				derivedStateOf {
-					(sliderWidth + ItemSpacing) * MainSubRoute.entries.indexOfFirst { it == subRoute }
-				}
-			}
-			val offsetX by animateDpAsState(offsetXTarget)
-			Box(
-				modifier = Modifier
-					.offset(x = offsetX)
-					.width(sliderWidth)
-					.fillMaxHeight()
-					.clip(MaterialTheme.shapes.small)
-					.background(MaterialTheme.colorScheme.primary)
-			)
-		}
-		Row(
-			modifier = Modifier
-				.fillMaxSize()
-				.onSizeChanged {
-					width = with(density) { it.width.toDp() }
-				}
-		) {
-			MainSubRoute.entries.fastForEachIndexed { index, it ->
-				val color by animateColorAsState(
-					targetValue = if (it == subRoute) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.secondary
+		MainSubRoute.entries.fastForEach {
+			NoTab(
+				selected = subRoute == it,
+				onClick = { onSubRouteChange(it) }
+			) {
+				NoIcon(
+					icon = it.iconGroup.value()
 				)
-				Row(
-					modifier = Modifier
-						.weight(1f)
-						.fillMaxHeight()
-						.clip(MaterialTheme.shapes.small)
-						.clickable { onSubRouteChange(it) }
-						.padding(horizontal = 4.dp),
-					verticalAlignment = Alignment.CenterVertically,
-					horizontalArrangement = Arrangement.Center
-				) {
-					NoIcon(
-						icon = it.iconGroup.value(),
-						tint = color,
-						modifier = Modifier
-							.size(24.dp)
-					)
-					Spacer(modifier = Modifier.width(8.dp))
-					Text(
-						text = it.title.value(),
-						color = color,
-						style = MaterialTheme.typography.bodyMedium,
-						maxLines = 1,
-						overflow = TextOverflow.Ellipsis
-					)
-				}
-				if (index < MainSubRoute.entries.lastIndex) {
-					Spacer(modifier = Modifier.width(ItemSpacing))
-				}
+				Spacer(modifier = Modifier.width(8.dp))
+				Text(
+					text = it.title.value(),
+					maxLines = 1,
+					overflow = TextOverflow.Ellipsis
+				)
 			}
 		}
 	}
@@ -557,7 +509,7 @@ private fun LeftItemWithExpended(
 
 enum class MainSubRoute(
 	val title: AppString,
-	val iconGroup: IconGroup
+	val iconGroup: NoIcons
 ) {
 	HOME(
 		title = AppString.MAIN_HOME,

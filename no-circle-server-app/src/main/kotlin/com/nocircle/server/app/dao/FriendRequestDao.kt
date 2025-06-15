@@ -29,7 +29,7 @@ object FriendRequestDao {
 		val updateCount = FriendRequests.logicUpdate(
 			where = { (FriendRequests.senderId eq senderId) and (FriendRequests.receiverId eq receiverId) }
 		) {
-			it[this.status] = if (isAgree) FriendRequests.Status.AGREE else FriendRequests.Status.REJECT
+			it[this.status] = if (isAgree) FriendRequests.Status.AGREED else FriendRequests.Status.REJECTED
 		}
 		return updateCount == 1
 	}

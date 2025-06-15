@@ -18,6 +18,7 @@ import androidx.compose.ui.util.fastFilterNotNull
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMapTo
+import com.nocircle.common.expends.noLocalProvidedFor
 import kotlinx.coroutines.delay
 
 @Composable
@@ -48,7 +49,7 @@ fun NoSnackbarHost(
 }
 
 val LocalSnackbarHostState = staticCompositionLocalOf<SnackbarHostState> {
-	error("CompositionLocal LocalSnackbarHostState not present")
+	noLocalProvidedFor("LocalSnackbarHostState")
 }
 
 @Stable
