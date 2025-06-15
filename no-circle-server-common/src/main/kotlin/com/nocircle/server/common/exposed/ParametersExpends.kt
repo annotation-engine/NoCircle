@@ -3,6 +3,7 @@ package com.nocircle.server.common.exposed
 import io.ktor.http.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import kotlin.enums.enumEntries
 
 context(_: RoutingContext)
 fun Parameters.getString(key: String): String = this.getOrFail(key)
@@ -27,3 +28,15 @@ fun Parameters.getDouble(key: String): Double = this.getOrFail(key).toDouble()
 
 context(_: RoutingContext)
 fun Parameters.getDoubleOrNull(key: String): Double? = this[key]?.toDouble()
+
+context(_: RoutingContext)
+inline fun <reified E : Enum<E>> Parameters.getEnum(key: String): E {
+	val value = this.getOrFail(key)
+	return enumEntries<E>().first { it.name.equals(value, ignoreCase = true) }
+}
+
+context(_: RoutingContext)
+inline fun <reified E : Enum<E>> Parameters.getEnumOrNull(key: String): E? {
+	val value = this[key]
+	return enumEntries<E>().find { it.name.equals(value, ignoreCase = true) }
+}

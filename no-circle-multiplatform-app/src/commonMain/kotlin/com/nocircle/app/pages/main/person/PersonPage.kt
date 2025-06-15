@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastFilter
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.api.FriendRequestDTO
+import com.nocircle.app.api.RequestDTO
 import com.nocircle.app.pages.main.person.label.EditLabelSheet
 import com.nocircle.app.pages.main.person.message.MessageCenterRoute
 import com.nocircle.app.pages.main.person.message.MessageCenterViewModel
@@ -105,7 +105,7 @@ private fun UserDetailCard() {
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
 					text = AppString.PERSON_ID.value().format(userDetail?.username ?: ""),
-					color = MaterialTheme.colorScheme.outline,
+					color = MaterialTheme.colorScheme.onSurfaceVariant,
 					style = MaterialTheme.typography.bodyMedium,
 				)
 			}
@@ -211,13 +211,10 @@ private fun FriendAddRequest() {
 	LaunchedEffect(Unit) {
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
-	LaunchedEffect(Unit) {
-		viewModel.loadFriendRequest()
-	}
 	val receivedRequests by viewModel.receivedRequests.collectAsState()
 	val receivedWaitingCount by remember(receivedRequests) {
 		derivedStateOf {
-			receivedRequests.fastFilter { it.status == FriendRequestDTO.RequestStatus.WAITING }.size
+			receivedRequests.fastFilter { it.status == RequestDTO.RequestStatus.WAITING }.size
 		}
 	}
 	NoOption(

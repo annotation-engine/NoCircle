@@ -6,6 +6,7 @@ import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.exposed.logicUpdate
 import org.jetbrains.exposed.v1.core.Op
+import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.jdbc.Query
@@ -34,17 +35,20 @@ object FriendRequestDao {
 		return updateCount == 1
 	}
 	
-	fun getListBySenderId(senderId: Int): List<FriendRequest> {
+	fun getSentRequests(senderId: Int): List<FriendRequest> {
 		val query = FriendRequests.selectAll()
 			.where { FriendRequests.senderId eq senderId }
 			.logicExists(FriendRequests)
+			.orderBy(FriendRequests.updateTime, SortOrder.DESC)
 		return FriendRequest.wrapRows(query).toList()
 	}
 	
-	fun getListByReceiverId(receiverId: Int): List<FriendRequest> {
+	fun getReceivedRequests(receiverId: Int): List<FriendRequest> {
 		val query = FriendRequests.selectAll()
 			.where { FriendRequests.receiverId eq receiverId }
+			.andWhere { FriendRequests.status neq FriendRequests.Status.CANCELED }
 			.logicExists(FriendRequests)
+			.orderBy(FriendRequests.updateTime, SortOrder.DESC)
 		return FriendRequest.wrapRows(query).toList()
 	}
 	

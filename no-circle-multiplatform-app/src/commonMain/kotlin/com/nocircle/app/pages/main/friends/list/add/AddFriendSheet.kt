@@ -122,7 +122,7 @@ private fun UserCard(
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
 					text = AppString.FRIENDS_ADD_FRIEND_ID.value().format(searchUser.username),
-					color = MaterialTheme.colorScheme.outline,
+					color = MaterialTheme.colorScheme.onSurfaceVariant,
 					style = MaterialTheme.typography.bodyMedium,
 				)
 			}

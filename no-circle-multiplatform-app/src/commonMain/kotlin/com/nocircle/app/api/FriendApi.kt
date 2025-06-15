@@ -22,7 +22,9 @@ interface FriendApi {
 	
 	@BearerAuth
 	@GET("request/query")
-	suspend fun queryRequest(): ResultBody<FriendRequestDTO>?
+	suspend fun queryRequest(
+		@Query type: FriendRequestType
+	): ResultBody<List<RequestDTO>>?
 }
 
 @Immutable
@@ -45,24 +47,22 @@ data class SearchUserDTO(
 	}
 }
 
+enum class FriendRequestType {
+	SENT,
+	RECEIVED
+}
+
 @Immutable
 @Serializable
-data class FriendRequestDTO(
-	val sentRequests: List<RequestDTO>,
-	val receivedRequests: List<RequestDTO>
+data class RequestDTO(
+	val id: Int,
+	val username: String,
+	val nickname: String?,
+	val avatarUrl: String?,
+	val status: RequestStatus,
+	val labels: List<LabelDTO>,
+	val updateTime: String
 ) {
-	
-	@Immutable
-	@Serializable
-	data class RequestDTO(
-		val id: Int,
-		val username: String,
-		val nickname: String?,
-		val avatarUrl: String?,
-		val status: RequestStatus,
-		val labels: List<LabelDTO>,
-		val updateTime: String
-	)
 	
 	@Serializable
 	enum class RequestStatus { AGREED, REJECTED, WAITING, CANCELED }

@@ -4,8 +4,11 @@ import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendContext
+import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
+import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
 import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.expends.formatToShanghai
+import com.nocircle.server.common.exposed.getEnum
 import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.noPrincipal
 import com.nocircle.server.common.model.respondDTO
@@ -19,10 +22,12 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 context(_: FriendContext)
 fun Route.getRequestQuery() = get("request/query") {
 	val userId = call.noPrincipal!!.userId
+	val type = call.parameters.getEnum<FriendRequestType>("type")
 	val data = transaction {
-		val sentRequests = getSentRequests(userId)
-		val receivedRequests = getReceivedRequests(userId)
-		FriendRequestDTO(sentRequests, receivedRequests)
+		when (type) {
+			SENT -> getSentRequests(userId)
+			RECEIVED -> getReceivedRequests(userId)
+		}
 	}
 	call.respondDTO(data, RequestQueryStatus.SUCCESS)
 }
@@ -31,7 +36,7 @@ fun Route.getRequestQuery() = get("request/query") {
  * 获取我发送的请求
  */
 private fun getSentRequests(senderId: Int): List<RequestDTO> {
-	val sentFriendRequests = FriendRequestDao.getListBySenderId(senderId)
+	val sentFriendRequests = FriendRequestDao.getSentRequests(senderId)
 	val sentReceiverIds = sentFriendRequests.map { it.receiverId }
 	val sentUsers = UserDao.getListByIds(sentReceiverIds)
 	val sentUserLabelMap = UserLabelDao.getMapByUserIds(sentReceiverIds)
@@ -58,7 +63,7 @@ private fun getSentRequests(senderId: Int): List<RequestDTO> {
  * 获取发送给我的请求
  */
 private fun getReceivedRequests(receiverId: Int): List<RequestDTO> {
-	val receivedFriendRequests = FriendRequestDao.getListByReceiverId(receiverId)
+	val receivedFriendRequests = FriendRequestDao.getReceivedRequests(receiverId)
 	val receivedSenderIds = receivedFriendRequests.map { it.senderId }
 	val receivedUsers = UserDao.getListByIds(receivedSenderIds)
 	val receivedUserLabelMap = UserLabelDao.getMapByUserIds(receivedSenderIds)
@@ -82,12 +87,6 @@ private fun getReceivedRequests(receiverId: Int): List<RequestDTO> {
 }
 
 @Serializable
-private data class FriendRequestDTO(
-	val sentRequests: List<RequestDTO>,
-	val receivedRequests: List<RequestDTO>
-)
-
-@Serializable
 private data class RequestDTO(
 	val id: Int,
 	val username: String,
@@ -109,4 +108,9 @@ private enum class RequestQueryStatus(
 	override val code: Int
 ) : NoStatus {
 	SUCCESS("查询成功", 0)
+}
+
+private enum class FriendRequestType {
+	SENT,
+	RECEIVED
 }
