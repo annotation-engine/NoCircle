@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +26,7 @@ import com.nocircle.app.theme.colors.NoColor
 import com.nocircle.common.expends.format
 import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoAsyncImage
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -41,6 +43,7 @@ fun MessageCenterSentRequestList() {
 		) { index, request ->
 			Spacer(Modifier.height(16.dp))
 			SentRequestCard(
+				viewModel = viewModel,
 				request = request
 			)
 			if (index == requests.lastIndex) {
@@ -52,6 +55,7 @@ fun MessageCenterSentRequestList() {
 
 @Composable
 private fun SentRequestCard(
+	viewModel: MessageCenterViewModel,
 	request: RequestDTO
 ) {
 	Row(
@@ -93,7 +97,7 @@ private fun SentRequestCard(
 			Text(
 				text = request.updateTime,
 				modifier = Modifier.align(Alignment.BottomStart),
-				style = MaterialTheme.typography.bodySmall,
+				style = MaterialTheme.typography.bodyMedium,
 				color = MaterialTheme.colorScheme.onSurfaceVariant
 			)
 			val color = request.status.getColor()
@@ -119,30 +123,10 @@ private fun SentRequestCard(
 				style = MaterialTheme.typography.bodyMedium,
 				color = color
 			)
+			val coroutineScope = rememberCoroutineScope()
 			if (request.status == RequestStatus.WAITING) {
 				Text(
 					text = "取消",
-					modifier = Modifier
-						.align(Alignment.BottomEnd)
-						.clip(MaterialTheme.shapes.small)
-						.background(
-							color = MaterialTheme.colorScheme.surfaceContainerHighest,
-							shape = MaterialTheme.shapes.small,
-						)
-						.clickable {
-						
-						}
-						.padding(
-							horizontal = 12.dp,
-							vertical = 8.dp
-						),
-					textAlign = TextAlign.Center,
-					style = MaterialTheme.typography.bodyMedium,
-					color = MaterialTheme.colorScheme.onSurface
-				)
-			} else {
-				Text(
-					text = "删除",
 					modifier = Modifier
 						.align(Alignment.BottomEnd)
 						.clip(MaterialTheme.shapes.small)
@@ -151,7 +135,32 @@ private fun SentRequestCard(
 							shape = MaterialTheme.shapes.small,
 						)
 						.clickable {
-						
+							coroutineScope.launch {
+								viewModel.cancelSentRequest(request.id)
+							}
+						}
+						.padding(
+							horizontal = 12.dp,
+							vertical = 8.dp
+						),
+					textAlign = TextAlign.Center,
+					style = MaterialTheme.typography.bodyMedium,
+					color = MaterialTheme.colorScheme.onError
+				)
+			} else {
+				Text(
+					text = "删除",
+					modifier = Modifier
+						.align(Alignment.BottomEnd)
+						.clip(MaterialTheme.shapes.small)
+						.background(
+							color = MaterialTheme.colorScheme.surfaceContainerHighest,
+							shape = MaterialTheme.shapes.small,
+						)
+						.clickable {
+							coroutineScope.launch {
+								viewModel.deleteSentRequest(request.id)
+							}
 						}
 						.padding(
 							horizontal = 16.dp,
@@ -159,7 +168,7 @@ private fun SentRequestCard(
 						),
 					textAlign = TextAlign.Center,
 					style = MaterialTheme.typography.bodyMedium,
-					color = MaterialTheme.colorScheme.onError
+					color = MaterialTheme.colorScheme.onSurface
 				)
 			}
 		}

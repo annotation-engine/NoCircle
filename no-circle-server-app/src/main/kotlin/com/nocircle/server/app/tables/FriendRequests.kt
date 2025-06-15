@@ -11,7 +11,7 @@ object FriendRequests : NoTable("tb_friend_request") {
 	
 	val receiverId = integer("receiver_id")
 	
-	val status = enumerationByName<Status>("status", 7)
+	val status = enumerationByName<Status>("status", 8)
 	
 	enum class Status { AGREED, REJECTED, WAITING, CANCELED }
 }

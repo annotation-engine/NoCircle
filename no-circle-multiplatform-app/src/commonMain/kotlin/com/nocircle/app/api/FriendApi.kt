@@ -25,6 +25,18 @@ interface FriendApi {
 	suspend fun queryRequest(
 		@Query type: FriendRequestType
 	): ResultBody<List<RequestDTO>>?
+	
+	@BearerAuth
+	@POST("request/cancel")
+	suspend fun cancelRequest(
+		@Field id: Int
+	): ResultBody<Unit>?
+	
+	@BearerAuth
+	@POST("request/delete")
+	suspend fun deleteRequest(
+		@Field id: Int
+	): ResultBody<Unit>?
 }
 
 @Immutable
@@ -60,17 +72,9 @@ data class RequestDTO(
 	val nickname: String?,
 	val avatarUrl: String?,
 	val status: RequestStatus,
-	val labels: List<LabelDTO>,
 	val updateTime: String
 ) {
 	
 	@Serializable
 	enum class RequestStatus { AGREED, REJECTED, WAITING, CANCELED }
-	
-	@Immutable
-	@Serializable
-	data class LabelDTO(
-		val label: String,
-		val color: String,
-	)
 }

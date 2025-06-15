@@ -2,7 +2,6 @@ package com.nocircle.server.app.routes.friend.request
 
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
-import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendContext
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
@@ -20,7 +19,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 好友请求查询
  */
 context(_: FriendContext)
-fun Route.getRequestQuery() = get("request/query") {
+fun Route.getQueryRequest() = get("request/query") {
 	val userId = call.noPrincipal!!.userId
 	val type = call.parameters.getEnum<FriendRequestType>("type")
 	val data = transaction {
@@ -39,21 +38,16 @@ private fun getSentRequests(senderId: Int): List<RequestDTO> {
 	val sentFriendRequests = FriendRequestDao.getSentRequests(senderId)
 	val sentReceiverIds = sentFriendRequests.map { it.receiverId }
 	val sentUsers = UserDao.getListByIds(sentReceiverIds)
-	val sentUserLabelMap = UserLabelDao.getMapByUserIds(sentReceiverIds)
 	return sentFriendRequests.map {
 		val user = sentUsers.first { user ->
 			user.id.value == it.receiverId
 		}
-		val labels = sentUserLabelMap[it.receiverId]?.map { label ->
-			LabelDTO(label.label, label.color)
-		} ?: emptyList()
 		RequestDTO(
 			id = it.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
 			status = it.status,
-			labels = labels,
 			updateTime = it.updateTime.formatToShanghai()
 		)
 	}
@@ -66,21 +60,16 @@ private fun getReceivedRequests(receiverId: Int): List<RequestDTO> {
 	val receivedFriendRequests = FriendRequestDao.getReceivedRequests(receiverId)
 	val receivedSenderIds = receivedFriendRequests.map { it.senderId }
 	val receivedUsers = UserDao.getListByIds(receivedSenderIds)
-	val receivedUserLabelMap = UserLabelDao.getMapByUserIds(receivedSenderIds)
 	return receivedFriendRequests.map {
 		val user = receivedUsers.first { user ->
 			user.id.value == it.senderId
 		}
-		val labels = receivedUserLabelMap[it.senderId]?.map { label ->
-			LabelDTO(label.label, label.color)
-		} ?: emptyList()
 		RequestDTO(
 			id = it.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
 			status = it.status,
-			labels = labels,
 			updateTime = it.updateTime.formatToShanghai()
 		)
 	}
@@ -93,16 +82,12 @@ private data class RequestDTO(
 	val nickname: String?,
 	val avatarUrl: String?,
 	val status: FriendRequests.Status,
-	val labels: List<LabelDTO>,
 	val updateTime: String
 )
 
-@Serializable
-private data class LabelDTO(
-	val label: String,
-	val color: String,
-)
-
+/**
+ * 122x
+ */
 private enum class RequestQueryStatus(
 	override val msg: String,
 	override val code: Int

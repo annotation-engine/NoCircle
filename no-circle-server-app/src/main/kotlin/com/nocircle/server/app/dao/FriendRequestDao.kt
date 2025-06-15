@@ -3,11 +3,13 @@ package com.nocircle.server.app.dao
 import com.nocircle.server.app.tables.FriendRequest
 import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.exposed.exists
+import com.nocircle.server.common.exposed.logicDeleteWhere
 import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.exposed.logicUpdate
 import org.jetbrains.exposed.v1.core.Op
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder
+import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.jdbc.Query
 import org.jetbrains.exposed.v1.jdbc.andWhere
@@ -26,11 +28,11 @@ object FriendRequestDao {
 		return insert.insertedCount == 1
 	}
 	
-	fun updateOne(senderId: Int, receiverId: Int, isAgree: Boolean): Boolean {
+	fun updateOneByIdAndSenderId(id: Int, senderId: Int, status: FriendRequests.Status): Boolean {
 		val updateCount = FriendRequests.logicUpdate(
-			where = { (FriendRequests.senderId eq senderId) and (FriendRequests.receiverId eq receiverId) }
+			where = { (FriendRequests.id eq id) and (FriendRequests.senderId eq senderId) }
 		) {
-			it[this.status] = if (isAgree) FriendRequests.Status.AGREED else FriendRequests.Status.REJECTED
+			it[this.status] = status
 		}
 		return updateCount == 1
 	}
@@ -39,7 +41,7 @@ object FriendRequestDao {
 		val query = FriendRequests.selectAll()
 			.where { FriendRequests.senderId eq senderId }
 			.logicExists(FriendRequests)
-			.orderBy(FriendRequests.updateTime, SortOrder.DESC)
+			.orderBy(FriendRequests.createTime, SortOrder.DESC)
 		return FriendRequest.wrapRows(query).toList()
 	}
 	
@@ -48,7 +50,7 @@ object FriendRequestDao {
 			.where { FriendRequests.receiverId eq receiverId }
 			.andWhere { FriendRequests.status neq FriendRequests.Status.CANCELED }
 			.logicExists(FriendRequests)
-			.orderBy(FriendRequests.updateTime, SortOrder.DESC)
+			.orderBy(FriendRequests.createTime, SortOrder.DESC)
 		return FriendRequest.wrapRows(query).toList()
 	}
 	
@@ -58,6 +60,13 @@ object FriendRequestDao {
 			.andWhere { FriendRequests.receiverId eq receiverId }
 			.logicExists(FriendRequests)
 			.exists()
+	}
+	
+	fun deleteByIdAndSenderId(id: Int, senderId: Int): Boolean {
+		val deleteCount = FriendRequests.logicDeleteWhere {
+			(FriendRequests.id eq id) and (FriendRequests.senderId eq senderId)
+		}
+		return deleteCount == 1
 	}
 }
 

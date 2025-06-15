@@ -2,8 +2,10 @@ package com.nocircle.server.app.plugins
 
 import com.nocircle.server.app.routes.auth.postVerifyToken
 import com.nocircle.server.app.routes.friend.getSearch
-import com.nocircle.server.app.routes.friend.request.getRequestQuery
-import com.nocircle.server.app.routes.friend.request.postRequestAdd
+import com.nocircle.server.app.routes.friend.request.getQueryRequest
+import com.nocircle.server.app.routes.friend.request.postAddRequest
+import com.nocircle.server.app.routes.friend.request.postCancelRequest
+import com.nocircle.server.app.routes.friend.request.postDeleteRequest
 import com.nocircle.server.app.routes.label.getQuery
 import com.nocircle.server.app.routes.label.postAdd
 import com.nocircle.server.app.routes.label.postDelete
@@ -60,7 +62,9 @@ object FriendContext : RouteContext("friend") {
 	
 	override fun Route.authenticates() {
 		getSearch()
-		postRequestAdd()
-		getRequestQuery()
+		postAddRequest()
+		getQueryRequest()
+		postCancelRequest()
+		postDeleteRequest()
 	}
 }

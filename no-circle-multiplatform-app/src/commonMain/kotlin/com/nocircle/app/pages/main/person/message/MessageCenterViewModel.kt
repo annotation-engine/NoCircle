@@ -21,22 +21,43 @@ class MessageCenterViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch {
-			loadFriendRequests()
+			loadSentRequests()
+			loadReceivedRequests()
 		}
 	}
 	
-	suspend fun loadFriendRequests() {
-		val sentResult = ktorfitx.friendApi.queryRequest(FriendRequestType.SENT) ?: return networkError()
-		if (sentResult.success) {
-			_sentRequests.value = sentResult.data!!
+	suspend fun loadSentRequests() {
+		val result = ktorfitx.friendApi.queryRequest(FriendRequestType.SENT) ?: return networkError()
+		if (result.success) {
+			_sentRequests.value = result.data!!
 		} else {
-			return showNoSnackbar(sentResult.msg)
+			return showNoSnackbar(result.msg)
 		}
-		val receivedResult = ktorfitx.friendApi.queryRequest(FriendRequestType.RECEIVED) ?: return networkError()
-		if (receivedResult.success) {
-			_receivedRequests.value = receivedResult.data!!
+	}
+	
+	suspend fun loadReceivedRequests() {
+		val result = ktorfitx.friendApi.queryRequest(FriendRequestType.RECEIVED) ?: return networkError()
+		if (result.success) {
+			_receivedRequests.value = result.data!!
 		} else {
-			return showNoSnackbar(receivedResult.msg)
+			return showNoSnackbar(result.msg)
 		}
+	}
+	
+	suspend fun cancelSentRequest(requestId: Int) {
+		val result = ktorfitx.friendApi.cancelRequest(requestId) ?: return networkError()
+		if (result.success) {
+			loadSentRequests()
+		} else {
+			showNoSnackbar(result.msg)
+		}
+	}
+	
+	suspend fun deleteSentRequest(requestId: Int) {
+		val result = ktorfitx.friendApi.deleteRequest(requestId) ?: return networkError()
+		if (result.success) {
+			loadSentRequests()
+		}
+		autoShowNoSnackbar(result.success, result.msg)
 	}
 }

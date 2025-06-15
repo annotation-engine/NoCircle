@@ -382,7 +382,7 @@
 		"en": "Waiting"
 	},
 	"MESSAGE_CENTER_CANCELED": {
-		"zh": "等待中",
+		"zh": "已取消",
 		"en": "Canceled"
 	}
 }

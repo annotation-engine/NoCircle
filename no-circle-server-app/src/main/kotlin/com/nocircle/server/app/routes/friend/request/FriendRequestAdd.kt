@@ -18,7 +18,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 添加好友请求
  */
 context(_: FriendContext)
-fun Route.postRequestAdd() = post("request/add") {
+fun Route.postAddRequest() = post("request/add") {
 	val userId = call.noPrincipal!!.userId
 	val receiverId = call.receiveParameters().getInt("receiverId")
 	if (userId == receiverId) {

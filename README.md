@@ -20,3 +20,5 @@
 
 - 120x: [搜索好友](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/friend/FriendSearch.kt)
 - 121x: [添加好友请求](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/friend/FriendAddRequest.kt)
+- 122x: [查询好友请求](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/friend/request/FriendRequestQuery.kt)
+- 123x: [取消好友请求](no-circle-server-app/src/main/kotlin/com/nocircle/server/app/routes/friend/request/FriendRequestCancel.kt)

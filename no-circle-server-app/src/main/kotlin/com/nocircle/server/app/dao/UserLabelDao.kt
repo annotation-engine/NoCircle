@@ -28,15 +28,6 @@ object UserLabelDao {
 		return UserLabel.wrapRows(query).toList()
 	}
 	
-	fun getMapByUserIds(userIds: List<Int>): Map<Int, List<UserLabel>> {
-		if (userIds.isEmpty()) return emptyMap()
-		val query = UserLabels.selectAll()
-			.where { UserLabels.userId inList userIds }
-			.logicExists(UserLabels)
-			.orderBy(UserLabels.id)
-		return UserLabel.wrapRows(query).groupBy { it.userId }
-	}
-	
 	fun getListByUserIdAndNeqId(userId: Int, id: Int): List<UserLabel> {
 		val query = UserLabels.selectAll()
 			.where { (UserLabels.userId eq userId) and (UserLabels.id neq id) }
