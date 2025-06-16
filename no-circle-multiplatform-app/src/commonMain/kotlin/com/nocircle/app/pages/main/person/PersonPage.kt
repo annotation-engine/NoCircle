@@ -18,12 +18,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastFilter
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.api.RequestDTO
 import com.nocircle.app.pages.main.person.label.EditLabelSheet
 import com.nocircle.app.pages.main.person.message.MessageCenterRoute
-import com.nocircle.app.pages.main.person.message.MessageCenterViewModel
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
@@ -35,9 +32,7 @@ import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.layout.NoOption
-import com.nocircle.compose.material3.LocalSnackbarHostState
 import com.nocircle.compose.material3.NoScaffold
-import com.nocircle.compose.material3.showNoSnackbar
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -206,30 +201,21 @@ private fun LastLoginTime() {
 @Composable
 private fun FriendAddRequest() {
 	val controller = LocalNavController.current
-	val viewModel = koinViewModel<MessageCenterViewModel>()
-	val hostState = LocalSnackbarHostState.current
-	LaunchedEffect(Unit) {
-		viewModel.snackbarCollect(hostState::showNoSnackbar)
-	}
-	val receivedRequests by viewModel.receivedRequests.collectAsState()
-	val receivedWaitingCount by remember(receivedRequests) {
-		derivedStateOf {
-			receivedRequests.fastFilter { it.status == RequestDTO.RequestStatus.WAITING }.size
-		}
-	}
+	val viewModel = koinViewModel<PersonViewModel>()
+	val count by viewModel.receivedWaitingRequestCount.collectAsState()
 	NoOption(
 		title = { Text(AppString.MESSAGE_CENTER_TITLE.value()) },
 		icon = {
-			val iconGroup by remember(receivedWaitingCount) {
+			val iconGroup by remember(count) {
 				derivedStateOf {
-					if (receivedWaitingCount == 0) AppIcon.Email else AppIcon.MarkEmailUnread
+					if (count == 0) AppIcon.Email else AppIcon.MarkEmailUnread
 				}
 			}
 			NoIcon(iconGroup.value())
 		},
 		actions = {
 			Text(
-				text = if (receivedWaitingCount == 0) AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NO_NEWS.value() else AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NEWS.value(receivedWaitingCount),
+				text = if (count == 0) AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NO_NEWS.value() else AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NEWS.value(count),
 				overflow = TextOverflow.Ellipsis,
 				maxLines = 1
 			)

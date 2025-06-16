@@ -14,7 +14,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 删除标签
  */
 context(_: LabelContext)
-fun Route.postDelete() = post("delete") {
+fun Route.postDeleteLabel() = post("delete") {
 	val userId = call.noPrincipal!!.userId
 	val id = call.receiveParameters().getInt("id")
 	val success = transaction {

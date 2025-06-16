@@ -6,7 +6,10 @@ import com.nocircle.app.api.RequestDTO
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
+import com.nocircle.app.websockets.WebSocketScheduler
+import com.nocircle.app.websockets.WebSocketType
 import com.nocircle.compose.viewmodel.NoViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -21,8 +24,12 @@ class MessageCenterViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch {
-			loadSentRequests()
-			loadReceivedRequests()
+			async { loadSentRequests() }
+			async { loadReceivedRequests() }
+			
+			WebSocketScheduler.addCollect(WebSocketType.FRIEND_RECEIVED_REQUEST) {
+				loadReceivedRequests()
+			}
 		}
 	}
 	
@@ -59,5 +66,10 @@ class MessageCenterViewModel : NoViewModel() {
 			loadSentRequests()
 		}
 		autoShowNoSnackbar(result.success, result.msg)
+	}
+	
+	override fun onCleared() {
+		super.onCleared()
+		WebSocketScheduler.removeCollects(WebSocketType.FRIEND_RECEIVED_REQUEST)
 	}
 }

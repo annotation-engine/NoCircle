@@ -2,18 +2,15 @@ package com.nocircle.server.app.plugins
 
 import com.nocircle.server.app.routes.auth.postVerifyToken
 import com.nocircle.server.app.routes.friend.getSearch
-import com.nocircle.server.app.routes.friend.request.getQueryRequest
-import com.nocircle.server.app.routes.friend.request.postAddRequest
-import com.nocircle.server.app.routes.friend.request.postCancelRequest
-import com.nocircle.server.app.routes.friend.request.postDeleteRequest
-import com.nocircle.server.app.routes.label.getQuery
-import com.nocircle.server.app.routes.label.postAdd
-import com.nocircle.server.app.routes.label.postDelete
-import com.nocircle.server.app.routes.label.postUpdate
-import com.nocircle.server.app.routes.user.getDetail
-import com.nocircle.server.app.routes.user.postLogin
-import com.nocircle.server.app.routes.user.postLogout
-import com.nocircle.server.app.routes.user.postRegister
+import com.nocircle.server.app.routes.friend.request.*
+import com.nocircle.server.app.routes.label.getQueryLabel
+import com.nocircle.server.app.routes.label.postAddLabel
+import com.nocircle.server.app.routes.label.postDeleteLabel
+import com.nocircle.server.app.routes.label.postUpdateLabel
+import com.nocircle.server.app.routes.user.getUserDetail
+import com.nocircle.server.app.routes.user.postUserLogin
+import com.nocircle.server.app.routes.user.postUserLogout
+import com.nocircle.server.app.routes.user.postUserRegister
 import com.nocircle.server.common.routes.RouteContext
 import com.nocircle.server.common.routes.routeContexts
 import io.ktor.server.application.*
@@ -38,23 +35,23 @@ object AuthContext : RouteContext("auth") {
 object UserContext : RouteContext("user") {
 	
 	override fun Route.routes() {
-		postLogin()
-		postRegister()
+		postUserLogin()
+		postUserRegister()
 	}
 	
 	override fun Route.authenticates() {
-		getDetail()
-		postLogout()
+		getUserDetail()
+		postUserLogout()
 	}
 }
 
 object LabelContext : RouteContext("label") {
 	
 	override fun Route.authenticates() {
-		postAdd()
-		postDelete()
-		postUpdate()
-		getQuery()
+		postAddLabel()
+		postDeleteLabel()
+		postUpdateLabel()
+		getQueryLabel()
 	}
 }
 
@@ -66,5 +63,6 @@ object FriendContext : RouteContext("friend") {
 		getQueryRequest()
 		postCancelRequest()
 		postDeleteRequest()
+		getQueryReceivedWaitingRequestCount()
 	}
 }

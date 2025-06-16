@@ -48,10 +48,26 @@ object FriendRequestDao {
 	fun getReceivedRequests(receiverId: Int): List<FriendRequest> {
 		val query = FriendRequests.selectAll()
 			.where { FriendRequests.receiverId eq receiverId }
-			.andWhere { FriendRequests.status neq FriendRequests.Status.CANCELED }
+			.andWhere { FriendRequests.status eq FriendRequests.Status.WAITING }
 			.logicExists(FriendRequests)
 			.orderBy(FriendRequests.createTime, SortOrder.DESC)
 		return FriendRequest.wrapRows(query).toList()
+	}
+	
+	fun getReceivedWaitingRequestCount(receiverId: Int): Long {
+		return FriendRequests.select(FriendRequests.id)
+			.where { FriendRequests.receiverId eq receiverId }
+			.andWhere { FriendRequests.status eq FriendRequests.Status.WAITING }
+			.logicExists(FriendRequests)
+			.count()
+	}
+	
+	fun getOneById(id: Int): FriendRequest? {
+		val row = FriendRequests.selectAll()
+			.where { FriendRequests.id eq id }
+			.logicExists(FriendRequests)
+			.singleOrNull() ?: return null
+		return FriendRequest.wrapRow(row)
 	}
 	
 	fun isExistsBySenderIdAndReceiverId(senderId: Int, receiverId: Int): Boolean {

@@ -20,21 +20,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import org.koin.compose.KoinApplication
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 private val NoKoinModule = module {
-	single { GuideViewModel() }
-	single { LoginViewModel() }
-	single { RegisterViewModel() }
-	single { MainViewModel() }
-	single { FriendsViewModel() }
-	single { FriendsListViewModel() }
-	single { AddFriendViewModel() }
-	single { PersonViewModel() }
-	single { SettingsViewModel() }
-	single { AppearanceViewModel() }
-	single { EditLabelViewModel() }
-	single { MessageCenterViewModel() }
+	viewModel { GuideViewModel() }
+	viewModel { LoginViewModel() }
+	viewModel { RegisterViewModel() }
+	viewModel { MainViewModel() }
+	viewModel { FriendsViewModel() }
+	viewModel { FriendsListViewModel() }
+	viewModel { AddFriendViewModel() }
+	viewModel { PersonViewModel() }
+	viewModel { SettingsViewModel() }
+	viewModel { AppearanceViewModel() }
+	viewModel { EditLabelViewModel() }
+	viewModel { MessageCenterViewModel() }
 }
 
 @Composable

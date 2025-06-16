@@ -37,6 +37,10 @@ interface FriendApi {
 	suspend fun deleteRequest(
 		@Field id: Int
 	): ResultBody<Unit>?
+	
+	@BearerAuth
+	@POST("request/queryReceivedWaitingCount")
+	suspend fun queryReceivedWaitingRequestCount(): ResultBody<Int>?
 }
 
 @Immutable

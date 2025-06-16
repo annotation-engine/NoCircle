@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
  * 用户登出
  */
 context(_: UserContext)
-fun Route.postLogout() = post("logout") {
+fun Route.postUserLogout() = post("logout") {
 	val userId = call.noPrincipal!!.userId
 	val bucket = redisson.getBucket<String>("${UserToken.prefix}$userId")
 	bucket.delete()

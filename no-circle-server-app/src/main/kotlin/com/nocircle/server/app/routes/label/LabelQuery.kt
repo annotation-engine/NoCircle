@@ -13,7 +13,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 查询标签
  */
 context(_: LabelContext)
-fun Route.getQuery() = get("query") {
+fun Route.getQueryLabel() = get("query") {
 	val userId = call.noPrincipal!!.userId
 	val data = transaction {
 		UserLabelDao.getListByUserId(userId).map {

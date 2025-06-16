@@ -38,9 +38,12 @@ fun Route.postAddRequest() = post("request/add") {
 	call.respondDTO(status)
 }
 
+/**
+ * 发送给对方
+ */
 private suspend fun sendToReceiver(senderId: Int, receiverId: Int) {
 	val session = getSession(receiverId) ?: return
-	session.sendMessage(WebSocketType.FRIEND_ADD_REQUEST, senderId)
+	session.sendMessage(WebSocketType.FRIEND_RECEIVED_REQUEST, senderId)
 }
 
 /**
