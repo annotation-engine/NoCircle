@@ -8,11 +8,13 @@ import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.websockets.WebSocketScheduler
 import com.nocircle.app.websockets.WebSocketType
+import com.nocircle.common.expends.tryWithLock
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
 
 class MessageCenterViewModel : NoViewModel() {
 	
@@ -51,21 +53,29 @@ class MessageCenterViewModel : NoViewModel() {
 		}
 	}
 	
+	private val cancelSentRequestMutex = Mutex()
+	
 	suspend fun cancelSentRequest(requestId: Int) {
-		val result = ktorfitx.friendApi.cancelRequest(requestId) ?: return networkError()
-		if (result.success) {
-			loadSentRequests()
-		} else {
-			showNoSnackbar(result.msg)
+		cancelSentRequestMutex.tryWithLock {
+			val result = ktorfitx.friendApi.cancelRequest(requestId)
+				?: return networkError()
+			if (result.success) {
+				loadSentRequests()
+			}
+			autoShowNoSnackbar(result.success, result.msg)
 		}
 	}
 	
+	private val deleteSentRequestMutex = Mutex()
+	
 	suspend fun deleteSentRequest(requestId: Int) {
-		val result = ktorfitx.friendApi.deleteRequest(requestId) ?: return networkError()
-		if (result.success) {
-			loadSentRequests()
+		deleteSentRequestMutex.tryWithLock {
+			val result = ktorfitx.friendApi.deleteRequest(requestId) ?: return networkError()
+			if (result.success) {
+				loadSentRequests()
+			}
+			autoShowNoSnackbar(result.success, result.msg)
 		}
-		autoShowNoSnackbar(result.success, result.msg)
 	}
 	
 	override fun onCleared() {
