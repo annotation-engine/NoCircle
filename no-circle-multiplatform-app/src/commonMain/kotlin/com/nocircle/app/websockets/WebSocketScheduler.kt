@@ -6,6 +6,7 @@ import com.nocircle.common.log.NoLog
 import io.ktor.websocket.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.DeserializationStrategy
@@ -13,21 +14,37 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.math.pow
+import kotlin.time.Duration.Companion.seconds
 
 object WebSocketScheduler {
 	
 	private val sharedFlowMap = mutableMapOf<WebSocketType, MutableSharedFlow<WebSocketReceiver>>()
 	private val jobsMap = mutableMapOf<WebSocketType, MutableList<Job>>()
+	private const val MAX_DELAY_SECONDS = 30
 	
 	suspend fun keepAlive() {
-		ktorfitx.keepAliveApi.keepAlive {
-			for (frame in incoming) {
-				when (frame) {
-					is Frame.Close -> break
-					is Frame.Text -> handleIncomingFrame(frame)
-					else -> continue
+		var attempt = 0
+		while (true) {
+			try {
+				ktorfitx.keepAliveApi.keepAlive {
+					NoLog.info("WebSocket connected.")
+					attempt = 0
+					for (frame in incoming) {
+						when (frame) {
+							is Frame.Close -> break
+							is Frame.Text -> handleIncomingFrame(frame)
+							else -> continue
+						}
+					}
 				}
+			} catch (e: Exception) {
+				NoLog.error("WebSocket error: ${e.message}.")
 			}
+			attempt++
+			val duration = (2.0.pow(attempt).toInt().coerceIn(0..MAX_DELAY_SECONDS)).seconds
+			NoLog.info("WebSocket attempt: $attempt, duration: $duration")
+			delay(duration)
 		}
 	}
 	
