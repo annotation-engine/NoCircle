@@ -11,8 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppIcon
@@ -60,7 +58,10 @@ fun MessageCenterPage() {
 						end = 16.dp
 					)
 			) {
+				val viewModel = koinViewModel<MessageCenterViewModel>()
 				var selectedSubRoute by remember { mutableStateOf(MessageCenterSubRoute.SENT_REQUEST) }
+				val sentRequests by viewModel.sentRequests.collectAsState()
+				val receivedRequests by viewModel.receivedRequests.collectAsState()
 				NoTabRow(
 					selectedTabIndex = selectedSubRoute.ordinal
 				) {
@@ -71,11 +72,11 @@ fun MessageCenterPage() {
 						) {
 							NoIcon(it.iconGroup.value())
 							Spacer(modifier = Modifier.width(8.dp))
-							Text(it.title.value())
+							val count = if (it == MessageCenterSubRoute.SENT_REQUEST) sentRequests.size else receivedRequests.size
+							Text(it.title.value(count))
 						}
 					}
 				}
-				val viewModel = koinViewModel<MessageCenterViewModel>()
 				val hostState = LocalSnackbarHostState.current
 				LaunchedEffect(Unit) {
 					viewModel.snackbarCollect(hostState::showNoSnackbar)
@@ -108,24 +109,17 @@ fun MessageCenterPage() {
 }
 
 @Composable
-fun MessageCenterLabel(
-	label: String,
-	color: Color,
-) {
+fun NoMessage() {
 	Box(
 		modifier = Modifier
-			.fillMaxHeight()
-			.background(
-				color = color,
-				shape = MaterialTheme.shapes.extraSmall
-			)
-			.padding(horizontal = 6.dp),
+			.fillMaxWidth()
+			.height(80.dp),
 		contentAlignment = Alignment.Center
 	) {
 		Text(
-			text = label,
-			color = if (color.luminance() > 0.5f) Color.Black else Color.White,
-			style = MaterialTheme.typography.labelMedium
+			text = AppString.MESSAGE_CENTER_NO_MESSAGES.value(),
+			color = MaterialTheme.colorScheme.onSurfaceVariant,
+			style = MaterialTheme.typography.bodyLarge
 		)
 	}
 }

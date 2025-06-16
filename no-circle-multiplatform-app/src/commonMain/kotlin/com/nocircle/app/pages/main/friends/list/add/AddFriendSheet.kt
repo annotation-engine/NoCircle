@@ -168,7 +168,7 @@ private fun UserCard(
 	var enabled by remember(searchUser.relationship, searchUser.isAlreadySend) {
 		mutableStateOf(searchUser.relationship == STRANGER && !searchUser.isAlreadySend)
 	}
-	var buttonString by remember(searchUser.relationship, searchUser.isAlreadySend) {
+	var string by remember(searchUser) {
 		mutableStateOf(
 			value = when (searchUser.relationship) {
 				FRIEND -> AppString.FRIENDS_ADD_FRIEND_ALREADY_FRIEND
@@ -181,14 +181,14 @@ private fun UserCard(
 		)
 	}
 	NoButton(
-		text = buttonString.value(),
+		text = string.value(),
 		modifier = Modifier.fillMaxWidth(),
 		enabled = enabled,
 		colors = NoButtonColors.PrimaryColors
 	) {
 		val success = viewModel.sendFriendAddRequest(searchUser.userId)
 		if (success) {
-			buttonString = AppString.FRIENDS_ADD_FRIEND_SEND_SUCCESS
+			string = AppString.FRIENDS_ADD_FRIEND_SEND_SUCCESS
 			enabled = false
 		}
 	}

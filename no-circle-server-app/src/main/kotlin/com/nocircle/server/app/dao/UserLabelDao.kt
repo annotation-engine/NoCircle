@@ -36,6 +36,13 @@ object UserLabelDao {
 		return UserLabel.wrapRows(query).toList()
 	}
 	
+	fun getMapByUserIds(userIds: List<Int>): Map<Int, List<UserLabel>> {
+		val query = UserLabels.selectAll()
+			.where { UserLabels.userId inList userIds }
+			.logicExists(UserLabels)
+		return UserLabel.wrapRows(query).toList().groupBy { it.userId }
+	}
+	
 	fun insertOne(userId: Int, label: String, color: String): Boolean {
 		val insert = UserLabels.insert {
 			it[this.userId] = userId

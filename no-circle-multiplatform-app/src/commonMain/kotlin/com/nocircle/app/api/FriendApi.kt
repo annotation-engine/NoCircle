@@ -76,7 +76,8 @@ data class RequestDTO(
 	val nickname: String?,
 	val avatarUrl: String?,
 	val status: RequestStatus,
-	val updateTime: String
+	val createTime: String,
+	val labels: Map<String, String>
 ) {
 	
 	@Serializable

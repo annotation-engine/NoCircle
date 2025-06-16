@@ -26,7 +26,7 @@ abstract class NoIntEntity(
 	table: NoTable
 ) : IntEntity(id) {
 	
-	val createTime by table.deleteFlag
+	val createTime by table.createTime
 	
 	val updateTime by table.updateTime
 	

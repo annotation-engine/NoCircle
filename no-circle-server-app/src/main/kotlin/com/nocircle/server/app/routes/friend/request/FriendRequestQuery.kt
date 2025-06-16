@@ -2,6 +2,7 @@ package com.nocircle.server.app.routes.friend.request
 
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
+import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendContext
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
@@ -35,20 +36,25 @@ fun Route.getQueryRequest() = get("request/query") {
  * 获取我发送的请求
  */
 private fun getSentRequests(senderId: Int): List<RequestDTO> {
-	val sentFriendRequests = FriendRequestDao.getSentRequests(senderId)
-	val sentReceiverIds = sentFriendRequests.map { it.receiverId }
-	val sentUsers = UserDao.getListByIds(sentReceiverIds)
-	return sentFriendRequests.map {
-		val user = sentUsers.first { user ->
+	val requests = FriendRequestDao.getSentRequests(senderId)
+	val receiverIds = requests.map { it.receiverId }
+	val receivers = UserDao.getListByIds(receiverIds)
+	val labels = UserLabelDao.getMapByUserIds(receiverIds)
+	return requests.map {
+		val user = receivers.first { user ->
 			user.id.value == it.receiverId
 		}
+		val labels = labels[it.receiverId]?.associate { label ->
+			label.label to label.color
+		} ?: emptyMap()
 		RequestDTO(
 			id = it.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
 			status = it.status,
-			updateTime = it.updateTime.formatToShanghai()
+			createTime = it.createTime.formatToShanghai(),
+			labels = labels
 		)
 	}
 }
@@ -57,20 +63,25 @@ private fun getSentRequests(senderId: Int): List<RequestDTO> {
  * 获取发送给我的请求
  */
 private fun getReceivedRequests(receiverId: Int): List<RequestDTO> {
-	val receivedFriendRequests = FriendRequestDao.getReceivedRequests(receiverId)
-	val receivedSenderIds = receivedFriendRequests.map { it.senderId }
-	val receivedUsers = UserDao.getListByIds(receivedSenderIds)
-	return receivedFriendRequests.map {
-		val user = receivedUsers.first { user ->
+	val requests = FriendRequestDao.getReceivedRequests(receiverId)
+	val senderIds = requests.map { it.senderId }
+	val senders = UserDao.getListByIds(senderIds)
+	val labels = UserLabelDao.getMapByUserIds(senderIds)
+	return requests.map {
+		val user = senders.first { user ->
 			user.id.value == it.senderId
 		}
+		val labels = labels[it.senderId]?.associate { label ->
+			label.label to label.color
+		} ?: emptyMap()
 		RequestDTO(
 			id = it.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
 			status = it.status,
-			updateTime = it.updateTime.formatToShanghai()
+			createTime = it.createTime.formatToShanghai(),
+			labels = labels
 		)
 	}
 }
@@ -82,7 +93,8 @@ private data class RequestDTO(
 	val nickname: String?,
 	val avatarUrl: String?,
 	val status: FriendRequests.Status,
-	val updateTime: String
+	val createTime: String,
+	val labels: Map<String, String>
 )
 
 /**

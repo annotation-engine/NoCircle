@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -31,6 +30,7 @@ import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.foundation.NoTag
 import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.material3.NoScaffold
 import org.koin.compose.viewmodel.koinViewModel
@@ -110,7 +110,6 @@ private fun UserDetailCard() {
 				modifier = Modifier
 					.align(Alignment.BottomStart)
 					.horizontalScroll(horizontalScroll)
-					.height(24.dp)
 					.background(
 						color = if (userDetail == null) MaterialTheme.colorScheme.surface else Color.Transparent,
 						shape = MaterialTheme.shapes.extraSmall
@@ -119,9 +118,11 @@ private fun UserDetailCard() {
 				val labels by viewModel.labels.collectAsState()
 				labels.let {
 					it.fastForEachIndexed { index, label ->
-						Label(
-							label = label.label,
-							color = hexToColor(label.color)
+						NoTag(
+							text = label.label,
+							color = hexToColor(label.color),
+							shape = MaterialTheme.shapes.extraSmall,
+							contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
 						)
 						Spacer(modifier = Modifier.width(6.dp))
 					}
@@ -131,29 +132,6 @@ private fun UserDetailCard() {
 				}
 			}
 		}
-	}
-}
-
-@Composable
-private fun Label(
-	label: String,
-	color: Color,
-) {
-	Box(
-		modifier = Modifier
-			.fillMaxHeight()
-			.background(
-				color = color,
-				shape = MaterialTheme.shapes.extraSmall
-			)
-			.padding(horizontal = 6.dp),
-		contentAlignment = Alignment.Center
-	) {
-		Text(
-			text = label,
-			color = if (color.luminance() > 0.5f) Color.Black else Color.White,
-			style = MaterialTheme.typography.labelMedium
-		)
 	}
 }
 

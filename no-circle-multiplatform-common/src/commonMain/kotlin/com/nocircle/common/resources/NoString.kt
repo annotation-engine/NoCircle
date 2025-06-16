@@ -57,6 +57,7 @@ fun NoString.value(
 	val value by remember(this, current) {
 		derivedStateOf { this.getCacheRawString(current) }
 	}
+	if (args.isEmpty()) return value
 	return remember(value, *args) {
 		value.format(*args)
 	}

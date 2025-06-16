@@ -362,12 +362,12 @@
 		"en": "Message Center"
 	},
 	"MESSAGE_CENTER_SENT_REQUEST": {
-		"zh": "我发送的",
-		"en": "Sent Requests"
+		"zh": "我发送的 ({})",
+		"en": "Sent ({})"
 	},
 	"MESSAGE_CENTER_RECEIVED_REQUEST": {
-		"zh": "我收到的",
-		"en": "Received Requests"
+		"zh": "我收到的 ({})",
+		"en": "Received ({})"
 	},
 	"MESSAGE_CENTER_AGREED": {
 		"zh": "已同意",
@@ -384,5 +384,29 @@
 	"MESSAGE_CENTER_CANCELED": {
 		"zh": "已取消",
 		"en": "Canceled"
+	},
+	"MESSAGE_CENTER_CANCEL": {
+		"zh": "取消",
+		"en": "Cancel"
+	},
+	"MESSAGE_CENTER_DELETE": {
+		"zh": "删除",
+		"en": "Delete"
+	},
+	"MESSAGE_CENTER_AGREE": {
+		"zh": "同意",
+		"en": "Agree"
+	},
+	"MESSAGE_CENTER_REJECT": {
+		"zh": "拒绝",
+		"en": "Reject"
+	},
+	"MESSAGE_CENTER_NO_MESSAGES": {
+		"zh": "暂无消息",
+		"en": "No news for the time being"
+	},
+	"MESSAGE_CENTER_WANT_ADD_FRIEND": {
+		"zh": "{} 想要加您为好友",
+		"en": "{} wants to add you as a friend"
 	}
 }

@@ -3,6 +3,7 @@ package com.nocircle.compose.foundation
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,6 +29,7 @@ fun NoButton(
 	enabled: Boolean = true,
 	style: TextStyle = MaterialTheme.typography.bodyLarge,
 	colors: NoButtonColors = NoButtonDefaults.DefaultButtonColors,
+	contentPadding: PaddingValues = NoButtonDefaults.ContentPadding,
 	context: CoroutineContext = EmptyCoroutineContext,
 	onClick: (suspend CoroutineScope.() -> Unit)? = null,
 ) {
@@ -47,7 +49,7 @@ fun NoButton(
 			}
 		},
 		modifier = modifier
-			.height(56.dp)
+			.height(52.dp)
 			.shadow(
 				elevation = shadowElevation,
 				shape = MaterialTheme.shapes.small,
@@ -62,6 +64,7 @@ fun NoButton(
 			disabledContainerColor = colors.disabledContainerColor,
 			disabledContentColor = colors.disabledContentColor
 		),
+		contentPadding = contentPadding,
 		interactionSource = interactionSource
 	) {
 		Text(
@@ -86,7 +89,13 @@ object NoButtons {
 @Immutable
 object NoButtonDefaults {
 	
-	val DefaultButtonColors @Composable get() = NoButtonColors.PrimaryColors
+	val DefaultButtonColors: NoButtonColors
+		@Composable
+		get() = NoButtonColors.PrimaryColors
+	
+	val ContentPadding = ButtonDefaults.ContentPadding
+	
+	val TextButtonContentPadding = ButtonDefaults.TextButtonContentPadding
 }
 
 @Immutable
