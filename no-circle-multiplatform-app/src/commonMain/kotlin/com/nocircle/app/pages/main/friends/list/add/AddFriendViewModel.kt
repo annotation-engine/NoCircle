@@ -18,15 +18,15 @@ import kotlin.time.Duration.Companion.seconds
 @OptIn(FlowPreview::class)
 class AddFriendViewModel : NoViewModel() {
 	
-	private val _username = MutableStateFlow("")
-	val username = _username.asStateFlow()
+	private val _search = MutableStateFlow("")
+	val search = _search.asStateFlow()
 	
 	private val _result = MutableStateFlow<SearchUserDTO?>(null)
 	val result = _result.asStateFlow()
 	
 	init {
 		viewModelScope.launch {
-			_username
+			search
 				.debounce(0.5.seconds)
 				.collectLatest(::searchFriendByUsername)
 		}
@@ -34,8 +34,13 @@ class AddFriendViewModel : NoViewModel() {
 	
 	fun updateSearch(search: String) {
 		if (search.length <= 20) {
-			_username.value = search
+			_search.value = search
 		}
+	}
+	
+	fun init() {
+		_search.value = ""
+		_result.value = null
 	}
 	
 	private val friendAddRequestMutex = Mutex()

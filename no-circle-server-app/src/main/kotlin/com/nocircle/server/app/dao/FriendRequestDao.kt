@@ -54,12 +54,13 @@ object FriendRequestDao {
 		return FriendRequest.wrapRows(query).toList()
 	}
 	
-	fun getReceivedWaitingRequestCount(receiverId: Int): Long {
+	fun getReceivedWaitingRequestCount(receiverId: Int): Int {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.receiverId eq receiverId }
 			.andWhere { FriendRequests.status eq FriendRequests.Status.WAITING }
 			.logicExists(FriendRequests)
 			.count()
+			.toInt()
 	}
 	
 	fun getOneById(id: Int): FriendRequest? {
@@ -70,12 +71,22 @@ object FriendRequestDao {
 		return FriendRequest.wrapRow(row)
 	}
 	
-	fun isExistsBySenderIdAndReceiverId(senderId: Int, receiverId: Int): Boolean {
+	fun isAlreadySend(senderId: Int, receiverId: Int): Boolean {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.senderId eq senderId }
 			.andWhere { FriendRequests.receiverId eq receiverId }
+			.andWhere { FriendRequests.status eq FriendRequests.Status.WAITING }
 			.logicExists(FriendRequests)
 			.exists()
+	}
+	
+	fun getOneBySenderIdAndReceiverId(senderId: Int, receiverId: Int): FriendRequest? {
+		val resultRow = FriendRequests.selectAll()
+			.where { FriendRequests.senderId eq senderId }
+			.andWhere { FriendRequests.receiverId eq receiverId }
+			.logicExists(FriendRequests)
+			.singleOrNull() ?: return null
+		return FriendRequest.wrapRow(resultRow)
 	}
 	
 	fun deleteByIdAndSenderId(id: Int, senderId: Int): Boolean {

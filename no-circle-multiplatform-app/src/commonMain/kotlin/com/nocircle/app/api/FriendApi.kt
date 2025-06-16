@@ -39,8 +39,8 @@ interface FriendApi {
 	): ResultBody<Unit>?
 	
 	@BearerAuth
-	@POST("request/queryReceivedWaitingCount")
-	suspend fun queryReceivedWaitingRequestCount(): ResultBody<Int>?
+	@GET("request/queryWaitingCount")
+	suspend fun queryWaitingRequestCount(): ResultBody<Int>?
 }
 
 @Immutable

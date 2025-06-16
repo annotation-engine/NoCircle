@@ -4,6 +4,7 @@ import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.plugins.FriendContext
 import com.nocircle.server.app.plugins.WebSocketType
+import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.exposed.getInt
 import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.noPrincipal
@@ -27,8 +28,14 @@ fun Route.postAddRequest() = post("request/add") {
 	val status = transaction {
 		val isExists = UserDao.isExistsByUserId(receiverId)
 		if (!isExists) return@transaction RequestAddStatus.USER_NOT_FOUND
-		val isAlready = FriendRequestDao.isExistsBySenderIdAndReceiverId(userId, receiverId)
-		if (isAlready) return@transaction RequestAddStatus.REPEATED
+		val request = FriendRequestDao.getOneBySenderIdAndReceiverId(userId, receiverId)
+		if (request != null) {
+			if (request.status == FriendRequests.Status.WAITING) {
+				return@transaction RequestAddStatus.REPEATED
+			} else {
+				FriendRequestDao.deleteByIdAndSenderId(request.id.value, request.senderId)
+			}
+		}
 		val success = FriendRequestDao.insertOne(userId, receiverId)
 		if (success) RequestAddStatus.SUCCESS else RequestAddStatus.FAILURE
 	}

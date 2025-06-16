@@ -25,16 +25,16 @@ fun Route.getSearch() = get("search") {
 	}
 	val searchUser = transaction {
 		val user = UserDao.getOneByUsername(queryUsername) ?: return@transaction null
-		val targetId = user.id.value
-		val labels = UserLabelDao.getListByUserId(targetId).map {
+		val receiverId = user.id.value
+		val labels = UserLabelDao.getListByUserId(receiverId).map {
 			LabelDTO(it.id.value, it.label, it.color)
 		}
-		val pair = if (userId == targetId) {
+		val pair = if (userId == receiverId) {
 			RelationshipDTO.OWNER to false
 		} else {
-			val isFriend = FriendRelationshipDao.isFriend(userId, targetId)
+			val isFriend = FriendRelationshipDao.isFriend(userId, receiverId)
 			val relationship = if (isFriend) RelationshipDTO.FRIEND else RelationshipDTO.STRANGER
-			val isAlreadySend = FriendRequestDao.isExistsBySenderIdAndReceiverId(userId, targetId)
+			val isAlreadySend = FriendRequestDao.isAlreadySend(userId, receiverId)
 			relationship to isAlreadySend
 		}
 		SearchUserDTO(

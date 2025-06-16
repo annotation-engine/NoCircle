@@ -14,7 +14,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 删除好友请求
  */
 context(_: FriendContext)
-fun Route.postDeleteRequest() = post("/request/delete") {
+fun Route.postDeleteRequest() = post("request/delete") {
 	val userId = call.noPrincipal!!.userId
 	val id = call.receiveParameters().getInt("id")
 	val success = transaction {

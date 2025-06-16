@@ -15,7 +15,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 取消好友请求
  */
 context(_: FriendContext)
-fun Route.postCancelRequest() = post("/request/cancel") {
+fun Route.postCancelRequest() = post("request/cancel") {
 	val userId = call.noPrincipal!!.userId
 	val id = call.receiveParameters().getInt("id")
 	val success = transaction {

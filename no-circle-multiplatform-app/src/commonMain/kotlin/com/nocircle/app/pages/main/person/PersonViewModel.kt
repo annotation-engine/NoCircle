@@ -8,6 +8,8 @@ import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
+import com.nocircle.app.websockets.WebSocketScheduler
+import com.nocircle.app.websockets.WebSocketType
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,14 +24,18 @@ class PersonViewModel : NoViewModel() {
 	private val _labels = MutableStateFlow<List<LabelDTO>>(emptyList())
 	val labels = _labels.asStateFlow()
 	
-	private val _receivedWaitingRequestCount = MutableStateFlow(0)
-	val receivedWaitingRequestCount = _receivedWaitingRequestCount.asStateFlow()
+	private val _waitingRequestCount = MutableStateFlow(0)
+	val waitingRequestCount = _waitingRequestCount.asStateFlow()
 	
 	init {
 		viewModelScope.launch {
 			async { loadUserDetail() }
 			async { loadLabels() }
 			async { loadRequestReceivedCount() }
+			
+			WebSocketScheduler.addCollect(WebSocketType.FRIEND_RECEIVED_REQUEST) {
+				loadRequestReceivedCount()
+			}
 		}
 	}
 	
@@ -49,9 +55,9 @@ class PersonViewModel : NoViewModel() {
 	}
 	
 	suspend fun loadRequestReceivedCount() {
-		val result = ktorfitx.friendApi.queryReceivedWaitingRequestCount() ?: return
+		val result = ktorfitx.friendApi.queryWaitingRequestCount() ?: return
 		if (result.success) {
-			_receivedWaitingRequestCount.value = result.data!!
+			_waitingRequestCount.value = result.data!!
 		}
 	}
 }

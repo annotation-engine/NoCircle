@@ -63,6 +63,6 @@ object FriendContext : RouteContext("friend") {
 		getQueryRequest()
 		postCancelRequest()
 		postDeleteRequest()
-		getQueryReceivedWaitingRequestCount()
+		getQueryWaitingRequestCount()
 	}
 }

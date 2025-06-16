@@ -8,16 +8,19 @@ import com.nocircle.server.common.model.respondDTO
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
+/**
+ * 查询未处理的消息数
+ */
 context(_: FriendContext)
-fun Route.getQueryReceivedWaitingRequestCount() = get("request/queryReceivedWaitingCount") {
+fun Route.getQueryWaitingRequestCount() = get("request/queryWaitingCount") {
 	val userId = call.noPrincipal!!.userId
 	val count = transaction {
 		FriendRequestDao.getReceivedWaitingRequestCount(userId)
 	}
-	call.respondDTO(count, RequestQueryReceivedCountStatus.SUCCESS)
+	call.respondDTO(count, RequestQueryWaitingCountStatus.SUCCESS)
 }
 
-private enum class RequestQueryReceivedCountStatus(
+private enum class RequestQueryWaitingCountStatus(
 	override val msg: String,
 	override val code: Int
 ) : NoStatus {

@@ -47,9 +47,10 @@ fun AddFriendSheet(
 		val viewModel = koinViewModel<AddFriendViewModel>()
 		val hostState = LocalSnackbarHostState.current
 		LaunchedEffect(Unit) {
+			viewModel.init()
 			viewModel.snackbarCollect(hostState::showNoSnackbar)
 		}
-		val username by viewModel.username.collectAsState()
+		val username by viewModel.search.collectAsState()
 		NoTextField(
 			value = username,
 			onValueChange = viewModel::updateSearch,

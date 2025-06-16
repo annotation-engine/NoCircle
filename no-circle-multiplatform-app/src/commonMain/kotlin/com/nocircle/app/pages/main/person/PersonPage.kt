@@ -202,20 +202,20 @@ private fun LastLoginTime() {
 private fun FriendAddRequest() {
 	val controller = LocalNavController.current
 	val viewModel = koinViewModel<PersonViewModel>()
-	val count by viewModel.receivedWaitingRequestCount.collectAsState()
+	val waitingRequestCount by viewModel.waitingRequestCount.collectAsState()
 	NoOption(
 		title = { Text(AppString.MESSAGE_CENTER_TITLE.value()) },
 		icon = {
-			val iconGroup by remember(count) {
+			val iconGroup by remember(waitingRequestCount) {
 				derivedStateOf {
-					if (count == 0) AppIcon.Email else AppIcon.MarkEmailUnread
+					if (waitingRequestCount == 0) AppIcon.Email else AppIcon.MarkEmailUnread
 				}
 			}
 			NoIcon(iconGroup.value())
 		},
 		actions = {
 			Text(
-				text = if (count == 0) AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NO_NEWS.value() else AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NEWS.value(count),
+				text = if (waitingRequestCount == 0) AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NO_NEWS.value() else AppString.PERSON_MESSAGE_CENTER_SUBTITLE_NEWS.value(waitingRequestCount),
 				overflow = TextOverflow.Ellipsis,
 				maxLines = 1
 			)
