@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
@@ -35,6 +36,7 @@ import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
 import com.nocircle.app.pages.main.person.PersonPage
+import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.pages.main.person.message.MessageCenterPage
 import com.nocircle.app.pages.main.person.message.MessageCenterRoute
 import com.nocircle.app.pages.settings.SettingsPage
@@ -47,6 +49,7 @@ import com.nocircle.app.theme.groups.ThemeMode
 import com.nocircle.compose.desktop.NoTooltipArea
 import com.nocircle.compose.desktop.NoTooltipPlacement
 import com.nocircle.compose.desktop.NoWindowDraggableArea
+import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTab
@@ -245,17 +248,37 @@ private fun LeftNavigationBar(
 					}
 				}
 				val previousText = AppString.MAIN_PREVIOUS.value()
-				LeftToolItem(
-					title = previousText,
-					icon = AppIcon.ArrowBack.value(),
-					tooltipText = previousText,
-					isExpended = isLeftNavigationBarExpended,
-					onClick = {
-						viewModel.isLeftNavigationBarExpended.value = false
-						controller.popBackStack()
-					},
-					enabled = popStackEnabled
-				)
+				Box(
+					modifier = Modifier
+						.height(LeftNavigationItemHeight)
+						.fillMaxWidth(),
+					contentAlignment = Alignment.Center
+				) {
+					if (popStackEnabled) {
+						LeftToolItem(
+							title = previousText,
+							icon = AppIcon.ArrowBack.value(),
+							tooltipText = previousText,
+							isExpended = isLeftNavigationBarExpended,
+							onClick = {
+								viewModel.isLeftNavigationBarExpended.value = false
+								controller.popBackStack()
+							}
+						)
+					} else {
+						val personViewModel = koinViewModel<PersonViewModel>()
+						val userDetail by personViewModel.userDetail.collectAsState()
+						if (userDetail != null) {
+							NoAsyncImage(
+								url = userDetail!!.avatarUrl,
+								modifier = Modifier
+									.size(LeftNavigationItemHeight)
+									.clip(MaterialTheme.shapes.small),
+								contentScale = ContentScale.Crop,
+							)
+						}
+					}
+				}
 				Spacer(modifier = Modifier.height(8.dp))
 				Spacer(modifier = Modifier.weight(1f))
 				val density = LocalDensity.current
@@ -414,28 +437,18 @@ private fun LeftToolItem(
 	tooltipText: String,
 	isExpended: Boolean,
 	onClick: () -> Unit,
-	iconRotate: Float = 0f,
-	enabled: Boolean = true
+	iconRotate: Float = 0f
 ) {
 	LeftItemWithExpended(
 		tooltipText = tooltipText,
 		isExpended = isExpended
 	) {
-		val primary = MaterialTheme.colorScheme.primary
-		val contentColor by remember(enabled, primary) {
-			derivedStateOf {
-				if (enabled) primary else Color.Transparent
-			}
-		}
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
 				.height(LeftNavigationItemHeight)
 				.clip(MaterialTheme.shapes.small)
-				.clickable(
-					enabled = enabled,
-					onClick = onClick
-				)
+				.clickable(onClick = onClick)
 				.padding(horizontal = 12.dp),
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.Start
@@ -445,14 +458,14 @@ private fun LeftToolItem(
 				icon = icon,
 				modifier = Modifier.size(24.dp)
 					.rotate(iconRotate),
-				tint = contentColor
+				tint = MaterialTheme.colorScheme.primary
 			)
 			Text(
 				text = title,
 				modifier = Modifier
 					.padding(start = 8.dp)
 					.weight(1f, fill = false),
-				color = contentColor,
+				color = MaterialTheme.colorScheme.primary,
 				style = MaterialTheme.typography.bodyMedium,
 				maxLines = 1,
 				overflow = TextOverflow.Ellipsis

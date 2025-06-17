@@ -55,4 +55,5 @@ object AppIcon {
 	val ForwardToInbox = autoMirroredIcons({ ForwardToInbox }, { ForwardToInbox }, { ForwardToInbox }, { ForwardToInbox }, { ForwardToInbox })
 	val KeyboardArrowRight = autoMirroredIcons({ KeyboardArrowRight }, { KeyboardArrowRight }, { KeyboardArrowRight }, { KeyboardArrowRight }, { KeyboardArrowRight })
 	val ArrowBack = autoMirroredIcons({ ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack })
+	val MotionPhotosOff = icons({ MotionPhotosOff }, { MotionPhotosOff }, { MotionPhotosOff }, { MotionPhotosOff }, { MotionPhotosOff })
 }
