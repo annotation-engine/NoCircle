@@ -18,8 +18,6 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.api.SearchUserDTO
-import com.nocircle.app.api.SearchUserDTO.RelationshipDTO.*
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.format
@@ -30,6 +28,8 @@ import com.nocircle.compose.material3.LocalSnackbarHostState
 import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
 import com.nocircle.compose.material3.showNoSnackbar
+import com.nocircle.shared.model.friend.FriendSearchDTO
+import com.nocircle.shared.model.friend.FriendSearchDTO.RelationshipDTO.*
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +89,7 @@ fun AddFriendSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserCard(
-	searchUser: SearchUserDTO
+	searchUser: FriendSearchDTO
 ) {
 	Row(
 		modifier = Modifier

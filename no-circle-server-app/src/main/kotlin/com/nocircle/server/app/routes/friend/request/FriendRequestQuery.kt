@@ -13,9 +13,10 @@ import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
+import com.nocircle.shared.model.label.LabelDTO
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -38,7 +39,7 @@ fun Route.getQueryRequest() = get("request/query") {
 /**
  * 获取我发送的请求
  */
-private fun getSentRequests(senderId: Int): List<RequestDTO> {
+private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getSentRequests(senderId)
 	val receiverIds = requests.map { it.receiverId }
 	val receivers = UserDao.getListByIds(receiverIds)
@@ -47,16 +48,20 @@ private fun getSentRequests(senderId: Int): List<RequestDTO> {
 		val user = receivers.first { user ->
 			user.id.value == it.receiverId
 		}
-		val labels = labels[it.receiverId]?.associate { label ->
-			label.label to label.color
-		} ?: emptyMap()
-		RequestDTO(
+		val labels = labels[it.receiverId]?.map { label ->
+			LabelDTO(
+				id = label.id.value,
+				label = label.label,
+				color = label.color,
+			)
+		} ?: emptyList()
+		FriendRequestDTO(
 			id = it.id.value,
 			targetId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
-			status = it.status,
+			status = it.status.toDTOStatus(),
 			createTime = it.createTime.formatToShanghai(),
 			labels = labels
 		)
@@ -66,7 +71,7 @@ private fun getSentRequests(senderId: Int): List<RequestDTO> {
 /**
  * 获取发送给我的请求
  */
-private fun getReceivedRequests(receiverId: Int): List<RequestDTO> {
+private fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getReceivedRequests(receiverId)
 	val senderIds = requests.map { it.senderId }
 	val senders = UserDao.getListByIds(senderIds)
@@ -75,33 +80,34 @@ private fun getReceivedRequests(receiverId: Int): List<RequestDTO> {
 		val user = senders.first { user ->
 			user.id.value == it.senderId
 		}
-		val labels = labels[it.senderId]?.associate { label ->
-			label.label to label.color
-		} ?: emptyMap()
-		RequestDTO(
+		val labels = labels[it.senderId]?.map { label ->
+			LabelDTO(
+				id = label.id.value,
+				label = label.label,
+				color = label.color,
+			)
+		} ?: emptyList()
+		FriendRequestDTO(
 			id = it.id.value,
 			targetId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
-			status = it.status,
+			status = it.status.toDTOStatus(),
 			createTime = it.createTime.formatToShanghai(),
 			labels = labels
 		)
 	}
 }
 
-@Serializable
-private data class RequestDTO(
-	val id: Int,
-	val targetId: Int,
-	val username: String,
-	val nickname: String?,
-	val avatarUrl: String?,
-	val status: FriendRequests.Status,
-	val createTime: String,
-	val labels: Map<String, String>
-)
+private fun FriendRequests.Status.toDTOStatus(): FriendRequestDTO.Status {
+	return when (this) {
+		FriendRequests.Status.AGREED -> FriendRequestDTO.Status.AGREED
+		FriendRequests.Status.REJECTED -> FriendRequestDTO.Status.REJECTED
+		FriendRequests.Status.WAITING -> FriendRequestDTO.Status.WAITING
+		FriendRequests.Status.CANCELED -> FriendRequestDTO.Status.CANCELED
+	}
+}
 
 /**
  * 122x

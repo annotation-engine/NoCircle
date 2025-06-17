@@ -4,9 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impls.keepAliveApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.common.log.NoLog
-import com.nocircle.common.websocket.NoWebSocketType
 import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
+import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.websocket.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -64,9 +64,4 @@ class MainViewModel : NoViewModel() {
 			NoLog.info("WebSocket reconnected: $attempt, next duration: ${(duration * 2).coerceIn(reconnectDurationRange)}")
 		}
 	}
-}
-
-enum class WebSocketType : NoWebSocketType {
-	REFRESH_FRIEND_SENT_REQUEST,
-	REFRESH_FRIEND_RECEIVED_REQUEST
 }

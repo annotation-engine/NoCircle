@@ -29,5 +29,6 @@ kotlin {
 
 dependencies {
 	implementation(projects.noCircleServerCommon)
+	implementation(projects.noCircleShared)
 	implementation(libs.bundles.server.app)
 }

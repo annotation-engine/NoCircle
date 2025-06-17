@@ -11,10 +11,10 @@ import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
 import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
+import com.nocircle.shared.model.user.UserLoginDTO
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.toJavaDuration
 
@@ -41,11 +41,6 @@ fun Route.postUserLogin() = post("login") {
 	val userLogin = UserLoginDTO(token)
 	call.respondOK(userLogin, LoginStatus.SUCCESS)
 }
-
-@Serializable
-private data class UserLoginDTO(
-	val token: String,
-)
 
 /**
  * 100X

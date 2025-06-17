@@ -1,6 +1,5 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.common.websockets.NoWebSocketType
 import com.nocircle.server.common.websockets.keepAliveWebSocket
 import io.ktor.server.application.*
 import io.ktor.server.websocket.*
@@ -14,9 +13,4 @@ fun Application.configureWebSockets() {
 		masking = false
 	}
 	keepAliveWebSocket()
-}
-
-enum class WebSocketType : NoWebSocketType {
-	REFRESH_FRIEND_SENT_REQUEST,
-	REFRESH_FRIEND_RECEIVED_REQUEST
 }

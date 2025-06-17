@@ -1,6 +1,7 @@
 package com.nocircle.common.websocket
 
 import com.nocircle.common.log.NoLog
+import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.websocket.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,8 +13,8 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 object WebSocketScheduler {
 	
-	private val sharedFlowMap = mutableMapOf<NoWebSocketType, MutableSharedFlow<WebSocketModel>>()
-	private val jobsMap = mutableMapOf<NoWebSocketType, MutableList<Job>>()
+	private val sharedFlowMap = mutableMapOf<WebSocketType, MutableSharedFlow<WebSocketModel>>()
+	private val jobsMap = mutableMapOf<WebSocketType, MutableList<Job>>()
 	private val schedulerScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 	
 	private val defaultInitSharedFlow: () -> MutableSharedFlow<WebSocketModel> = {
@@ -25,7 +26,7 @@ object WebSocketScheduler {
 	
 	suspend fun scheduleText(
 		frame: Frame.Text,
-		findWebSocketType: (type: String) -> NoWebSocketType?
+		findWebSocketType: (type: String) -> WebSocketType?
 	) {
 		val splits = frame.readText().split("::")
 		if (splits.size != 2 && splits.size != 3) return
@@ -39,13 +40,13 @@ object WebSocketScheduler {
 	}
 	
 	inline fun <reified T : Any> addGlobalCollect(
-		type: NoWebSocketType,
+		type: WebSocketType,
 		noinline initSharedFlow: (() -> MutableSharedFlow<WebSocketModel>)? = null,
 		noinline onEvent: suspend (senderId: Int, data: T) -> Unit
 	) = addGlobalCollect(type, serializer<T>(), initSharedFlow, onEvent)
 	
 	fun <T : Any> addGlobalCollect(
-		type: NoWebSocketType,
+		type: WebSocketType,
 		deserializer: DeserializationStrategy<T>,
 		initSharedFlow: (() -> MutableSharedFlow<WebSocketModel>)? = null,
 		onEvent: suspend (senderId: Int, data: T) -> Unit
@@ -63,7 +64,7 @@ object WebSocketScheduler {
 	}
 	
 	fun addGlobalCollect(
-		type: NoWebSocketType,
+		type: WebSocketType,
 		initSharedFlow: (() -> MutableSharedFlow<WebSocketModel>)? = null,
 		onEvent: suspend (senderId: Int) -> Unit
 	) {
@@ -80,7 +81,7 @@ object WebSocketScheduler {
 	
 	context(_: CoroutineScope)
 	inline fun <reified T : Any> addCollect(
-		type: NoWebSocketType,
+		type: WebSocketType,
 		context: CoroutineContext = EmptyCoroutineContext,
 		noinline initSharedFlow: (() -> MutableSharedFlow<WebSocketModel>)? = null,
 		noinline onEvent: suspend (senderId: Int, data: T) -> Unit
@@ -88,7 +89,7 @@ object WebSocketScheduler {
 	
 	context(scope: CoroutineScope)
 	fun <T : Any> addCollect(
-		type: NoWebSocketType,
+		type: WebSocketType,
 		deserializer: DeserializationStrategy<T>,
 		context: CoroutineContext = EmptyCoroutineContext,
 		initSharedFlow: (() -> MutableSharedFlow<WebSocketModel>)? = null,
@@ -108,7 +109,7 @@ object WebSocketScheduler {
 	
 	context(scope: CoroutineScope)
 	fun addCollect(
-		type: NoWebSocketType,
+		type: WebSocketType,
 		context: CoroutineContext = EmptyCoroutineContext,
 		initSharedFlow: (() -> MutableSharedFlow<WebSocketModel>)? = null,
 		onEvent: suspend (senderId: Int) -> Unit
@@ -124,7 +125,7 @@ object WebSocketScheduler {
 		}
 	}
 	
-	fun removeCollects(type: NoWebSocketType, vararg types: NoWebSocketType) {
+	fun removeCollects(type: WebSocketType, vararg types: WebSocketType) {
 		val types = types.toList() + type
 		sharedFlowMap -= types
 		types.forEach { type ->
@@ -137,8 +138,6 @@ object WebSocketScheduler {
 		}
 	}
 }
-
-interface NoWebSocketType
 
 sealed interface WebSocketModel {
 	val senderId: Int

@@ -8,8 +8,8 @@ import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.shared.model.user.UserDetailDTO
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -31,14 +31,6 @@ fun Route.getUserDetail() = get("detail") {
 	
 	call.respondOK(userDetail, DetailStatus.SUCCESS)
 }
-
-@Serializable
-private data class UserDetailDTO(
-	val username: String,
-	val nickname: String?,
-	val avatarUrl: String?,
-	val lastLoginTime: String?
-)
 
 /**
  * 102X

@@ -59,6 +59,7 @@ kotlin {
 		commonMain.dependencies {
 			implementation(projects.noCircleMultiplatformCompose)
 			implementation(projects.noCircleMultiplatformCommon)
+			implementation(projects.noCircleShared)
 			implementation(compose.runtime)
 			implementation(compose.foundation)
 			implementation(compose.material3)

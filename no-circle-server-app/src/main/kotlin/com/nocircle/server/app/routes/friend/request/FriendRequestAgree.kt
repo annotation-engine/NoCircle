@@ -3,14 +3,13 @@ package com.nocircle.server.app.routes.friend.request
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.plugins.FriendRouteGroup
-import com.nocircle.server.app.plugins.WebSocketType
 import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
-import com.nocircle.server.common.websockets.getSession
-import com.nocircle.server.common.websockets.sendMessage
+import com.nocircle.server.common.websockets.sendToReceiver
+import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -35,10 +34,8 @@ fun Route.postAgreeRequest() = post("request/agree") {
 		RequestAgreeStatus.SUCCESS
 	}
 	if (status == RequestAgreeStatus.SUCCESS) {
-		getSession(targetId)?.sendMessage(
-			type = WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST,
-			senderId = userId
-		)
+		sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, targetId)
+		sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, userId)
 	}
 	call.respondOK(status)
 }

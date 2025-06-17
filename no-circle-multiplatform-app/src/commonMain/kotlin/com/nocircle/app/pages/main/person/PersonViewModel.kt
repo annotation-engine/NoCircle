@@ -1,16 +1,16 @@
 package com.nocircle.app.pages.main.person
 
 import androidx.lifecycle.viewModelScope
-import com.nocircle.app.api.LabelDTO
-import com.nocircle.app.api.UserDetailDTO
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
-import com.nocircle.app.pages.main.WebSocketType
 import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
+import com.nocircle.shared.model.label.LabelDTO
+import com.nocircle.shared.model.user.UserDetailDTO
+import com.nocircle.shared.websocket.WebSocketType
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +29,7 @@ class PersonViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch {
-			WebSocketScheduler.addCollect(WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST) {
+			WebSocketScheduler.addCollect(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT) {
 				loadRequestReceivedCount()
 			}
 			
@@ -63,6 +63,6 @@ class PersonViewModel : NoViewModel() {
 	
 	override fun onCleared() {
 		super.onCleared()
-		WebSocketScheduler.removeCollects(WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST)
+		WebSocketScheduler.removeCollects(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT)
 	}
 }

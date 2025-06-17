@@ -3,13 +3,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
 	alias(libs.plugins.android.library)
-	alias(libs.plugins.compose.multiplatform)
-	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.multiplatform)
 	alias(libs.plugins.kotlin.serialization)
-	alias(libs.plugins.ksp)
-	alias(libs.plugins.room)
-	alias(libs.plugins.hot.reload)
 }
 
 kotlin {
@@ -29,7 +24,7 @@ kotlin {
 		iosSimulatorArm64(),
 	).forEach {
 		it.binaries.framework {
-			baseName = "NoCircleCommon"
+			baseName = "NoCircleShared"
 			isStatic = true
 			linkerOpts += "-lsqlite3"
 		}
@@ -44,27 +39,11 @@ kotlin {
 	}
 	
 	sourceSets {
-		val desktopMain by getting
-		
-		androidMain.dependencies {
-			implementation(compose.preview)
-			implementation(libs.bundles.multiplatform.common.android)
-		}
 		commonMain.dependencies {
-			implementation(projects.noCircleShared)
-			implementation(compose.runtime)
-			implementation(compose.components.resources)
-			implementation(compose.materialIconsExtended)
-			implementation(libs.bundles.multiplatform.common)
-		}
-		desktopMain.dependencies {
-			implementation(compose.desktop.currentOs)
-			implementation(libs.bundles.multiplatform.common.desktop)
+			implementation(libs.bundles.shared)
 		}
 	}
-	sourceSets.commonMain {
-		kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-	}
+	
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_2
 		apiVersion = KotlinVersion.KOTLIN_2_2
@@ -73,7 +52,7 @@ kotlin {
 }
 
 android {
-	namespace = "com.nocircle.common"
+	namespace = "com.nocircle.shared"
 	compileSdk = libs.versions.android.compileSdk.get().toInt()
 	
 	defaultConfig {
@@ -92,21 +71,4 @@ android {
 	buildFeatures {
 		compose = true
 	}
-}
-
-dependencies {
-	add("kspAndroid", libs.room.compiler)
-	add("kspDesktop", libs.room.compiler)
-	add("kspIosX64", libs.room.compiler)
-	add("kspIosArm64", libs.room.compiler)
-	add("kspIosSimulatorArm64", libs.room.compiler)
-}
-
-room {
-	schemaDirectory("$projectDir/schemas")
-}
-
-compose.resources {
-	packageOfResClass = "com.nocircle.common.generated.resources"
-	publicResClass = false
 }

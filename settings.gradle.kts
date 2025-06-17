@@ -18,7 +18,7 @@ pluginManagement {
 }
 
 plugins {
-	id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+	id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 dependencyResolutionManagement {
@@ -39,4 +39,5 @@ include(":no-circle-multiplatform-compose")
 include(":no-circle-multiplatform-common")
 include(":no-circle-server-app")
 include(":no-circle-server-common")
+include(":no-circle-shared")
 include(":no-circle-script")

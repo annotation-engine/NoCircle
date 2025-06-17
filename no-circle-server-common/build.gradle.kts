@@ -19,4 +19,5 @@ kotlin {
 
 dependencies {
 	implementation(libs.bundles.server.common)
+	implementation(projects.noCircleShared)
 }

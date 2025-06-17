@@ -13,13 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.api.RequestDTO
+import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.format
 import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.*
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -57,7 +58,7 @@ fun MessageCenterReceivedRequestList() {
 @Composable
 private fun ReceivedRequestCard(
 	viewModel: MessageCenterViewModel,
-	request: RequestDTO
+	request: FriendRequestDTO
 ) {
 	Column(
 		modifier = Modifier
@@ -128,10 +129,10 @@ private fun ReceivedRequestCard(
 				derivedStateOf { request.labels.isNotEmpty() }
 			}
 			if (showLabels) {
-				request.labels.forEach { (label, color) ->
+				request.labels.fastForEach {
 					NoTag(
-						text = label,
-						color = hexToColor(color),
+						text = it.label,
+						color = hexToColor(it.color),
 						shape = MaterialTheme.shapes.extraSmall,
 						contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
 					)

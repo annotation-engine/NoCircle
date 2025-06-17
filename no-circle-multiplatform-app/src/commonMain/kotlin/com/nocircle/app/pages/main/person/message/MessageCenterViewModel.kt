@@ -2,14 +2,14 @@ package com.nocircle.app.pages.main.person.message
 
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.FriendRequestType
-import com.nocircle.app.api.RequestDTO
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
-import com.nocircle.app.pages.main.WebSocketType
 import com.nocircle.common.coroutines.KFunctionLocker
 import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
+import com.nocircle.shared.websocket.WebSocketType
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,10 +17,10 @@ import kotlinx.coroutines.launch
 
 class MessageCenterViewModel : NoViewModel() {
 	
-	private val _sentRequests = MutableStateFlow(emptyList<RequestDTO>())
+	private val _sentRequests = MutableStateFlow(emptyList<FriendRequestDTO>())
 	val sentRequests = _sentRequests.asStateFlow()
 	
-	private val _receivedRequests = MutableStateFlow(emptyList<RequestDTO>())
+	private val _receivedRequests = MutableStateFlow(emptyList<FriendRequestDTO>())
 	val receivedRequests = _receivedRequests.asStateFlow()
 	
 	init {
@@ -28,11 +28,11 @@ class MessageCenterViewModel : NoViewModel() {
 			async { loadSentRequests() }
 			async { loadReceivedRequests() }
 			
-			WebSocketScheduler.addCollect(WebSocketType.REFRESH_FRIEND_SENT_REQUEST) {
+			WebSocketScheduler.addCollect(WebSocketType.FRIEND_SENT_REQUEST) {
 				loadSentRequests()
 			}
 			
-			WebSocketScheduler.addCollect(WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST) {
+			WebSocketScheduler.addCollect(WebSocketType.FRIEND_RECEIVED_REQUEST) {
 				loadReceivedRequests()
 			}
 		}
@@ -103,8 +103,8 @@ class MessageCenterViewModel : NoViewModel() {
 	override fun onCleared() {
 		super.onCleared()
 		WebSocketScheduler.removeCollects(
-			WebSocketType.REFRESH_FRIEND_SENT_REQUEST,
-			WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST
+			WebSocketType.FRIEND_SENT_REQUEST,
+			WebSocketType.FRIEND_RECEIVED_REQUEST
 		)
 	}
 }

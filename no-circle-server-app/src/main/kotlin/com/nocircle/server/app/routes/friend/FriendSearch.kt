@@ -9,9 +9,11 @@ import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.shared.model.friend.FriendSearchDTO
+import com.nocircle.shared.model.friend.FriendSearchDTO.RelationshipDTO.*
+import com.nocircle.shared.model.label.LabelDTO
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -30,50 +32,25 @@ fun Route.getSearch() = get("search") {
 		val labels = UserLabelDao.getListByUserId(receiverId).map {
 			LabelDTO(it.id.value, it.label, it.color)
 		}
-		val pair = if (userId == receiverId) {
-			RelationshipDTO.OWNER to false
-		} else {
+		val relationship = if (userId == receiverId) OWNER else {
 			val isFriend = FriendRelationshipDao.isFriend(userId, receiverId)
-			val relationship = if (isFriend) RelationshipDTO.FRIEND else RelationshipDTO.STRANGER
-			val isAlreadySend = FriendRequestDao.isAlreadySend(userId, receiverId)
-			relationship to isAlreadySend
+			if (isFriend) FRIEND else STRANGER
 		}
-		SearchUserDTO(
+		val isAlreadySend = if (userId == receiverId) false else {
+			FriendRequestDao.isAlreadySend(userId, receiverId)
+		}
+		FriendSearchDTO(
 			userId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
 			labels = labels,
-			relationship = pair.first,
-			isAlreadySend = pair.second
+			relationship = relationship,
+			isAlreadySend = isAlreadySend
 		)
 	} ?: return@get call.respondOK(SearchStatus.NOT_FOUND)
 	
 	call.respondOK(searchUser, SearchStatus.SUCCESS)
-}
-
-@Serializable
-private data class SearchUserDTO(
-	val userId: Int,
-	val username: String,
-	val nickname: String?,
-	val avatarUrl: String?,
-	val labels: List<LabelDTO>,
-	val relationship: RelationshipDTO,
-	val isAlreadySend: Boolean
-)
-
-@Serializable
-private data class LabelDTO(
-	val id: Int,
-	val label: String,
-	val color: String,
-)
-
-private enum class RelationshipDTO {
-	FRIEND,
-	OWNER,
-	STRANGER
 }
 
 /**

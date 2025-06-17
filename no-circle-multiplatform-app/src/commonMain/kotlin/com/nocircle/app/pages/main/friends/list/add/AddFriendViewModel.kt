@@ -1,13 +1,13 @@
 package com.nocircle.app.pages.main.friends.list.add
 
 import androidx.lifecycle.viewModelScope
-import com.nocircle.app.api.SearchUserDTO
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.common.coroutines.KFunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
 import com.nocircle.compose.viewmodel.NoViewModel
+import com.nocircle.shared.model.friend.FriendSearchDTO
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +22,7 @@ class AddFriendViewModel : NoViewModel() {
 	private val _search = MutableStateFlow("")
 	val search = _search.asStateFlow()
 	
-	private val _result = MutableStateFlow<SearchUserDTO?>(null)
+	private val _result = MutableStateFlow<FriendSearchDTO?>(null)
 	val result = _result.asStateFlow()
 	
 	init {

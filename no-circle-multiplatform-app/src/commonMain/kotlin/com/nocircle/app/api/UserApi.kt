@@ -1,9 +1,9 @@
 package com.nocircle.app.api
 
-import androidx.compose.runtime.Immutable
 import cn.vividcode.multiplatform.ktorfitx.annotation.*
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
-import kotlinx.serialization.Serializable
+import com.nocircle.shared.model.user.UserLoginDTO
+import com.nocircle.shared.model.user.UserDetailDTO
 
 @Api(url = "user")
 interface UserApi {
@@ -12,7 +12,7 @@ interface UserApi {
 	suspend fun login(
 		@Field username: String,
 		@Field password: String
-	): ResultBody<LoginDTO>?
+	): ResultBody<UserLoginDTO>?
 	
 	@POST("register")
 	suspend fun register(
@@ -28,18 +28,3 @@ interface UserApi {
 	@GET("detail")
 	suspend fun queryDetail(): ResultBody<UserDetailDTO>?
 }
-
-@Immutable
-@Serializable
-data class LoginDTO(
-	val token: String,
-)
-
-@Immutable
-@Serializable
-data class UserDetailDTO(
-	val username: String,
-	val nickname: String?,
-	val avatarUrl: String?,
-	val lastLoginTime: String?,
-)

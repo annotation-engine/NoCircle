@@ -1,9 +1,9 @@
 package com.nocircle.app.api
 
-import androidx.compose.runtime.Immutable
 import cn.vividcode.multiplatform.ktorfitx.annotation.*
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
-import kotlinx.serialization.Serializable
+import com.nocircle.shared.model.friend.FriendSearchDTO
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
 
 @Api("friend")
 interface FriendApi {
@@ -12,7 +12,7 @@ interface FriendApi {
 	@GET("search")
 	suspend fun search(
 		@Query username: String
-	): ResultBody<SearchUserDTO>?
+	): ResultBody<FriendSearchDTO>?
 	
 	@BearerAuth
 	@POST("request/add")
@@ -24,7 +24,7 @@ interface FriendApi {
 	@GET("request/query")
 	suspend fun queryRequest(
 		@Query type: FriendRequestType
-	): ResultBody<List<RequestDTO>>?
+	): ResultBody<List<FriendRequestDTO>>?
 	
 	@BearerAuth
 	@POST("request/cancel")
@@ -60,44 +60,7 @@ interface FriendApi {
 	suspend fun queryWaitingRequestCount(): ResultBody<Int>?
 }
 
-@Immutable
-@Serializable
-data class SearchUserDTO(
-	val userId: Int,
-	val username: String,
-	val nickname: String?,
-	val avatarUrl: String?,
-	val labels: List<LabelDTO>,
-	val relationship: RelationshipDTO,
-	val isAlreadySend: Boolean
-) {
-	
-	@Serializable
-	enum class RelationshipDTO {
-		FRIEND,
-		OWNER,
-		STRANGER
-	}
-}
-
 enum class FriendRequestType {
 	SENT,
 	RECEIVED
-}
-
-@Immutable
-@Serializable
-data class RequestDTO(
-	val id: Int,
-	val targetId: Int,
-	val username: String,
-	val nickname: String?,
-	val avatarUrl: String?,
-	val status: RequestStatus,
-	val createTime: String,
-	val labels: Map<String, String>
-) {
-	
-	@Serializable
-	enum class RequestStatus { AGREED, REJECTED, WAITING, CANCELED }
 }

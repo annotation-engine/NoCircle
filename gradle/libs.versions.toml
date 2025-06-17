@@ -19,7 +19,7 @@ coil3 = "3.2.0"
 logback-classic = "1.5.18"
 hutool = "5.8.38"
 redisson = "3.49.0"
-ksp = "2.2.0-RC2-2.0.2"
+ksp = "2.2.0-RC3-2.0.2"
 hot-reload = "1.0.0-alpha11"
 
 [libraries]
@@ -179,4 +179,8 @@ server-common = [
     'exposed-dao',
     'exposed-jdbc',
     'exposed-kotlin-datetime'
+]
+
+shared = [
+    'ktor-serialization-kotlinx-json'
 ]

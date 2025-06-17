@@ -6,8 +6,8 @@ import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.shared.model.label.LabelDTO
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -23,13 +23,6 @@ fun Route.getQueryLabel() = get("query") {
 	}
 	call.respondOK(data, QueryStatus.SUCCESS)
 }
-
-@Serializable
-private data class LabelDTO(
-	val id: Int,
-	val label: String,
-	val color: String
-)
 
 /**
  * 112x

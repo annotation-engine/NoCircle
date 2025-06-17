@@ -14,8 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.api.RequestDTO
-import com.nocircle.app.api.RequestDTO.RequestStatus
+import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.NoColor
 import com.nocircle.common.expends.format
@@ -23,6 +22,8 @@ import com.nocircle.common.expends.hexToColor
 import com.nocircle.common.resources.value
 import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.*
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
+import com.nocircle.shared.model.friend.request.FriendRequestDTO.Status.*
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -59,7 +60,7 @@ fun MessageCenterSentRequestList() {
 @Composable
 private fun SentRequestCard(
 	viewModel: MessageCenterViewModel,
-	request: RequestDTO
+	request: FriendRequestDTO
 ) {
 	Column(
 		modifier = Modifier
@@ -137,10 +138,10 @@ private fun SentRequestCard(
 				derivedStateOf { request.labels.isNotEmpty() }
 			}
 			if (showLabels) {
-				request.labels.forEach { (label, color) ->
+				request.labels.fastForEach {
 					NoTag(
-						text = label,
-						color = hexToColor(color),
+						text = it.label,
+						color = hexToColor(it.color),
 						shape = MaterialTheme.shapes.extraSmall,
 						contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
 					)
@@ -155,7 +156,7 @@ private fun SentRequestCard(
 				)
 			}
 			Spacer(modifier = Modifier.weight(1f))
-			if (request.status == RequestStatus.WAITING) {
+			if (request.status == WAITING) {
 				NoButton(
 					text = AppString.MESSAGE_CENTER_CANCEL.value(),
 					modifier = Modifier.height(36.dp),
@@ -181,21 +182,21 @@ private fun SentRequestCard(
 }
 
 @Composable
-private fun RequestStatus.getColor(): Color {
+private fun FriendRequestDTO.Status.getColor(): Color {
 	return when (this) {
-		RequestStatus.AGREED -> NoColor.Green
-		RequestStatus.REJECTED -> NoColor.Red
-		RequestStatus.WAITING -> NoColor.Yellow
-		RequestStatus.CANCELED -> NoColor.Gray
+		AGREED -> NoColor.Green
+		REJECTED -> NoColor.Red
+		WAITING -> NoColor.Yellow
+		CANCELED -> NoColor.Gray
 	}
 }
 
 @Composable
-private fun RequestStatus.getString(): String {
+private fun FriendRequestDTO.Status.getString(): String {
 	return when (this) {
-		RequestStatus.AGREED -> AppString.MESSAGE_CENTER_AGREED
-		RequestStatus.REJECTED -> AppString.MESSAGE_CENTER_REJECTED
-		RequestStatus.WAITING -> AppString.MESSAGE_CENTER_WAITING
-		RequestStatus.CANCELED -> AppString.MESSAGE_CENTER_CANCELED
+		AGREED -> AppString.MESSAGE_CENTER_AGREED
+		REJECTED -> AppString.MESSAGE_CENTER_REJECTED
+		WAITING -> AppString.MESSAGE_CENTER_WAITING
+		CANCELED -> AppString.MESSAGE_CENTER_CANCELED
 	}.value()
 }
