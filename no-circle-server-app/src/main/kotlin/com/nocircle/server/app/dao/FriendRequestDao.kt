@@ -28,9 +28,13 @@ object FriendRequestDao {
 		return insert.insertedCount == 1
 	}
 	
-	fun updateOneByIdAndSenderId(id: Int, senderId: Int, status: FriendRequests.Status): Boolean {
+	fun updateOne(id: Int, senderId: Int, receiverId: Int, status: FriendRequests.Status): Boolean {
 		val updateCount = FriendRequests.logicUpdate(
-			where = { (FriendRequests.id eq id) and (FriendRequests.senderId eq senderId) }
+			where = {
+				(FriendRequests.id eq id) and
+						(FriendRequests.senderId eq senderId) and
+						(FriendRequests.receiverId eq receiverId)
+			}
 		) {
 			it[this.status] = status
 		}
@@ -89,9 +93,9 @@ object FriendRequestDao {
 		return FriendRequest.wrapRow(resultRow)
 	}
 	
-	fun deleteByIdAndSenderId(id: Int, senderId: Int): Boolean {
+	fun deleteOne(id: Int, senderId: Int, receiverId: Int): Boolean {
 		val deleteCount = FriendRequests.logicDeleteWhere {
-			(FriendRequests.id eq id) and (FriendRequests.senderId eq senderId)
+			(FriendRequests.id eq id) and (FriendRequests.senderId eq senderId) and (FriendRequests.receiverId eq receiverId)
 		}
 		return deleteCount == 1
 	}

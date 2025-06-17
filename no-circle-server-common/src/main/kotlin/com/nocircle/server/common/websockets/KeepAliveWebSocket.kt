@@ -2,7 +2,7 @@ package com.nocircle.server.common.websockets
 
 import com.nocircle.server.common.expends.associateWithNotNull
 import com.nocircle.server.common.log.NoLog
-import com.nocircle.server.common.model.noPrincipal
+import com.nocircle.server.common.routes.getPrincipalOrNull
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
@@ -23,17 +23,13 @@ fun getSessions(userIds: List<Int>): Map<Int, DefaultWebSocketServerSession> {
 suspend inline fun DefaultWebSocketServerSession.sendMessage(
 	type: NoWebSocketType,
 	senderId: Int,
-) {
-	this.send("$type::$senderId::")
-}
+) = this.send("$type::$senderId")
 
-suspend inline fun <reified T : Any> DefaultWebSocketServerSession.sendMessage(
+suspend inline fun <reified T> DefaultWebSocketServerSession.sendMessage(
 	type: NoWebSocketType,
 	senderId: Int,
 	data: T
-) {
-	this.send("$type::$senderId::${Json.encodeToString(data)}")
-}
+) = this.send("$type::$senderId::${Json.encodeToString(data)}")
 
 interface NoWebSocketType
 
@@ -43,7 +39,7 @@ fun Application.keepAliveWebSocket() {
 	routing {
 		authenticate {
 			webSocket("/keepAlive") {
-				val principal = call.noPrincipal ?: return@webSocket close(CannotAccept)
+				val principal = call.getPrincipalOrNull() ?: return@webSocket close(CannotAccept)
 				val username = principal.username
 				sessions[principal.userId] = this
 				NoLog.info("[WS] Connect: $username")

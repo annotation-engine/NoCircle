@@ -4,27 +4,28 @@ import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.app.plugins.FriendContext
-import com.nocircle.server.common.exposed.getString
+import com.nocircle.server.app.plugins.FriendRouteGroup
 import com.nocircle.server.common.model.NoStatus
-import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respondDTO
+import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.getPrincipal
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 搜索好友
  */
-context(_: FriendContext)
+context(_: FriendRouteGroup, _: Authorized)
 fun Route.getSearch() = get("search") {
-	val userId = call.noPrincipal!!.userId
-	val queryUsername = call.queryParameters.getString("username")
-	if (queryUsername.isBlank()) {
-		return@get call.respondDTO(SearchStatus.USERNAME_NOT_EMPTY)
+	val userId = call.getPrincipal().userId
+	val username: String by call.queryParameters
+	if (username.isBlank()) {
+		return@get call.respondOK(SearchStatus.USERNAME_NOT_EMPTY)
 	}
 	val searchUser = transaction {
-		val user = UserDao.getOneByUsername(queryUsername) ?: return@transaction null
+		val user = UserDao.getOneByUsername(username) ?: return@transaction null
 		val receiverId = user.id.value
 		val labels = UserLabelDao.getListByUserId(receiverId).map {
 			LabelDTO(it.id.value, it.label, it.color)
@@ -46,9 +47,9 @@ fun Route.getSearch() = get("search") {
 			relationship = pair.first,
 			isAlreadySend = pair.second
 		)
-	} ?: return@get call.respondDTO(SearchStatus.NOT_FOUND)
+	} ?: return@get call.respondOK(SearchStatus.NOT_FOUND)
 	
-	call.respondDTO(searchUser, SearchStatus.SUCCESS)
+	call.respondOK(searchUser, SearchStatus.SUCCESS)
 }
 
 @Serializable

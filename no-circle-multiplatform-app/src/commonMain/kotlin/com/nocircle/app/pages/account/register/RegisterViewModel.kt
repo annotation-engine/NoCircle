@@ -4,13 +4,12 @@ import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
-import com.nocircle.common.expends.OnBusyReturnFalse
+import com.nocircle.common.coroutines.KFunctionLocker
+import com.nocircle.common.coroutines.OnBusyReturnFalse
 import com.nocircle.common.expends.isNotAlphanumeric
-import com.nocircle.common.expends.tryWithLock
 import com.nocircle.common.resources.getString
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.sync.Mutex
 
 class RegisterViewModel : NoViewModel() {
 	
@@ -23,8 +22,6 @@ class RegisterViewModel : NoViewModel() {
 	val showPassword = MutableStateFlow(false)
 	
 	val showConfirmPassword = MutableStateFlow(false)
-	
-	private val registerMutex = Mutex()
 	
 	fun updateUsername(value: String) {
 		if (value.length > 20 || value.isNotAlphanumeric()) return
@@ -42,31 +39,32 @@ class RegisterViewModel : NoViewModel() {
 	}
 	
 	suspend fun register(): Boolean {
-		return registerMutex.tryWithLock(OnBusyReturnFalse) {
+		return KFunctionLocker.tryWithLock(::register, OnBusyReturnFalse) {
 			val username = this.username.value
 			val password = this.password.value
 			val confirmPassword = this.confirmPassword.value
 			if (username.isEmpty()) {
 				showNoSnackbar(AppString.REGISTER_PLEASE_INPUT_PASSWORD.getString())
-				return false
+				return@tryWithLock false
 			}
 			if (username.length < 8) {
 				showNoSnackbar(AppString.REGISTER_USERNAME_LENGTH_AT_LEAST_8.getString())
-				return false
+				return@tryWithLock false
 			}
 			if (password.isEmpty()) {
 				showNoSnackbar(AppString.REGISTER_PLEASE_INPUT_PASSWORD.getString())
-				return false
+				return@tryWithLock false
 			}
 			if (password.length < 8) {
 				showNoSnackbar(AppString.REGISTER_PASSWORD_LENGTH_AT_LEAST_8.getString())
-				return false
+				return@tryWithLock false
 			}
 			if (password != confirmPassword) {
 				showNoSnackbar(AppString.REGISTER_PASSWORD_ARE_INCONSISTENT_TWICE.getString())
-				return false
+				return@tryWithLock false
 			}
-			val result = ktorfitx.userApi.register(username, password) ?: return networkError()
+			val result = ktorfitx.userApi.register(username, password)
+				?: return@tryWithLock networkError()
 			if (!result.success) {
 				showNoErrorSnackbar(result.msg)
 			}

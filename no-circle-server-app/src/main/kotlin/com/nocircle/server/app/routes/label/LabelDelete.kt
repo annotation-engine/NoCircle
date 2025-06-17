@@ -1,27 +1,28 @@
 package com.nocircle.server.app.routes.label
 
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.app.plugins.LabelContext
-import com.nocircle.server.common.exposed.getInt
+import com.nocircle.server.app.plugins.LabelRouteGroup
 import com.nocircle.server.common.model.NoStatus
-import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respondDTO
+import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.getPrincipal
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 删除标签
  */
-context(_: LabelContext)
+context(_: LabelRouteGroup, _: Authorized)
 fun Route.postDeleteLabel() = post("delete") {
-	val userId = call.noPrincipal!!.userId
-	val id = call.receiveParameters().getInt("id")
+	val userId = call.getPrincipal().userId
+	val id: Int by call.receiveParameters()
 	val success = transaction {
 		UserLabelDao.deleteOne(userId, id)
 	}
 	val status = if (success) DeleteStatus.SUCCESS else DeleteStatus.FAILURE
-	call.respondDTO(status)
+	call.respondOK(status)
 }
 
 /**

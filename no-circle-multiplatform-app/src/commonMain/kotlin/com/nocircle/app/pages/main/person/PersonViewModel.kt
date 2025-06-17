@@ -8,8 +8,8 @@ import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
-import com.nocircle.app.websockets.WebSocketScheduler
-import com.nocircle.app.websockets.WebSocketType
+import com.nocircle.app.pages.main.WebSocketType
+import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,13 +29,13 @@ class PersonViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch {
+			WebSocketScheduler.addCollect(WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST) {
+				loadRequestReceivedCount()
+			}
+			
 			async { loadUserDetail() }
 			async { loadLabels() }
 			async { loadRequestReceivedCount() }
-			
-			WebSocketScheduler.addCollect(WebSocketType.FRIEND_RECEIVED_REQUEST) {
-				loadRequestReceivedCount()
-			}
 		}
 	}
 	
@@ -59,5 +59,10 @@ class PersonViewModel : NoViewModel() {
 		if (result.success) {
 			_waitingRequestCount.value = result.data!!
 		}
+	}
+	
+	override fun onCleared() {
+		super.onCleared()
+		WebSocketScheduler.removeCollects(WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST)
 	}
 }

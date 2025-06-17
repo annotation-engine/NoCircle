@@ -1,22 +1,22 @@
 package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.dao.UserDao
-import com.nocircle.server.app.plugins.UserContext
-import com.nocircle.server.common.exposed.getString
+import com.nocircle.server.app.plugins.UserRouteGroup
 import com.nocircle.server.common.model.NoStatus
-import com.nocircle.server.common.model.respondDTO
+import com.nocircle.server.common.model.respondOK
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 用户注册
  */
-context(_: UserContext)
+context(_: UserRouteGroup)
 fun Route.postUserRegister() = post("register") {
 	val parameters = call.receiveParameters()
-	val username = parameters.getString("username")
-	val password = parameters.getString("password")
+	val username: String by parameters
+	val password: String by parameters
 	
 	val status = transaction {
 		val exists = UserDao.isExistsByUsername(username)
@@ -26,7 +26,7 @@ fun Route.postUserRegister() = post("register") {
 		val success = UserDao.insertOne(username, password)
 		if (success) RegisterStatus.SUCCESS else RegisterStatus.FAILURE
 	}
-	call.respondDTO(status)
+	call.respondOK(status)
 }
 
 /**

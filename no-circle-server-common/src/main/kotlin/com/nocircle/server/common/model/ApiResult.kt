@@ -17,11 +17,11 @@ interface NoStatus {
 	val code: Int
 }
 
-suspend inline fun <reified T : Any> ApplicationCall.respondDTO(
+suspend inline fun <reified T : Any> ApplicationCall.respondOK(
 	data: T,
 	status: NoStatus
 ) = this.respond(HttpStatusCode.OK, ApiResult(status.code, status.msg, data))
 
-suspend inline fun ApplicationCall.respondDTO(
+suspend inline fun ApplicationCall.respondOK(
 	status: NoStatus
 ) = this.respond(HttpStatusCode.OK, ApiResult(status.code, status.msg, null))

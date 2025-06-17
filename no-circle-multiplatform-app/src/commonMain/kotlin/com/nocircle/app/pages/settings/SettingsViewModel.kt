@@ -4,16 +4,13 @@ import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.clear
-import com.nocircle.common.expends.tryWithLock
+import com.nocircle.common.coroutines.KFunctionLocker
 import com.nocircle.compose.viewmodel.NoViewModel
-import kotlinx.coroutines.sync.Mutex
 
 class SettingsViewModel : NoViewModel() {
 	
-	private val logoutMutex = Mutex()
-	
 	suspend fun logout() {
-		logoutMutex.tryWithLock {
+		KFunctionLocker.tryWithLock(::logout) {
 			ktorfitx.userApi.logout()
 			TokenConfigKey.clear()
 		}

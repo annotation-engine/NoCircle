@@ -3,33 +3,36 @@ package com.nocircle.server.app.routes.friend.request
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.app.plugins.FriendContext
+import com.nocircle.server.app.plugins.FriendRouteGroup
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
+import com.nocircle.server.app.routes.friend.request.RequestQueryStatus.SUCCESS
 import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.expends.formatToShanghai
-import com.nocircle.server.common.exposed.getEnum
 import com.nocircle.server.common.model.NoStatus
-import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respondDTO
+import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.getPrincipal
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 好友请求查询
  */
-context(_: FriendContext)
+context(_: FriendRouteGroup, _: Authorized)
 fun Route.getQueryRequest() = get("request/query") {
-	val userId = call.noPrincipal!!.userId
-	val type = call.parameters.getEnum<FriendRequestType>("type")
+	val userId = call.getPrincipal().userId
+	val type: FriendRequestType by call.parameters
+	
 	val data = transaction {
 		when (type) {
 			SENT -> getSentRequests(userId)
 			RECEIVED -> getReceivedRequests(userId)
 		}
 	}
-	call.respondDTO(data, RequestQueryStatus.SUCCESS)
+	call.respondOK(data, SUCCESS)
 }
 
 /**
@@ -49,6 +52,7 @@ private fun getSentRequests(senderId: Int): List<RequestDTO> {
 		} ?: emptyMap()
 		RequestDTO(
 			id = it.id.value,
+			targetId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
@@ -76,6 +80,7 @@ private fun getReceivedRequests(receiverId: Int): List<RequestDTO> {
 		} ?: emptyMap()
 		RequestDTO(
 			id = it.id.value,
+			targetId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
@@ -89,6 +94,7 @@ private fun getReceivedRequests(receiverId: Int): List<RequestDTO> {
 @Serializable
 private data class RequestDTO(
 	val id: Int,
+	val targetId: Int,
 	val username: String,
 	val nickname: String?,
 	val avatarUrl: String?,

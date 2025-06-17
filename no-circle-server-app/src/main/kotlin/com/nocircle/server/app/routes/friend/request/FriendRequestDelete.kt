@@ -1,26 +1,33 @@
 package com.nocircle.server.app.routes.friend.request
 
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.app.plugins.FriendContext
-import com.nocircle.server.common.exposed.getInt
+import com.nocircle.server.app.plugins.FriendRouteGroup
+import com.nocircle.server.app.routes.friend.request.RequestDeleteStatus.FAILURE
+import com.nocircle.server.app.routes.friend.request.RequestDeleteStatus.SUCCESS
 import com.nocircle.server.common.model.NoStatus
-import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respondDTO
+import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.getPrincipal
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 删除好友请求
  */
-context(_: FriendContext)
+context(_: FriendRouteGroup, _: Authorized)
 fun Route.postDeleteRequest() = post("request/delete") {
-	val userId = call.noPrincipal!!.userId
-	val id = call.receiveParameters().getInt("id")
+	val userId = call.getPrincipal().userId
+	val parameters = call.receiveParameters()
+	val id: Int by parameters
+	val targetId: Int by parameters
+	
 	val success = transaction {
-		FriendRequestDao.deleteByIdAndSenderId(id, userId)
+		FriendRequestDao.deleteOne(id, userId, targetId)
 	}
-	call.respondDTO(if (success) RequestDeleteStatus.SUCCESS else RequestDeleteStatus.FAILURE)
+	val status = if (success) SUCCESS else FAILURE
+	call.respondOK(status)
 }
 
 /**

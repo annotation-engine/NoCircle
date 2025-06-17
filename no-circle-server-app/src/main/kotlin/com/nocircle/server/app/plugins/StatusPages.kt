@@ -1,7 +1,7 @@
 package com.nocircle.server.app.plugins
 
 import com.nocircle.server.common.model.NoStatus
-import com.nocircle.server.common.model.respondDTO
+import com.nocircle.server.common.model.respondOK
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
@@ -12,7 +12,7 @@ fun Application.configureStatusPages() {
 			it.value in 300..599
 		}.toTypedArray()
 		status(*status) {
-			call.respondDTO(it.toStatus())
+			call.respondOK(it.toStatus())
 		}
 	}
 }

@@ -2,11 +2,12 @@ package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLoginDao
-import com.nocircle.server.app.plugins.UserContext
+import com.nocircle.server.app.plugins.UserRouteGroup
 import com.nocircle.server.common.expends.formatToShanghai
 import com.nocircle.server.common.model.NoStatus
-import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respondDTO
+import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.getPrincipal
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -14,9 +15,9 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户详情
  */
-context(_: UserContext)
+context(_: UserRouteGroup, _: Authorized)
 fun Route.getUserDetail() = get("detail") {
-	val userId = call.noPrincipal!!.userId
+	val userId = call.getPrincipal().userId
 	val userDetail = transaction {
 		val user = UserDao.getOneById(userId) ?: return@transaction null
 		val lastLoginTime = UserLoginDao.getLastLoginByUserId(userId)?.loginTime
@@ -26,9 +27,9 @@ fun Route.getUserDetail() = get("detail") {
 			avatarUrl = user.avatarUrl,
 			lastLoginTime = lastLoginTime?.formatToShanghai()
 		)
-	} ?: return@get call.respondDTO(DetailStatus.FAILURE)
+	} ?: return@get call.respondOK(DetailStatus.FAILURE)
 	
-	call.respondDTO(userDetail, DetailStatus.SUCCESS)
+	call.respondOK(userDetail, DetailStatus.SUCCESS)
 }
 
 @Serializable

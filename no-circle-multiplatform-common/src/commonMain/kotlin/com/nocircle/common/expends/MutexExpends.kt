@@ -36,5 +36,3 @@ suspend inline fun Mutex.tryWithLock(
 		unlock()
 	}
 }
-
-val OnBusyReturnFalse = suspend { false }

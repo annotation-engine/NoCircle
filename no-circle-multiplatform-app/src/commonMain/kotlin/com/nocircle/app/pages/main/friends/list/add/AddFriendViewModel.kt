@@ -5,8 +5,8 @@ import com.nocircle.app.api.SearchUserDTO
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
-import com.nocircle.common.expends.OnBusyReturnFalse
-import com.nocircle.common.expends.tryWithLock
+import com.nocircle.common.coroutines.KFunctionLocker
+import com.nocircle.common.coroutines.OnBusyReturnFalse
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -25,8 +24,6 @@ class AddFriendViewModel : NoViewModel() {
 	
 	private val _result = MutableStateFlow<SearchUserDTO?>(null)
 	val result = _result.asStateFlow()
-	
-	private val friendAddRequestMutex = Mutex()
 	
 	init {
 		viewModelScope.launch {
@@ -48,9 +45,9 @@ class AddFriendViewModel : NoViewModel() {
 	}
 	
 	suspend fun sendFriendAddRequest(receiverId: Int): Boolean {
-		return friendAddRequestMutex.tryWithLock(OnBusyReturnFalse) {
+		return KFunctionLocker.tryWithLock(::sendFriendAddRequest, OnBusyReturnFalse) {
 			val result = ktorfitx.friendApi.addRequest(receiverId)
-				?: return networkError()
+				?: return@tryWithLock networkError()
 			autoShowNoSnackbar(result.success, result.msg)
 			result.success
 		}
@@ -61,7 +58,8 @@ class AddFriendViewModel : NoViewModel() {
 			_result.value = null
 			return
 		}
-		val result = ktorfitx.friendApi.search(username) ?: return networkError()
+		val result = ktorfitx.friendApi.search(username)
+			?: return networkError()
 		if (result.success) {
 			_result.value = result.data
 		} else {

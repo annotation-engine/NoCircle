@@ -17,5 +17,6 @@ fun Application.configureWebSockets() {
 }
 
 enum class WebSocketType : NoWebSocketType {
-	FRIEND_RECEIVED_REQUEST
+	REFRESH_FRIEND_SENT_REQUEST,
+	REFRESH_FRIEND_RECEIVED_REQUEST
 }

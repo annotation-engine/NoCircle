@@ -6,15 +6,14 @@ import com.nocircle.app.api.RequestDTO
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
-import com.nocircle.app.websockets.WebSocketScheduler
-import com.nocircle.app.websockets.WebSocketType
-import com.nocircle.common.expends.tryWithLock
+import com.nocircle.app.pages.main.WebSocketType
+import com.nocircle.common.coroutines.KFunctionLocker
+import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
 
 class MessageCenterViewModel : NoViewModel() {
 	
@@ -29,7 +28,11 @@ class MessageCenterViewModel : NoViewModel() {
 			async { loadSentRequests() }
 			async { loadReceivedRequests() }
 			
-			WebSocketScheduler.addCollect(WebSocketType.FRIEND_RECEIVED_REQUEST) {
+			WebSocketScheduler.addCollect(WebSocketType.REFRESH_FRIEND_SENT_REQUEST) {
+				loadSentRequests()
+			}
+			
+			WebSocketScheduler.addCollect(WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST) {
 				loadReceivedRequests()
 			}
 		}
@@ -53,12 +56,10 @@ class MessageCenterViewModel : NoViewModel() {
 		}
 	}
 	
-	private val cancelSentRequestMutex = Mutex()
-	
-	suspend fun cancelSentRequest(requestId: Int) {
-		cancelSentRequestMutex.tryWithLock {
-			val result = ktorfitx.friendApi.cancelRequest(requestId)
-				?: return networkError()
+	suspend fun cancelSentRequest(id: Int, targetId: Int) {
+		KFunctionLocker.tryWithLock(::cancelSentRequest) {
+			val result = ktorfitx.friendApi.cancelRequest(id, targetId)
+				?: return@tryWithLock networkError()
 			if (result.success) {
 				loadSentRequests()
 			}
@@ -66,13 +67,34 @@ class MessageCenterViewModel : NoViewModel() {
 		}
 	}
 	
-	private val deleteSentRequestMutex = Mutex()
-	
-	suspend fun deleteSentRequest(requestId: Int) {
-		deleteSentRequestMutex.tryWithLock {
-			val result = ktorfitx.friendApi.deleteRequest(requestId) ?: return networkError()
+	suspend fun deleteSentRequest(id: Int, targetId: Int) {
+		KFunctionLocker.tryWithLock(::deleteSentRequest) {
+			val result = ktorfitx.friendApi.deleteRequest(id, targetId)
+				?: return@tryWithLock networkError()
 			if (result.success) {
 				loadSentRequests()
+			}
+			autoShowNoSnackbar(result.success, result.msg)
+		}
+	}
+	
+	suspend fun rejectReceivedRequest(id: Int, targetId: Int) {
+		KFunctionLocker.tryWithLock(::rejectReceivedRequest) {
+			val result = ktorfitx.friendApi.rejectRequest(id, targetId)
+				?: return@tryWithLock networkError()
+			if (result.success) {
+				loadReceivedRequests()
+			}
+			autoShowNoSnackbar(result.success, result.msg)
+		}
+	}
+	
+	suspend fun agreeReceivedRequest(id: Int, targetId: Int) {
+		KFunctionLocker.tryWithLock(::agreeReceivedRequest) {
+			val result = ktorfitx.friendApi.agreeRequest(id, targetId)
+				?: return@tryWithLock networkError()
+			if (result.success) {
+				loadReceivedRequests()
 			}
 			autoShowNoSnackbar(result.success, result.msg)
 		}
@@ -80,6 +102,9 @@ class MessageCenterViewModel : NoViewModel() {
 	
 	override fun onCleared() {
 		super.onCleared()
-		WebSocketScheduler.removeCollects(WebSocketType.FRIEND_RECEIVED_REQUEST)
+		WebSocketScheduler.removeCollects(
+			WebSocketType.REFRESH_FRIEND_SENT_REQUEST,
+			WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST
+		)
 	}
 }

@@ -12,7 +12,7 @@ interface LabelApi {
 	@POST("add")
 	suspend fun addLabel(
 		@Field label: String,
-		@Field color: Int,
+		@Field color: String,
 	): ResultBody<Unit>?
 	
 	@BearerAuth

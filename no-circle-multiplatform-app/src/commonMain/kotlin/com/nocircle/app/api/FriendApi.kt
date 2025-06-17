@@ -17,7 +17,7 @@ interface FriendApi {
 	@BearerAuth
 	@POST("request/add")
 	suspend fun addRequest(
-		@Field receiverId: Int
+		@Field targetId: Int
 	): ResultBody<Unit>?
 	
 	@BearerAuth
@@ -29,13 +29,30 @@ interface FriendApi {
 	@BearerAuth
 	@POST("request/cancel")
 	suspend fun cancelRequest(
-		@Field id: Int
+		@Field id: Int,
+		@Field targetId: Int
 	): ResultBody<Unit>?
 	
 	@BearerAuth
 	@POST("request/delete")
 	suspend fun deleteRequest(
-		@Field id: Int
+		@Field id: Int,
+		@Field targetId: Int
+	): ResultBody<Unit>?
+	
+	@BearerAuth
+	@POST("request/reject")
+	suspend fun rejectRequest(
+		@Field id: Int,
+		@Field targetId: Int
+	): ResultBody<Unit>?
+	
+	
+	@BearerAuth
+	@POST("request/agree")
+	suspend fun agreeRequest(
+		@Field id: Int,
+		@Field targetId: Int
 	): ResultBody<Unit>?
 	
 	@BearerAuth
@@ -72,6 +89,7 @@ enum class FriendRequestType {
 @Serializable
 data class RequestDTO(
 	val id: Int,
+	val targetId: Int,
 	val username: String,
 	val nickname: String?,
 	val avatarUrl: String?,

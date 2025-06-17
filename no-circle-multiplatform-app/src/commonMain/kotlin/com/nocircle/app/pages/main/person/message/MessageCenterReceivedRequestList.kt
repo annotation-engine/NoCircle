@@ -153,7 +153,7 @@ private fun ReceivedRequestCard(
 				colors = NoButtonColors.PrimaryColors,
 				contentPadding = NoButtonDefaults.TextButtonContentPadding
 			) {
-			
+				viewModel.agreeReceivedRequest(request.id, request.targetId)
 			}
 			Spacer(modifier = Modifier.width(8.dp))
 			NoButton(
@@ -163,7 +163,7 @@ private fun ReceivedRequestCard(
 				colors = NoButtonColors.ErrorColors,
 				contentPadding = NoButtonDefaults.TextButtonContentPadding
 			) {
-			
+				viewModel.rejectReceivedRequest(request.id, request.targetId)
 			}
 		}
 	}

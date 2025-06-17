@@ -1,27 +1,43 @@
 package com.nocircle.server.app.routes.friend.request
 
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.app.plugins.FriendContext
+import com.nocircle.server.app.plugins.FriendRouteGroup
+import com.nocircle.server.app.plugins.WebSocketType
+import com.nocircle.server.app.routes.friend.request.RequestCancelStatus.FAILURE
+import com.nocircle.server.app.routes.friend.request.RequestCancelStatus.SUCCESS
 import com.nocircle.server.app.tables.FriendRequests
-import com.nocircle.server.common.exposed.getInt
 import com.nocircle.server.common.model.NoStatus
-import com.nocircle.server.common.model.noPrincipal
-import com.nocircle.server.common.model.respondDTO
+import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.websockets.getSession
+import com.nocircle.server.common.websockets.sendMessage
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 取消好友请求
  */
-context(_: FriendContext)
+context(_: FriendRouteGroup, _: Authorized)
 fun Route.postCancelRequest() = post("request/cancel") {
-	val userId = call.noPrincipal!!.userId
-	val id = call.receiveParameters().getInt("id")
+	val userId = call.getPrincipal().userId
+	val parameters = call.receiveParameters()
+	val id: Int by parameters
+	val targetId: Int by parameters
+	
 	val success = transaction {
-		FriendRequestDao.updateOneByIdAndSenderId(id, userId, FriendRequests.Status.CANCELED)
+		FriendRequestDao.updateOne(id, userId, targetId, FriendRequests.Status.CANCELED)
 	}
-	call.respondDTO(if (success) RequestCancelStatus.SUCCESS else RequestCancelStatus.FAILURE)
+	val status = if (success) SUCCESS else FAILURE
+	if (status == SUCCESS) {
+		getSession(targetId)?.sendMessage(
+			type = WebSocketType.REFRESH_FRIEND_RECEIVED_REQUEST,
+			senderId = userId
+		)
+	}
+	call.respondOK(status)
 }
 
 /**

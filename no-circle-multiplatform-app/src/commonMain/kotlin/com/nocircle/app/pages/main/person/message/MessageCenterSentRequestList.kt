@@ -163,7 +163,7 @@ private fun SentRequestCard(
 					colors = NoButtonColors.ErrorColors,
 					contentPadding = NoButtonDefaults.TextButtonContentPadding
 				) {
-					viewModel.cancelSentRequest(request.id)
+					viewModel.cancelSentRequest(request.id, request.targetId)
 				}
 			} else {
 				NoButton(
@@ -173,7 +173,7 @@ private fun SentRequestCard(
 					colors = NoButtonColors.SurfaceContainerHighestColors,
 					contentPadding = NoButtonDefaults.TextButtonContentPadding
 				) {
-					viewModel.deleteSentRequest(request.id)
+					viewModel.deleteSentRequest(request.id, request.targetId)
 				}
 			}
 		}
