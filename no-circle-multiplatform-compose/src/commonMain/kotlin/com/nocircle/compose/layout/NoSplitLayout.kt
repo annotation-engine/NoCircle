@@ -21,9 +21,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.compose.expends.toDpSize
-import com.nocircle.compose.range.DpRange
+import com.nocircle.compose.windowsize.WindowWidthSizes
 
 @Composable
 fun NoSplitLayout(
@@ -31,7 +30,7 @@ fun NoSplitLayout(
 	onContentWidthChange: (Dp) -> Unit,
 	expended: @Composable () -> Unit,
 	modifier: Modifier = Modifier,
-	contentWidthRange: DpRange = NoSplitLayoutDefaults.ContentWidthRange,
+	contentWidthRange: ClosedRange<Dp> = NoSplitLayoutDefaults.ContentWidthRange,
 	expendedMinWidth: Dp = NoSplitLayoutDefaults.ExpendedMinWidth,
 	content: @Composable BoxScope.(isCompat: Boolean) -> Unit,
 ) {

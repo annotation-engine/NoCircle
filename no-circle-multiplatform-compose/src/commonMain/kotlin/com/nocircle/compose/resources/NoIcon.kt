@@ -7,7 +7,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.vector.ImageVector
 
 @Immutable
-class NoIcons internal constructor(
+class NoIcon internal constructor(
 	internal val rounded: () -> ImageVector,
 	internal val outlined: () -> ImageVector,
 	internal val filled: () -> ImageVector,
@@ -21,7 +21,7 @@ fun icons(
 	filled: Icons.Filled.() -> ImageVector,
 	sharp: Icons.Sharp.() -> ImageVector,
 	twoTone: Icons.TwoTone.() -> ImageVector
-): NoIcons = NoIcons(
+): NoIcon = NoIcon(
 	rounded = { Icons.Rounded.rounded() },
 	outlined = { Icons.Outlined.outlined() },
 	filled = { Icons.Filled.filled() },
@@ -35,7 +35,7 @@ fun autoMirroredIcons(
 	filled: Icons.AutoMirrored.Filled.() -> ImageVector,
 	sharp: Icons.AutoMirrored.Sharp.() -> ImageVector,
 	twoTone: Icons.AutoMirrored.TwoTone.() -> ImageVector
-): NoIcons = NoIcons(
+): NoIcon = NoIcon(
 	rounded = { Icons.AutoMirrored.Rounded.rounded() },
 	outlined = { Icons.AutoMirrored.Outlined.outlined() },
 	filled = { Icons.AutoMirrored.Filled.filled() },
@@ -44,12 +44,12 @@ fun autoMirroredIcons(
 )
 
 @Composable
-fun NoIcons.value(): ImageVector = value(NoIconType.current)
+fun NoIcon.value(): ImageVector = value(NoIconType.current)
 
-fun NoIcons.getIcon(): ImageVector = this.value(NoIconType.value)
+fun NoIcon.getIcon(): ImageVector = this.value(NoIconType.value)
 
 @Stable
-private fun NoIcons.value(iconType: NoIconType) = when (iconType) {
+private fun NoIcon.value(iconType: NoIconType) = when (iconType) {
 	NoIconType.ROUNDED -> rounded()
 	NoIconType.OUTLINED -> outlined()
 	NoIconType.FILLED -> filled()

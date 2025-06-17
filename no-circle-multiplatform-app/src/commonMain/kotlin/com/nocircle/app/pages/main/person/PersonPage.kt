@@ -23,11 +23,11 @@ import com.nocircle.app.pages.main.person.message.MessageCenterRoute
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
+import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.foundation.NoTag
-import com.nocircle.compose.graphics.hexToColor
 import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.navigation.LocalNavController
@@ -126,7 +126,7 @@ private fun UserDetailCard() {
 						Spacer(modifier = Modifier.width(6.dp))
 					}
 					EditLabel(
-						icon = if (it.size < 4) AppIcon.Add.value() else AppIcon.Remove.value()
+						icon = if (it.size < 4) AppIcon.Add.value() else AppIcon.Remove.value(),
 					)
 				}
 			}
@@ -143,7 +143,7 @@ private fun EditLabel(
 		icon = icon,
 		modifier = Modifier
 			.size(24.dp),
-		tint = MaterialTheme.colorScheme.outline,
+		tint = MaterialTheme.colorScheme.onSurfaceVariant,
 		shape = MaterialTheme.shapes.extraSmall,
 		contentPadding = PaddingValues()
 	) {
@@ -183,12 +183,12 @@ private fun FriendAddRequest() {
 	NoOption(
 		title = { Text(AppString.MESSAGE_CENTER_TITLE.value()) },
 		icon = {
-			val iconGroup by remember(waitingRequestCount) {
+			val icon by remember(waitingRequestCount) {
 				derivedStateOf {
 					if (waitingRequestCount == 0) AppIcon.Email else AppIcon.MarkEmailUnread
 				}
 			}
-			NoIcon(iconGroup.value())
+			NoIcon(icon.value())
 		},
 		actions = {
 			Text(

@@ -45,7 +45,6 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-			implementation(compose.preview)
 			implementation(libs.bundles.multiplatform.compose.android)
 			implementation(projects.noCircleMultiplatformCommon)
 		}

@@ -138,14 +138,6 @@ multiplatform-common = [
     'ktor-serialization-kotlinx-json'
 ]
 
-multiplatform-common-android = [
-    'androidx-activity-compose'
-]
-
-multiplatform-common-desktop = [
-    'kotlinx-coroutines-swing'
-]
-
 server-app = [
     'kotlin-reflect',
     'ktor-server-core',

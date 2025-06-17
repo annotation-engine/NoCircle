@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
+import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.*
-import com.nocircle.compose.graphics.hexToColor
 import com.nocircle.compose.material3.LocalSnackbarHostState
 import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
@@ -126,7 +126,7 @@ private fun UserCard(
 					style = MaterialTheme.typography.bodyMedium,
 				)
 			}
-			val iconGroup by remember(searchUser.relationship) {
+			val icon by remember(searchUser.relationship) {
 				derivedStateOf {
 					when (searchUser.relationship) {
 						FRIEND -> AppIcon.Group
@@ -136,7 +136,7 @@ private fun UserCard(
 				}
 			}
 			NoIcon(
-				icon = iconGroup.value(),
+				icon = icon.value(),
 				modifier = Modifier.align(Alignment.TopEnd),
 				tint = MaterialTheme.colorScheme.primary
 			)

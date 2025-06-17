@@ -18,7 +18,7 @@ import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.NoColor
 import com.nocircle.compose.foundation.*
-import com.nocircle.compose.graphics.hexToColor
+import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.shared.model.friend.request.FriendRequestDTO

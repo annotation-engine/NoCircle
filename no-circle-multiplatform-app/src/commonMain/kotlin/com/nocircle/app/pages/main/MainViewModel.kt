@@ -3,8 +3,10 @@ package com.nocircle.app.pages.main
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impls.keepAliveApi
 import com.nocircle.app.ktorfitx.ktorfitx
+import com.nocircle.app.resources.AppString
 import com.nocircle.common.log.NoLog
 import com.nocircle.common.websocket.WebSocketScheduler
+import com.nocircle.compose.resources.getString
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.websocket.*
@@ -25,6 +27,7 @@ class MainViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch(Dispatchers.IO) {
+			showNoSnackbar(AppString.LOGIN_SUCCESS.getString())
 			keepAlive()
 		}
 	}
@@ -35,8 +38,10 @@ class MainViewModel : NoViewModel() {
 		while (!close) {
 			try {
 				ktorfitx.keepAliveApi.keepAlive {
+					if (attempt > 0) {
+						showNoSnackbar("您已上线")
+					}
 					attempt = 0
-					NoLog.info("WebSocket connected.")
 					for (frame in incoming) {
 						when (frame) {
 							is Frame.Text -> {
@@ -56,9 +61,11 @@ class MainViewModel : NoViewModel() {
 					}
 				}
 			} catch (_: Exception) {
-				NoLog.error("WebSocket unconnected.")
 			}
 			attempt++
+			if (attempt == 1) {
+				showNoErrorSnackbar("您已掉线，请检查网络是否正常")
+			}
 			val duration = 2.0.pow(attempt).seconds.coerceIn(reconnectDurationRange)
 			delay(duration)
 			NoLog.info("WebSocket reconnected: $attempt, next duration: ${(duration * 2).coerceIn(reconnectDurationRange)}")

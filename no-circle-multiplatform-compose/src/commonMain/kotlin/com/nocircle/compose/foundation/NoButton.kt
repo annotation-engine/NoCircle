@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.nocircle.compose.foundation.NoButtons.colors
@@ -29,6 +30,7 @@ fun NoButton(
 	enabled: Boolean = true,
 	style: TextStyle = MaterialTheme.typography.bodyLarge,
 	colors: NoButtonColors = NoButtonDefaults.DefaultButtonColors,
+	shape: Shape = MaterialTheme.shapes.small,
 	contentPadding: PaddingValues = NoButtonDefaults.ContentPadding,
 	context: CoroutineContext = EmptyCoroutineContext,
 	onClick: (suspend CoroutineScope.() -> Unit)? = null,
@@ -36,7 +38,7 @@ fun NoButton(
 	val interactionSource = remember { MutableInteractionSource() }
 	val isPressed by interactionSource.collectIsPressedAsState()
 	val shadowElevation by animateDpAsState(
-		targetValue = if (isPressed) 4.dp else 2.dp
+		targetValue = if (isPressed) 8.dp else 4.dp
 	)
 	val coroutineScope = rememberCoroutineScope()
 	Button(
@@ -48,16 +50,17 @@ fun NoButton(
 				)
 			}
 		},
-		modifier = modifier
-			.height(52.dp)
+		modifier = Modifier
 			.shadow(
 				elevation = shadowElevation,
-				shape = MaterialTheme.shapes.small,
-				ambientColor = DefaultShadowColor.copy(alpha = 0.6f),
-				spotColor = DefaultShadowColor.copy(alpha = 0.6f)
-			),
+				shape = shape,
+				ambientColor = DefaultShadowColor,
+				spotColor = DefaultShadowColor
+			)
+			.then(modifier)
+			.height(52.dp),
 		enabled = enabled,
-		shape = MaterialTheme.shapes.small,
+		shape = shape,
 		colors = ButtonDefaults.buttonColors(
 			containerColor = colors.containerColor,
 			contentColor = colors.contentColor,

@@ -41,17 +41,9 @@ kotlin {
 	}
 	
 	sourceSets {
-		val desktopMain by getting
-		
-		androidMain.dependencies {
-			implementation(libs.bundles.multiplatform.common.android)
-		}
 		commonMain.dependencies {
 			implementation(projects.noCircleShared)
 			implementation(libs.bundles.multiplatform.common)
-		}
-		desktopMain.dependencies {
-			implementation(libs.bundles.multiplatform.common.desktop)
 		}
 	}
 	sourceSets.commonMain {

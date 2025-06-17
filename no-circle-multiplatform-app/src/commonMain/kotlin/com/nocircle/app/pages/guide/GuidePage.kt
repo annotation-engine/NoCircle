@@ -13,14 +13,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.pages.account.login.LoginRoute
-import com.nocircle.app.pages.main.MainRoute
-import com.nocircle.compose.navigation.LocalNavController
-import com.nocircle.compose.navigation.NoPopUp
-import com.nocircle.compose.navigation.NoRoute
 import com.nocircle.compose.animation.animateDpOffsetAsState
 import com.nocircle.compose.expends.offset
 import com.nocircle.compose.material3.NoScaffold
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoPopUp
+import com.nocircle.compose.navigation.NoRoute
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
@@ -34,27 +32,11 @@ data object GuideRoute : NoRoute
 @Composable
 fun GuidePage() {
 	val viewModel = koinViewModel<GuideViewModel>()
-	var verify by remember { mutableStateOf<Boolean?>(null) }
-	var already by remember { mutableStateOf(false) }
-	var delayFinish by remember { mutableStateOf(false) }
 	val controller = LocalNavController.current
-	val toNextPage = suspend {
-		if (!already && verify != null && delayFinish) {
-			already = true
-			controller.navigate(
-				route = if (verify!!) MainRoute else LoginRoute,
-				popup = NoPopUp.CURRENT
-			)
+	LaunchedEffect(Unit) {
+		viewModel.navigateTo.collect {
+			controller.navigate(it, popup = NoPopUp.CURRENT)
 		}
-	}
-	LaunchedEffect(Unit) {
-		delay(2000)
-		delayFinish = true
-		toNextPage()
-	}
-	LaunchedEffect(Unit) {
-		verify = viewModel.verifyToken()
-		toNextPage()
 	}
 	NoScaffold { paddingValues ->
 		Box(

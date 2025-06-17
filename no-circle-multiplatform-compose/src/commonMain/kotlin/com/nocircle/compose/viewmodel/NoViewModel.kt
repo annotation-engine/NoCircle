@@ -3,14 +3,16 @@ package com.nocircle.compose.viewmodel
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
-import com.nocircle.compose.resources.getIcon
-import com.nocircle.compose.resources.getString
+import androidx.lifecycle.viewModelScope
 import com.nocircle.compose.material3.NoSnackbarColors
 import com.nocircle.compose.material3.NoSnackbarVisuals
 import com.nocircle.compose.resources.ComposeIcon
 import com.nocircle.compose.resources.ComposeString
+import com.nocircle.compose.resources.getIcon
+import com.nocircle.compose.resources.getString
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 
@@ -62,42 +64,46 @@ abstract class NoViewModel : ViewModel() {
 		)
 	}
 	
-	protected suspend fun showNoErrorSnackbar(
+	protected fun showNoErrorSnackbar(
 		message: String,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
 		withDismissAction: Boolean = false,
 		duration: SnackbarDuration = SnackbarDuration.Short,
 	) {
-		this.snackbarVisualsSharedFlow.emit(
-			NoSnackbarVisuals(
-				message,
-				actionLabel,
-				prefixIcon,
-				withDismissAction,
-				duration,
-				colors = NoSnackbarColors.ERROR
+		viewModelScope.launch {
+			snackbarVisualsSharedFlow.emit(
+				NoSnackbarVisuals(
+					message,
+					actionLabel,
+					prefixIcon,
+					withDismissAction,
+					duration,
+					colors = NoSnackbarColors.ERROR
+				)
 			)
-		)
+		}
 	}
 	
-	protected suspend fun showNoErrorSnackbar(
+	protected fun showNoErrorSnackbar(
 		message: StringResource,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
 		withDismissAction: Boolean = false,
 		duration: SnackbarDuration = SnackbarDuration.Short,
 	) {
-		this.snackbarVisualsSharedFlow.emit(
-			NoSnackbarVisuals(
-				getString(message),
-				actionLabel,
-				prefixIcon,
-				withDismissAction,
-				duration,
-				colors = NoSnackbarColors.ERROR
+		viewModelScope.launch {
+			snackbarVisualsSharedFlow.emit(
+				NoSnackbarVisuals(
+					getString(message),
+					actionLabel,
+					prefixIcon,
+					withDismissAction,
+					duration,
+					colors = NoSnackbarColors.ERROR
+				)
 			)
-		)
+		}
 	}
 	
 	protected suspend fun autoShowNoSnackbar(success: Boolean, message: String) {

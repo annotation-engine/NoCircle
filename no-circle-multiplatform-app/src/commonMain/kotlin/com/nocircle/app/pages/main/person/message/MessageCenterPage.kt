@@ -15,13 +15,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.compose.navigation.LocalNavController
-import com.nocircle.compose.navigation.NoRoute
-import com.nocircle.compose.resources.NoIcons
-import com.nocircle.compose.resources.value
-import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.*
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -70,7 +69,16 @@ fun MessageCenterPage() {
 							selected = selectedSubRoute == it,
 							onClick = { selectedSubRoute = it }
 						) {
-							NoIcon(it.iconGroup.value())
+							val icon by remember(it, receivedRequests.size) {
+								derivedStateOf {
+									when {
+										it == MessageCenterSubRoute.SENT_REQUEST -> AppIcon.ForwardToInbox
+										receivedRequests.isEmpty() -> AppIcon.Email
+										else -> AppIcon.MarkEmailUnread
+									}
+								}
+							}
+							NoIcon(icon.value())
 							Spacer(modifier = Modifier.width(8.dp))
 							val count = if (it == MessageCenterSubRoute.SENT_REQUEST) sentRequests.size else receivedRequests.size
 							Text(it.title.value(count))
@@ -125,9 +133,8 @@ fun NoMessage() {
 }
 
 private enum class MessageCenterSubRoute(
-	val title: AppString,
-	val iconGroup: NoIcons
+	val title: AppString
 ) {
-	SENT_REQUEST(AppString.MESSAGE_CENTER_SENT_REQUEST, AppIcon.ForwardToInbox),
-	RECEIVED_REQUEST(AppString.MESSAGE_CENTER_RECEIVED_REQUEST, AppIcon.MarkEmailUnread)
+	SENT_REQUEST(AppString.MESSAGE_CENTER_SENT_REQUEST),
+	RECEIVED_REQUEST(AppString.MESSAGE_CENTER_RECEIVED_REQUEST)
 }

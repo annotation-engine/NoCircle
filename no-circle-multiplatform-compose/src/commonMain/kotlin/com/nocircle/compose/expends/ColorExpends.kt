@@ -1,4 +1,4 @@
-package com.nocircle.compose.graphics
+package com.nocircle.compose.expends
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color

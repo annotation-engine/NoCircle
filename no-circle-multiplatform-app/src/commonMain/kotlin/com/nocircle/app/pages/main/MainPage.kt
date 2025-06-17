@@ -44,10 +44,6 @@ import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.groups.ThemeMode
-import com.nocircle.compose.resources.NoIcons
-import com.nocircle.compose.resources.getString
-import com.nocircle.compose.resources.value
-import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.compose.desktop.NoTooltipArea
 import com.nocircle.compose.desktop.NoTooltipPlacement
 import com.nocircle.compose.desktop.NoWindowDraggableArea
@@ -56,15 +52,10 @@ import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTab
 import com.nocircle.compose.material3.NoTabRow
 import com.nocircle.compose.material3.showNoSnackbar
-import com.nocircle.compose.navigation.LocalNavController
-import com.nocircle.compose.navigation.LocalNavControllerProvider
-import com.nocircle.compose.navigation.NavPopTransition
-import com.nocircle.compose.navigation.NavTransition
-import com.nocircle.compose.navigation.NoNavHost
-import com.nocircle.compose.navigation.NoNavHostController
-import com.nocircle.compose.navigation.NoPopUp
-import com.nocircle.compose.navigation.NoRoute
-import com.nocircle.compose.navigation.composable
+import com.nocircle.compose.navigation.*
+import com.nocircle.compose.resources.NoIcon
+import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -79,7 +70,6 @@ fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
 	LaunchedEffect(Unit) {
-		hostState.showNoSnackbar(AppString.LOGIN_SUCCESS.getString())
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
@@ -181,7 +171,7 @@ private fun BottomNavigationBar(
 				onClick = { onSubRouteChange(it) }
 			) {
 				NoIcon(
-					icon = it.iconGroup.value()
+					icon = it.icon.value()
 				)
 				Spacer(modifier = Modifier.width(8.dp))
 				Text(
@@ -272,7 +262,7 @@ private fun LeftNavigationBar(
 				MainSubRoute.entries.forEachIndexed { index, route ->
 					LeftMenuItem(
 						title = route.title.value(),
-						icon = route.iconGroup.value(),
+						icon = route.icon.value(),
 						tooltipText = route.title.value(),
 						isExpended = isLeftNavigationBarExpended,
 						onClick = {
@@ -517,22 +507,22 @@ private fun LeftItemWithExpended(
 
 enum class MainSubRoute(
 	val title: AppString,
-	val iconGroup: NoIcons
+	val icon: NoIcon
 ) {
 	HOME(
 		title = AppString.MAIN_HOME,
-		iconGroup = AppIcon.Home
+		icon = AppIcon.Home
 	),
 	FRIENDS(
 		title = AppString.MAIN_FRIENDS,
-		iconGroup = AppIcon.Group
+		icon = AppIcon.Group
 	),
 	GROUPS(
 		title = AppString.MAIN_GROUPS,
-		iconGroup = AppIcon.Diversity2
+		icon = AppIcon.Diversity2
 	),
 	PERSON(
 		title = AppString.MAIN_PERSON,
-		iconGroup = AppIcon.Person
+		icon = AppIcon.Person
 	)
 }
