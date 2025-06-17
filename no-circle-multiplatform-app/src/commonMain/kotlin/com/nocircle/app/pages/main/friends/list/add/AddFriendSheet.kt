@@ -20,14 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.common.expends.format
-import com.nocircle.common.expends.hexToColor
-import com.nocircle.common.resources.value
 import com.nocircle.compose.foundation.*
+import com.nocircle.compose.graphics.hexToColor
 import com.nocircle.compose.material3.LocalSnackbarHostState
 import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
 import com.nocircle.compose.material3.showNoSnackbar
+import com.nocircle.compose.resources.value
 import com.nocircle.shared.model.friend.FriendSearchDTO
 import com.nocircle.shared.model.friend.FriendSearchDTO.RelationshipDTO.*
 import org.koin.compose.viewmodel.koinViewModel
@@ -122,7 +121,7 @@ private fun UserCard(
 				)
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
-					text = AppString.FRIENDS_ADD_FRIEND_ID.value().format(searchUser.username),
+					text = AppString.FRIENDS_ADD_FRIEND_ID.value(searchUser.username),
 					color = MaterialTheme.colorScheme.onSurfaceVariant,
 					style = MaterialTheme.typography.bodyMedium,
 				)

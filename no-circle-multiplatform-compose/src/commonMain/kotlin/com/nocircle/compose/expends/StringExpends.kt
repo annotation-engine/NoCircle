@@ -1,5 +1,9 @@
-package com.nocircle.server.common.expends
+package com.nocircle.compose.expends
 
+import androidx.compose.runtime.Stable
+import com.nocircle.compose.expends.isWideChar
+
+@Stable
 fun String.getDisplayLength(): Int = this.sumOf {
 	if (it.isWideChar()) TWO else ONE
 }

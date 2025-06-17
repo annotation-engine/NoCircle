@@ -1,4 +1,4 @@
-package com.nocircle.common.expends
+package com.nocircle.compose.expends
 
 import androidx.compose.runtime.Stable
 

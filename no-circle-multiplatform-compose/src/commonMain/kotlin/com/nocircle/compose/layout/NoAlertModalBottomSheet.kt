@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.common.resources.value
+import com.nocircle.compose.resources.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.material3.NoModalBottomSheet

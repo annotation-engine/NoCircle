@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.compose.expends.toDpSize
 import com.nocircle.compose.range.DpRange
 

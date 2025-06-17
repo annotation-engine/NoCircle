@@ -3,8 +3,8 @@ package com.nocircle.compose.viewmodel
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
-import com.nocircle.common.resources.getIcon
-import com.nocircle.common.resources.getString
+import com.nocircle.compose.resources.getIcon
+import com.nocircle.compose.resources.getString
 import com.nocircle.compose.material3.NoSnackbarColors
 import com.nocircle.compose.material3.NoSnackbarVisuals
 import com.nocircle.compose.resources.ComposeIcon

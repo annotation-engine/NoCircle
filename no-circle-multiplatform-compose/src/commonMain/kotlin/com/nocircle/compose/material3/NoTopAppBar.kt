@@ -11,8 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nocircle.common.device.DeviceType
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.resources.value
-import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.compose.desktop.NoWindowDraggableArea
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.resources.ComposeIcon

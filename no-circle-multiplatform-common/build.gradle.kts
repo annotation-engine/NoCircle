@@ -3,13 +3,10 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
 	alias(libs.plugins.android.library)
-	alias(libs.plugins.compose.multiplatform)
-	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.multiplatform)
 	alias(libs.plugins.kotlin.serialization)
 	alias(libs.plugins.ksp)
 	alias(libs.plugins.room)
-	alias(libs.plugins.hot.reload)
 }
 
 kotlin {
@@ -47,18 +44,13 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-			implementation(compose.preview)
 			implementation(libs.bundles.multiplatform.common.android)
 		}
 		commonMain.dependencies {
 			implementation(projects.noCircleShared)
-			implementation(compose.runtime)
-			implementation(compose.components.resources)
-			implementation(compose.materialIconsExtended)
 			implementation(libs.bundles.multiplatform.common)
 		}
 		desktopMain.dependencies {
-			implementation(compose.desktop.currentOs)
 			implementation(libs.bundles.multiplatform.common.desktop)
 		}
 	}
@@ -89,9 +81,6 @@ android {
 		sourceCompatibility = JavaVersion.VERSION_21
 		targetCompatibility = JavaVersion.VERSION_21
 	}
-	buildFeatures {
-		compose = true
-	}
 }
 
 dependencies {
@@ -104,9 +93,4 @@ dependencies {
 
 room {
 	schemaDirectory("$projectDir/schemas")
-}
-
-compose.resources {
-	packageOfResClass = "com.nocircle.common.generated.resources"
-	publicResClass = false
 }

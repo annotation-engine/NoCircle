@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.zIndex
-import com.nocircle.common.expends.noLocalProvidedFor
+import com.nocircle.compose.expends.noLocalProvidedFor
 
 @Composable
 fun NoTabRow(

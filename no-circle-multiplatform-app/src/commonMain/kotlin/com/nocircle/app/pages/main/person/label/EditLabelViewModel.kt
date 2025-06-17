@@ -1,15 +1,14 @@
 package com.nocircle.app.pages.main.person.label
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.coroutines.KFunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
-import com.nocircle.common.expends.colorToHex
-import com.nocircle.common.resources.getString
+import com.nocircle.compose.graphics.colorToHex
+import com.nocircle.compose.resources.getString
 import com.nocircle.compose.viewmodel.NoViewModel
 
 class EditLabelViewModel : NoViewModel() {

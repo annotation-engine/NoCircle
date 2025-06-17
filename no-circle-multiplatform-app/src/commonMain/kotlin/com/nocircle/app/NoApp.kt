@@ -15,7 +15,7 @@ import com.nocircle.app.pages.main.person.message.MessageCenterViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
-import com.nocircle.common.resources.loadStringJsonObject
+import com.nocircle.compose.resources.loadStringJsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext

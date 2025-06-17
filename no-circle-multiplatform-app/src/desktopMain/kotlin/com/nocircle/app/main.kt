@@ -15,8 +15,8 @@ import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.navigation.NoNavHostController
-import com.nocircle.common.navigation.NoRoute
+import com.nocircle.compose.navigation.NoNavHostController
+import com.nocircle.compose.navigation.NoRoute
 import com.nocircle.compose.animation.animateWindowStateAsState
 import com.nocircle.compose.desktop.LocalFrameWindowScope
 import java.awt.Color

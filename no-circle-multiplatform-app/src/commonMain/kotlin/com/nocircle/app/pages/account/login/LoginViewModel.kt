@@ -8,7 +8,7 @@ import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.set
 import com.nocircle.common.coroutines.KFunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
-import com.nocircle.common.resources.getString
+import com.nocircle.compose.resources.getString
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

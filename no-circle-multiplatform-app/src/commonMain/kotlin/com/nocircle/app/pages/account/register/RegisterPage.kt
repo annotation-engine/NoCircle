@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.not
-import com.nocircle.common.navigation.LocalNavController
-import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.resources.value
-import com.nocircle.common.windowsize.WindowHeightSizes
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowHeightSizes
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.showNoSnackbar

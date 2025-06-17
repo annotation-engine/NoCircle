@@ -25,8 +25,6 @@ import androidx.compose.material.icons.sharp.Info
 import androidx.compose.material.icons.twotone.Cancel
 import androidx.compose.material.icons.twotone.Close
 import androidx.compose.material.icons.twotone.Info
-import com.nocircle.common.resources.autoMirroredIcons
-import com.nocircle.common.resources.icons
 
 internal object ComposeIcon {
 	

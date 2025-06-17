@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.MainRoute
-import com.nocircle.common.navigation.LocalNavController
-import com.nocircle.common.navigation.NoPopUp
-import com.nocircle.common.navigation.NoRoute
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoPopUp
+import com.nocircle.compose.navigation.NoRoute
 import com.nocircle.compose.animation.animateDpOffsetAsState
 import com.nocircle.compose.expends.offset
 import com.nocircle.compose.material3.NoScaffold

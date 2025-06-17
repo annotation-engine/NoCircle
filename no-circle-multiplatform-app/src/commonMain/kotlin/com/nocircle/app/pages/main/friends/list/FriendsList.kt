@@ -12,7 +12,7 @@ import com.nocircle.app.pages.main.friends.list.add.AddFriendSheet
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.device.DeviceType
-import com.nocircle.common.resources.value
+import com.nocircle.compose.resources.value
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.foundation.NoTextField

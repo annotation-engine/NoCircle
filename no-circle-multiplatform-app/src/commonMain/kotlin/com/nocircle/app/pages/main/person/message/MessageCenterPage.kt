@@ -15,11 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.common.navigation.LocalNavController
-import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.resources.NoIcons
-import com.nocircle.common.resources.value
-import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.compose.resources.NoIcons
+import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.*
 import kotlinx.serialization.Serializable

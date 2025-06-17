@@ -1,6 +1,6 @@
 package com.nocircle.app.resources
 
-import com.nocircle.common.resources.NoString
+import com.nocircle.compose.resources.NoString
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nocircle.common.resources.getIcon
+import com.nocircle.compose.resources.getIcon
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoSnackbarColors.*
 import com.nocircle.compose.resources.ComposeIcon

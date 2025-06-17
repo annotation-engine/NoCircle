@@ -1,4 +1,4 @@
-package com.nocircle.common.flow
+package com.nocircle.compose.coroutines
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import com.nocircle.common.resources.value
+import com.nocircle.compose.resources.value
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.resources.ComposeIcon
 

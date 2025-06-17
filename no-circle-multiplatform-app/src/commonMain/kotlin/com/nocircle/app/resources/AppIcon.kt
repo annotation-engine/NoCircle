@@ -20,8 +20,8 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material.icons.sharp.*
 import androidx.compose.material.icons.twotone.*
-import com.nocircle.common.resources.autoMirroredIcons
-import com.nocircle.common.resources.icons
+import com.nocircle.compose.resources.autoMirroredIcons
+import com.nocircle.compose.resources.icons
 
 object AppIcon {
 	

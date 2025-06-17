@@ -22,13 +22,10 @@ import com.nocircle.app.pages.settings.memory.Memory
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.rootController
-import com.nocircle.common.navigation.LocalNavController
-import com.nocircle.common.navigation.NoPopUp
-import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.resources.NoIconType
-import com.nocircle.common.resources.SupportedLanguage
-import com.nocircle.common.resources.value
-import com.nocircle.common.windowsize.WindowWidthSizes
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoPopUp
+import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.layout.NoAlertModalBottomSheet
@@ -36,6 +33,9 @@ import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.material3.NoDropdownMenu
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
+import com.nocircle.compose.resources.NoIconType
+import com.nocircle.compose.resources.SupportedLanguage
+import com.nocircle.compose.resources.value
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch

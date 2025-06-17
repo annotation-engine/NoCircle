@@ -18,7 +18,7 @@ import androidx.compose.ui.util.fastFilterNotNull
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMapTo
-import com.nocircle.common.expends.noLocalProvidedFor
+import com.nocircle.compose.expends.noLocalProvidedFor
 import kotlinx.coroutines.delay
 
 @Composable

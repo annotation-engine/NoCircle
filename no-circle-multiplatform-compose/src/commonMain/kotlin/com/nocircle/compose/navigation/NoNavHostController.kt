@@ -1,4 +1,4 @@
-package com.nocircle.common.navigation
+package com.nocircle.compose.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -9,7 +9,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.savedstate.SavedState
-import com.nocircle.common.navigation.NoNavHostController.OnDestinationChangedListener
+import com.nocircle.compose.navigation.NoNavHostController.OnDestinationChangedListener
 import kotlin.jvm.JvmInline
 import kotlin.reflect.KClass
 

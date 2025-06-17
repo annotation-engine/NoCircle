@@ -5,7 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextOverflow
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.common.resources.value
+import com.nocircle.compose.resources.value
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.layout.NoOption
 import kotlinx.coroutines.delay

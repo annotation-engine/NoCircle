@@ -1,4 +1,4 @@
-package com.nocircle.common.resources
+package com.nocircle.compose.resources
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable

@@ -116,7 +116,10 @@ multiplatform-compose = [
     'kotlin-reflect',
     'koin-compose-viewmodel',
     'coil-compose',
-    'coil-network-ktor3'
+    'coil-network-ktor3',
+    'material3-window-size-clazz',
+    'androidx-navigation-compose',
+    'ktor-serialization-kotlinx-json'
 ]
 
 multiplatform-compose-android = [
@@ -129,12 +132,9 @@ multiplatform-compose-desktop = [
 
 multiplatform-common = [
     'kotlin-reflect',
-    'androidx-navigation-compose',
-    'ktor-client-core',
     'room-runtime',
     'room-paging',
     'sqlite-bundled',
-    'material3-window-size-clazz',
     'ktor-serialization-kotlinx-json'
 ]
 

@@ -1,4 +1,4 @@
-package com.nocircle.common.navigation
+package com.nocircle.compose.navigation
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nocircle.common.expends.noLocalProvidedFor
+import com.nocircle.compose.expends.noLocalProvidedFor
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KClass

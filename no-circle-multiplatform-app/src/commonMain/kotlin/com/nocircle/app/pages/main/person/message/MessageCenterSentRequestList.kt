@@ -17,11 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.colors.NoColor
-import com.nocircle.common.expends.format
-import com.nocircle.common.expends.hexToColor
-import com.nocircle.common.resources.value
-import com.nocircle.common.windowsize.WindowWidthSizes
 import com.nocircle.compose.foundation.*
+import com.nocircle.compose.graphics.hexToColor
+import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.model.friend.request.FriendRequestDTO.Status.*
 import org.koin.compose.viewmodel.koinViewModel
@@ -100,7 +99,7 @@ private fun SentRequestCard(
 					)
 					Spacer(modifier = Modifier.height(8.dp))
 					Text(
-						text = AppString.FRIENDS_ADD_FRIEND_ID.value().format(request.username),
+						text = AppString.FRIENDS_ADD_FRIEND_ID.value(request.username),
 						color = MaterialTheme.colorScheme.onSurfaceVariant,
 						style = MaterialTheme.typography.bodyMedium,
 					)

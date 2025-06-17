@@ -1,10 +1,9 @@
-package com.nocircle.common.resources
+package com.nocircle.compose.resources
 
 import androidx.collection.MutableIntObjectMap
 import androidx.collection.mutableIntObjectMapOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.util.fastFlatMap
-import com.nocircle.common.expends.format
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.runBlocking
@@ -110,5 +109,24 @@ private suspend fun NoString.getSuspendedCacheRawString(language: SupportedLangu
 fun clearSupportedLanguageCache(language: SupportedLanguage) {
 	stringCacheMap.values.forEach { cacheMap ->
 		cacheMap -= language
+	}
+}
+
+
+private val formatRegex = """\{(\d*)\}""".toRegex()
+
+@Stable
+private fun String.format(vararg args: Any?): String {
+	if (args.isEmpty()) return this
+	var autoIndex = 0
+	return this.replace(formatRegex) { match ->
+		val group = match.groupValues[1]
+		autoIndex++
+		val index = if (group.isEmpty()) autoIndex else group.toIntOrNull() ?: return@replace match.value
+		if (index in 1..args.size) {
+			args[index - 1].toString()
+		} else {
+			match.value // 保留原样
+		}
 	}
 }

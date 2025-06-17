@@ -36,11 +36,11 @@ import com.nocircle.app.theme.groups.ColorSchemeContrast
 import com.nocircle.app.theme.groups.ColorSchemeGroup
 import com.nocircle.app.theme.groups.ThemeMode
 import com.nocircle.app.theme.groups.getColorScheme
-import com.nocircle.common.navigation.LocalNavController
-import com.nocircle.common.navigation.NoRoute
-import com.nocircle.common.resources.value
-import com.nocircle.common.windowsize.WindowWidthSizes
-import com.nocircle.common.windowsize.calculateWindowWidthSize
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowWidthSizes
+import com.nocircle.compose.windowsize.calculateWindowWidthSize
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
