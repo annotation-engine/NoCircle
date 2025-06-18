@@ -1,9 +1,8 @@
 package com.nocircle.server.app.routes.friend.request
 
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.plugins.FriendRouteGroup
-import com.nocircle.server.app.routes.friend.request.RequestQueryWaitingCountStatus.SUCCESS
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
@@ -19,15 +18,5 @@ fun Route.getQueryWaitingRequestCount() = get("request/queryWaitingCount") {
 	val count = transaction {
 		FriendRequestDao.getReceivedWaitingRequestCount(userId)
 	}
-	call.respondOK(count, SUCCESS)
-}
-
-/**
- * 124x
- */
-private enum class RequestQueryWaitingCountStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("查询成功", 0)
+	call.respondOK(count, NoCode.FRIEND_REQUEST_QUERY_WAITING_SUCCESS)
 }

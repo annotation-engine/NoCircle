@@ -1,10 +1,10 @@
 package com.nocircle.server.app.routes.friend.request
 
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.plugins.FriendRouteGroup
 import com.nocircle.server.app.tables.FriendRequests
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
@@ -25,28 +25,17 @@ fun Route.postAgreeRequest() = post("request/agree") {
 	val id: Int by parameters
 	val targetId: Int by parameters
 	
-	val status = transaction {
+	val code = transaction {
 		var success = FriendRequestDao.updateOne(id, targetId, userId, FriendRequests.Status.AGREED)
-		if (!success) return@transaction RequestAgreeStatus.FAILURE
+		if (!success) return@transaction NoCode.FRIEND_REQUEST_AGREE_FAILURE
 		success = FriendRelationshipDao.insertOne(targetId, userId)
-		if (!success) return@transaction RequestAgreeStatus.FAILURE
+		if (!success) return@transaction NoCode.FRIEND_REQUEST_AGREE_FAILURE
 		FriendRequestDao.deleteOne(id, userId, targetId)
-		RequestAgreeStatus.SUCCESS
+		NoCode.FRIEND_REQUEST_AGREE_SUCCESS
 	}
-	if (status == RequestAgreeStatus.SUCCESS) {
+	if (code == NoCode.FRIEND_REQUEST_AGREE_SUCCESS) {
 		sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, targetId)
 		sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, userId)
 	}
-	call.respondOK(status)
-}
-
-/**
- * 125x
- */
-private enum class RequestAgreeStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("好友添加成功", 0),
-	FAILURE("好友添加失败", 1250)
+	call.respondOK(code)
 }

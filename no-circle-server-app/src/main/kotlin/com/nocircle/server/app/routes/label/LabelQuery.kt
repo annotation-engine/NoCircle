@@ -2,10 +2,10 @@ package com.nocircle.server.app.routes.label
 
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.LabelRouteGroup
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.shared.model.label.LabelDTO
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -21,15 +21,5 @@ fun Route.getQueryLabel() = get("query") {
 			LabelDTO(it.id.value, it.label, it.color)
 		}
 	}
-	call.respondOK(data, QueryStatus.SUCCESS)
-}
-
-/**
- * 112x
- */
-private enum class QueryStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("标签查询成功", 0)
+	call.respondOK(data, NoCode.LABEL_QUERY_SUCCESS)
 }

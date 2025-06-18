@@ -1,11 +1,11 @@
 package com.nocircle.server.app.routes.friend
 
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendRouteGroup
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
@@ -24,7 +24,7 @@ fun Route.getSearch() = get("search") {
 	val userId = call.getPrincipal().userId
 	val username: String by call.queryParameters
 	if (username.isBlank()) {
-		return@get call.respondOK(SearchStatus.USERNAME_NOT_EMPTY)
+		return@get call.respondOK(NoCode.FRIEND_SEARCH_USERNAME_NOT_EMPTY)
 	}
 	val searchUser = transaction {
 		val user = UserDao.getOneByUsername(username) ?: return@transaction null
@@ -48,19 +48,7 @@ fun Route.getSearch() = get("search") {
 			relationship = relationship,
 			isAlreadySend = isAlreadySend
 		)
-	} ?: return@get call.respondOK(SearchStatus.NOT_FOUND)
+	} ?: return@get call.respondOK(NoCode.FRIEND_SEARCH_NOT_FOUND)
 	
-	call.respondOK(searchUser, SearchStatus.SUCCESS)
-}
-
-/**
- * 120x
- */
-private enum class SearchStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("搜索成功", 0),
-	USERNAME_NOT_EMPTY("用户名不能为空", 1200),
-	NOT_FOUND("未搜索到该用户", 1201)
+	call.respondOK(searchUser, NoCode.FRIEND_SEARCH_SUCCESS)
 }

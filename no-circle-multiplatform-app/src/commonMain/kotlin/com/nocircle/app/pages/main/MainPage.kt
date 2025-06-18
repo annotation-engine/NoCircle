@@ -247,36 +247,32 @@ private fun LeftNavigationBar(
 						controller.removeOnDestinationChangedListener(listener)
 					}
 				}
-				val previousText = AppString.MAIN_PREVIOUS.value()
-				Box(
-					modifier = Modifier
-						.height(LeftNavigationItemHeight)
-						.fillMaxWidth(),
-					contentAlignment = Alignment.Center
-				) {
-					if (popStackEnabled) {
-						LeftToolItem(
-							title = previousText,
-							icon = AppIcon.ArrowBack.value(),
-							tooltipText = previousText,
-							isExpended = isLeftNavigationBarExpended,
-							onClick = {
-								viewModel.isLeftNavigationBarExpended.value = false
-								controller.popBackStack()
-							}
-						)
-					} else {
-						val personViewModel = koinViewModel<PersonViewModel>()
-						val userDetail by personViewModel.userDetail.collectAsState()
-						if (userDetail != null) {
-							NoAsyncImage(
-								url = userDetail!!.avatarUrl,
-								modifier = Modifier
-									.size(LeftNavigationItemHeight)
-									.clip(MaterialTheme.shapes.small),
-								contentScale = ContentScale.Crop,
-							)
+				if (popStackEnabled) {
+					val previousText = AppString.MAIN_PREVIOUS.value()
+					LeftToolItem(
+						title = previousText,
+						icon = AppIcon.ArrowBack.value(),
+						tooltipText = previousText,
+						isExpended = isLeftNavigationBarExpended,
+						onClick = {
+							viewModel.isLeftNavigationBarExpended.value = false
+							controller.popBackStack()
 						}
+					)
+				} else {
+					val personViewModel = koinViewModel<PersonViewModel>()
+					val userDetail by personViewModel.userDetail.collectAsState()
+					if (userDetail != null) {
+						NoAsyncImage(
+							url = userDetail!!.avatarUrl,
+							modifier = Modifier
+								.size(LeftNavigationItemHeight)
+								.clip(MaterialTheme.shapes.small)
+								.clickable {
+									onSubRouteChange(MainSubRoute.PERSON)
+								},
+							contentScale = ContentScale.Crop,
+						)
 					}
 				}
 				Spacer(modifier = Modifier.height(8.dp))

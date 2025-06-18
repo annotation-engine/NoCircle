@@ -1,6 +1,6 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.common.model.NoStatus
+import com.nocircle.server.common.model.BaseCode
 import com.nocircle.server.common.model.respondOK
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -12,20 +12,20 @@ fun Application.configureStatusPages() {
 			it.value in 300..599
 		}.toTypedArray()
 		status(*status) {
-			call.respondOK(it.toStatus())
+			call.respondOK(it.toHttpCode())
 		}
 	}
 }
 
-private class HttpStatus(
+private class HttpCode(
 	override val msg: String,
 	override val code: Int
-) : NoStatus
+) : BaseCode
 
-private val httpStatusCodeMap = mutableMapOf<HttpStatusCode, HttpStatus>()
+private val httpCodeMap = mutableMapOf<HttpStatusCode, HttpCode>()
 
-private fun HttpStatusCode.toStatus(): NoStatus {
-	return httpStatusCodeMap.getOrPut(this) {
-		HttpStatus(description, value)
+private fun HttpStatusCode.toHttpCode(): HttpCode {
+	return httpCodeMap.getOrPut(this) {
+		HttpCode(description, value)
 	}
 }

@@ -1,9 +1,9 @@
 package com.nocircle.server.app.routes.auth
 
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserLoginDao
 import com.nocircle.server.app.plugins.AuthRouteGroup
 import com.nocircle.server.app.tables.UserLogins
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
@@ -19,15 +19,5 @@ fun Route.postVerifyToken(): Route = post("verifyToken") {
 	transaction {
 		UserLoginDao.insertOne(userId, UserLogins.Method.TOKEN)
 	}
-	call.respondOK(VerifyTokenStatus.SUCCESS)
-}
-
-/**
- * 0 - 999
- */
-enum class VerifyTokenStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("验证成功", 0)
+	call.respondOK(NoCode.AUTH_VERIFY_TOKEN_SUCCESS)
 }

@@ -1,5 +1,6 @@
 package com.nocircle.server.app.dao
 
+import com.nocircle.server.app.tables.FriendRelationship
 import com.nocircle.server.app.tables.FriendRelationships
 import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicExists
@@ -7,6 +8,7 @@ import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.orWhere
 import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.selectAll
 
 object FriendRelationshipDao {
 	
@@ -24,5 +26,14 @@ object FriendRelationshipDao {
 			.orWhere { (FriendRelationships.senderId eq receiverId) and (FriendRelationships.receiverId eq senderId) }
 			.logicExists(FriendRelationships)
 			.exists()
+	}
+	
+	fun queryList(userId: Int, page: Int, size: Int): List<FriendRelationship> {
+		val query = FriendRelationships.selectAll()
+			.where { (FriendRelationships.senderId eq userId) and (FriendRelationships.receiverId eq userId) }
+			.logicExists(FriendRelationships)
+			.limit(size)
+			.offset((page * size).toLong())
+		return FriendRelationship.wrapRows(query).toList()
 	}
 }

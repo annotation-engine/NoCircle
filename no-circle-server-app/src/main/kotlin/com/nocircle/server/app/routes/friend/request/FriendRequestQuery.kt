@@ -1,15 +1,14 @@
 package com.nocircle.server.app.routes.friend.request
 
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendRouteGroup
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
-import com.nocircle.server.app.routes.friend.request.RequestQueryStatus.SUCCESS
 import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.expends.formatToShanghai
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
@@ -33,7 +32,7 @@ fun Route.getQueryRequest() = get("request/query") {
 			RECEIVED -> getReceivedRequests(userId)
 		}
 	}
-	call.respondOK(data, SUCCESS)
+	call.respondOK(data, NoCode.FRIEND_REQUEST_QUERY_SUCCESS)
 }
 
 /**
@@ -107,16 +106,6 @@ private fun FriendRequests.Status.toDTOStatus(): FriendRequestDTO.Status {
 		FriendRequests.Status.WAITING -> FriendRequestDTO.Status.WAITING
 		FriendRequests.Status.CANCELED -> FriendRequestDTO.Status.CANCELED
 	}
-}
-
-/**
- * 122x
- */
-private enum class RequestQueryStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("查询成功", 0)
 }
 
 private enum class FriendRequestType {

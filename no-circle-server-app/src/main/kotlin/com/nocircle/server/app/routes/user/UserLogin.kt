@@ -9,8 +9,8 @@ import com.nocircle.server.app.plugins.yaml
 import com.nocircle.server.app.tables.UserLogins
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.shared.model.user.UserLoginDTO
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -30,7 +30,7 @@ fun Route.postUserLogin() = post("login") {
 		UserDao.getOneByUsername(username)
 	}
 	if (user == null || !PasswordUtils.verity(password, user.password)) {
-		return@post call.respondOK(LoginStatus.USERNAME_OR_PASSWORD_ERROR)
+		return@post call.respondOK(NoCode.USER_LOGIN_USERNAME_OR_PASSWORD_ERROR)
 	}
 	transaction {
 		UserLoginDao.insertOne(user.id.value, UserLogins.Method.PASSWORD)
@@ -39,16 +39,5 @@ fun Route.postUserLogin() = post("login") {
 	val bucket = redisson.getBucket<String>("${UserToken.prefix}${user.id}")
 	bucket.set(token, yaml.jwt.timeout.toJavaDuration())
 	val userLogin = UserLoginDTO(token)
-	call.respondOK(userLogin, LoginStatus.SUCCESS)
-}
-
-/**
- * 100X
- */
-private enum class LoginStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("登录成功", 0),
-	USERNAME_OR_PASSWORD_ERROR("用户名或密码错误", 1000)
+	call.respondOK(userLogin, NoCode.USER_LOGIN_SUCCESS)
 }

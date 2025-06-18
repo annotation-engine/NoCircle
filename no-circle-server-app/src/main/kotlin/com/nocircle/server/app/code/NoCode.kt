@@ -1,0 +1,72 @@
+package com.nocircle.server.app.code
+
+import com.nocircle.server.common.model.BaseCode
+
+enum class NoCode(
+	override val msg: String,
+	override val code: Int
+) : BaseCode {
+	
+	AUTH_VERIFY_TOKEN_SUCCESS("验证通过", 0),
+	
+	USER_LOGIN_SUCCESS("登录成功", 0),
+	USER_LOGIN_USERNAME_OR_PASSWORD_ERROR("用户名或密码错误", 1000),
+	
+	/**
+	 * 101x
+	 */
+	USER_LOGOUT_SUCCESS("登出成功，请重新登录", 0),
+	
+	USER_DETAIL_SUCCESS("用户详情查询成功", 0),
+	USER_DETAIL_FAILURE("用户详情查询失败", 1020),
+	
+	USER_REGISTER_SUCCESS("用户注册成功，请前往登录", 0),
+	USER_REGISTER_FAILURE("注册失败", 1030),
+	USER_REGISTER_USER_ALREADY_EXISTS("用户已经存在，请前往登录", 1031),
+	
+	LABEL_ADD_SUCCESS("标签添加成功", 0),
+	LABEL_ADD_FAILURE("标签添加失败", 1100),
+	LABEL_ADD_ALREADY_EXISTS("标签已存在", 1101),
+	LABEL_ADD_TOTAL_LIMIT("超过最大数量限制", 1102),
+	LABEL_ADD_LENGTH_LIMIT("超过总长度限制", 1103),
+	LABEL_ADD_EMPTY("标签不能为空", 1104),
+	
+	LABEL_DELETE_SUCCESS("标签删除成功", 0),
+	LABEL_DELETE_FAILURE("标签删除失败", 1110),
+	
+	LABEL_QUERY_SUCCESS("标签查询成功", 0),
+	
+	LABEL_UPDATE_SUCCESS("标签修改成功", 0),
+	LABEL_UPDATE_FAILURE("标签修改失败", 1130),
+	LABEL_UPDATE_NOT_FOUND("未找到标签", 1131),
+	LABEL_UPDATE_NO_CHANGE("标签未发生修改", 1132),
+	LABEL_UPDATE_ALREADY_EXISTS("标签已存在", 1133),
+	LABEL_UPDATE_LENGTH_LIMIT("超过总长度限制", 1134),
+	LABEL_UPDATE_EMPTY("标签不能为空", 1135),
+	
+	FRIEND_SEARCH_SUCCESS("搜索成功", 0),
+	FRIEND_SEARCH_USERNAME_NOT_EMPTY("用户名不能为空", 1200),
+	FRIEND_SEARCH_NOT_FOUND("未搜索到该用户", 1201),
+	
+	FRIEND_REQUEST_ADD_SUCCESS("好友申请已发送", 0),
+	FRIEND_REQUEST_ADD_FAILURE("好友申请发送失败", 1310),
+	FRIEND_REQUEST_ADD_CANNOT_ADD_ONESELF("不能添加自己为好友", 1311),
+	FRIEND_REQUEST_ADD_USER_NOT_FOUND("对方用户不存在", 1312),
+	FRIEND_REQUEST_ADD_REPEATED("请勿重复发送", 1313),
+	
+	FRIEND_REQUEST_QUERY_SUCCESS("查询成功", 0),
+	
+	FRIEND_REQUEST_CANCEL_SUCCESS("取消成功", 0),
+	FRIEND_REQUEST_CANCEL_FAILURE("取消失败", 1330),
+	
+	FRIEND_REQUEST_DELETE_SUCCESS("删除成功", 0),
+	FRIEND_REQUEST_DELETE_FAILURE("<UNK>", 1340),
+	
+	FRIEND_REQUEST_AGREE_SUCCESS("好友申请已通过，快和他开始聊天吧", 0),
+	FRIEND_REQUEST_AGREE_FAILURE("好友申请同意失败", 1350),
+	
+	FRIEND_REQUEST_REJECT_SUCCESS("拒绝成功", 0),
+	FRIEND_REQUEST_REJECT_FAILURE("拒绝失败", 1360),
+	
+	FRIEND_REQUEST_QUERY_WAITING_SUCCESS("查询成功", 0)
+}

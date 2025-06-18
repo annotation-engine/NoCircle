@@ -4,10 +4,10 @@ import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLoginDao
 import com.nocircle.server.app.plugins.UserRouteGroup
 import com.nocircle.server.common.expends.formatToShanghai
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.shared.model.user.UserDetailDTO
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -27,18 +27,7 @@ fun Route.getUserDetail() = get("detail") {
 			avatarUrl = user.avatarUrl,
 			lastLoginTime = lastLoginTime?.formatToShanghai()
 		)
-	} ?: return@get call.respondOK(DetailStatus.FAILURE)
+	} ?: return@get call.respondOK(NoCode.USER_DETAIL_FAILURE)
 	
-	call.respondOK(userDetail, DetailStatus.SUCCESS)
-}
-
-/**
- * 102X
- */
-private enum class DetailStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("用户详情查询成功", 0),
-	FAILURE("用户详情查询失败", 1020)
+	call.respondOK(userDetail, NoCode.USER_DETAIL_SUCCESS)
 }

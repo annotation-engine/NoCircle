@@ -1,8 +1,8 @@
 package com.nocircle.server.app.routes.label
 
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.LabelRouteGroup
-import com.nocircle.server.common.model.NoStatus
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
@@ -21,17 +21,6 @@ fun Route.postDeleteLabel() = post("delete") {
 	val success = transaction {
 		UserLabelDao.deleteOne(userId, id)
 	}
-	val status = if (success) DeleteStatus.SUCCESS else DeleteStatus.FAILURE
-	call.respondOK(status)
-}
-
-/**
- * 111x
- */
-private enum class DeleteStatus(
-	override val msg: String,
-	override val code: Int
-) : NoStatus {
-	SUCCESS("标签删除成功", 0),
-	FAILURE("标签删除失败", 1110)
+	val code = if (success) NoCode.LABEL_DELETE_SUCCESS else NoCode.LABEL_DELETE_FAILURE
+	call.respondOK(code)
 }
