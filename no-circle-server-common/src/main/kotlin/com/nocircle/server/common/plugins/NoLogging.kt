@@ -17,8 +17,9 @@ val NoLogging = createApplicationPlugin(
 		call.attributes.put(DurationTimeKey, System.currentTimeMillis())
 	}
 	onCallRespond { call, value ->
+		val status = call.response.status() ?: return@onCallRespond
 		val message = buildString {
-			append(call.response.status())
+			append(status)
 			append(": ")
 			append(call.request.httpMethod)
 			append(" - ")
