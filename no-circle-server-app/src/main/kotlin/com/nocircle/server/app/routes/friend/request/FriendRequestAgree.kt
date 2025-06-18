@@ -25,17 +25,21 @@ fun Route.postAgreeRequest() = post("request/agree") {
 	val id: Int by parameters
 	val targetId: Int by parameters
 	
-	val code = transaction {
+	val status = transaction {
 		var success = FriendRequestDao.updateOne(id, targetId, userId, FriendRequests.Status.AGREED)
-		if (!success) return@transaction NoCode.FRIEND_REQUEST_AGREE_FAILURE
+		if (!success) return@transaction null
 		success = FriendRelationshipDao.insertOne(targetId, userId)
-		if (!success) return@transaction NoCode.FRIEND_REQUEST_AGREE_FAILURE
-		FriendRequestDao.deleteOne(id, userId, targetId)
-		NoCode.FRIEND_REQUEST_AGREE_SUCCESS
+		if (!success) return@transaction null
+		FriendRequestDao.deleteOne(userId, targetId)
 	}
-	if (code == NoCode.FRIEND_REQUEST_AGREE_SUCCESS) {
-		sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, targetId)
-		sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, userId)
+	if (status == null) {
+		call.respondOK(NoCode.FRIEND_REQUEST_AGREE_FAILURE)
+		return@post
 	}
-	call.respondOK(code)
+	sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, targetId)
+	sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, userId)
+	if (status) {
+		sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, userId)
+	}
+	call.respondOK(NoCode.FRIEND_REQUEST_AGREE_SUCCESS)
 }

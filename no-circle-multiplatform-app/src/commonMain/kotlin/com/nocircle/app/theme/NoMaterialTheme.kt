@@ -1,13 +1,11 @@
 package com.nocircle.app.theme
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.graphics.Color
 import com.nocircle.app.theme.groups.ThemeMode
 import com.nocircle.app.theme.groups.getColorScheme
 
@@ -69,9 +67,4 @@ fun animateColorScheme(target: ColorScheme): ColorScheme {
 		surfaceContainerLow = transition.animateColor(label = "surfaceContainerLow") { it.surfaceContainerLow }.value,
 		surfaceContainerLowest = transition.animateColor(label = "surfaceContainerLowest") { it.surfaceContainerLowest }.value,
 	)
-}
-
-@Composable
-private fun animateColor(target: Color): Color {
-	return animateColorAsState(target).value
 }

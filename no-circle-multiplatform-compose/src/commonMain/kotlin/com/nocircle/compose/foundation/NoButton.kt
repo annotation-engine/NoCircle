@@ -38,7 +38,7 @@ fun NoButton(
 	val interactionSource = remember { MutableInteractionSource() }
 	val isPressed by interactionSource.collectIsPressedAsState()
 	val shadowElevation by animateDpAsState(
-		targetValue = if (isPressed) 8.dp else 4.dp
+		targetValue = if (isPressed) 4.dp else 2.dp
 	)
 	val coroutineScope = rememberCoroutineScope()
 	Button(

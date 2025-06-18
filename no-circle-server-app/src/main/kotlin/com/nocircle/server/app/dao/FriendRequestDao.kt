@@ -6,12 +6,9 @@ import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicDeleteWhere
 import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.exposed.logicUpdate
-import org.jetbrains.exposed.v1.core.Op
 import org.jetbrains.exposed.v1.core.SortOrder
-import org.jetbrains.exposed.v1.core.SqlExpressionBuilder
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.and
-import org.jetbrains.exposed.v1.jdbc.Query
 import org.jetbrains.exposed.v1.jdbc.andWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
@@ -67,14 +64,6 @@ object FriendRequestDao {
 			.toInt()
 	}
 	
-	fun getOneById(id: Int): FriendRequest? {
-		val row = FriendRequests.selectAll()
-			.where { FriendRequests.id eq id }
-			.logicExists(FriendRequests)
-			.singleOrNull() ?: return null
-		return FriendRequest.wrapRow(row)
-	}
-	
 	fun isAlreadySend(senderId: Int, receiverId: Int): Boolean {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.senderId eq senderId }
@@ -93,12 +82,10 @@ object FriendRequestDao {
 		return FriendRequest.wrapRow(resultRow)
 	}
 	
-	fun deleteOne(id: Int, senderId: Int, receiverId: Int): Boolean {
+	fun deleteOne(senderId: Int, receiverId: Int): Boolean {
 		val deleteCount = FriendRequests.logicDeleteWhere {
-			(FriendRequests.id eq id) and (FriendRequests.senderId eq senderId) and (FriendRequests.receiverId eq receiverId)
+			(FriendRequests.senderId eq senderId) and (FriendRequests.receiverId eq receiverId)
 		}
-		return deleteCount == 1
+		return deleteCount >= 1
 	}
 }
-
-private fun Query.andWhere(andPart: (SqlExpressionBuilder) -> Op<Boolean>) {}

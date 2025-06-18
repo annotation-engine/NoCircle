@@ -22,7 +22,7 @@ fun Route.postDeleteRequest() = post("request/delete") {
 	val targetId: Int by parameters
 	
 	val success = transaction {
-		FriendRequestDao.deleteOne(id, userId, targetId)
+		FriendRequestDao.deleteOne(userId, targetId)
 	}
 	val code = if (success) NoCode.FRIEND_REQUEST_DELETE_SUCCESS else NoCode.FRIEND_REQUEST_DELETE_FAILURE
 	call.respondOK(code)

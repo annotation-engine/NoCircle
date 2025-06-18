@@ -12,9 +12,6 @@ enum class NoCode(
 	USER_LOGIN_SUCCESS("登录成功", 0),
 	USER_LOGIN_USERNAME_OR_PASSWORD_ERROR("用户名或密码错误", 1000),
 	
-	/**
-	 * 101x
-	 */
 	USER_LOGOUT_SUCCESS("登出成功，请重新登录", 0),
 	
 	USER_DETAIL_SUCCESS("用户详情查询成功", 0),
@@ -47,6 +44,10 @@ enum class NoCode(
 	FRIEND_SEARCH_SUCCESS("搜索成功", 0),
 	FRIEND_SEARCH_USERNAME_NOT_EMPTY("用户名不能为空", 1200),
 	FRIEND_SEARCH_NOT_FOUND("未搜索到该用户", 1201),
+	
+	FRIEND_QUERY_SUCCESS("好友查询成功", 0),
+	FRIEND_QUERY_FAILURE("好友查询失败", 1210),
+	FRIEND_QUERY_PARAMETER_ERROR("参数错误", 1211),
 	
 	FRIEND_REQUEST_ADD_SUCCESS("好友申请已发送", 0),
 	FRIEND_REQUEST_ADD_FAILURE("好友申请发送失败", 1310),
