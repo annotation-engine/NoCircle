@@ -6,7 +6,9 @@ import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.compose.coroutines.StatusFlowConfig
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class RoundedCornerType(
 	val extraSmall: Dp,
 	val small: Dp,

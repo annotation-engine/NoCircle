@@ -127,7 +127,7 @@ private fun UserDetailCard() {
 						NoTag(
 							text = label.label,
 							color = hexToColor(label.color),
-							shape = MaterialTheme.shapes.extraSmall,
+							shape = MaterialTheme.shapes.small,
 							contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
 						)
 						Spacer(modifier = Modifier.width(6.dp))

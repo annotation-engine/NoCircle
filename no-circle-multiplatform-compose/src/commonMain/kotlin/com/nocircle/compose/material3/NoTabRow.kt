@@ -1,97 +1,108 @@
 package com.nocircle.compose.material3
 
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.*
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.contentColorFor
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.zIndex
-import com.nocircle.compose.expends.noLocalProvidedFor
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEachIndexed
 
 @Composable
-fun NoTabRow(
-	selectedTabIndex: Int,
+fun <T> NoTabRow(
+	selected: T,
+	onSelectedChange: (T) -> Unit,
+	items: List<T>,
 	modifier: Modifier = Modifier,
-	containerColor: Color = TabRowDefaults.primaryContainerColor,
-	contentColor: Color = TabRowDefaults.primaryContainerColor,
-	shape: Shape = MaterialTheme.shapes.medium,
-	tabs: @Composable () -> Unit
+	shape: Shape = NoTabRowDefaults.shape,
+	interval: Dp = NoTabRowDefaults.interval,
+	sliderColor: Color = MaterialTheme.colorScheme.primary,
+	selectedContentColor: Color = contentColorFor(sliderColor),
+	unselectedContentColor: Color = MaterialTheme.colorScheme.onSurface,
+	disabledTabs: List<T> = emptyList(),
+	tab: @Composable RowScope.(item: T) -> Unit
 ) {
-	CompositionLocalProvider(
-		LocalNoTabShape provides shape
+	BoxWithConstraints(
+		modifier = modifier
+			.fillMaxWidth()
+			.height(52.dp)
+			.clip(shape),
 	) {
-		TabRow(
-			selectedTabIndex = selectedTabIndex,
-			modifier = modifier,
-			containerColor = containerColor,
-			contentColor = contentColor,
-			indicator = { tabPositions ->
-				if (selectedTabIndex < tabPositions.size) {
-					Box(
-						modifier = Modifier
-							.tabIndicatorOffset(tabPositions[selectedTabIndex])
-							.fillMaxSize()
-							.clip(LocalNoTabShape.current)
-							.background(
-								color = MaterialTheme.colorScheme.primary,
-								shape = LocalNoTabShape.current
-							)
-							.zIndex(-1f)
-					)
-				}
-			},
-			divider = {},
-			tabs = tabs
+		val tabWidth by remember(maxWidth, interval, items.size) {
+			derivedStateOf { (maxWidth - interval * (items.size - 1)) / items.size }
+		}
+		val selectedIndex by remember(items, selected) {
+			derivedStateOf {
+				val index = items.indexOf(selected)
+				if (index != -1) index else 0
+			}
+		}
+		val offsetX by animateDpAsState(
+			targetValue = (tabWidth + interval) * selectedIndex
 		)
+		Box(
+			modifier = Modifier
+				.offset(offsetX)
+				.width(tabWidth)
+				.fillMaxHeight()
+				.clip(shape)
+				.background(
+					color = sliderColor,
+					shape = shape
+				)
+		)
+		Row(
+			modifier = Modifier
+				.fillMaxSize()
+		) {
+			items.fastForEachIndexed { index, item ->
+				val enabled by remember(item, disabledTabs) {
+					derivedStateOf { item !in disabledTabs }
+				}
+				Row(
+					modifier = Modifier
+						.weight(1f)
+						.fillMaxHeight()
+						.clip(shape)
+						.clickable(
+							interactionSource = remember { MutableInteractionSource() },
+							indication = LocalIndication.current,
+							enabled = enabled,
+							onClick = { onSelectedChange(item) }
+						),
+					verticalAlignment = Alignment.CenterVertically,
+					horizontalArrangement = Arrangement.Center
+				) {
+					CompositionLocalProvider(
+						LocalContentColor provides if (selected == item) selectedContentColor else unselectedContentColor,
+					) {
+						tab(item)
+					}
+				}
+				if (index < items.lastIndex) {
+					Spacer(modifier = Modifier.width(interval))
+				}
+			}
+		}
 	}
 }
 
-@Composable
-fun NoTab(
-	selected: Boolean,
-	onClick: () -> Unit,
-	modifier: Modifier = Modifier,
-	enabled: Boolean = true,
-	selectedContentColor: Color = MaterialTheme.colorScheme.onPrimary,
-	unselectedContentColor: Color = MaterialTheme.colorScheme.onSurface,
-	content: @Composable RowScope.() -> Unit
-) {
-	Tab(
-		selected = selected,
-		onClick = onClick,
-		modifier = modifier.clip(LocalNoTabShape.current),
-		enabled = enabled,
-		text = {
-			Row(
-				verticalAlignment = Alignment.CenterVertically
-			) {
-				val contentColor by animateColorAsState(
-					targetValue = if (selected) selectedContentColor else unselectedContentColor
-				)
-				CompositionLocalProvider(
-					LocalContentColor provides contentColor
-				) {
-					content()
-				}
-			}
-		},
-		selectedContentColor = MaterialTheme.colorScheme.onSurface,
-		unselectedContentColor = MaterialTheme.colorScheme.onSurface
-	)
-}
-
-private val LocalNoTabShape = compositionLocalOf<Shape> {
-	noLocalProvidedFor("LocalNoTabShape")
+object NoTabRowDefaults {
+	
+	val interval = 8.dp
+	
+	val shape: Shape
+		@Composable
+		get() = MaterialTheme.shapes.medium
 }

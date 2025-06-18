@@ -23,7 +23,7 @@ fun NoModalBottomSheet(
 	snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),
-	tonalElevation: Dp = 0.dp,
+	tonalElevation: Dp = Dp.Hairline,
 	contentWindowInsets: @Composable () -> WindowInsets = NoModalBottomSheetDefaults.ContentWindowInsets,
 	icon: @Composable (() -> Unit)? = null,
 	title: @Composable (() -> Unit)? = null,

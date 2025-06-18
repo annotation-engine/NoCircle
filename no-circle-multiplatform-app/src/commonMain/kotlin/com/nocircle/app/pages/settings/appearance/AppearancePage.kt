@@ -358,7 +358,7 @@ private fun ColorSchemeCard(
 			modifier = Modifier
 				.scale(scale)
 				.fillMaxWidth()
-				.clip(MaterialTheme.shapes.medium)
+				.clip(MaterialTheme.shapes.large)
 				.then(
 					if (onClick == null) Modifier else Modifier.clickable(
 						interactionSource = interactionSource,
@@ -369,12 +369,12 @@ private fun ColorSchemeCard(
 				.border(
 					width = 3.dp,
 					color = borderColor,
-					shape = MaterialTheme.shapes.medium
+					shape = MaterialTheme.shapes.large
 				)
 				.border(
 					width = 6.dp,
 					color = surface,
-					shape = MaterialTheme.shapes.medium
+					shape = MaterialTheme.shapes.large
 				)
 				.then(modifier)
 				.padding(6.dp)

@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.zIndex
 import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
@@ -53,7 +52,6 @@ import com.nocircle.compose.desktop.NoWindowDraggableArea
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
-import com.nocircle.compose.material3.NoTab
 import com.nocircle.compose.material3.NoTabRow
 import com.nocircle.compose.material3.showNoSnackbar
 import com.nocircle.compose.navigation.*
@@ -169,27 +167,22 @@ private fun BottomNavigationBar(
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
 	NoTabRow(
-		selectedTabIndex = subRoute.ordinal,
+		selected = subRoute,
+		onSelectedChange = onSubRouteChange,
+		items = MainSubRoute.entries,
 		modifier = Modifier
-			.fillMaxWidth()
 			.padding(16.dp)
-	) {
-		MainSubRoute.entries.fastForEach {
-			NoTab(
-				selected = subRoute == it,
-				onClick = { onSubRouteChange(it) }
-			) {
-				NoIcon(
-					icon = it.icon.value()
-				)
-				Spacer(modifier = Modifier.width(8.dp))
-				Text(
-					text = it.title.value(),
-					maxLines = 1,
-					overflow = TextOverflow.Ellipsis
-				)
-			}
-		}
+			.height(60.dp),
+	) { subRoute ->
+		NoIcon(
+			icon = subRoute.icon.value()
+		)
+		Spacer(modifier = Modifier.width(8.dp))
+		Text(
+			text = subRoute.title.value(),
+			maxLines = 1,
+			overflow = TextOverflow.Ellipsis
+		)
 	}
 }
 
@@ -520,7 +513,7 @@ private fun LeftItemWithExpended(
 		tooltipPlacement = NoTooltipPlacement.ComponentRect(
 			anchor = Alignment.CenterEnd,
 			alignment = Alignment.CenterEnd,
-			offset = DpOffset(16.dp, 0.dp)
+			offset = DpOffset(16.dp, Dp.Hairline)
 		)
 	) {
 		content()

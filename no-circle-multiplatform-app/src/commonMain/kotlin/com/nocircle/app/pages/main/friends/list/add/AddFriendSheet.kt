@@ -12,8 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -58,7 +56,7 @@ fun AddFriendSheet(
 			placeholder = { Text(AppString.FRIENDS_ADD_FRIEND_HINT.value()) }
 		)
 		Spacer(modifier = Modifier.height(16.dp))
-		HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerHighest)
+		HorizontalDivider()
 		Spacer(modifier = Modifier.height(16.dp))
 		Column(
 			modifier = Modifier
@@ -149,9 +147,10 @@ private fun UserCard(
 					.height(24.dp)
 			) {
 				searchUser.labels.fastForEachIndexed { index, label ->
-					Label(
-						label = label.label,
+					NoTag(
+						text = label.label,
 						color = hexToColor(label.color),
+						contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
 					)
 					if (index < searchUser.labels.lastIndex) {
 						Spacer(modifier = Modifier.width(6.dp))
@@ -161,7 +160,7 @@ private fun UserCard(
 		}
 	}
 	Spacer(modifier = Modifier.height(16.dp))
-	HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerHighest)
+	HorizontalDivider()
 	Spacer(modifier = Modifier.height(16.dp))
 	val viewModel = koinViewModel<AddFriendViewModel>()
 	var enabled by remember(searchUser.relationship, searchUser.isAlreadySend) {
@@ -190,29 +189,6 @@ private fun UserCard(
 			string = AppString.FRIENDS_ADD_FRIEND_SEND_SUCCESS
 			enabled = false
 		}
-	}
-}
-
-@Composable
-private fun Label(
-	label: String,
-	color: Color,
-) {
-	Box(
-		modifier = Modifier
-			.fillMaxHeight()
-			.background(
-				color = color,
-				shape = MaterialTheme.shapes.extraSmall
-			)
-			.padding(horizontal = 6.dp),
-		contentAlignment = Alignment.Center
-	) {
-		Text(
-			text = label,
-			color = if (color.luminance() > 0.5f) Color.Black else Color.White,
-			style = MaterialTheme.typography.labelMedium
-		)
 	}
 }
 

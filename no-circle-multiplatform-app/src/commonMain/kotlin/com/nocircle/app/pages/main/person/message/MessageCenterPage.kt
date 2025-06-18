@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.compose.foundation.NoIcon
@@ -62,28 +61,24 @@ fun MessageCenterPage() {
 				val sentRequests by viewModel.sentRequests.collectAsState()
 				val receivedRequests by viewModel.receivedRequests.collectAsState()
 				NoTabRow(
-					selectedTabIndex = selectedSubRoute.ordinal
-				) {
-					MessageCenterSubRoute.entries.fastForEach {
-						NoTab(
-							selected = selectedSubRoute == it,
-							onClick = { selectedSubRoute = it }
-						) {
-							val icon by remember(it, receivedRequests.size) {
-								derivedStateOf {
-									when {
-										it == MessageCenterSubRoute.SENT_REQUEST -> AppIcon.ForwardToInbox
-										receivedRequests.isEmpty() -> AppIcon.Email
-										else -> AppIcon.MarkEmailUnread
-									}
-								}
+					selected = selectedSubRoute,
+					onSelectedChange = { selectedSubRoute = it },
+					items = MessageCenterSubRoute.entries,
+					interval = 12.dp
+				) { subRoute ->
+					val icon by remember(subRoute, receivedRequests.size) {
+						derivedStateOf {
+							when {
+								subRoute == MessageCenterSubRoute.SENT_REQUEST -> AppIcon.ForwardToInbox
+								receivedRequests.isEmpty() -> AppIcon.Email
+								else -> AppIcon.MarkEmailUnread
 							}
-							NoIcon(icon.value())
-							Spacer(modifier = Modifier.width(8.dp))
-							val count = if (it == MessageCenterSubRoute.SENT_REQUEST) sentRequests.size else receivedRequests.size
-							Text(it.title.value(count))
 						}
 					}
+					NoIcon(icon.value())
+					Spacer(modifier = Modifier.width(8.dp))
+					val count = if (subRoute == MessageCenterSubRoute.SENT_REQUEST) sentRequests.size else receivedRequests.size
+					Text(subRoute.title.value(count))
 				}
 				val hostState = LocalSnackbarHostState.current
 				LaunchedEffect(Unit) {

@@ -15,8 +15,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppString
-import com.nocircle.compose.foundation.*
 import com.nocircle.compose.expends.hexToColor
+import com.nocircle.compose.foundation.*
 import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
@@ -39,8 +39,8 @@ fun MessageCenterReceivedRequestList() {
 			columns = columns,
 			modifier = Modifier.fillMaxSize(),
 			contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
-			verticalArrangement = Arrangement.spacedBy(16.dp),
-			horizontalArrangement = Arrangement.spacedBy(16.dp)
+			verticalArrangement = Arrangement.spacedBy(12.dp),
+			horizontalArrangement = Arrangement.spacedBy(12.dp)
 		) {
 			items(requests) {
 				ReceivedRequestCard(
@@ -132,17 +132,15 @@ private fun ReceivedRequestCard(
 					NoTag(
 						text = it.label,
 						color = hexToColor(it.color),
-						shape = MaterialTheme.shapes.extraSmall,
-						contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+						contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
 					)
 					Spacer(modifier = Modifier.width(6.dp))
 				}
 			} else {
 				NoTag(
-					text = "无标签",
+					text = AppString.PERSON_MESSAGE_NO_LABEL.value(),
 					color = MaterialTheme.colorScheme.surfaceContainerHighest,
-					shape = MaterialTheme.shapes.extraSmall,
-					contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+					contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
 				)
 			}
 			Spacer(modifier = Modifier.weight(1f))

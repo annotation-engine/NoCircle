@@ -13,7 +13,7 @@ expect fun NoTooltipArea(
     modifier: Modifier = Modifier,
     delayMillis: Int = 500,
     tooltipPlacement: NoTooltipPlacement = NoTooltipPlacement.CursorPoint(
-        offset = DpOffset(0.dp, 16.dp)
+        offset = DpOffset(Dp.Hairline, 16.dp)
     ),
     content: @Composable () -> Unit
 )

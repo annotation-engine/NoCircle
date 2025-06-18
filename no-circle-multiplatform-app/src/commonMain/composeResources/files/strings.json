@@ -145,6 +145,10 @@
 		"zh": "暂无待处理的消息",
 		"en": "No pending messages at the moment"
 	},
+	"PERSON_MESSAGE_NO_LABEL": {
+		"zh": "无标签",
+		"en": "No Label"
+	},
 	"LABEL": {
 		"zh": "标签",
 		"en": "Label"

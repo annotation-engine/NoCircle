@@ -10,11 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.compose.resources.value
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.resources.ComposeString
+import com.nocircle.compose.resources.value
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +31,7 @@ fun NoAlertModalBottomSheet(
 	onCancel: suspend () -> Unit = {},
 	containerColor: Color = BottomSheetDefaults.ContainerColor,
 	contentColor: Color = contentColorFor(containerColor),
-	tonalElevation: Dp = 0.dp,
+	tonalElevation: Dp = Dp.Hairline,
 	contentWindowInsets: @Composable () -> WindowInsets = { WindowInsets(24.dp, 24.dp, 24.dp, 24.dp) },
 	confirmColors: NoButtonColors = NoButtonColors.PrimaryColors,
 	cancelColors: NoButtonColors = NoButtonColors.SurfaceContainerHighColors,
