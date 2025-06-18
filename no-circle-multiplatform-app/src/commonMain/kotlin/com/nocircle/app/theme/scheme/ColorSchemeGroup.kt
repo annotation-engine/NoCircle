@@ -51,7 +51,7 @@ sealed interface ColorSchemeGroup {
 		}
 		
 		override suspend fun getConfigFromStorage(): ColorSchemeGroup {
-			val name = ColorSchemeGroupConfigKey.get<AppString>() ?: RedColorSchemeGroup.name
+			val name = ColorSchemeGroupConfigKey.get<AppString>() ?: BlueColorSchemeGroup.name
 			return allColorSchemeGroups.first { it.name == name }
 		}
 		
