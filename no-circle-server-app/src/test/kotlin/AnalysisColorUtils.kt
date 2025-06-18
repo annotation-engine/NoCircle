@@ -1,5 +1,3 @@
-package com.nocircle.script
-
 import java.io.File
 
 fun generateColorSchemeGroupCodes(path: String, name: String): String {
