@@ -1,4 +1,4 @@
-package com.nocircle.app.theme.groups
+package com.nocircle.app.theme.scheme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
@@ -7,7 +7,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.theme.groups.ColorSchemeContrast.*
+import com.nocircle.app.theme.scheme.ColorSchemeContrast.*
 import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set

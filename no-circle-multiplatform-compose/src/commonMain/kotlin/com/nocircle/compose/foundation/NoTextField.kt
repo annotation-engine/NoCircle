@@ -235,7 +235,7 @@ object NoTextFieldDefaults {
 	
 	val shape: Shape
 		@Composable
-		get() = MaterialTheme.shapes.small
+		get() = MaterialTheme.shapes.medium
 	
 	val contentPadding = PaddingValues(horizontal = 8.dp)
 	

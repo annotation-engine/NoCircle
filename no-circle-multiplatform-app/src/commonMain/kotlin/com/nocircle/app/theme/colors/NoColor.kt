@@ -2,7 +2,7 @@ package com.nocircle.app.theme.colors
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.nocircle.app.theme.groups.ThemeMode
+import com.nocircle.app.theme.scheme.ThemeMode
 
 class NoColor private constructor(
 	private val light: Color,

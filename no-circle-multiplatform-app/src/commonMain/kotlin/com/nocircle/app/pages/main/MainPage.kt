@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.zIndex
 import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
@@ -45,7 +46,7 @@ import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.theme.groups.ThemeMode
+import com.nocircle.app.theme.scheme.ThemeMode
 import com.nocircle.compose.desktop.NoTooltipArea
 import com.nocircle.compose.desktop.NoTooltipPlacement
 import com.nocircle.compose.desktop.NoWindowDraggableArea
@@ -89,11 +90,22 @@ fun MainPage() {
 					controller.navigate(route = MainRoute, popup = NoPopUp.ALL)
 				}
 			}
+			if (!isCompat) {
+				LeftNavigationBar(
+					subRoute = subRoute,
+					onSubRouteChange = onSubRouteChange
+				)
+			}
 			NoNavHost(
 				navController = controller,
 				startDestination = MainRoute,
 				modifier = Modifier
 					.padding(start = if (isCompat) Dp.Hairline else LeftNavigationWidth)
+					.shadow(
+						elevation = 4.dp,
+						spotColor = MaterialTheme.colorScheme.outlineVariant,
+						ambientColor = MaterialTheme.colorScheme.outlineVariant
+					)
 					.background(MaterialTheme.colorScheme.surface)
 					.fillMaxSize(),
 				navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
@@ -108,12 +120,6 @@ fun MainPage() {
 				composable<SettingsRoute> { SettingsPage() }
 				composable<AppearanceRoute> { AppearancePage() }
 				composable<MessageCenterRoute> { MessageCenterPage() }
-			}
-			if (!isCompat) {
-				LeftNavigationBar(
-					subRoute = subRoute,
-					onSubRouteChange = onSubRouteChange
-				)
 			}
 		}
 	}
@@ -203,6 +209,7 @@ private fun LeftNavigationBar(
 	if (alpha > 0f) {
 		Box(
 			modifier = Modifier
+				.zIndex(1f)
 				.padding(start = width)
 				.fillMaxSize()
 				.background(Color.Black.copy(alpha = alpha))
@@ -214,7 +221,13 @@ private fun LeftNavigationBar(
 				}
 		)
 	}
-	NoWindowDraggableArea {
+	val index by remember(alpha) {
+		derivedStateOf { if (alpha == 0f) 0f else 1f }
+	}
+	NoWindowDraggableArea(
+		modifier = Modifier
+			.zIndex(index)
+	) {
 		BoxWithConstraints(
 			modifier = Modifier
 				.width(width)
@@ -267,7 +280,7 @@ private fun LeftNavigationBar(
 							url = userDetail!!.avatarUrl,
 							modifier = Modifier
 								.size(LeftNavigationItemHeight)
-								.clip(MaterialTheme.shapes.small)
+								.clip(MaterialTheme.shapes.medium)
 								.clickable {
 									onSubRouteChange(MainSubRoute.PERSON)
 								},
@@ -395,10 +408,10 @@ private fun LeftMenuItem(
 			modifier = modifier
 				.fillMaxWidth()
 				.height(LeftNavigationItemHeight)
-				.clip(MaterialTheme.shapes.small)
+				.clip(MaterialTheme.shapes.medium)
 				.background(
 					color = containerColor,
-					shape = MaterialTheme.shapes.small
+					shape = MaterialTheme.shapes.medium
 				)
 				.clickable(
 					onClick = onClick
@@ -443,7 +456,7 @@ private fun LeftToolItem(
 			modifier = Modifier
 				.fillMaxWidth()
 				.height(LeftNavigationItemHeight)
-				.clip(MaterialTheme.shapes.small)
+				.clip(MaterialTheme.shapes.medium)
 				.clickable(onClick = onClick)
 				.padding(horizontal = 12.dp),
 			verticalAlignment = Alignment.CenterVertically,
@@ -481,18 +494,18 @@ private fun LeftItemWithExpended(
 			Text(
 				text = tooltipText,
 				modifier = Modifier
-					.clip(MaterialTheme.shapes.small)
+					.clip(MaterialTheme.shapes.medium)
 					.shadow(
 						elevation = 8.dp,
 					)
 					.border(
 						width = 1.dp,
 						color = Color(0xFF2B2D31),
-						shape = MaterialTheme.shapes.small
+						shape = MaterialTheme.shapes.medium
 					)
 					.background(
 						color = Color(0xFF25272C),
-						shape = MaterialTheme.shapes.small
+						shape = MaterialTheme.shapes.medium
 					)
 					.padding(
 						horizontal = 12.dp,

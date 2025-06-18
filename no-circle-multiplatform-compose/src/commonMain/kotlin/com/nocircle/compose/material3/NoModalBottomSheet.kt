@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.compose.resources.value
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.resources.ComposeIcon
+import com.nocircle.compose.resources.value
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +38,7 @@ fun NoModalBottomSheet(
 		sheetState = sheetState,
 		containerColor = containerColor,
 		contentColor = contentColor,
-		shape = MaterialTheme.shapes.medium,
+		shape = MaterialTheme.shapes.large,
 		tonalElevation = tonalElevation,
 		dragHandle = {},
 		contentWindowInsets = contentWindowInsets

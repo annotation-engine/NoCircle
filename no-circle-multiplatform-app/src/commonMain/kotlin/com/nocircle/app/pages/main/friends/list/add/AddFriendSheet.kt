@@ -58,7 +58,7 @@ fun AddFriendSheet(
 			placeholder = { Text(AppString.FRIENDS_ADD_FRIEND_HINT.value()) }
 		)
 		Spacer(modifier = Modifier.height(16.dp))
-		HorizontalDivider()
+		HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerHighest)
 		Spacer(modifier = Modifier.height(16.dp))
 		Column(
 			modifier = Modifier
@@ -104,7 +104,7 @@ private fun UserCard(
 			url = searchUser.avatarUrl,
 			modifier = Modifier
 				.size(100.dp)
-				.clip(MaterialTheme.shapes.small),
+				.clip(MaterialTheme.shapes.medium),
 			placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceDim),
 			contentScale = ContentScale.Crop
 		)
@@ -161,7 +161,7 @@ private fun UserCard(
 		}
 	}
 	Spacer(modifier = Modifier.height(16.dp))
-	HorizontalDivider()
+	HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerHighest)
 	Spacer(modifier = Modifier.height(16.dp))
 	val viewModel = koinViewModel<AddFriendViewModel>()
 	var enabled by remember(searchUser.relationship, searchUser.isAlreadySend) {

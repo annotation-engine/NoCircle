@@ -30,7 +30,7 @@ fun NoIconButton(
 	contentDescription: String? = null,
 	modifier: Modifier = Modifier,
 	tint: Color = LocalContentColor.current,
-	shape: Shape = MaterialTheme.shapes.small,
+	shape: Shape = MaterialTheme.shapes.medium,
 	contentPadding: PaddingValues = PaddingValues(8.dp),
 	containerColor: Color = Color.Transparent,
 	interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },

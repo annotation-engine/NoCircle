@@ -1,7 +1,5 @@
 package com.nocircle.app.pages.settings
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -12,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
@@ -22,10 +19,8 @@ import com.nocircle.app.pages.settings.memory.Memory
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.rootController
-import com.nocircle.compose.navigation.LocalNavController
-import com.nocircle.compose.navigation.NoPopUp
-import com.nocircle.compose.navigation.NoRoute
-import com.nocircle.compose.windowsize.WindowWidthSizes
+import com.nocircle.app.theme.shape.RoundedCornerType
+import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.layout.NoAlertModalBottomSheet
@@ -33,9 +28,13 @@ import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.material3.NoDropdownMenu
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoPopUp
+import com.nocircle.compose.navigation.NoRoute
 import com.nocircle.compose.resources.NoIconType
 import com.nocircle.compose.resources.SupportedLanguage
 import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -81,6 +80,8 @@ fun SettingsPage() {
 				SwitchLanguage()
 				Spacer(modifier = Modifier.height(16.dp))
 				SwitchIconType()
+				Spacer(modifier = Modifier.height(16.dp))
+				SwitchRoundedCornerType()
 				Spacer(modifier = Modifier.height(16.dp))
 				Memory()
 				Spacer(modifier = Modifier.height(16.dp))
@@ -201,6 +202,53 @@ private fun NoIconType.getAppString(): AppString = when (this) {
 }
 
 /**
+ * 切换圆角类型
+ */
+@Composable
+private fun SwitchRoundedCornerType() {
+	var expanded by remember { mutableStateOf(false) }
+	NoDropdownMenu(
+		expanded = expanded,
+		onExpandedChange = { expanded = it },
+		menuItems = {
+			val coroutineScope = rememberCoroutineScope()
+			RoundedCornerType.entries.fastForEach {
+				DropdownMenuItem(
+					text = { Text(it.getAppString().value()) },
+					onClick = {
+						coroutineScope.launch(Dispatchers.IO) {
+							RoundedCornerType.set(it)
+						}
+						expanded = false
+					}
+				)
+			}
+		}
+	) {
+		NoOption(
+			title = { Text(AppString.SETTINGS_ROUNDED_CORNER_TYPE.value()) },
+			icon = { NoIcon(AppIcon.RoundedCorner.value()) },
+			actions = {
+				Text(
+					text = RoundedCornerType.current.getAppString().value(),
+					overflow = TextOverflow.Ellipsis,
+					maxLines = 1
+				)
+			}
+		)
+	}
+}
+
+@Stable
+private fun RoundedCornerType.getAppString(): AppString = when (this) {
+	RoundedCornerType.EXTRA_SMALL -> AppString.SETTINGS_ROUNDED_CORNER_EXTRA_SMALL
+	RoundedCornerType.SMALL -> AppString.SETTINGS_ROUNDED_CORNER_SMALL
+	RoundedCornerType.MEDIUM -> AppString.SETTINGS_ROUNDED_CORNER_MEDIUM
+	RoundedCornerType.LARGE -> AppString.SETTINGS_ROUNDED_CORNER_LARGE
+	RoundedCornerType.EXTRA_LARGE -> AppString.SETTINGS_ROUNDED_CORNER_EXTRA_LARGE
+}
+
+/**
  * 退出登录
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -234,23 +282,13 @@ private fun Logout(
 			}
 		)
 	}
-	Box(
+	NoButton(
+		text = AppString.SETTINGS_LOGOUT.value(),
 		modifier = Modifier
 			.fillMaxWidth()
-			.height(60.dp)
-			.clip(MaterialTheme.shapes.small)
-			.background(
-				color = MaterialTheme.colorScheme.error
-			)
-			.clickable {
-				showLogoutModal = true
-			},
-		contentAlignment = Alignment.Center
+			.height(60.dp),
+		colors = NoButtonColors.ErrorColors
 	) {
-		Text(
-			text = AppString.SETTINGS_LOGOUT.value(),
-			style = MaterialTheme.typography.bodyLarge,
-			color = MaterialTheme.colorScheme.onError
-		)
+		showLogoutModal = true
 	}
 }

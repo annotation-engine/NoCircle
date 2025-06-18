@@ -1,25 +1,28 @@
 package com.nocircle.app.theme
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import com.nocircle.app.theme.groups.ThemeMode
-import com.nocircle.app.theme.groups.getColorScheme
+import androidx.compose.material3.Shapes
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.Dp
+import com.nocircle.app.theme.scheme.ThemeMode
+import com.nocircle.app.theme.scheme.getColorScheme
+import com.nocircle.app.theme.shape.RoundedCornerType
 
 @Composable
 fun NoMaterialTheme(
 	content: @Composable () -> Unit,
 ) {
-	val colorScheme = getColorScheme()
 	val isDark = ThemeMode.current.isDark
 	LaunchedEffect(isDark) {
 		onDarkModeChanged(isDark)
 	}
 	MaterialTheme(
-		colorScheme = animateColorScheme(colorScheme),
+		colorScheme = animateColorScheme(),
+		shapes = animateShapes(),
 		content = content,
 	)
 }
@@ -27,7 +30,8 @@ fun NoMaterialTheme(
 expect fun onDarkModeChanged(isDarkTheme: Boolean)
 
 @Composable
-fun animateColorScheme(target: ColorScheme): ColorScheme {
+private fun animateColorScheme(): ColorScheme {
+	val target = getColorScheme()
 	val transition = updateTransition(target, label = "ColorSchemeTransition")
 	return ColorScheme(
 		primary = transition.animateColor(label = "primary") { it.primary }.value,
@@ -67,4 +71,31 @@ fun animateColorScheme(target: ColorScheme): ColorScheme {
 		surfaceContainerLow = transition.animateColor(label = "surfaceContainerLow") { it.surfaceContainerLow }.value,
 		surfaceContainerLowest = transition.animateColor(label = "surfaceContainerLowest") { it.surfaceContainerLowest }.value,
 	)
+}
+
+@Composable
+private fun animateShapes(): Shapes {
+	val target = RoundedCornerType.current
+	val updateTransition = updateTransition(target, label = "CornersTransition")
+	return Shapes(
+		extraSmall = updateTransition.animateRoundedCornerShape { it.extraSmall }.value,
+		small = updateTransition.animateRoundedCornerShape { it.small }.value,
+		medium = updateTransition.animateRoundedCornerShape { it.medium }.value,
+		large = updateTransition.animateRoundedCornerShape { it.large }.value,
+		extraLarge = updateTransition.animateRoundedCornerShape { it.extraLarge }.value,
+	)
+}
+
+@Composable
+private inline fun <S> Transition<S>.animateRoundedCornerShape(
+	noinline transitionSpec: @Composable Transition.Segment<S>.() -> FiniteAnimationSpec<Dp> = {
+		spring(visibilityThreshold = Dp.VisibilityThreshold)
+	},
+	label: String = "RoundedCornerShapeAnimation",
+	targetValueByState: @Composable() (state: S) -> Dp
+): State<RoundedCornerShape> {
+	val value by this.animateDp(transitionSpec, label, targetValueByState)
+	return remember(value) {
+		derivedStateOf { RoundedCornerShape(value) }
+	}
 }

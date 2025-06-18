@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -19,11 +20,12 @@ fun NoDropdownMenu(
 	expanded: Boolean,
 	onExpandedChange: (Boolean) -> Unit,
 	menuItems: @Composable ColumnScope.() -> Unit,
+	shape: Shape = MaterialTheme.shapes.medium,
 	content: @Composable BoxScope.() -> Unit
 ) {
 	BoxWithConstraints(
 		modifier = Modifier
-			.clip(MaterialTheme.shapes.small)
+			.clip(shape)
 			.clickable {
 				onExpandedChange(true)
 			}

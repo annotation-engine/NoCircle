@@ -130,8 +130,8 @@
 	},
 	"PERSON_ID": "ID: {}",
 	"PERSON_SETTINGS_SUBTITLE": {
-		"zh": "外观、语言、图标、内存、退出登录",
-		"en": "Appearance, Language, Icons, Memory, Log Out"
+		"zh": "外观、语言、图标、圆角、内存、退出登录",
+		"en": "Appearance, Language, Icons, Rounded Corner, Memory, Logout"
 	},
 	"PERSON_LAST_LOGIN_TIME": {
 		"zh": "上次登录时间",
@@ -199,7 +199,7 @@
 	},
 	"SETTINGS_APPEARANCE_SUBTITLE": {
 		"zh": "对比度，深浅色模式，主题色",
-		"en": "Contrast, Light/Dark Mode, Theme Color"
+		"en": "Contrast, Dark/Light Mode, Theme Color"
 	},
 	"SETTINGS_LOGOUT": {
 		"zh": "退出登录",
@@ -240,6 +240,30 @@
 	"SETTINGS_TWO_TONE": {
 		"zh": "双色",
 		"en": "Two Tone"
+	},
+	"SETTINGS_ROUNDED_CORNER_TYPE": {
+		"zh": "圆角",
+		"en": "Rounded Corner"
+	},
+	"SETTINGS_ROUNDED_CORNER_EXTRA_SMALL": {
+		"zh": "超小",
+		"en": "Extra Small"
+	},
+	"SETTINGS_ROUNDED_CORNER_SMALL": {
+		"zh": "小",
+		"en": "Small"
+	},
+	"SETTINGS_ROUNDED_CORNER_MEDIUM": {
+		"zh": "中",
+		"en": "Medium"
+	},
+	"SETTINGS_ROUNDED_CORNER_LARGE": {
+		"zh": "大",
+		"en": "Large"
+	},
+	"SETTINGS_ROUNDED_CORNER_EXTRA_LARGE": {
+		"zh": "超大",
+		"en": "Extra Large"
 	},
 	"SETTINGS_MEMORY": {
 		"zh": "内存",
@@ -283,7 +307,7 @@
 	},
 	"APPEARANCE_THEME_MODE": {
 		"zh": "深浅色模式",
-		"en": "Dark and Light Mode"
+		"en": "Dark/Light Mode"
 	},
 	"APPEARANCE_THEME_MODE_LIGHT": {
 		"zh": "浅色主题",

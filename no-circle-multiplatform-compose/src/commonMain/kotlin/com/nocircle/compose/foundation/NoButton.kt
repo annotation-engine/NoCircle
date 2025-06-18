@@ -30,7 +30,7 @@ fun NoButton(
 	enabled: Boolean = true,
 	style: TextStyle = MaterialTheme.typography.bodyLarge,
 	colors: NoButtonColors = NoButtonDefaults.DefaultButtonColors,
-	shape: Shape = MaterialTheme.shapes.small,
+	shape: Shape = MaterialTheme.shapes.medium,
 	contentPadding: PaddingValues = NoButtonDefaults.ContentPadding,
 	context: CoroutineContext = EmptyCoroutineContext,
 	onClick: (suspend CoroutineScope.() -> Unit)? = null,

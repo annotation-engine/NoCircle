@@ -32,18 +32,18 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.theme.groups.ColorSchemeContrast
-import com.nocircle.app.theme.groups.ColorSchemeGroup
-import com.nocircle.app.theme.groups.ThemeMode
-import com.nocircle.app.theme.groups.getColorScheme
+import com.nocircle.app.theme.scheme.ColorSchemeContrast
+import com.nocircle.app.theme.scheme.ColorSchemeGroup
+import com.nocircle.app.theme.scheme.ThemeMode
+import com.nocircle.app.theme.scheme.getColorScheme
+import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.material3.NoScaffold
+import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.navigation.LocalNavController
 import com.nocircle.compose.navigation.NoRoute
 import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.compose.windowsize.calculateWindowWidthSize
-import com.nocircle.compose.foundation.NoIcon
-import com.nocircle.compose.material3.NoScaffold
-import com.nocircle.compose.material3.NoTopAppBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
@@ -341,6 +341,7 @@ private fun ColorSchemeCard(
 	onClick: (() -> Unit)? = null,
 ) {
 	val borderColor = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent
+	val surface = MaterialTheme.colorScheme.surface
 	MaterialTheme(colorScheme) {
 		val interactionSource = remember { MutableInteractionSource() }
 		val isHovered by interactionSource.collectIsHoveredAsState()
@@ -357,7 +358,7 @@ private fun ColorSchemeCard(
 			modifier = Modifier
 				.scale(scale)
 				.fillMaxWidth()
-				.clip(MaterialTheme.shapes.large)
+				.clip(MaterialTheme.shapes.medium)
 				.then(
 					if (onClick == null) Modifier else Modifier.clickable(
 						interactionSource = interactionSource,
@@ -368,15 +369,16 @@ private fun ColorSchemeCard(
 				.border(
 					width = 3.dp,
 					color = borderColor,
-					shape = MaterialTheme.shapes.large
+					shape = MaterialTheme.shapes.medium
+				)
+				.border(
+					width = 6.dp,
+					color = surface,
+					shape = MaterialTheme.shapes.medium
 				)
 				.then(modifier)
 				.padding(6.dp)
-				.clip(MaterialTheme.shapes.medium)
-				.background(
-					color = MaterialTheme.colorScheme.primaryContainer,
-					shape = MaterialTheme.shapes.medium
-				)
+				.background(MaterialTheme.colorScheme.primaryContainer)
 				.hoverable(interactionSource)
 		) {
 			Row(

@@ -16,11 +16,11 @@ import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.compose.expends.getDisplayLength
+import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoTextField
-import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.material3.LocalSnackbarHostState
 import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
@@ -192,11 +192,13 @@ private fun Label(
 				color = if (selected) color else Color.Transparent,
 				shape = MaterialTheme.shapes.small
 			)
-			.padding(5.dp)
-			.background(
-				color = color,
-				shape = MaterialTheme.shapes.extraSmall
+			.border(
+				width = 5.dp,
+				color = MaterialTheme.colorScheme.surfaceContainerLow,
+				shape = MaterialTheme.shapes.small
 			)
+			.padding(5.dp)
+			.background(color)
 			.padding(
 				horizontal = 12.dp,
 			),
@@ -226,11 +228,13 @@ private fun AddLabel(
 				color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
 				shape = MaterialTheme.shapes.small
 			)
+			.border(
+				width = 5.dp,
+				color = MaterialTheme.colorScheme.surfaceContainerLow,
+				shape = MaterialTheme.shapes.small
+			)
 			.padding(5.dp)
-			.background(
-				color = MaterialTheme.colorScheme.surfaceContainerHighest,
-				shape = MaterialTheme.shapes.extraSmall
-			),
+			.background(MaterialTheme.colorScheme.surfaceContainerHighest),
 		contentAlignment = Alignment.Center
 	) {
 		NoIcon(
