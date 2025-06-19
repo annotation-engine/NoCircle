@@ -1,6 +1,5 @@
 package com.nocircle.compose.layout
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -72,35 +71,30 @@ fun NoSplitLayout(
 			val currentContentWidth by rememberUpdatedState(contentWidth)
 			val interactionSource = remember { MutableInteractionSource() }
 			val isHovered by interactionSource.collectIsHoveredAsState()
-			var isDragging by remember { mutableStateOf(false) }
-			val isHighlight by remember(isHovered || isDragging) {
-				derivedStateOf { isHovered || isDragging }
-			}
 			var centerPercent by remember { mutableStateOf(0f) }
-			val color by animateColorAsState(
-				targetValue = if (isHighlight) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-			)
 			var isFocused by remember { mutableStateOf(false) }
-			val bothEndsAlpha by animateFloatAsState(
+			val centerAlpha by animateFloatAsState(
 				targetValue = when {
-					!isHighlight -> 1f
-					else -> 0.05f
+					isFocused -> 1f
+					isHovered -> 0.6f
+					else -> 0.15f
 				}
 			)
-			val centerAlpha by animateFloatAsState(
-				targetValue = if (isFocused || !isHighlight) 1f else 0.5f
-			)
-			val lineBrush by remember(color, centerPercent, centerAlpha, bothEndsAlpha) {
+			val color = MaterialTheme.colorScheme.primary
+			val lineBrush by remember(color, centerPercent, centerAlpha) {
 				derivedStateOf {
 					Brush.verticalGradient(
-						0f to color.copy(alpha = bothEndsAlpha),
+						0f to color.copy(alpha = 0.15f),
 						centerPercent to color.copy(alpha = centerAlpha),
-						1f to color.copy(alpha = bothEndsAlpha),
+						1f to color.copy(alpha = 0.15f),
 					)
 				}
 			}
 			val paddingHorizontal by animateDpAsState(
-				targetValue = if (isHighlight) 7.5.dp else 8.dp
+				targetValue = when {
+					isFocused || isHovered -> 7.5.dp
+					else -> 8.dp
+				}
 			)
 			Box(
 				modifier = Modifier
@@ -113,16 +107,13 @@ fun NoSplitLayout(
 						var contentWidth = Dp.Hairline
 						detectDragGestures(
 							onDragStart = {
-								isDragging = true
 								isFocused = true
 								contentWidth = currentContentWidth
 							},
 							onDragEnd = {
-								isDragging = false
 								isFocused = false
 							},
 							onDragCancel = {
-								isDragging = false
 								isFocused = false
 							},
 							onDrag = { change, dragAmount ->
