@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -54,8 +53,8 @@ fun NoButton(
 			.shadow(
 				elevation = shadowElevation,
 				shape = shape,
-				ambientColor = DefaultShadowColor,
-				spotColor = DefaultShadowColor
+				ambientColor = colors.containerColor,
+				spotColor = colors.containerColor
 			)
 			.then(modifier)
 			.height(52.dp),

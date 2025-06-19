@@ -185,17 +185,17 @@ private fun Label(
 	Box(
 		modifier = Modifier
 			.fillMaxHeight()
-			.clip(MaterialTheme.shapes.small)
+			.clip(MaterialTheme.shapes.medium)
 			.clickable { onClick() }
 			.border(
 				width = 2.dp,
 				color = if (selected) color else Color.Transparent,
-				shape = MaterialTheme.shapes.small
+				shape = MaterialTheme.shapes.medium
 			)
 			.border(
 				width = 5.dp,
 				color = MaterialTheme.colorScheme.surfaceContainerLow,
-				shape = MaterialTheme.shapes.small
+				shape = MaterialTheme.shapes.medium
 			)
 			.padding(5.dp)
 			.background(color)
