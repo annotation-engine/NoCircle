@@ -12,21 +12,24 @@ object Users : NoTable("tb_user") {
 	val password = char("password", 98)
 	
 	val nickname = varchar("nickname", 20)
-		.nullable()
+	
+	val pinyin = varchar("pinyin", 100)
 	
 	val avatarUrl = varchar("avatar_url", 255)
 		.nullable()
 }
 
-class User(id: EntityID<Int>) : NoIntEntity(id, Users) {
+class User(id: EntityID<Int>) : NoIntEntity<Users>(id, Users) {
 	
 	companion object : IntEntityClass<User>(Users)
 	
-	var username by Users.username
+	var username by table.username
 	
-	var password by Users.password
+	var password by table.password
 	
-	val nickname by Users.nickname
+	val nickname by table.nickname
 	
-	val avatarUrl by Users.avatarUrl
+	val pinyin by table.pinyin
+	
+	val avatarUrl by table.avatarUrl
 }

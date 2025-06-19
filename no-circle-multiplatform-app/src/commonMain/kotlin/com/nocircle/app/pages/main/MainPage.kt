@@ -72,6 +72,7 @@ fun MainPage() {
 	val viewModel = koinViewModel<MainViewModel>()
 	val hostState = remember { SnackbarHostState() }
 	LaunchedEffect(Unit) {
+		hostState.showNoSnackbar(AppString.LOGIN_SUCCESS)
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(

@@ -16,13 +16,13 @@ object FriendRequests : NoTable("tb_friend_request") {
 	enum class Status { AGREED, REJECTED, WAITING, CANCELED }
 }
 
-class FriendRequest(id: EntityID<Int>) : NoIntEntity(id, FriendRequests) {
+class FriendRequest(id: EntityID<Int>) : NoIntEntity<FriendRequests>(id, FriendRequests) {
 	
 	companion object Companion : IntEntityClass<FriendRequest>(FriendRequests)
 	
-	val senderId by FriendRequests.senderId
+	val senderId by table.senderId
 	
-	val receiverId by FriendRequests.receiverId
+	val receiverId by table.receiverId
 	
-	val status by FriendRequests.status
+	val status by table.status
 }

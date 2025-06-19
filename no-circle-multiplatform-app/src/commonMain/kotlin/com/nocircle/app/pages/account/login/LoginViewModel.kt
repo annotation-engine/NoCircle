@@ -6,9 +6,8 @@ import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.set
-import com.nocircle.common.coroutines.KFunctionLocker
+import com.nocircle.common.coroutines.FunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
-import com.nocircle.compose.resources.getString
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,15 +33,15 @@ class LoginViewModel() : NoViewModel() {
 	}
 	
 	suspend fun login(): Boolean {
-		return KFunctionLocker.tryWithLock(::login, OnBusyReturnFalse) {
+		return FunctionLocker.tryWithLock(::login, OnBusyReturnFalse) {
 			val username = this._username.value
 			val password = this._password.value
 			if (username.isEmpty()) {
-				showNoSnackbar(AppString.LOGIN_PLEASE_INPUT_USERNAME.getString())
+				showNoSnackbar(AppString.LOGIN_PLEASE_INPUT_USERNAME)
 				return@tryWithLock false
 			}
 			if (password.isEmpty()) {
-				showNoSnackbar(AppString.LOGIN_PLEASE_INPUT_PASSWORD.getString())
+				showNoSnackbar(AppString.LOGIN_PLEASE_INPUT_PASSWORD)
 				return@tryWithLock false
 			}
 			val result = ktorfitx.userApi.login(username, password)

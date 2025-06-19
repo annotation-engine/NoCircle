@@ -6,7 +6,6 @@ import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.log.NoLog
 import com.nocircle.common.websocket.WebSocketScheduler
-import com.nocircle.compose.resources.getString
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.websocket.*
@@ -27,7 +26,6 @@ class MainViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch(Dispatchers.IO) {
-			showNoSnackbar(AppString.LOGIN_SUCCESS.getString())
 			keepAlive()
 		}
 	}
@@ -39,7 +37,7 @@ class MainViewModel : NoViewModel() {
 			try {
 				ktorfitx.keepAliveApi.keepAlive {
 					if (attempt > 0) {
-						showNoSnackbar("您已上线")
+						showNoSnackbar(AppString.MAIN_WEBSOCKET_ONLINE)
 					}
 					attempt = 0
 					for (frame in incoming) {
@@ -64,7 +62,7 @@ class MainViewModel : NoViewModel() {
 			}
 			attempt++
 			if (attempt == 1) {
-				showNoErrorSnackbar("您已掉线，请检查网络是否正常")
+				showNoErrorSnackbar(AppString.MAIN_WEBSOCKET_OFFLINE)
 			}
 			val duration = 2.0.pow(attempt).seconds.coerceIn(reconnectDurationRange)
 			delay(duration)

@@ -7,18 +7,22 @@ import org.jetbrains.exposed.v1.dao.IntEntityClass
 
 object FriendRelationships : NoTable("tb_friend_relationship") {
 	
-	val senderId = integer("sender_id")
+	val userId = integer("user_id")
 		.references(Users.id)
 	
-	val receiverId = integer("receiver_id")
+	val friendId = integer("friend_id")
 		.references(Users.id)
+	
+	val pinyin = varchar("pinyin", 100)
 }
 
-class FriendRelationship(id: EntityID<Int>) : NoIntEntity(id, FriendRelationships) {
+class FriendRelationship(id: EntityID<Int>) : NoIntEntity<FriendRelationships>(id, FriendRelationships) {
 	
 	companion object : IntEntityClass<FriendRelationship>(FriendRelationships)
 	
-	val senderId by FriendRelationships.senderId
+	val userId by table.userId
 	
-	val receiverId by FriendRelationships.receiverId
+	val friendId by table.friendId
+	
+	val pinyin by table.pinyin
 }

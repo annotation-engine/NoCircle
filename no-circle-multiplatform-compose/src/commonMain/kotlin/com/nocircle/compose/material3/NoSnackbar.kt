@@ -4,11 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,12 +14,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nocircle.compose.resources.getIcon
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoSnackbarColors.*
 import com.nocircle.compose.resources.ComposeIcon
-import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.getString
+import com.nocircle.compose.resources.NoString
+import com.nocircle.compose.resources.getIcon
+import com.nocircle.compose.resources.getString
 
 @Composable
 fun NoSnackbar(
@@ -169,10 +165,10 @@ suspend fun SnackbarHostState.showNoSnackbar(
 ): SnackbarResult = showSnackbar(NoSnackbarVisuals(message, actionLabel, prefixIcon, withDismissAction, duration, colors))
 
 suspend fun SnackbarHostState.showNoSnackbar(
-	message: StringResource,
+	message: NoString,
 	actionLabel: String? = null,
 	prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
 	withDismissAction: Boolean = false,
 	duration: SnackbarDuration = SnackbarDuration.Short,
 	colors: NoSnackbarColors? = null,
-): SnackbarResult = showSnackbar(NoSnackbarVisuals(getString(message), actionLabel, prefixIcon, withDismissAction, duration, colors))
+): SnackbarResult = showSnackbar(NoSnackbarVisuals(message.getString(), actionLabel, prefixIcon, withDismissAction, duration, colors))

@@ -45,7 +45,7 @@ fun LoginPage() {
 			val username = controller.getResult<String>("username")
 			if (username != null) {
 				viewModel.updateUsername(username)
-				hostState.showNoSnackbar(AppString.REGISTER_SUCCESS.getString())
+				hostState.showNoSnackbar(AppString.REGISTER_SUCCESS)
 			}
 		}
 		viewModel.snackbarCollect(hostState::showNoSnackbar)

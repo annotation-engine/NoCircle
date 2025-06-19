@@ -4,7 +4,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.reflect.KFunction
 
-object KFunctionLocker {
+object FunctionLocker {
 	
 	private val mutexMap = mutableMapOf<KFunction<*>, Mutex>()
 	

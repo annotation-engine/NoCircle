@@ -5,7 +5,7 @@ import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
-import com.nocircle.common.coroutines.KFunctionLocker
+import com.nocircle.common.coroutines.FunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
 import com.nocircle.compose.expends.colorToHex
 import com.nocircle.compose.resources.getString
@@ -14,7 +14,7 @@ import com.nocircle.compose.viewmodel.NoViewModel
 class EditLabelViewModel : NoViewModel() {
 	
 	suspend fun deleteLabelById(id: Int): Boolean {
-		return KFunctionLocker.tryWithLock(::deleteLabelById, OnBusyReturnFalse) {
+		return FunctionLocker.tryWithLock(::deleteLabelById, OnBusyReturnFalse) {
 			val result = ktorfitx.labelApi.deleteLabelById(id)
 				?: return@tryWithLock networkError()
 			autoShowNoSnackbar(result.success, result.msg)
@@ -23,7 +23,7 @@ class EditLabelViewModel : NoViewModel() {
 	}
 	
 	suspend fun addLabel(label: String, color: Color): Boolean {
-		return KFunctionLocker.tryWithLock(::addLabel, OnBusyReturnFalse) {
+		return FunctionLocker.tryWithLock(::addLabel, OnBusyReturnFalse) {
 			if (label.isBlank()) {
 				showNoErrorSnackbar(AppString.LABEL_MUST_NOT_EMPTY.getString())
 				return@tryWithLock false
@@ -36,7 +36,7 @@ class EditLabelViewModel : NoViewModel() {
 	}
 	
 	suspend fun updateLabel(id: Int, label: String, color: Color): Boolean {
-		return KFunctionLocker.tryWithLock(::updateLabel, OnBusyReturnFalse) {
+		return FunctionLocker.tryWithLock(::updateLabel, OnBusyReturnFalse) {
 			if (label.isBlank()) {
 				showNoErrorSnackbar(AppString.LABEL_MUST_NOT_EMPTY.getString())
 				return@tryWithLock false

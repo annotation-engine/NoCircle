@@ -15,3 +15,7 @@ fun Instant.formatToShanghai(pattern: String = DEFAULT_PATTERN): String {
 	UtcOffset(8)
 	return formatter.format(localDateTime)
 }
+
+fun Instant.toShanghaiLocalDateTime(): LocalDateTime {
+	return this.toLocalDateTime(TimeZone.of("Asia/Shanghai"))
+}

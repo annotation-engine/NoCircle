@@ -113,7 +113,7 @@ private fun UserCard(
 		) {
 			Column {
 				Text(
-					text = searchUser.nickname ?: AppString.FRIENDS_ADD_FRIEND_NOT_NICKNAME.value(),
+					text = searchUser.nickname,
 					color = MaterialTheme.colorScheme.onSurface,
 					style = MaterialTheme.typography.titleMedium,
 				)

@@ -9,12 +9,7 @@ import com.nocircle.app.pages.guide.GuidePage
 import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.MainPage
 import com.nocircle.app.pages.main.MainRoute
-import com.nocircle.compose.navigation.LocalNavControllerProvider
-import com.nocircle.compose.navigation.NavPopTransition
-import com.nocircle.compose.navigation.NavTransition
-import com.nocircle.compose.navigation.NoNavHost
-import com.nocircle.compose.navigation.NoNavHostController
-import com.nocircle.compose.navigation.composable
+import com.nocircle.compose.navigation.*
 
 var rootController: NoNavHostController? = null
 

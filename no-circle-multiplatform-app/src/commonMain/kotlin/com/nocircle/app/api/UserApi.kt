@@ -2,8 +2,8 @@ package com.nocircle.app.api
 
 import cn.vividcode.multiplatform.ktorfitx.annotation.*
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
-import com.nocircle.shared.model.user.UserLoginDTO
 import com.nocircle.shared.model.user.UserDetailDTO
+import com.nocircle.shared.model.user.UserLoginDTO
 
 @Api(url = "user")
 interface UserApi {
@@ -18,6 +18,7 @@ interface UserApi {
 	suspend fun register(
 		@Field username: String,
 		@Field password: String,
+		@Field nickname: String
 	): ResultBody<Unit>?
 	
 	@BearerAuth

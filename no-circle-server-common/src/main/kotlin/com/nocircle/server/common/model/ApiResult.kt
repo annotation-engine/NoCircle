@@ -12,6 +12,12 @@ data class ApiResult<out T : Any>(
 	val data: T?
 )
 
+@Serializable
+data class PagedList<out T : Any>(
+	val items: List<T>,
+	val total: Int
+)
+
 suspend inline fun <reified T, C : BaseCode> ApplicationCall.respondOK(
 	data: T,
 	code: C

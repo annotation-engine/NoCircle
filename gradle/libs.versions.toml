@@ -8,6 +8,7 @@ androidx-activity-compose = "1.10.1"
 compose-multiplatform = "1.8.2"
 navigation-compose = "2.9.0-beta03"
 kotlinx-coroutines-swing = "1.10.2"
+kotlinx-datetime = "0.6.2"
 room = "2.7.1"
 sqlite = "2.5.1"
 koin = "4.1.0"
@@ -21,10 +22,12 @@ hutool = "5.8.38"
 redisson = "3.50.0"
 ksp = "2.2.0-RC3-2.0.2"
 hot-reload = "1.0.0-alpha11"
+tinypinyin = "2.0.3.RELEASE"
 
 [libraries]
 # Kotlin Multiplatform
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines-swing" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 material3-window-size-clazz = { group = "org.jetbrains.compose.material3", name = "material3-window-size-class", version.ref = "compose-multiplatform" }
@@ -61,7 +64,9 @@ exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kot
 mysql-connector-j = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
+hutool-extra = { group = "cn.hutool", name = "hutool-extra", version.ref = "hutool" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
+tinypinyin = { group = "io.github.biezhi", name = "TinyPinyin", version.ref = "tinypinyin" }
 
 # Common
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
@@ -94,7 +99,8 @@ multiplatform-app = [
     'coil-compose',
     'coil-network-ktor3',
     'ktorfitx-api',
-    'ktorfitx-websockets'
+    'ktorfitx-websockets',
+    'kotlinx-datetime'
 ]
 
 multiplatform-app-desktop = [
@@ -170,9 +176,12 @@ server-common = [
     'exposed-core',
     'exposed-dao',
     'exposed-jdbc',
-    'exposed-kotlin-datetime'
+    'exposed-kotlin-datetime',
+    'hutool-extra',
+    'tinypinyin'
 ]
 
 shared = [
-    'ktor-serialization-kotlinx-json'
+    'ktor-serialization-kotlinx-json',
+    'kotlinx-datetime'
 ]

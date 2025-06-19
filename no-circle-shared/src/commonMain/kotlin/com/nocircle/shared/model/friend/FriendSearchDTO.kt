@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class FriendSearchDTO(
 	val userId: Int,
 	val username: String,
-	val nickname: String?,
+	val nickname: String,
 	val avatarUrl: String?,
 	val labels: List<LabelDTO>,
 	val relationship: RelationshipDTO,

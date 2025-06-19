@@ -15,13 +15,13 @@ object UserLabels : NoTable("tb_user_label") {
 	val color = char("color", 9)
 }
 
-class UserLabel(id: EntityID<Int>) : NoIntEntity(id, UserLabels) {
+class UserLabel(id: EntityID<Int>) : NoIntEntity<UserLabels>(id, UserLabels) {
 	
 	companion object : IntEntityClass<UserLabel>(UserLabels)
 	
-	val userId by UserLabels.userId
+	val userId by table.userId
 	
-	val label by UserLabels.label
+	val label by table.label
 	
-	val color by UserLabels.color
+	val color by table.color
 }

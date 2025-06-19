@@ -8,7 +8,7 @@ data class FriendRequestDTO(
 	val id: Int,
 	val targetId: Int,
 	val username: String,
-	val nickname: String?,
+	val nickname: String,
 	val avatarUrl: String?,
 	val status: Status,
 	val createTime: String,

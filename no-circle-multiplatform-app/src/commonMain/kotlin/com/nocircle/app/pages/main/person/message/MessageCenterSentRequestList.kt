@@ -93,7 +93,7 @@ private fun SentRequestCard(
 						.align(Alignment.TopStart)
 				) {
 					Text(
-						text = request.nickname ?: AppString.FRIENDS_ADD_FRIEND_NOT_NICKNAME.value(),
+						text = request.nickname,
 						color = MaterialTheme.colorScheme.onSurface,
 						style = MaterialTheme.typography.titleMedium,
 					)

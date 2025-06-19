@@ -21,9 +21,9 @@ abstract class NoTable(
 		.default(false)
 }
 
-abstract class NoIntEntity(
+abstract class NoIntEntity<T : NoTable>(
 	id: EntityID<Int>,
-	table: NoTable
+	val table: T
 ) : IntEntity(id) {
 	
 	val createTime by table.createTime

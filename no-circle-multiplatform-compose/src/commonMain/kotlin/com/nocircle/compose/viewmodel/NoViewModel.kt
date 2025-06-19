@@ -6,15 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nocircle.compose.material3.NoSnackbarColors
 import com.nocircle.compose.material3.NoSnackbarVisuals
-import com.nocircle.compose.resources.ComposeIcon
-import com.nocircle.compose.resources.ComposeString
-import com.nocircle.compose.resources.getIcon
-import com.nocircle.compose.resources.getString
+import com.nocircle.compose.resources.*
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.getString
 
 abstract class NoViewModel : ViewModel() {
 	
@@ -45,7 +40,7 @@ abstract class NoViewModel : ViewModel() {
 	}
 	
 	protected suspend fun showNoSnackbar(
-		message: StringResource,
+		message: NoString,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
 		withDismissAction: Boolean = false,
@@ -54,7 +49,7 @@ abstract class NoViewModel : ViewModel() {
 	) {
 		this.snackbarVisualsSharedFlow.emit(
 			NoSnackbarVisuals(
-				getString(message),
+				message.getString(),
 				actionLabel,
 				prefixIcon,
 				withDismissAction,
@@ -86,7 +81,7 @@ abstract class NoViewModel : ViewModel() {
 	}
 	
 	protected fun showNoErrorSnackbar(
-		message: StringResource,
+		message: NoString,
 		actionLabel: String? = null,
 		prefixIcon: ImageVector? = ComposeIcon.Info.getIcon(),
 		withDismissAction: Boolean = false,
@@ -95,7 +90,7 @@ abstract class NoViewModel : ViewModel() {
 		viewModelScope.launch {
 			snackbarVisualsSharedFlow.emit(
 				NoSnackbarVisuals(
-					getString(message),
+					message.getString(),
 					actionLabel,
 					prefixIcon,
 					withDismissAction,

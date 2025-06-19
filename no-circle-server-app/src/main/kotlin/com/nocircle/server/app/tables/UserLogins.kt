@@ -18,13 +18,13 @@ object UserLogins : NoTable("tb_user_login") {
 	enum class Method { PASSWORD, TOKEN }
 }
 
-class UserLogin(id: EntityID<Int>) : NoIntEntity(id, UserLogins) {
+class UserLogin(id: EntityID<Int>) : NoIntEntity<UserLogins>(id, UserLogins) {
 	
 	companion object : IntEntityClass<UserLogin>(UserLogins)
 	
-	val userId by UserLogins.userId
+	val userId by table.userId
 	
-	val loginTime by UserLogins.loginTime
+	val loginTime by table.loginTime
 	
-	val method by UserLogins.method
+	val method by table.method
 }
