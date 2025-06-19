@@ -19,7 +19,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 添加好友请求
  */
 context(_: FriendRouteGroup, _: Authorized)
-fun Route.postAddRequest() = post("request/add") {
+fun Route.addFriendRequest() = post("request/add") {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()
 	val targetId: Int by parameters

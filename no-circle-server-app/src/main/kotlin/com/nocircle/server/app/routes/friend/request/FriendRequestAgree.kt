@@ -20,7 +20,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 同意好友请求
  */
 context(_: FriendRouteGroup, _: Authorized)
-fun Route.postAgreeRequest() = post("request/agree") {
+fun Route.agreeFriendRequest() = post("request/agree") {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()
 	val id: Int by parameters

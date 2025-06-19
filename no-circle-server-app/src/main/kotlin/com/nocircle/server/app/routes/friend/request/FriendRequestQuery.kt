@@ -22,7 +22,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 好友请求查询
  */
 context(_: FriendRouteGroup, _: Authorized)
-fun Route.getQueryRequest() = get("request/query") {
+fun Route.queryFriendRequest() = get("request/query") {
 	val userId = call.getPrincipal().userId
 	val type: FriendRequestType by call.parameters
 	

@@ -16,7 +16,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 用户详情
  */
 context(_: UserRouteGroup, _: Authorized)
-fun Route.getUserDetail() = get("detail") {
+fun Route.userDetail() = get("detail") {
 	val userId = call.getPrincipal().userId
 	val userDetail = transaction {
 		val user = UserDao.getOneById(userId) ?: return@transaction null

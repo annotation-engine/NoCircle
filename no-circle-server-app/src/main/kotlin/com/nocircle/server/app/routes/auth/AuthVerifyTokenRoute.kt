@@ -14,7 +14,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 授权验证
  */
 context(_: AuthRouteGroup, _: Authorized)
-fun Route.postVerifyToken(): Route = post("verifyToken") {
+fun Route.verifyToken(): Route = post("verifyToken") {
 	val userId = call.getPrincipal().userId
 	transaction {
 		UserLoginDao.insertOne(userId, UserLogins.Method.TOKEN)

@@ -16,7 +16,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 添加标签
  */
 context(_: LabelRouteGroup, _: Authorized)
-fun Route.postAddLabel() = post("add") {
+fun Route.addLabel() = post("add") {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()
 	val label: String by parameters

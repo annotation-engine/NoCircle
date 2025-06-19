@@ -18,7 +18,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 拒绝好友请求
  */
 context(_: FriendRouteGroup, _: Authorized)
-fun Route.postRejectRequest() = post("request/reject") {
+fun Route.rejectFriendRequest() = post("request/reject") {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()
 	val id: Int by parameters

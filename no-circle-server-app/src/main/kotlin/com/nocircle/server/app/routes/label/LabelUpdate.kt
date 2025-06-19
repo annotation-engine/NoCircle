@@ -16,7 +16,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 更新标签
  */
 context(_: LabelRouteGroup, _: Authorized)
-fun Route.postUpdateLabel() = post("update") {
+fun Route.updateLabel() = post("update") {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()
 	val id: Int by parameters

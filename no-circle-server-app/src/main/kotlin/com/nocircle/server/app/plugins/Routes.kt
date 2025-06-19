@@ -1,17 +1,17 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.app.routes.auth.postVerifyToken
-import com.nocircle.server.app.routes.friend.getQuery
-import com.nocircle.server.app.routes.friend.getSearch
+import com.nocircle.server.app.routes.auth.verifyToken
+import com.nocircle.server.app.routes.friend.queryFriend
 import com.nocircle.server.app.routes.friend.request.*
-import com.nocircle.server.app.routes.label.getQueryLabel
-import com.nocircle.server.app.routes.label.postAddLabel
-import com.nocircle.server.app.routes.label.postDeleteLabel
-import com.nocircle.server.app.routes.label.postUpdateLabel
-import com.nocircle.server.app.routes.user.getUserDetail
-import com.nocircle.server.app.routes.user.postUserLogin
-import com.nocircle.server.app.routes.user.postUserLogout
-import com.nocircle.server.app.routes.user.postUserRegister
+import com.nocircle.server.app.routes.friend.searchFriend
+import com.nocircle.server.app.routes.label.addLabel
+import com.nocircle.server.app.routes.label.deleteLabel
+import com.nocircle.server.app.routes.label.queryLabel
+import com.nocircle.server.app.routes.label.updateLabel
+import com.nocircle.server.app.routes.user.userDetail
+import com.nocircle.server.app.routes.user.userLogin
+import com.nocircle.server.app.routes.user.userLogout
+import com.nocircle.server.app.routes.user.userRegister
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.NoRouteGroup
 import com.nocircle.server.common.routes.routeContexts
@@ -31,21 +31,21 @@ object AuthRouteGroup : NoRouteGroup("auth") {
 	
 	context(_: Authorized)
 	override fun Route.authenticates() {
-		postVerifyToken()
+		verifyToken()
 	}
 }
 
 object UserRouteGroup : NoRouteGroup("user") {
 	
 	override fun Route.routes() {
-		postUserLogin()
-		postUserRegister()
+		userLogin()
+		userRegister()
 	}
 	
 	context(_: Authorized)
 	override fun Route.authenticates() {
-		getUserDetail()
-		postUserLogout()
+		userDetail()
+		userLogout()
 	}
 }
 
@@ -53,10 +53,10 @@ object LabelRouteGroup : NoRouteGroup("label") {
 	
 	context(_: Authorized)
 	override fun Route.authenticates() {
-		postAddLabel()
-		postDeleteLabel()
-		postUpdateLabel()
-		getQueryLabel()
+		addLabel()
+		deleteLabel()
+		updateLabel()
+		queryLabel()
 	}
 }
 
@@ -64,14 +64,15 @@ object FriendRouteGroup : NoRouteGroup("friend") {
 	
 	context(_: Authorized)
 	override fun Route.authenticates() {
-		getSearch()
-		getQuery()
-		postAddRequest()
-		getQueryRequest()
-		postCancelRequest()
-		postDeleteRequest()
-		getQueryWaitingRequestCount()
-		postRejectRequest()
-		postAgreeRequest()
+		searchFriend()
+		queryFriend()
+		
+		addFriendRequest()
+		queryFriendRequest()
+		cancelFriendRequest()
+		deleteFriendRequest()
+		queryWaitingFriendRequestCount()
+		rejectFriendRequest()
+		agreeFriendRequest()
 	}
 }

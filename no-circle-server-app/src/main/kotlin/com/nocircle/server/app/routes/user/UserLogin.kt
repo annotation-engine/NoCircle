@@ -22,7 +22,7 @@ import kotlin.time.toJavaDuration
  * 用户登录
  */
 context(_: UserRouteGroup)
-fun Route.postUserLogin() = post("login") {
+fun Route.userLogin() = post("login") {
 	val parameters = call.receiveParameters()
 	val username: String by parameters
 	val password: String by parameters

@@ -20,7 +20,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 搜索好友
  */
 context(_: FriendRouteGroup, _: Authorized)
-fun Route.getSearch() = get("search") {
+fun Route.searchFriend() = get("search") {
 	val userId = call.getPrincipal().userId
 	val username: String by call.queryParameters
 	if (username.isBlank()) {

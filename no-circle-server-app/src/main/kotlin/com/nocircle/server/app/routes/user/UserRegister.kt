@@ -13,7 +13,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 用户注册
  */
 context(_: UserRouteGroup)
-fun Route.postUserRegister() = post("register") {
+fun Route.userRegister() = post("register") {
 	val parameters = call.receiveParameters()
 	val username: String by parameters
 	val password: String by parameters

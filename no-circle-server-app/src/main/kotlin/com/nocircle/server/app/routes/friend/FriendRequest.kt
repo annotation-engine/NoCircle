@@ -18,7 +18,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 查询好友
  */
 context(_: FriendRouteGroup, _: Authorized)
-fun Route.getQuery() = get("query") {
+fun Route.queryFriend() = get("query") {
 	val userId = call.getPrincipal().userId
 	val parameters = call.parameters
 	val page: Int by parameters
