@@ -1,7 +1,10 @@
 package com.nocircle.app.pages.main.person
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -69,12 +71,6 @@ private fun UserDetailCard() {
 	val viewModel = koinViewModel<PersonViewModel>()
 	Row(
 		modifier = Modifier
-			.shadow(
-				elevation = 4.dp,
-				shape = MaterialTheme.shapes.medium,
-				ambientColor = MaterialTheme.colorScheme.onSurfaceVariant,
-				spotColor = MaterialTheme.colorScheme.onSurfaceVariant
-			)
 			.fillMaxWidth()
 			.background(
 				color = MaterialTheme.colorScheme.surfaceContainer,
@@ -146,13 +142,19 @@ private fun EditLabel(
 	icon: ImageVector
 ) {
 	var showModal by remember { mutableStateOf(false) }
+	val interactionSource = remember { MutableInteractionSource() }
+	val isHovered by interactionSource.collectIsHoveredAsState()
+	val tint by animateColorAsState(
+		if (isHovered) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.outline
+	)
 	NoIconButton(
 		icon = icon,
 		modifier = Modifier
 			.size(24.dp),
-		tint = MaterialTheme.colorScheme.onSurfaceVariant,
-		shape = MaterialTheme.shapes.extraSmall,
-		contentPadding = PaddingValues()
+		tint = tint,
+		shape = MaterialTheme.shapes.small,
+		contentPadding = PaddingValues(),
+		interactionSource = interactionSource,
 	) {
 		showModal = true
 	}

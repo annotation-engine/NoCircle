@@ -19,7 +19,8 @@ import com.nocircle.app.pages.settings.memory.Memory
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.rootController
-import com.nocircle.app.theme.shape.RoundedCornerType
+import com.nocircle.app.theme.type.FontWeightType
+import com.nocircle.app.theme.type.RoundedCornerType
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
@@ -81,7 +82,9 @@ fun SettingsPage() {
 				Spacer(modifier = Modifier.height(16.dp))
 				SwitchIconType()
 				Spacer(modifier = Modifier.height(16.dp))
-				SwitchRoundedCornerType()
+				SwitchShapesType()
+				Spacer(modifier = Modifier.height(16.dp))
+				SwitchFontWeight()
 				Spacer(modifier = Modifier.height(16.dp))
 				Memory()
 				Spacer(modifier = Modifier.height(16.dp))
@@ -205,7 +208,7 @@ private fun NoIconType.getAppString(): AppString = when (this) {
  * 切换圆角类型
  */
 @Composable
-private fun SwitchRoundedCornerType() {
+private fun SwitchShapesType() {
 	var expanded by remember { mutableStateOf(false) }
 	NoDropdownMenu(
 		expanded = expanded,
@@ -243,9 +246,53 @@ private fun SwitchRoundedCornerType() {
 private fun RoundedCornerType.getAppString(): AppString = when (this) {
 	RoundedCornerType.EXTRA_SMALL -> AppString.SETTINGS_ROUNDED_CORNER_EXTRA_SMALL
 	RoundedCornerType.SMALL -> AppString.SETTINGS_ROUNDED_CORNER_SMALL
-	RoundedCornerType.MEDIUM -> AppString.SETTINGS_ROUNDED_CORNER_MEDIUM
+	RoundedCornerType.NORMAL -> AppString.SETTINGS_ROUNDED_CORNER_NORMAL
 	RoundedCornerType.LARGE -> AppString.SETTINGS_ROUNDED_CORNER_LARGE
 	RoundedCornerType.EXTRA_LARGE -> AppString.SETTINGS_ROUNDED_CORNER_EXTRA_LARGE
+}
+
+@Composable
+private fun SwitchFontWeight() {
+	var expanded by remember { mutableStateOf(false) }
+	NoDropdownMenu(
+		expanded = expanded,
+		onExpandedChange = { expanded = it },
+		menuItems = {
+			val coroutineScope = rememberCoroutineScope()
+			FontWeightType.entries.fastForEach {
+				DropdownMenuItem(
+					text = { Text(it.getAppString().value()) },
+					onClick = {
+						coroutineScope.launch(Dispatchers.IO) {
+							FontWeightType.set(it)
+						}
+						expanded = false
+					}
+				)
+			}
+		}
+	) {
+		NoOption(
+			title = { Text(AppString.SETTINGS_FONT_WEIGHT_TYPE.value()) },
+			icon = { NoIcon(AppIcon.LineWeight.value()) },
+			actions = {
+				Text(
+					text = FontWeightType.current.getAppString().value(),
+					overflow = TextOverflow.Ellipsis,
+					maxLines = 1
+				)
+			}
+		)
+	}
+}
+
+@Stable
+private fun FontWeightType.getAppString(): AppString = when (this) {
+	FontWeightType.EXTRA_LIGHT -> AppString.SETTINGS_FONT_WEIGHT_EXTRA_LIGHT
+	FontWeightType.LIGHT -> AppString.SETTINGS_FONT_WEIGHT_LIGHT
+	FontWeightType.NORMAL -> AppString.SETTINGS_FONT_WEIGHT_NORMAL
+	FontWeightType.BOLD -> AppString.SETTINGS_FONT_WEIGHT_BOLD
+	FontWeightType.EXTRA_BOLD -> AppString.SETTINGS_FONT_WEIGHT_EXTRA_BOLD
 }
 
 /**

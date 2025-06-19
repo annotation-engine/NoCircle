@@ -257,9 +257,9 @@
 		"zh": "小",
 		"en": "Small"
 	},
-	"SETTINGS_ROUNDED_CORNER_MEDIUM": {
-		"zh": "中",
-		"en": "Medium"
+	"SETTINGS_ROUNDED_CORNER_NORMAL": {
+		"zh": "默认",
+		"en": "Normal"
 	},
 	"SETTINGS_ROUNDED_CORNER_LARGE": {
 		"zh": "大",
@@ -268,6 +268,30 @@
 	"SETTINGS_ROUNDED_CORNER_EXTRA_LARGE": {
 		"zh": "超大",
 		"en": "Extra Large"
+	},
+	"SETTINGS_FONT_WEIGHT_TYPE": {
+		"zh": "字重",
+		"en": "Font Weight"
+	},
+	"SETTINGS_FONT_WEIGHT_EXTRA_LIGHT": {
+		"zh": "超细",
+		"en": "Extra Light"
+	},
+	"SETTINGS_FONT_WEIGHT_LIGHT": {
+		"zh": "细",
+		"en": "Light"
+	},
+	"SETTINGS_FONT_WEIGHT_NORMAL": {
+		"zh": "默认",
+		"en": "Normal"
+	},
+	"SETTINGS_FONT_WEIGHT_BOLD": {
+		"zh": "粗",
+		"en": "Bold"
+	},
+	"SETTINGS_FONT_WEIGHT_EXTRA_BOLD": {
+		"zh": "超粗",
+		"en": "Extra Bold"
 	},
 	"SETTINGS_MEMORY": {
 		"zh": "内存",

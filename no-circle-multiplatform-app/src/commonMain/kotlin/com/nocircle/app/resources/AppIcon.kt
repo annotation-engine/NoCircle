@@ -56,4 +56,5 @@ object AppIcon {
 	val KeyboardArrowRight = autoMirroredIcons({ KeyboardArrowRight }, { KeyboardArrowRight }, { KeyboardArrowRight }, { KeyboardArrowRight }, { KeyboardArrowRight })
 	val ArrowBack = autoMirroredIcons({ ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack })
 	val RoundedCorner = icons({ RoundedCorner }, { RoundedCorner }, { RoundedCorner }, { RoundedCorner }, { RoundedCorner })
+	val LineWeight = icons({ LineWeight }, { LineWeight }, { LineWeight }, { LineWeight }, { LineWeight })
 }

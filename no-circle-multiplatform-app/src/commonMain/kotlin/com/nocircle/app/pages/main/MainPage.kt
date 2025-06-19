@@ -345,7 +345,7 @@ private fun LightingEffect(
 	if (menuItemTop != Dp.Unspecified) {
 		val targetOffsetY by remember(subRoute, menuItemTop) {
 			derivedStateOf {
-				menuItemTop + (LeftNavigationItemHeight + ItemSpacing) * subRoute.ordinal - 75.dp + LeftNavigationItemHeight / 2
+				menuItemTop + (LeftNavigationItemHeight + ItemSpacing) * subRoute.ordinal - 80.dp + LeftNavigationItemHeight / 2
 			}
 		}
 		val offsetY by animateDpAsState(targetOffsetY)
@@ -353,14 +353,14 @@ private fun LightingEffect(
 			modifier = Modifier
 				.offset(y = offsetY)
 				.fillMaxWidth()
-				.height(150.dp)
+				.height(160.dp)
 				.blur(36.dp),
 			contentAlignment = Alignment.CenterStart
 		) {
 			Box(
 				modifier = Modifier
-					.offset(x = (-10).dp)
-					.size(40.dp)
+					.offset(x = (-20).dp)
+					.size(50.dp)
 					.clip(CircleShape)
 					.background(MaterialTheme.colorScheme.primary)
 			)
