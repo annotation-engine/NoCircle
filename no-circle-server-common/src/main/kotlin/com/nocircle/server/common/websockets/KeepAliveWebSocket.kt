@@ -8,6 +8,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 
 private val _sessions = mutableMapOf<Int, DefaultWebSocketServerSession>()
@@ -39,8 +40,17 @@ fun Application.keepAliveWebSocket() {
 		authenticate {
 			webSocket("/keepAlive") {
 				val principal = call.getPrincipalOrNull() ?: return@webSocket close(CannotAccept)
-				val username = principal.username
+				if (principal.userId in sessions) {
+					sessions[principal.userId]!!.close(CannotAccept)
+				}
+				while (true) {
+					if (principal.userId !in sessions) {
+						break
+					}
+					delay(100)
+				}
 				_sessions[principal.userId] = this
+				val username = principal.username
 				NoLog.info("[WS] Connect: $username")
 				try {
 					for (frame in incoming) {

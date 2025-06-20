@@ -120,7 +120,7 @@ fun RegisterPage() {
 					value = nickname,
 					onValueChange = viewModel::updateNickname,
 					modifier = Modifier.fillMaxWidth(),
-					placeholder = { Text(AppString.REGISTER_PLEASE_INPUT_USERNAME.value()) },
+					placeholder = { Text(AppString.REGISTER_PLEASE_INPUT_NICKNAME.value()) },
 					leadingIcon = { NoIcon(AppIcon.AccountBox.value()) }
 				)
 				
@@ -136,7 +136,8 @@ fun RegisterPage() {
 					val success = viewModel.register()
 					if (success) {
 						launch(Dispatchers.Main) {
-							controller.popBackStack("username" to username)
+//							controller.popBackStack("username" to username)
+							controller.popBackStack()
 						}
 					}
 				}

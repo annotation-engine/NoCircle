@@ -4,7 +4,11 @@ import com.nocircle.server.app.tables.FriendRelationship
 import com.nocircle.server.app.tables.FriendRelationships
 import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicExists
-import org.jetbrains.exposed.v1.core.*
+import com.nocircle.server.common.exposed.page
+import org.jetbrains.exposed.v1.core.Expression
+import org.jetbrains.exposed.v1.core.SortOrder
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.lowerCase
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
@@ -27,24 +31,24 @@ object FriendRelationshipDao {
 			.exists()
 	}
 	
-	fun getListByUserIdAndPageAndSize(userId: Int, page: Int, size: Int, orderType: OrderType): List<FriendRelationship> {
+	fun getListByUserIdAndPageAndSize(userId: Int, pageNumber: Int, pageSize: Int, orderType: OrderType): List<FriendRelationship> {
 		val query = FriendRelationships.selectAll()
 			.where { FriendRelationships.userId eq userId }
 			.logicExists(FriendRelationships)
 			.orderBy(orderType.column, orderType.order)
-			.limit(size)
-			.offset(((page - 1) * size).toLong())
+			.page(pageNumber, pageSize)
 		return FriendRelationship.wrapRows(query).toList()
 	}
 	
 	fun getCountByUserId(userId: Int): Int {
 		return FriendRelationships.select(FriendRelationships.id)
-			.where { (FriendRelationships.userId eq userId) or (FriendRelationships.friendId eq userId) }
+			.where { FriendRelationships.userId eq userId }
 			.logicExists(FriendRelationships)
 			.count()
 			.toInt()
 	}
 	
+	@Suppress("unused")
 	enum class OrderType(
 		val column: Expression<*>,
 		val order: SortOrder

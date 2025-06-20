@@ -163,7 +163,7 @@ private fun UserCard(
 	HorizontalDivider()
 	Spacer(modifier = Modifier.height(16.dp))
 	val viewModel = koinViewModel<AddFriendViewModel>()
-	var enabled by remember(searchUser.relationship, searchUser.isAlreadySend) {
+	var enabled by remember(searchUser) {
 		mutableStateOf(searchUser.relationship == STRANGER && !searchUser.isAlreadySend)
 	}
 	var string by remember(searchUser) {

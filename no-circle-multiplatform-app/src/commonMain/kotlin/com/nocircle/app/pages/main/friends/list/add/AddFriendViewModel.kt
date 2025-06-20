@@ -2,6 +2,7 @@ package com.nocircle.app.pages.main.friends.list.add
 
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impls.friendApi
+import com.nocircle.app.api.impls.friendRequestApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.common.coroutines.FunctionLocker
@@ -46,7 +47,7 @@ class AddFriendViewModel : NoViewModel() {
 	
 	suspend fun sendFriendAddRequest(receiverId: Int): Boolean {
 		return FunctionLocker.tryWithLock(::sendFriendAddRequest, OnBusyReturnFalse) {
-			val result = ktorfitx.friendApi.addRequest(receiverId)
+			val result = ktorfitx.friendRequestApi.addRequest(receiverId)
 				?: return@tryWithLock networkError()
 			autoShowNoSnackbar(result.success, result.msg)
 			result.success
@@ -58,7 +59,7 @@ class AddFriendViewModel : NoViewModel() {
 			_result.value = null
 			return
 		}
-		val result = ktorfitx.friendApi.search(username)
+		val result = ktorfitx.friendApi.searchFriend(username)
 			?: return networkError()
 		if (result.success) {
 			_result.value = result.data

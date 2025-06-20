@@ -32,6 +32,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.nocircle.app.pages.main.friends.FriendsPage
 import com.nocircle.app.pages.main.groups.GroupsPage
 import com.nocircle.app.pages.main.home.HomePage
@@ -80,13 +83,15 @@ fun MainPage() {
 	) {
 		val isCompat = WindowWidthSizes.isCompact
 		val subRoute by viewModel.mainSubRoute.collectAsState()
-		LocalNavControllerProvider { controller ->
+		LocalNavControllerProvider(MainRoute) { controller ->
 			val onSubRouteChange = { route: MainSubRoute ->
+				controller.currentDestination?.route?.let { route ->
+					if (route != MainRoute::class.qualifiedName) {
+						controller.popBackStack(MainRoute, false)
+					}
+				}
 				if (subRoute != route) {
 					viewModel.mainSubRoute.value = route
-				}
-				if (controller.currentRoute != MainRoute::class) {
-					controller.navigate(route = MainRoute, popup = NoPopUp.ALL)
 				}
 			}
 			if (!isCompat) {
@@ -95,7 +100,7 @@ fun MainPage() {
 					onSubRouteChange = onSubRouteChange
 				)
 			}
-			NoNavHost(
+			NavHost(
 				navController = controller,
 				startDestination = MainRoute,
 				modifier = Modifier
@@ -107,8 +112,10 @@ fun MainPage() {
 					)
 					.background(MaterialTheme.colorScheme.surface)
 					.fillMaxSize(),
-				navTransition = if (isCompat) NavTransition.HorizontalSlide else NavTransition.Fade,
-				navPopTransition = if (isCompat) NavPopTransition.HorizontalSlide else NavPopTransition.Fade,
+				enterTransition = if (isCompat) HorizontalSlideTransition.Enter else FadeTransition.Enter,
+				exitTransition = if (isCompat) HorizontalSlideTransition.Exit else FadeTransition.Exit,
+				popEnterTransition = if (isCompat) HorizontalSlideTransition.PopEnter else FadeTransition.PopEnter,
+				popExitTransition = if (isCompat) HorizontalSlideTransition.PopExit else FadeTransition.PopExit,
 			) {
 				composable<MainRoute> {
 					MainPage(
@@ -246,8 +253,8 @@ private fun LeftNavigationBar(
 				val controller = LocalNavController.current
 				var popStackEnabled by remember { mutableStateOf(false) }
 				DisposableEffect(Unit) {
-					val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
-						popStackEnabled = controller.currentRoute != MainRoute::class
+					val listener = NavController.OnDestinationChangedListener { controller, _, _ ->
+						popStackEnabled = controller.currentDestination?.route != MainRoute::class.qualifiedName
 					}
 					controller.addOnDestinationChangedListener(listener)
 					onDispose {

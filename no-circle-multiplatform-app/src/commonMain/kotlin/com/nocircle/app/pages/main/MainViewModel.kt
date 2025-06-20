@@ -66,7 +66,12 @@ class MainViewModel : NoViewModel() {
 			}
 			val duration = 2.0.pow(attempt).seconds.coerceIn(reconnectDurationRange)
 			delay(duration)
-			NoLog.info("WebSocket reconnected: $attempt, next duration: ${(duration * 2).coerceIn(reconnectDurationRange)}")
+			NoLog.info("WebSocket reconnected: $attempt")
 		}
+	}
+	
+	override fun onCleared() {
+		super.onCleared()
+		NoLog.info("?????????")
 	}
 }

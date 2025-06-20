@@ -13,12 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
-import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.pages.settings.memory.Memory
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.rootController
 import com.nocircle.app.theme.type.FontWeightType
 import com.nocircle.app.theme.type.RoundedCornerType
 import com.nocircle.compose.foundation.NoButton
@@ -30,7 +28,6 @@ import com.nocircle.compose.material3.NoDropdownMenu
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.navigation.LocalNavController
-import com.nocircle.compose.navigation.NoPopUp
 import com.nocircle.compose.navigation.NoRoute
 import com.nocircle.compose.resources.NoIconType
 import com.nocircle.compose.resources.SupportedLanguage
@@ -315,10 +312,6 @@ private fun Logout(
 			onDismissRequest = { showLogoutModal = false },
 			onConfirm = {
 				viewModel.logout()
-				rootController?.navigate(
-					route = LoginRoute,
-					popup = NoPopUp.ALL
-				)
 			},
 			confirmColors = NoButtonColors.ErrorColors,
 			icon = {

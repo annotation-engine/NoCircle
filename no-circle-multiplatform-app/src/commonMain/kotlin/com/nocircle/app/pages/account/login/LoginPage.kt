@@ -19,16 +19,12 @@ import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.expends.not
-import com.nocircle.compose.navigation.LocalNavController
-import com.nocircle.compose.navigation.NoPopUp
-import com.nocircle.compose.navigation.NoRoute
-import com.nocircle.compose.resources.getString
-import com.nocircle.compose.resources.value
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.showNoSnackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.nocircle.compose.navigation.LocalNavController
+import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.compose.resources.value
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -41,8 +37,11 @@ fun LoginPage() {
 	val hostState = remember { SnackbarHostState() }
 	val controller = LocalNavController.current
 	LaunchedEffect(Unit) {
-		if (controller.resultRoute == RegisterRoute::class) {
-			val username = controller.getResult<String>("username")
+		val savedState = controller.currentBackStackEntry
+			?.savedStateHandle ?: return@LaunchedEffect
+		val from = savedState.get<String>("from") ?: return@LaunchedEffect
+		if (from == RegisterRoute::class.qualifiedName) {
+			val username = savedState.get<String>("username")
 			if (username != null) {
 				viewModel.updateUsername(username)
 				hostState.showNoSnackbar(AppString.REGISTER_SUCCESS)
@@ -111,11 +110,10 @@ fun LoginPage() {
 				) {
 					val success = viewModel.login()
 					if (success) {
-						launch(Dispatchers.Main) {
-							controller.navigate(
-								route = MainRoute,
-								popup = NoPopUp.ALL
-							)
+						controller.navigate(MainRoute) {
+							popUpTo(0) {
+								inclusive = true
+							}
 						}
 					}
 				}

@@ -16,7 +16,7 @@ interface LabelApi {
 	
 	@BearerAuth
 	@POST("delete")
-	suspend fun deleteLabelById(
+	suspend fun deleteLabel(
 		@Field id: Int
 	): ResultBody<Unit>?
 	
@@ -30,5 +30,5 @@ interface LabelApi {
 	
 	@BearerAuth
 	@GET("query")
-	suspend fun queryLabels(): ResultBody<List<LabelDTO>>?
+	suspend fun queryLabelList(): ResultBody<List<LabelDTO>>?
 }

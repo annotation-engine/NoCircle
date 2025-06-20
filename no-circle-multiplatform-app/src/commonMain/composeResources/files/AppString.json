@@ -35,6 +35,10 @@
 		"zh": "请确认密码",
 		"en": "Please confirm password"
 	},
+	"REGISTER_PLEASE_INPUT_NICKNAME": {
+		"zh": "请输入昵称",
+		"en": "Please enter nickname"
+	},
 	"REGISTER_BACK_TO_LOGIN_PAGE": {
 		"zh": "返回登录",
 		"en": "Back to login"

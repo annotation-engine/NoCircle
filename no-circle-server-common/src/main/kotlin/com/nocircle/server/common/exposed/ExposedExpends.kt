@@ -55,3 +55,6 @@ fun <T : NoTable> T.logicDeleteWhere(
 		it[this.deleteFlag] = true
 	}
 }
+
+fun Query.page(number: Int, size: Int): Query =
+	this.offset(((number - 1) * size).toLong())

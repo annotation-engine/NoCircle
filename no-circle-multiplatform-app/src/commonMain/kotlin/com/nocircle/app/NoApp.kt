@@ -1,7 +1,10 @@
 package com.nocircle.app
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavController
 import com.nocircle.app.pages.account.login.LoginViewModel
 import com.nocircle.app.pages.account.register.RegisterViewModel
 import com.nocircle.app.pages.guide.GuideViewModel
@@ -40,7 +43,8 @@ private val NoKoinModule = module {
 
 @Composable
 fun NoApp(
-	effect: @Composable (() -> Unit)? = null
+	onDestinationChangedListener: NavController.OnDestinationChangedListener? = null,
+	onColorSchemeChange: ((ColorScheme) -> Unit)? = null
 ) {
 	PreloadAllString()
 	KoinApplication(
@@ -49,8 +53,13 @@ fun NoApp(
 		}
 	) {
 		NoMaterialTheme {
-			NoAppNavHost()
-			effect?.invoke()
+			NoAppNavHost(onDestinationChangedListener)
+			if (onColorSchemeChange != null) {
+				val colorScheme = MaterialTheme.colorScheme
+				LaunchedEffect(colorScheme) {
+					onColorSchemeChange(colorScheme)
+				}
+			}
 		}
 	}
 }
@@ -59,8 +68,8 @@ fun NoApp(
 private fun PreloadAllString() {
 	LaunchedEffect(Unit) {
 		withContext(Dispatchers.IO) {
-			loadStringJsonObject("com.nocircle.app", listOf("strings.json"))
-			loadStringJsonObject("com.nocircle.compose", listOf("strings.json"))
+			loadStringJsonObject("com.nocircle.app", listOf("AppString.json"))
+			loadStringJsonObject("com.nocircle.compose", listOf("ComposeString.json"))
 		}
 	}
 }

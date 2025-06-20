@@ -1,7 +1,7 @@
 package com.nocircle.app.pages.main.person
 
 import androidx.lifecycle.viewModelScope
-import com.nocircle.app.api.impls.friendApi
+import com.nocircle.app.api.impls.friendRequestApi
 import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
@@ -48,14 +48,14 @@ class PersonViewModel : NoViewModel() {
 	}
 	
 	suspend fun loadLabels() {
-		val result = ktorfitx.labelApi.queryLabels() ?: return
+		val result = ktorfitx.labelApi.queryLabelList() ?: return
 		if (result.success) {
 			_labels.value = result.data!!
 		}
 	}
 	
 	suspend fun loadRequestReceivedCount() {
-		val result = ktorfitx.friendApi.queryWaitingRequestCount() ?: return
+		val result = ktorfitx.friendRequestApi.queryWaitingRequestCount() ?: return
 		if (result.success) {
 			_waitingRequestCount.value = result.data!!
 		}

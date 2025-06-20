@@ -17,7 +17,6 @@ import com.nocircle.compose.animation.animateDpOffsetAsState
 import com.nocircle.compose.expends.offset
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.navigation.LocalNavController
-import com.nocircle.compose.navigation.NoPopUp
 import com.nocircle.compose.navigation.NoRoute
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
@@ -35,7 +34,11 @@ fun GuidePage() {
 	val controller = LocalNavController.current
 	LaunchedEffect(Unit) {
 		viewModel.navigateTo.collect {
-			controller.navigate(it, popup = NoPopUp.CURRENT)
+			controller.navigate(it) {
+				popUpTo(GuideRoute) {
+					inclusive = true
+				}
+			}
 		}
 	}
 	NoScaffold { paddingValues ->

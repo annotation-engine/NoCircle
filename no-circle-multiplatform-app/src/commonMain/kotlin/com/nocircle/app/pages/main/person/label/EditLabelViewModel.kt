@@ -15,7 +15,7 @@ class EditLabelViewModel : NoViewModel() {
 	
 	suspend fun deleteLabelById(id: Int): Boolean {
 		return FunctionLocker.tryWithLock(::deleteLabelById, OnBusyReturnFalse) {
-			val result = ktorfitx.labelApi.deleteLabelById(id)
+			val result = ktorfitx.labelApi.deleteLabel(id)
 				?: return@tryWithLock networkError()
 			autoShowNoSnackbar(result.success, result.msg)
 			result.success

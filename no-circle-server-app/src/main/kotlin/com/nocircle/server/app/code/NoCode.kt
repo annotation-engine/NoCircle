@@ -1,11 +1,11 @@
 package com.nocircle.server.app.code
 
-import com.nocircle.server.common.model.BaseCode
+import com.nocircle.server.common.model.Code
 
 enum class NoCode(
 	override val msg: String,
 	override val code: Int
-) : BaseCode {
+) : Code {
 	
 	AUTH_VERIFY_TOKEN_SUCCESS("验证通过", 0),
 	

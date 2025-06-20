@@ -1,7 +1,7 @@
 package com.nocircle.app
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
@@ -15,13 +15,11 @@ import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
-import com.nocircle.compose.navigation.NoNavHostController
-import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.common.log.NoLog
 import com.nocircle.compose.animation.animateWindowStateAsState
 import com.nocircle.compose.desktop.LocalFrameWindowScope
-import java.awt.Color
 import java.awt.Dimension
-import kotlin.reflect.KClass
+import java.awt.Color as AwtColor
 
 fun main() {
 	application {
@@ -40,28 +38,35 @@ fun main() {
 			resizable = config.resizable
 		) {
 			WindowEffect(
-				minSize = minSize,
-				onConfigChange = { config = it }
+				minSize = minSize
 			)
 			CompositionLocalProvider(
 				LocalDensity provides Density(density = LocalDensity.current.density * 0.88f),
 				LocalFrameWindowScope provides this
 			) {
-				NoApp {
-					val surface = MaterialTheme.colorScheme.surface
-					LaunchedEffect(surface) {
-						window.background = surface.let { Color(it.red, it.green, it.blue) }
+				NoApp(
+					onDestinationChangedListener = { _, destination, _ ->
+						NoLog.info(destination)
+						val route = destination.route ?: return@NoApp
+						config = ScreenConfig.entries.find { route in it.routes } ?: ScreenConfig.MEDIUM
+					},
+					onColorSchemeChange = {
+						window.background = it.surface.toAwtColor()
 					}
-				}
+				)
 			}
 		}
 	}
 }
 
+@Stable
+private fun Color.toAwtColor(): AwtColor {
+	return AwtColor(this.red, this.green, this.blue)
+}
+
 @Composable
 private fun FrameWindowScope.WindowEffect(
-	minSize: DpSize,
-	onConfigChange: (ScreenConfig) -> Unit,
+	minSize: DpSize
 ) {
 	LaunchedEffect(Unit) {
 		if (NoDevice.Name == DeviceName.MACOS) {
@@ -75,42 +80,28 @@ private fun FrameWindowScope.WindowEffect(
 			minSize.height.value.toInt()
 		)
 	}
-	DisposableEffect(rootController) {
-		if (rootController == null) {
-			return@DisposableEffect onDispose {}
-		}
-		val listener = NoNavHostController.OnDestinationChangedListener { controller, _, _ ->
-			val currentRoute = controller.currentRoute
-			val config = ScreenConfig.entries.find { currentRoute in it.routes } ?: ScreenConfig.MEDIUM
-			onConfigChange(config)
-		}
-		rootController!!.addOnDestinationChangedListener(listener)
-		onDispose {
-			rootController!!.removeOnDestinationChangedListener(listener)
-		}
-	}
 }
 
 @Immutable
 private enum class ScreenConfig(
 	val size: DpSize,
-	val routes: Array<KClass<out NoRoute>>,
+	val routes: Array<String>,
 	val resizable: Boolean = true,
 	val minSize: DpSize = size,
 ) {
 	EXTRA_SMALL(
 		size = DpSize(340.dp, 340.dp),
-		routes = arrayOf(GuideRoute::class),
+		routes = arrayOf(GuideRoute::class.qualifiedName!!),
 		resizable = false
 	),
 	SMALL(
 		size = DpSize(340.dp, 520.dp),
-		routes = arrayOf(LoginRoute::class, RegisterRoute::class),
+		routes = arrayOf(LoginRoute::class.qualifiedName!!, RegisterRoute::class.qualifiedName!!),
 		resizable = false
 	),
 	MEDIUM(
 		size = DpSize(800.dp, 600.dp),
-		routes = arrayOf(MainRoute::class),
+		routes = arrayOf(MainRoute::class.qualifiedName!!),
 		minSize = DpSize(380.dp, 540.dp)
 	)
 }

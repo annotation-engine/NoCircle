@@ -1,6 +1,6 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.common.model.BaseCode
+import com.nocircle.server.common.model.Code
 import com.nocircle.server.common.model.respondOK
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -20,7 +20,7 @@ fun Application.configureStatusPages() {
 private class HttpCode(
 	override val msg: String,
 	override val code: Int
-) : BaseCode
+) : Code
 
 private val httpCodeMap = mutableMapOf<HttpStatusCode, HttpCode>()
 

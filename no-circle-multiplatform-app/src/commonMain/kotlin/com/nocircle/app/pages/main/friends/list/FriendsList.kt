@@ -1,41 +1,65 @@
 package com.nocircle.app.pages.main.friends.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.pages.main.friends.list.add.AddFriendSheet
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.device.DeviceType
-import com.nocircle.compose.resources.value
+import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.foundation.NoTextField
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.material3.NoTopAppBarDefaults
+import com.nocircle.compose.resources.value
+import com.nocircle.shared.model.friend.FriendDTO
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FriendsList(
 	isCompat: Boolean,
 ) {
+	val viewModel = koinViewModel<FriendsListViewModel>()
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
 				actions = {
-					FriendsSearch(isCompat)
+					FriendsSearch(
+						viewModel = viewModel,
+						isCompat = isCompat,
+					)
 				},
 				contentPadding = if (isCompat) NoTopAppBarDefaults.contentPadding else MediumContentPadding
 			)
 		}
-	) {
-	
+	) { paddingValues ->
+		val friendList by viewModel.friendList.collectAsState()
+		LazyColumn(
+			modifier = Modifier
+				.fillMaxSize()
+				.background(MaterialTheme.colorScheme.surfaceContainerLow)
+				.padding(paddingValues)
+		) {
+			items(
+				items = friendList,
+				key = { it.userId }
+			) {
+				Friend(it)
+			}
+		}
 	}
 }
 
@@ -43,13 +67,13 @@ private val MediumContentPadding = PaddingValues(12.dp)
 
 @Composable
 private fun FriendsSearch(
+	viewModel: FriendsListViewModel,
 	isCompat: Boolean,
 ) {
 	Row(
 		modifier = Modifier.fillMaxWidth(),
 		verticalAlignment = Alignment.CenterVertically
 	) {
-		val viewModel = koinViewModel<FriendsListViewModel>()
 		val search by viewModel.search.collectAsState()
 		val size by remember(isCompat) {
 			derivedStateOf {
@@ -89,6 +113,48 @@ private fun FriendsSearch(
 				onDismissRequest = {
 					showAddFriendSheet = false
 				}
+			)
+		}
+	}
+}
+
+@Composable
+private fun Friend(
+	friend: FriendDTO,
+) {
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(16.dp)
+			.height(60.dp)
+	) {
+		NoAsyncImage(
+			url = friend.avatarUrl,
+			modifier = Modifier
+				.size(56.dp)
+				.clip(MaterialTheme.shapes.medium),
+			contentScale = ContentScale.Crop,
+		)
+		Spacer(Modifier.width(12.dp))
+		Column(
+			modifier = Modifier
+				.fillMaxSize()
+				.padding(vertical = 4.dp),
+			verticalArrangement = Arrangement.SpaceBetween
+		) {
+			Text(
+				text = friend.nickname,
+				maxLines = 1,
+				overflow = TextOverflow.Ellipsis,
+				color = MaterialTheme.colorScheme.onSurface,
+				style = MaterialTheme.typography.titleMedium
+			)
+			Text(
+				text = friend.username,
+				maxLines = 1,
+				overflow = TextOverflow.Ellipsis,
+				color = MaterialTheme.colorScheme.onSurfaceVariant,
+				style = MaterialTheme.typography.bodyMedium
 			)
 		}
 	}
