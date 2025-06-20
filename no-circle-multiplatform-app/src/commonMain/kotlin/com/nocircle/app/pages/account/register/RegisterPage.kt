@@ -22,6 +22,7 @@ import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.showNoSnackbar
 import com.nocircle.compose.navigation.LocalNavController
 import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.compose.navigation.previousSavedStateHandle
 import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowHeightSizes
 import kotlinx.coroutines.Dispatchers
@@ -136,7 +137,10 @@ fun RegisterPage() {
 					val success = viewModel.register()
 					if (success) {
 						launch(Dispatchers.Main) {
-//							controller.popBackStack("username" to username)
+							controller.previousSavedStateHandle?.apply {
+								this["username"] = username
+								this["from"] = RegisterRoute
+							}
 							controller.popBackStack()
 						}
 					}

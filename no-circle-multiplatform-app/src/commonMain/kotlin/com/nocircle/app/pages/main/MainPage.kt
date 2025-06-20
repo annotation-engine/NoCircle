@@ -85,10 +85,8 @@ fun MainPage() {
 		val subRoute by viewModel.mainSubRoute.collectAsState()
 		LocalNavControllerProvider(MainRoute) { controller ->
 			val onSubRouteChange = { route: MainSubRoute ->
-				controller.currentDestination?.route?.let { route ->
-					if (route != MainRoute::class.qualifiedName) {
-						controller.popBackStack(MainRoute, false)
-					}
+				if (controller.isNotRoute<MainRoute>()) {
+					controller.popBackStack(MainRoute, false)
 				}
 				if (subRoute != route) {
 					viewModel.mainSubRoute.value = route
@@ -254,7 +252,7 @@ private fun LeftNavigationBar(
 				var popStackEnabled by remember { mutableStateOf(false) }
 				DisposableEffect(Unit) {
 					val listener = NavController.OnDestinationChangedListener { controller, _, _ ->
-						popStackEnabled = controller.currentDestination?.route != MainRoute::class.qualifiedName
+						popStackEnabled = controller.isNotRoute<MainRoute>()
 					}
 					controller.addOnDestinationChangedListener(listener)
 					onDispose {

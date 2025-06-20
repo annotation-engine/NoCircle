@@ -24,6 +24,7 @@ import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.showNoSnackbar
 import com.nocircle.compose.navigation.LocalNavController
 import com.nocircle.compose.navigation.NoRoute
+import com.nocircle.compose.navigation.currentSavedStateHandle
 import com.nocircle.compose.resources.value
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
@@ -37,10 +38,10 @@ fun LoginPage() {
 	val hostState = remember { SnackbarHostState() }
 	val controller = LocalNavController.current
 	LaunchedEffect(Unit) {
-		val savedState = controller.currentBackStackEntry
-			?.savedStateHandle ?: return@LaunchedEffect
-		val from = savedState.get<String>("from") ?: return@LaunchedEffect
-		if (from == RegisterRoute::class.qualifiedName) {
+		val savedState = controller.currentSavedStateHandle ?: return@LaunchedEffect
+		val from = savedState.get<NoRoute>("from")
+			?: return@LaunchedEffect
+		if (from == RegisterRoute) {
 			val username = savedState.get<String>("username")
 			if (username != null) {
 				viewModel.updateUsername(username)
