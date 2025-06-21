@@ -2,6 +2,7 @@ package com.nocircle.app.api
 
 import cn.vividcode.multiplatform.ktorfitx.annotation.*
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
+import com.nocircle.shared.model.user.UserSearchDTO
 import com.nocircle.shared.model.user.UserDetailDTO
 import com.nocircle.shared.model.user.UserLoginDTO
 
@@ -28,4 +29,10 @@ interface UserApi {
 	@BearerAuth
 	@GET("detail")
 	suspend fun queryDetail(): ResultBody<UserDetailDTO>?
+	
+	@BearerAuth
+	@GET("search")
+	suspend fun searchUser(
+		@Query username: String
+	): ResultBody<UserSearchDTO>?
 }

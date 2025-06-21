@@ -7,11 +7,14 @@ import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.friend.FriendDTO
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
+@OptIn(FlowPreview::class)
 class FriendsListViewModel : NoViewModel() {
 	
 	private val _search = MutableStateFlow("")
@@ -32,7 +35,9 @@ class FriendsListViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch {
-			loadFriendList(true)
+			async { loadFriendList(true) }
+//			search.debounce(0.5.seconds)
+//				.collectLatest(::searchFriendByUsername)
 		}
 	}
 	

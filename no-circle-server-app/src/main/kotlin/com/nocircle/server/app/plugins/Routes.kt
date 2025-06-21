@@ -3,15 +3,11 @@ package com.nocircle.server.app.plugins
 import com.nocircle.server.app.routes.auth.verifyToken
 import com.nocircle.server.app.routes.friend.queryFriend
 import com.nocircle.server.app.routes.friend.request.*
-import com.nocircle.server.app.routes.friend.searchFriend
 import com.nocircle.server.app.routes.label.addLabel
 import com.nocircle.server.app.routes.label.deleteLabel
 import com.nocircle.server.app.routes.label.queryLabel
 import com.nocircle.server.app.routes.label.updateLabel
-import com.nocircle.server.app.routes.user.userDetail
-import com.nocircle.server.app.routes.user.userLogin
-import com.nocircle.server.app.routes.user.userLogout
-import com.nocircle.server.app.routes.user.userRegister
+import com.nocircle.server.app.routes.user.*
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.NoRouteGroup
 import com.nocircle.server.common.routes.routeContexts
@@ -46,6 +42,7 @@ object UserRouteGroup : NoRouteGroup("user") {
 	override fun Route.authenticates() {
 		userDetail()
 		userLogout()
+		searchUser()
 	}
 }
 
@@ -64,14 +61,13 @@ object FriendRouteGroup : NoRouteGroup("friend") {
 	
 	context(_: Authorized)
 	override fun Route.authenticates() {
-		searchFriend()
 		queryFriend()
 		
 		addFriendRequest()
 		queryFriendRequest()
 		cancelFriendRequest()
 		deleteFriendRequest()
-		queryWaitingFriendRequestCount()
+		queryFriendRequestPendingCount()
 		rejectFriendRequest()
 		agreeFriendRequest()
 	}

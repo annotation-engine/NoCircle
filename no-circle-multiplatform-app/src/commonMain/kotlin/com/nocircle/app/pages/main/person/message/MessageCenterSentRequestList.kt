@@ -64,7 +64,7 @@ private fun SentRequestCard(
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
-			.height(172.dp)
+			.height(154.dp)
 			.background(
 				color = MaterialTheme.colorScheme.surfaceContainer,
 				shape = MaterialTheme.shapes.medium
@@ -74,12 +74,12 @@ private fun SentRequestCard(
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
-				.height(100.dp)
+				.height(90.dp)
 		) {
 			NoAsyncImage(
 				url = request.avatarUrl,
 				modifier = Modifier
-					.size(100.dp)
+					.size(90.dp)
 					.clip(MaterialTheme.shapes.small),
 				contentScale = ContentScale.Crop
 			)
@@ -151,7 +151,7 @@ private fun SentRequestCard(
 				)
 			}
 			Spacer(modifier = Modifier.weight(1f))
-			if (request.status == WAITING) {
+			if (request.status == PENDING) {
 				NoButton(
 					text = AppString.MESSAGE_CENTER_CANCEL.value(),
 					modifier = Modifier.height(36.dp),
@@ -181,7 +181,7 @@ private fun FriendRequestDTO.Status.getColor(): Color {
 	return when (this) {
 		AGREED -> NoColor.Green
 		REJECTED -> NoColor.Red
-		WAITING -> NoColor.Yellow
+		PENDING -> NoColor.Yellow
 		CANCELED -> NoColor.Gray
 	}
 }
@@ -191,7 +191,7 @@ private fun FriendRequestDTO.Status.getString(): String {
 	return when (this) {
 		AGREED -> AppString.MESSAGE_CENTER_AGREED
 		REJECTED -> AppString.MESSAGE_CENTER_REJECTED
-		WAITING -> AppString.MESSAGE_CENTER_WAITING
+		PENDING -> AppString.MESSAGE_CENTER_PENDING
 		CANCELED -> AppString.MESSAGE_CENTER_CANCELED
 	}.value()
 }

@@ -13,10 +13,10 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  * 查询未处理的消息数
  */
 context(_: FriendRouteGroup, _: Authorized)
-fun Route.queryWaitingFriendRequestCount() = get("request/queryWaitingCount") {
+fun Route.queryFriendRequestPendingCount() = get("request/queryPendingCount") {
 	val userId = call.getPrincipal().userId
 	val count = transaction {
-		FriendRequestDao.getReceivedWaitingRequestCount(userId)
+		FriendRequestDao.getReceivedPendingRequestCount(userId)
 	}
-	call.respondOK(count, NoCode.FRIEND_REQUEST_QUERY_WAITING_SUCCESS)
+	call.respondOK(count, NoCode.FRIEND_REQUEST_QUERY_PENDING_COUNT_SUCCESS)
 }

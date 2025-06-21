@@ -25,8 +25,8 @@ import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
 import com.nocircle.compose.material3.showNoSnackbar
 import com.nocircle.compose.resources.value
-import com.nocircle.shared.model.friend.FriendSearchDTO
-import com.nocircle.shared.model.friend.FriendSearchDTO.RelationshipDTO.*
+import com.nocircle.shared.model.user.UserSearchDTO
+import com.nocircle.shared.model.user.UserSearchDTO.RelationshipDTO.*
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,7 +86,7 @@ fun AddFriendSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserCard(
-	searchUser: FriendSearchDTO
+	searchUser: UserSearchDTO
 ) {
 	Row(
 		modifier = Modifier

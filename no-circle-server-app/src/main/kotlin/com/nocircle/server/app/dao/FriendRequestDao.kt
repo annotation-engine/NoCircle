@@ -20,7 +20,7 @@ object FriendRequestDao {
 		val insert = FriendRequests.insert {
 			it[this.senderId] = senderId
 			it[this.receiverId] = receiverId
-			it[this.status] = FriendRequests.Status.WAITING
+			it[this.status] = FriendRequests.Status.PENDING
 		}
 		return insert.insertedCount == 1
 	}
@@ -49,16 +49,16 @@ object FriendRequestDao {
 	fun getReceivedRequests(receiverId: Int): List<FriendRequest> {
 		val query = FriendRequests.selectAll()
 			.where { FriendRequests.receiverId eq receiverId }
-			.andWhere { FriendRequests.status eq FriendRequests.Status.WAITING }
+			.andWhere { FriendRequests.status eq FriendRequests.Status.PENDING }
 			.logicExists(FriendRequests)
 			.orderBy(FriendRequests.createTime, SortOrder.DESC)
 		return FriendRequest.wrapRows(query).toList()
 	}
 	
-	fun getReceivedWaitingRequestCount(receiverId: Int): Int {
+	fun getReceivedPendingRequestCount(receiverId: Int): Int {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.receiverId eq receiverId }
-			.andWhere { FriendRequests.status eq FriendRequests.Status.WAITING }
+			.andWhere { FriendRequests.status eq FriendRequests.Status.PENDING }
 			.logicExists(FriendRequests)
 			.count()
 			.toInt()
@@ -68,7 +68,7 @@ object FriendRequestDao {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.senderId eq senderId }
 			.andWhere { FriendRequests.receiverId eq receiverId }
-			.andWhere { FriendRequests.status eq FriendRequests.Status.WAITING }
+			.andWhere { FriendRequests.status eq FriendRequests.Status.PENDING }
 			.logicExists(FriendRequests)
 			.exists()
 	}

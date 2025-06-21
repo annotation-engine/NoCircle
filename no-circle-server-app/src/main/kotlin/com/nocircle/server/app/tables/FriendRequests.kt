@@ -13,7 +13,7 @@ object FriendRequests : NoTable("tb_friend_request") {
 	
 	val status = enumerationByName<Status>("status", 8)
 	
-	enum class Status { AGREED, REJECTED, WAITING, CANCELED }
+	enum class Status { AGREED, REJECTED, PENDING, CANCELED }
 }
 
 class FriendRequest(id: EntityID<Int>) : NoIntEntity<FriendRequests>(id, FriendRequests) {

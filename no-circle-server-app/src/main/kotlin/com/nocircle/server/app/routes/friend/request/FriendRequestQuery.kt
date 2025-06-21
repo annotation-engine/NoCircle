@@ -103,7 +103,7 @@ private fun FriendRequests.Status.toDTOStatus(): FriendRequestDTO.Status {
 	return when (this) {
 		FriendRequests.Status.AGREED -> FriendRequestDTO.Status.AGREED
 		FriendRequests.Status.REJECTED -> FriendRequestDTO.Status.REJECTED
-		FriendRequests.Status.WAITING -> FriendRequestDTO.Status.WAITING
+		FriendRequests.Status.PENDING -> FriendRequestDTO.Status.PENDING
 		FriendRequests.Status.CANCELED -> FriendRequestDTO.Status.CANCELED
 	}
 }

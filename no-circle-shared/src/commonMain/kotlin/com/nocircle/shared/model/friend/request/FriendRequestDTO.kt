@@ -19,7 +19,7 @@ data class FriendRequestDTO(
 	enum class Status {
 		AGREED,
 		REJECTED,
-		WAITING,
+		PENDING,
 		CANCELED
 	}
 }

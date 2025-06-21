@@ -7,16 +7,9 @@ import cn.vividcode.multiplatform.ktorfitx.annotation.Query
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
 import com.nocircle.shared.model.PageResult
 import com.nocircle.shared.model.friend.FriendDTO
-import com.nocircle.shared.model.friend.FriendSearchDTO
 
 @Api("friend")
 interface FriendApi {
-	
-	@BearerAuth
-	@GET("search")
-	suspend fun searchFriend(
-		@Query username: String
-	): ResultBody<FriendSearchDTO>?
 	
 	@BearerAuth
 	@GET("query")

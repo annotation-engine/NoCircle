@@ -62,7 +62,7 @@ private fun ReceivedRequestCard(
 	Column(
 		modifier = Modifier
 			.fillMaxWidth()
-			.height(172.dp)
+			.height(154.dp)
 			.background(
 				color = MaterialTheme.colorScheme.surfaceContainer,
 				shape = MaterialTheme.shapes.medium
@@ -72,12 +72,12 @@ private fun ReceivedRequestCard(
 		Row(
 			modifier = Modifier
 				.fillMaxWidth()
-				.height(100.dp)
+				.height(90.dp)
 		) {
 			NoAsyncImage(
 				url = request.avatarUrl,
 				modifier = Modifier
-					.size(100.dp)
+					.size(90.dp)
 					.clip(MaterialTheme.shapes.small),
 				contentScale = ContentScale.Crop
 			)

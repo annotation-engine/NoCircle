@@ -31,7 +31,7 @@ fun Route.addFriendRequest() = post("request/add") {
 		if (!isExists) return@transaction NoCode.FRIEND_REQUEST_ADD_USER_NOT_FOUND
 		val request = FriendRequestDao.getOneBySenderIdAndReceiverId(userId, targetId)
 		if (request != null) {
-			if (request.status == FriendRequests.Status.WAITING) {
+			if (request.status == FriendRequests.Status.PENDING) {
 				return@transaction NoCode.FRIEND_REQUEST_ADD_REPEATED
 			} else {
 				FriendRequestDao.deleteOne(userId, targetId)

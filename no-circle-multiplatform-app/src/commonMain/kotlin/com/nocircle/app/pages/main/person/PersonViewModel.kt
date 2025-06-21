@@ -24,8 +24,8 @@ class PersonViewModel : NoViewModel() {
 	private val _labels = MutableStateFlow<List<LabelDTO>>(emptyList())
 	val labels = _labels.asStateFlow()
 	
-	private val _waitingRequestCount = MutableStateFlow(0)
-	val waitingRequestCount = _waitingRequestCount.asStateFlow()
+	private val _friendRequestPendingCount = MutableStateFlow(0)
+	val friendRequestPendingCount = _friendRequestPendingCount.asStateFlow()
 	
 	init {
 		viewModelScope.launch {
@@ -55,9 +55,9 @@ class PersonViewModel : NoViewModel() {
 	}
 	
 	suspend fun loadRequestReceivedCount() {
-		val result = ktorfitx.friendRequestApi.queryWaitingRequestCount() ?: return
+		val result = ktorfitx.friendRequestApi.queryPendingRequestCount() ?: return
 		if (result.success) {
-			_waitingRequestCount.value = result.data!!
+			_friendRequestPendingCount.value = result.data!!
 		}
 	}
 	

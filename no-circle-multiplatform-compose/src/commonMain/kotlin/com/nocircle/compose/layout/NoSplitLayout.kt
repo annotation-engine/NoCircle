@@ -156,7 +156,7 @@ internal expect fun Modifier.pointerResizeHorizontalHoverIcon(): Modifier
 
 object NoSplitLayoutDefaults {
 	
-	val ContentWidthRange = 175.dp..400.dp
+	val ContentWidthRange = 200.dp..300.dp
 	
-	val ExpendedMinWidth = 350.dp
+	val ExpendedMinWidth = 327.dp
 }

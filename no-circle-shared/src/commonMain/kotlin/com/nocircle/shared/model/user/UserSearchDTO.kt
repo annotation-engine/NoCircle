@@ -1,10 +1,10 @@
-package com.nocircle.shared.model.friend
+package com.nocircle.shared.model.user
 
 import com.nocircle.shared.model.label.LabelDTO
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FriendSearchDTO(
+data class UserSearchDTO(
 	val userId: Int,
 	val username: String,
 	val nickname: String,

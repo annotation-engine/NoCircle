@@ -1,14 +1,14 @@
 package com.nocircle.app.pages.main.friends.list.add
 
 import androidx.lifecycle.viewModelScope
-import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.api.impls.friendRequestApi
+import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.common.coroutines.FunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
 import com.nocircle.compose.viewmodel.NoViewModel
-import com.nocircle.shared.model.friend.FriendSearchDTO
+import com.nocircle.shared.model.user.UserSearchDTO
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,14 +23,14 @@ class AddFriendViewModel : NoViewModel() {
 	private val _search = MutableStateFlow("")
 	val search = _search.asStateFlow()
 	
-	private val _result = MutableStateFlow<FriendSearchDTO?>(null)
+	private val _result = MutableStateFlow<UserSearchDTO?>(null)
 	val result = _result.asStateFlow()
 	
 	init {
 		viewModelScope.launch {
 			search
 				.debounce(0.5.seconds)
-				.collectLatest(::searchFriendByUsername)
+				.collectLatest(::searchUserByUsername)
 		}
 	}
 	
@@ -54,12 +54,12 @@ class AddFriendViewModel : NoViewModel() {
 		}
 	}
 	
-	private suspend fun searchFriendByUsername(username: String) {
+	private suspend fun searchUserByUsername(username: String) {
 		if (username.isBlank()) {
 			_result.value = null
 			return
 		}
-		val result = ktorfitx.friendApi.searchFriend(username)
+		val result = ktorfitx.userApi.searchUser(username)
 			?: return networkError()
 		if (result.success) {
 			_result.value = result.data
