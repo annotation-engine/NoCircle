@@ -32,10 +32,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.theme.scheme.ColorSchemeContrast
-import com.nocircle.app.theme.scheme.ColorSchemeGroup
-import com.nocircle.app.theme.scheme.ThemeMode
-import com.nocircle.app.theme.scheme.getColorScheme
+import com.nocircle.app.theme.scheme.*
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
@@ -99,23 +96,23 @@ fun AppearancePage() {
  */
 @Composable
 private fun ColorSchemeContrastOptions() {
-	val current = ColorSchemeContrast.current
+	val config = ColorSchemeConfig.current
 	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
 		icon = AppIcon.Contrast.value(),
 		title = AppString.APPEARANCE_CONTRAST.value(),
 		items = ColorSchemeContrast.entries,
-		current = current
+		current = config.contrast
 	) { contrast ->
 		val colorScheme = getColorScheme(contrast = contrast)
 		ColorSchemeCard(
-			selected = current == contrast,
+			selected = config.contrast == contrast,
 			colorScheme = colorScheme,
 			name = contrast.title.value(),
 			preview = AppString.APPEARANCE_CONTRAST_PREVIEW.value()
 		) {
 			coroutineScope.launch(Dispatchers.IO) {
-				ColorSchemeContrast.set(contrast)
+				ColorSchemeConfig.update(config.copy(contrast = contrast))
 			}
 		}
 	}
@@ -126,8 +123,11 @@ private fun ColorSchemeContrastOptions() {
  */
 @Composable
 private fun ColorSchemeGroupOptions() {
-	val current = ColorSchemeGroup.current
+	val config = ColorSchemeConfig.current
 	val coroutineScope = rememberCoroutineScope()
+	val current by remember(config.group) {
+		derivedStateOf { ColorSchemeGroup.allColorSchemeGroups.first { it.name == config.group } }
+	}
 	SettingsOptions(
 		icon = AppIcon.ColorLens.value(),
 		title = AppString.APPEARANCE_THEME.value(),
@@ -138,11 +138,11 @@ private fun ColorSchemeGroupOptions() {
 		ColorSchemeCard(
 			selected = current == group,
 			colorScheme = colorScheme,
-			name = group.name.value(),
+			name = current.name.value(),
 			preview = AppString.APPEARANCE_THEME_PREVIEW.value()
 		) {
 			coroutineScope.launch(Dispatchers.IO) {
-				ColorSchemeGroup.set(group)
+				ColorSchemeConfig.update(config.copy(group = group.name))
 			}
 		}
 	}
@@ -167,24 +167,24 @@ private fun ThemeModeOptions() {
 			viewModel.isDarkPreview.value = !isDarkPreview
 		}
 	}
-	val current = ThemeMode.current
+	val config = ColorSchemeConfig.current
 	val coroutineScope = rememberCoroutineScope()
 	SettingsOptions(
 		icon = AppIcon.DarkMode.value(),
 		title = AppString.APPEARANCE_THEME_MODE.value(),
-		current = current,
+		current = config.themeMode,
 		items = ThemeMode.entries
 	) { themeMode ->
 		if (themeMode != ThemeMode.SYSTEM) {
 			val colorScheme = getColorScheme(themeMode = themeMode)
 			ColorSchemeCard(
-				selected = current == themeMode,
+				selected = config.themeMode == themeMode,
 				colorScheme = colorScheme,
 				name = themeMode.title.value(),
 				preview = AppString.APPEARANCE_THEME_MODE_PREVIEW.value()
 			) {
 				coroutineScope.launch(Dispatchers.IO) {
-					ThemeMode.set(themeMode)
+					ColorSchemeConfig.update(config.copy(themeMode = themeMode))
 				}
 			}
 		} else {
@@ -193,7 +193,7 @@ private fun ThemeModeOptions() {
 					.clip(MaterialTheme.shapes.large)
 					.clickable {
 						coroutineScope.launch(Dispatchers.IO) {
-							ThemeMode.set(ThemeMode.SYSTEM)
+							ColorSchemeConfig.update(config.copy(themeMode = ThemeMode.SYSTEM))
 						}
 					}
 			) {
@@ -222,7 +222,7 @@ private fun ThemeModeOptions() {
 					}
 					val colorScheme = getColorScheme(themeMode = themeMode)
 					ColorSchemeCard(
-						selected = current == ThemeMode.SYSTEM,
+						selected = config.themeMode == ThemeMode.SYSTEM,
 						colorScheme = colorScheme,
 						name = ThemeMode.SYSTEM.title.value(),
 						preview = AppString.APPEARANCE_THEME_MODE_PREVIEW.value(),

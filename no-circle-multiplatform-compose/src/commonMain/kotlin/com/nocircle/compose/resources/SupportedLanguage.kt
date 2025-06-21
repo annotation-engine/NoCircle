@@ -33,4 +33,4 @@ enum class SupportedLanguage(
 	}
 }
 
-private object SupportedLanguageConfigKey : ConfigKey<SupportedLanguage>("supportedLanguage")
+private object SupportedLanguageConfigKey : ConfigKey<SupportedLanguage>("supportedLanguage", isOwn = true)

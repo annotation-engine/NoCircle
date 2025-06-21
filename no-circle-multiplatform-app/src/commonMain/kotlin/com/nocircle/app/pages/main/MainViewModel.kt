@@ -4,16 +4,14 @@ import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impls.keepAliveApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.resources.AppString
+import com.nocircle.app.theme.scheme.ColorSchemeConfig
 import com.nocircle.common.log.NoLog
 import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.websocket.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import kotlin.math.pow
 import kotlin.time.Duration.Companion.seconds
 
@@ -27,7 +25,8 @@ class MainViewModel : NoViewModel() {
 	
 	init {
 		viewModelScope.launch(Dispatchers.IO) {
-			keepAlive()
+			async { keepAlive() }
+			loadColorScheme()
 		}
 	}
 	
@@ -69,6 +68,10 @@ class MainViewModel : NoViewModel() {
 			delay(duration)
 			NoLog.info("WebSocket reconnected: $attempt")
 		}
+	}
+	
+	private suspend fun loadColorScheme() {
+		ColorSchemeConfig.refresh()
 	}
 	
 	override fun onCleared() {

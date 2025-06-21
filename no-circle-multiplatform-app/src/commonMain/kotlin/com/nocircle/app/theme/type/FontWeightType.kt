@@ -39,7 +39,7 @@ enum class FontWeightType(
 	}
 }
 
-private object FontWeightTypeConfigKey : ConfigKey<FontWeightType>("fontWeightType")
+private object FontWeightTypeConfigKey : ConfigKey<FontWeightType>("fontWeightType", isOwn = true)
 
 private var currentType: FontWeightType? = null
 private var currentTypography: Typography? = null

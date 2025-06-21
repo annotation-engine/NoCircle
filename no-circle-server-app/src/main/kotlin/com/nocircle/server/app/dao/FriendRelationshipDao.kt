@@ -4,7 +4,6 @@ import com.nocircle.server.app.tables.FriendRelationship
 import com.nocircle.server.app.tables.FriendRelationships
 import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicExists
-import com.nocircle.server.common.exposed.page
 import org.jetbrains.exposed.v1.core.Expression
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.and
@@ -31,21 +30,11 @@ object FriendRelationshipDao {
 			.exists()
 	}
 	
-	fun getListByUserIdAndPageAndSize(userId: Int, pageNumber: Int, pageSize: Int, orderType: OrderType): List<FriendRelationship> {
+	fun getListByUserId(userId: Int): List<FriendRelationship> {
 		val query = FriendRelationships.selectAll()
 			.where { FriendRelationships.userId eq userId }
 			.logicExists(FriendRelationships)
-			.orderBy(orderType.column, orderType.order)
-			.page(pageNumber, pageSize)
 		return FriendRelationship.wrapRows(query).toList()
-	}
-	
-	fun getCountByUserId(userId: Int): Int {
-		return FriendRelationships.select(FriendRelationships.id)
-			.where { FriendRelationships.userId eq userId }
-			.logicExists(FriendRelationships)
-			.count()
-			.toInt()
 	}
 	
 	@Suppress("unused")

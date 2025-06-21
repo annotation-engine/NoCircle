@@ -46,7 +46,6 @@ enum class NoCode(
 	FRIEND_SEARCH_NOT_FOUND("未搜索到该用户", 1201),
 	
 	FRIEND_QUERY_SUCCESS("好友查询成功", 0),
-	FRIEND_QUERY_PARAMETER_ERROR("参数错误", 1210),
 	
 	FRIEND_REQUEST_ADD_SUCCESS("好友申请已发送", 0),
 	FRIEND_REQUEST_ADD_FAILURE("好友申请发送失败", 1310),

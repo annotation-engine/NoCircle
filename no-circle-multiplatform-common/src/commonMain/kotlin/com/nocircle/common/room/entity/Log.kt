@@ -3,7 +3,7 @@ package com.nocircle.common.room.entity
 import androidx.paging.PagingSource
 import androidx.room.*
 
-@Entity
+@Entity("tb_log")
 internal data class LogEntity(
 	@PrimaryKey(autoGenerate = true)
 	val id: Int = 0,
@@ -19,9 +19,9 @@ internal interface LogDao {
 	@Insert
 	suspend fun insert(entity: LogEntity)
 	
-	@Query("SELECT * FROM LogEntity")
+	@Query("SELECT * FROM tb_log")
 	fun query(): PagingSource<Int, LogEntity>
 	
-	@Query("DELETE FROM LogEntity")
+	@Query("DELETE FROM tb_log")
 	suspend fun deleteAll(): Int
 }

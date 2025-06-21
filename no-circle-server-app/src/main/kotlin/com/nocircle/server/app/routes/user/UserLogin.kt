@@ -1,16 +1,16 @@
 package com.nocircle.server.app.routes.user
 
+import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLoginDao
+import com.nocircle.server.app.plugins.NoRedisKey
 import com.nocircle.server.app.plugins.UserRouteGroup
-import com.nocircle.server.app.plugins.UserToken
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.app.plugins.yaml
 import com.nocircle.server.app.tables.UserLogins
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
 import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.app.code.NoCode
 import com.nocircle.shared.model.user.UserLoginDTO
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -32,12 +32,16 @@ fun Route.userLogin() = post("login") {
 	if (user == null || !PasswordUtils.verity(password, user.password)) {
 		return@post call.respondOK(NoCode.USER_LOGIN_USERNAME_OR_PASSWORD_ERROR)
 	}
+	val userId = user.id.value
 	transaction {
-		UserLoginDao.insertOne(user.id.value, UserLogins.Method.PASSWORD)
+		UserLoginDao.insertOne(userId, UserLogins.Method.PASSWORD)
 	}
-	val token = JWTUtils.generate(user.id.value, user.username)
-	val bucket = redisson.getBucket<String>("${UserToken.prefix}${user.id}")
+	val token = JWTUtils.generate(userId, user.username)
+	val bucket = redisson.getBucket<String>("${NoRedisKey.USER_TOKEN}::${userId}")
 	bucket.set(token, yaml.jwt.timeout.toJavaDuration())
-	val userLogin = UserLoginDTO(token)
+	val userLogin = UserLoginDTO(
+		userId = userId,
+		token = token,
+	)
 	call.respondOK(userLogin, NoCode.USER_LOGIN_SUCCESS)
 }

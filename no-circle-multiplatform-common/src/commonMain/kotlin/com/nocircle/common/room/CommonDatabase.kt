@@ -9,7 +9,13 @@ import com.nocircle.common.room.entity.ConfigEntity
 import com.nocircle.common.room.entity.LogDao
 import com.nocircle.common.room.entity.LogEntity
 
-@Database(entities = [ConfigEntity::class, LogEntity::class], version = 1)
+@Database(
+	entities = [
+		ConfigEntity::class,
+		LogEntity::class
+	],
+	version = 1
+)
 @ConstructedBy(CommonDatabaseConstructor::class)
 internal abstract class CommonDatabase : RoomDatabase() {
 	
@@ -17,7 +23,11 @@ internal abstract class CommonDatabase : RoomDatabase() {
 		
 		private const val DB_NAME = "no_circle_common"
 		
-		val INSTANCE by lazy { getRoomDatabase<CommonDatabase>(DB_NAME) }
+		val INSTANCE by lazy {
+			getRoomDatabase<CommonDatabase>(
+				dbName = DB_NAME
+			)
+		}
 	}
 	
 	abstract fun configDao(): ConfigDao

@@ -48,6 +48,7 @@ import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
+import com.nocircle.app.theme.scheme.ColorSchemeConfig
 import com.nocircle.app.theme.scheme.ThemeMode
 import com.nocircle.compose.desktop.NoTooltipArea
 import com.nocircle.compose.desktop.NoTooltipPlacement
@@ -312,7 +313,8 @@ private fun LeftNavigationBar(
 				Spacer(modifier = Modifier.weight(1f))
 				Spacer(modifier = Modifier.height(8.dp))
 				val coroutineScope = rememberCoroutineScope()
-				val isDark = ThemeMode.current.isDark
+				val config = ColorSchemeConfig.current
+				val isDark = config.themeMode.isDark
 				val themeModeText =
 					if (isDark) AppString.APPEARANCE_THEME_MODE_LIGHT.value() else AppString.APPEARANCE_THEME_MODE_DARK.value()
 				LeftToolItem(
@@ -322,7 +324,8 @@ private fun LeftNavigationBar(
 					isExpended = isLeftNavigationBarExpended,
 					onClick = {
 						coroutineScope.launch(Dispatchers.IO) {
-							ThemeMode.set(if (isDark) ThemeMode.LIGHT else ThemeMode.DARK)
+							val themeMode = if (isDark) ThemeMode.LIGHT else ThemeMode.DARK
+							ColorSchemeConfig.update(config.copy(themeMode = themeMode))
 						}
 					},
 					iconRotate = if (isDark) 90f else 0f,

@@ -2,7 +2,7 @@ package com.nocircle.app.theme.colors
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.nocircle.app.theme.scheme.ThemeMode
+import com.nocircle.app.theme.scheme.ColorSchemeConfig
 
 class NoColor private constructor(
 	private val light: Color,
@@ -11,7 +11,7 @@ class NoColor private constructor(
 	
 	val current: Color
 		@Composable
-		get() = if (ThemeMode.current.isDark) dark else light
+		get() = if (ColorSchemeConfig.current.themeMode.isDark) dark else light
 	
 	companion object {
 		

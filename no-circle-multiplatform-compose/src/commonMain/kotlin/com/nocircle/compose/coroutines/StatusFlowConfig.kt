@@ -20,12 +20,14 @@ abstract class StatusFlowConfig<T : Any> {
 		MutableStateFlow(value)
 	}
 	
-	suspend fun set(value: T) {
+	suspend fun update(value: T) {
 		val oldValue = statusFlow.value
 		if (oldValue == value) return
 		statusFlow.value = value
 		setConfigToStorage(oldValue, value)
 	}
+	
+	suspend fun refresh() = update(getConfigFromStorage())
 	
 	val value: T
 		get() = statusFlow.value

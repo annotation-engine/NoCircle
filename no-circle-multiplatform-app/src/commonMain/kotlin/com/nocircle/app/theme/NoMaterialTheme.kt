@@ -3,7 +3,7 @@ package com.nocircle.app.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import com.nocircle.app.theme.scheme.ThemeMode
+import com.nocircle.app.theme.scheme.ColorSchemeConfig
 import com.nocircle.app.theme.scheme.animateColorScheme
 import com.nocircle.app.theme.type.animateShapes
 import com.nocircle.app.theme.type.getTypography
@@ -12,7 +12,7 @@ import com.nocircle.app.theme.type.getTypography
 fun NoMaterialTheme(
 	content: @Composable () -> Unit,
 ) {
-	val isDark = ThemeMode.current.isDark
+	val isDark = ColorSchemeConfig.current.themeMode.isDark
 	LaunchedEffect(isDark) {
 		onDarkModeChanged(isDark)
 	}

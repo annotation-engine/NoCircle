@@ -31,7 +31,7 @@ sealed interface ColorSchemeGroup {
 	
 	val darkHighContrast: ColorScheme
 	
-	companion object : StatusFlowConfig<ColorSchemeGroup>() {
+	companion object {
 		
 		val allColorSchemeGroups by lazy {
 			listOf(
@@ -49,15 +49,6 @@ sealed interface ColorSchemeGroup {
 				AmberColorSchemeGroup,
 			)
 		}
-		
-		override suspend fun getConfigFromStorage(): ColorSchemeGroup {
-			val name = ColorSchemeGroupConfigKey.get<AppString>() ?: BlueColorSchemeGroup.name
-			return allColorSchemeGroups.first { it.name == name }
-		}
-		
-		override suspend fun setConfigToStorage(oldConfig: ColorSchemeGroup, newConfig: ColorSchemeGroup) {
-			ColorSchemeGroupConfigKey.set(newConfig.name)
-		}
 	}
 }
 
@@ -67,18 +58,7 @@ enum class ColorSchemeContrast(
 ) {
 	STANDARD(AppString.APPEARANCE_CONTRAST_STANDARD),
 	MEDIUM(AppString.APPEARANCE_CONTRAST_MEDIUM),
-	HIGH(AppString.APPEARANCE_CONTRAST_HIGH);
-	
-	companion object : StatusFlowConfig<ColorSchemeContrast>() {
-		
-		override suspend fun getConfigFromStorage(): ColorSchemeContrast {
-			return ColorSchemeContrastConfigKey.get() ?: STANDARD
-		}
-		
-		override suspend fun setConfigToStorage(oldConfig: ColorSchemeContrast, newConfig: ColorSchemeContrast) {
-			ColorSchemeContrastConfigKey.set(newConfig)
-		}
-	}
+	HIGH(AppString.APPEARANCE_CONTRAST_HIGH)
 }
 
 @Serializable
@@ -88,17 +68,6 @@ enum class ThemeMode(
 	LIGHT(AppString.APPEARANCE_THEME_MODE_LIGHT),
 	DARK(AppString.APPEARANCE_THEME_MODE_DARK),
 	SYSTEM(AppString.APPEARANCE_THEME_MODE_SYSTEM);
-	
-	companion object : StatusFlowConfig<ThemeMode>() {
-		
-		override suspend fun getConfigFromStorage(): ThemeMode {
-			return ThemeModeConfigKey.get() ?: SYSTEM
-		}
-		
-		override suspend fun setConfigToStorage(oldConfig: ThemeMode, newConfig: ThemeMode) {
-			ThemeModeConfigKey.set(newConfig)
-		}
-	}
 	
 	val isDark: Boolean
 		@Composable
@@ -110,18 +79,37 @@ enum class ThemeMode(
 		}
 }
 
-private object ColorSchemeContrastConfigKey : ConfigKey<ColorSchemeContrast>("colorSchemeContrast")
+object ColorSchemeConfigKey : ConfigKey<ColorSchemeConfig>("colorScheme", isOwn = true)
 
-private object ColorSchemeGroupConfigKey : ConfigKey<AppString>("colorSchemeGroup")
-
-private object ThemeModeConfigKey : ConfigKey<ThemeMode>("themeMode")
+@Immutable
+@Serializable
+data class ColorSchemeConfig(
+	val contrast: ColorSchemeContrast,
+	val group: AppString,
+	val themeMode: ThemeMode,
+) {
+	
+	companion object : StatusFlowConfig<ColorSchemeConfig>() {
+		override suspend fun getConfigFromStorage(): ColorSchemeConfig {
+			return ColorSchemeConfigKey.get() ?: ColorSchemeConfig(STANDARD, BlueColorSchemeGroup.name, ThemeMode.SYSTEM)
+		}
+		
+		override suspend fun setConfigToStorage(oldConfig: ColorSchemeConfig, newConfig: ColorSchemeConfig) {
+			ColorSchemeConfigKey.set(newConfig)
+		}
+	}
+}
 
 @Composable
 fun getColorScheme(
-	group: ColorSchemeGroup = ColorSchemeGroup.current,
-	contrast: ColorSchemeContrast = ColorSchemeContrast.current,
-	themeMode: ThemeMode = ThemeMode.current
+	group: ColorSchemeGroup? = null,
+	contrast: ColorSchemeContrast? = null,
+	themeMode: ThemeMode? = null
 ): ColorScheme {
+	val config = ColorSchemeConfig.current
+	val group = group ?: ColorSchemeGroup.allColorSchemeGroups.first { it.name == config.group }
+	val contrast = contrast ?: config.contrast
+	val themeMode = themeMode ?: config.themeMode
 	val isDark = themeMode.isDark
 	return remember(group, contrast, isDark) {
 		when (contrast) {
@@ -132,26 +120,20 @@ fun getColorScheme(
 	}
 }
 
-private var currentGroup: ColorSchemeGroup? = null
-private var currentContrast: ColorSchemeContrast? = null
-private var currentThemeMode: ThemeMode? = null
+private var currentColorSchemeConfig: ColorSchemeConfig? = null
 private var currentColorScheme: ColorScheme? = null
 
 @Composable
 fun animateColorScheme(): ColorScheme {
-	val group = ColorSchemeGroup.current
-	val contrast = ColorSchemeContrast.current
-	val themeMode = ThemeMode.current
-	if (currentGroup == group && currentContrast == contrast && currentThemeMode == themeMode && currentColorScheme != null) {
+	val config = ColorSchemeConfig.current
+	if (currentColorScheme != null && currentColorScheme == config) {
 		return currentColorScheme!!
 	}
 	val target = getColorScheme()
 	val transition = updateTransition(target, label = "ColorSchemeTransition")
 	LaunchedEffect(transition.isRunning) {
 		if (!transition.isRunning) {
-			currentGroup = group
-			currentContrast = contrast
-			currentThemeMode = themeMode
+			currentColorSchemeConfig = config
 			currentColorScheme = transition.targetState
 			freeMemory()
 		}

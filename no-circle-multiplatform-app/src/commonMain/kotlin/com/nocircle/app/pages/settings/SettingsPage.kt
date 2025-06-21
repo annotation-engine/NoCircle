@@ -132,7 +132,7 @@ private fun SwitchLanguage() {
 					},
 					onClick = {
 						coroutineScope.launch(Dispatchers.IO) {
-							SupportedLanguage.set(it)
+							SupportedLanguage.update(it)
 						}
 						expanded = false
 					}
@@ -170,7 +170,7 @@ private fun SwitchIconType() {
 					text = { Text(it.getAppString().value()) },
 					onClick = {
 						coroutineScope.launch(Dispatchers.IO) {
-							NoIconType.set(it)
+							NoIconType.update(it)
 						}
 						expanded = false
 					}
@@ -217,7 +217,7 @@ private fun SwitchShapesType() {
 					text = { Text(it.getAppString().value()) },
 					onClick = {
 						coroutineScope.launch(Dispatchers.IO) {
-							RoundedCornerType.set(it)
+							RoundedCornerType.update(it)
 						}
 						expanded = false
 					}
@@ -261,7 +261,7 @@ private fun SwitchFontWeight() {
 					text = { Text(it.getAppString().value()) },
 					onClick = {
 						coroutineScope.launch(Dispatchers.IO) {
-							FontWeightType.set(it)
+							FontWeightType.update(it)
 						}
 						expanded = false
 					}

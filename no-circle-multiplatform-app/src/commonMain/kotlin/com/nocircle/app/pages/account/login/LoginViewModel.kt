@@ -5,6 +5,7 @@ import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.config.TokenConfigKey
+import com.nocircle.common.config.UserIdConfigKey
 import com.nocircle.common.config.set
 import com.nocircle.common.coroutines.FunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
@@ -48,6 +49,7 @@ class LoginViewModel() : NoViewModel() {
 				?: return@tryWithLock networkError()
 			if (result.success) {
 				TokenConfigKey.set(result.data!!.token)
+				UserIdConfigKey.set(result.data!!.userId)
 			} else {
 				showNoErrorSnackbar(result.msg)
 			}

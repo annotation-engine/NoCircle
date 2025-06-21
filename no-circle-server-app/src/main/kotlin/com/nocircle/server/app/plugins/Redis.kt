@@ -14,22 +14,16 @@ fun configureRedis() {
 				database = yaml.redis.database
 			}
 		}
-		redisson = Redisson.create(config)
+		_redisson = Redisson.create(config)
 	}
 	NoLog.info("Redis connected used for ${millis / 1_000f} seconds.")
 }
 
-lateinit var redisson: RedissonClient
+private var _redisson: RedissonClient? = null
 
-abstract class NoRedisson {
+val redisson get() = _redisson!!
+
+object NoRedisKey {
 	
-	val key: String by lazy {
-		this::class.qualifiedName!!.replace(".", "::")
-	}
-	
-	val prefix: String by lazy {
-		"${this.key}::"
-	}
+	const val USER_TOKEN = "user::token"
 }
-
-data object UserToken : NoRedisson()

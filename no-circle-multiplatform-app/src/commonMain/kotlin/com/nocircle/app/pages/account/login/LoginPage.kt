@@ -48,6 +48,8 @@ fun LoginPage() {
 				hostState.showNoSnackbar(AppString.REGISTER_SUCCESS)
 			}
 		}
+	}
+	LaunchedEffect(Unit) {
 		viewModel.snackbarCollect(hostState::showNoSnackbar)
 	}
 	NoScaffold(
