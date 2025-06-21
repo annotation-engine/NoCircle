@@ -9,6 +9,6 @@ data class FriendDTO(
 	val username: String,
 	val nickname: String,
 	val avatarUrl: String?,
-	val pinyin: String,
+	val first: String,
 	val createdTime: LocalDateTime
 )

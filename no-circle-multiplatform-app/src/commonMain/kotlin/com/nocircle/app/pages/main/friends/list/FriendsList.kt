@@ -1,9 +1,9 @@
 package com.nocircle.app.pages.main.friends.list
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -50,13 +50,17 @@ fun FriendsList(
 		LazyColumn(
 			modifier = Modifier
 				.fillMaxSize()
-				.background(MaterialTheme.colorScheme.surfaceContainerLow)
-				.padding(paddingValues)
+				.padding(paddingValues),
+			contentPadding = PaddingValues(vertical = 8.dp)
 		) {
-			items(
+			itemsIndexed(
 				items = friendList,
-				key = { it.userId }
-			) {
+				key = { _, it -> it.userId }
+			) { index, it ->
+				val showFirst = index == 0 || friendList[index - 1].first != it.first
+				if (showFirst) {
+					FirstChar(it.first)
+				}
 				Friend(it)
 			}
 		}
@@ -125,37 +129,54 @@ private fun Friend(
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(16.dp)
-			.height(60.dp)
+			.padding(
+				start = 32.dp,
+				top = 8.dp,
+				end = 16.dp,
+				bottom = 8.dp
+			)
+			.height(40.dp),
+		verticalAlignment = Alignment.CenterVertically
 	) {
 		NoAsyncImage(
 			url = friend.avatarUrl,
 			modifier = Modifier
-				.size(56.dp)
+				.size(40.dp)
 				.clip(MaterialTheme.shapes.medium),
 			contentScale = ContentScale.Crop,
 		)
-		Spacer(Modifier.width(12.dp))
-		Column(
-			modifier = Modifier
-				.fillMaxSize()
-				.padding(vertical = 4.dp),
-			verticalArrangement = Arrangement.SpaceBetween
-		) {
-			Text(
-				text = friend.nickname,
-				maxLines = 1,
-				overflow = TextOverflow.Ellipsis,
-				color = MaterialTheme.colorScheme.onSurface,
-				style = MaterialTheme.typography.titleMedium
-			)
-			Text(
-				text = friend.username,
-				maxLines = 1,
-				overflow = TextOverflow.Ellipsis,
-				color = MaterialTheme.colorScheme.onSurfaceVariant,
-				style = MaterialTheme.typography.bodyMedium
-			)
-		}
+		Spacer(Modifier.width(8.dp))
+		Text(
+			text = friend.nickname,
+			maxLines = 1,
+			overflow = TextOverflow.Ellipsis,
+			color = MaterialTheme.colorScheme.onSurface,
+			style = MaterialTheme.typography.titleMedium
+		)
 	}
+}
+
+@Composable
+private fun FirstChar(
+	first: String
+) {
+	Box(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(
+				horizontal = 32.dp,
+				vertical = 8.dp
+			)
+	) {
+		Text(
+			text = first,
+			color = MaterialTheme.colorScheme.outline,
+			style = MaterialTheme.typography.bodyMedium
+		)
+	}
+	HorizontalDivider(
+		modifier = Modifier.padding(start = 32.dp),
+		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+	)
+	Spacer(modifier = Modifier.height(8.dp))
 }

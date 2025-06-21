@@ -23,6 +23,7 @@ class MainViewModel : NoViewModel() {
 	val isLeftNavigationBarExpended = MutableStateFlow(false)
 	
 	private val reconnectDurationRange = 0.seconds..30.seconds
+	private var close = false
 	
 	init {
 		viewModelScope.launch(Dispatchers.IO) {
@@ -32,7 +33,6 @@ class MainViewModel : NoViewModel() {
 	
 	private suspend fun keepAlive() {
 		var attempt = 0
-		var close = false
 		while (!close) {
 			try {
 				ktorfitx.keepAliveApi.keepAlive {
@@ -41,6 +41,7 @@ class MainViewModel : NoViewModel() {
 					}
 					attempt = 0
 					for (frame in incoming) {
+						if (close) break
 						when (frame) {
 							is Frame.Text -> {
 								WebSocketScheduler.scheduleText(
@@ -72,6 +73,6 @@ class MainViewModel : NoViewModel() {
 	
 	override fun onCleared() {
 		super.onCleared()
-		NoLog.info("?????????")
+		close = true
 	}
 }

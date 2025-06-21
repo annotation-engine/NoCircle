@@ -47,7 +47,7 @@ fun Application.keepAliveWebSocket() {
 					if (principal.userId !in sessions) {
 						break
 					}
-					delay(100)
+					delay(50)
 				}
 				_sessions[principal.userId] = this
 				val username = principal.username

@@ -178,7 +178,7 @@ private fun BottomNavigationBar(
 		items = MainSubRoute.entries,
 		modifier = Modifier
 			.padding(16.dp)
-			.height(60.dp),
+			.height(56.dp),
 	) { subRoute ->
 		NoIcon(
 			icon = subRoute.icon.value()

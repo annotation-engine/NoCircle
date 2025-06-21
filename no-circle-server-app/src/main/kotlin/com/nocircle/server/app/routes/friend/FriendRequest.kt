@@ -40,7 +40,7 @@ fun Route.queryFriend() = get("query") {
 				username = friend.username,
 				nickname = friend.nickname,
 				avatarUrl = friend.avatarUrl,
-				pinyin = friend.pinyin,
+				first = friend.pinyin.first().uppercase(),
 				createdTime = relationship.createTime.toShanghaiLocalDateTime()
 			)
 		}
