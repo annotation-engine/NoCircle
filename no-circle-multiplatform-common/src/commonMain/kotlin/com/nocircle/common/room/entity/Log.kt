@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.*
 
 @Entity("tb_log")
-internal data class LogEntity(
+internal class LogEntity(
 	@PrimaryKey(autoGenerate = true)
 	val id: Int = 0,
 	val name: String,

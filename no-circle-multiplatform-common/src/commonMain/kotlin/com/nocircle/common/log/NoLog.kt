@@ -67,7 +67,7 @@ object NoLog {
 					content = message,
 					timestamp = Clock.System.now().toEpochMilliseconds()
 				)
-				CommonDatabase.INSTANCE.configLog().insert(entity)
+				CommonDatabase.INSTANCE.getLogDao().insert(entity)
 			}
 		}
 	}

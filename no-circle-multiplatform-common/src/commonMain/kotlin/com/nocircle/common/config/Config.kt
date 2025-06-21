@@ -12,28 +12,30 @@ abstract class ConfigKey<T : Any>(
 	val key: String,
 	val single: Boolean = false
 ) {
-	val cacheMap = mutableMapOf<Int?, T?>()
+	val cacheMap = mutableMapOf<Int, T?>()
 	
-	suspend fun getUserId() = if (single) null else UserIdConfigKey.get()
+	suspend fun getUserIdOrNull() = if (single) SINGLE_USER_ID else UserIdConfigKey.get()
 }
+
+private const val SINGLE_USER_ID = -1
 
 suspend inline fun <reified T : Any> ConfigKey<T>.set(value: T?) = this.set(value, serializer())
 
 suspend inline fun <reified T : Any> ConfigKey<T>.get(): T? = this.get(serializer())
 
 suspend fun <T : Any> ConfigKey<T>.clear() {
-	val userId = getUserId()
+	val userId = getUserIdOrNull() ?: return
 	cacheMap -= userId
-	val configDao = CommonDatabase.INSTANCE.configDao()
+	val configDao = CommonDatabase.INSTANCE.getConfigDao()
 	configDao.delete(userId, key)
 }
 
 suspend fun <T : Any> ConfigKey<T>.set(value: T?, serializer: KSerializer<T>) {
-	val json = value?.let { Json.encodeToString(serializer, it) }
-	val userId = getUserId()
+	val userId = getUserIdOrNull() ?: return
 	cacheMap[userId] = value
-	val configDao = CommonDatabase.INSTANCE.configDao()
+	val configDao = CommonDatabase.INSTANCE.getConfigDao()
 	val exists = configDao.exists(userId, key)
+	val json = value?.let { Json.encodeToString(serializer, it) }
 	if (exists) {
 		configDao.update(userId, key, json)
 	} else {
@@ -42,11 +44,11 @@ suspend fun <T : Any> ConfigKey<T>.set(value: T?, serializer: KSerializer<T>) {
 }
 
 suspend fun <T : Any> ConfigKey<T>.get(serializer: KSerializer<T>): T? {
-	val userId = getUserId()
+	val userId = getUserIdOrNull() ?: return null
 	if (userId in cacheMap) {
 		return cacheMap[userId]
 	}
-	val configDao = CommonDatabase.INSTANCE.configDao()
+	val configDao = CommonDatabase.INSTANCE.getConfigDao()
 	val entity = configDao.query(userId, key) ?: return null
 	val value = entity.value?.let { Json.decodeFromString(serializer, it) }
 	cacheMap[userId] = value

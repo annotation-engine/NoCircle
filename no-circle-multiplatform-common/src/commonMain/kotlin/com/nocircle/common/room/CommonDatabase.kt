@@ -14,7 +14,7 @@ import com.nocircle.common.room.entity.LogEntity
 		ConfigEntity::class,
 		LogEntity::class
 	],
-	version = 1
+	version = DB_VERSION
 )
 @ConstructedBy(CommonDatabaseConstructor::class)
 internal abstract class CommonDatabase : RoomDatabase() {
@@ -30,9 +30,9 @@ internal abstract class CommonDatabase : RoomDatabase() {
 		}
 	}
 	
-	abstract fun configDao(): ConfigDao
+	abstract fun getConfigDao(): ConfigDao
 	
-	abstract fun configLog(): LogDao
+	abstract fun getLogDao(): LogDao
 }
 
 @Suppress("KotlinNoActualForExpect", "NO_ACTUAL_FOR_EXPECT")

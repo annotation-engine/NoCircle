@@ -14,9 +14,7 @@ abstract class StatusFlowConfig<T : Any> {
 	abstract suspend fun setConfigToStorage(oldConfig: T, newConfig: T)
 	
 	private val statusFlow by lazy {
-		val value = runBlocking(Dispatchers.IO) {
-			getConfigFromStorage()
-		}
+		val value = runBlocking(Dispatchers.IO) { getConfigFromStorage() }
 		MutableStateFlow(value)
 	}
 	

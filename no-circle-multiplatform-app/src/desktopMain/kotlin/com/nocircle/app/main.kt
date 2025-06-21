@@ -15,7 +15,6 @@ import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.common.device.DeviceName
 import com.nocircle.common.device.NoDevice
-import com.nocircle.common.log.NoLog
 import com.nocircle.compose.animation.animateWindowStateAsState
 import com.nocircle.compose.desktop.LocalFrameWindowScope
 import java.awt.Dimension
@@ -46,7 +45,6 @@ fun main() {
 			) {
 				NoApp(
 					onDestinationChangedListener = { _, destination, _ ->
-						NoLog.info(destination)
 						val route = destination.route ?: return@NoApp
 						config = ScreenConfig.entries.find { route in it.routes } ?: ScreenConfig.MEDIUM
 					},

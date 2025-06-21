@@ -80,7 +80,6 @@ class MainViewModel : NoViewModel() {
 		NoIconType.refresh()
 		RoundedCornerType.refresh()
 		FontWeightType.refresh()
-		
 	}
 	
 	override fun onCleared() {

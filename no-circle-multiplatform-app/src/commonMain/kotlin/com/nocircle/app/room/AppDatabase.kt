@@ -1,18 +1,31 @@
 package com.nocircle.app.room
 
-//@Database(entities = [], version = 1)
-//abstract class AppDatabase : RoomDatabase() {
-//
-//	companion object {
-//
-//		private const val DB_NAME = "no_circle_app"
-//
-//		val INSTANCE by lazy { getRoomDatabase<AppDatabase>(DB_NAME) }
-//	}
-//}
-//
-//@Suppress("KotlinNoActualForExpect", "NO_ACTUAL_FOR_EXPECT")
-//expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
-//
-//	override fun initialize(): AppDatabase
-//}
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.RoomDatabaseConstructor
+import androidx.room.TypeConverters
+import com.nocircle.common.room.DB_VERSION
+import com.nocircle.common.room.getRoomDatabase
+
+@Database(
+	entities = [FriendList::class],
+	version = DB_VERSION
+)
+@TypeConverters(LocalDateTimeConverter::class)
+abstract class AppDatabase : RoomDatabase() {
+	
+	companion object {
+		
+		private const val DB_NAME = "no_circle_app"
+		
+		val INSTANCE by lazy { getRoomDatabase<AppDatabase>(DB_NAME) }
+	}
+	
+	abstract fun getFriendListDao(): FriendListDao
+}
+
+@Suppress("KotlinNoActualForExpect", "NO_ACTUAL_FOR_EXPECT")
+expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
+	
+	override fun initialize(): AppDatabase
+}
