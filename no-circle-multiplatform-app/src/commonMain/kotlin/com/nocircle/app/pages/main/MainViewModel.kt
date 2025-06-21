@@ -5,8 +5,12 @@ import com.nocircle.app.api.impls.keepAliveApi
 import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.scheme.ColorSchemeConfig
+import com.nocircle.app.theme.type.FontWeightType
+import com.nocircle.app.theme.type.RoundedCornerType
 import com.nocircle.common.log.NoLog
 import com.nocircle.common.websocket.WebSocketScheduler
+import com.nocircle.compose.resources.NoIconType
+import com.nocircle.compose.resources.SupportedLanguage
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.websocket.*
@@ -72,6 +76,11 @@ class MainViewModel : NoViewModel() {
 	
 	private suspend fun loadColorScheme() {
 		ColorSchemeConfig.refresh()
+		SupportedLanguage.refresh()
+		NoIconType.refresh()
+		RoundedCornerType.refresh()
+		FontWeightType.refresh()
+		
 	}
 	
 	override fun onCleared() {

@@ -79,7 +79,7 @@ enum class ThemeMode(
 		}
 }
 
-object ColorSchemeConfigKey : ConfigKey<ColorSchemeConfig>("colorScheme", isOwn = true)
+object ColorSchemeConfigKey : ConfigKey<ColorSchemeConfig>("colorScheme")
 
 @Immutable
 @Serializable

@@ -10,11 +10,11 @@ import kotlinx.serialization.serializer
 
 abstract class ConfigKey<T : Any>(
 	val key: String,
-	private val isOwn: Boolean = false
+	val single: Boolean = false
 ) {
 	val cacheMap = mutableMapOf<Int?, T?>()
 	
-	suspend fun getUserId(): Int? = if (isOwn) UserIdConfigKey.get() else null
+	suspend fun getUserId() = if (single) null else UserIdConfigKey.get()
 }
 
 suspend inline fun <reified T : Any> ConfigKey<T>.set(value: T?) = this.set(value, serializer())
@@ -43,17 +43,16 @@ suspend fun <T : Any> ConfigKey<T>.set(value: T?, serializer: KSerializer<T>) {
 
 suspend fun <T : Any> ConfigKey<T>.get(serializer: KSerializer<T>): T? {
 	val userId = getUserId()
-	return if (userId in cacheMap) {
-		cacheMap[userId]
-	} else {
-		val configDao = CommonDatabase.INSTANCE.configDao()
-		val entity = configDao.query(userId, key) ?: return null
-		val value = entity.value?.let { Json.decodeFromString(serializer, it) }
-		cacheMap[userId] = value
-		value
+	if (userId in cacheMap) {
+		return cacheMap[userId]
 	}
+	val configDao = CommonDatabase.INSTANCE.configDao()
+	val entity = configDao.query(userId, key) ?: return null
+	val value = entity.value?.let { Json.decodeFromString(serializer, it) }
+	cacheMap[userId] = value
+	return value
 }
 
-object TokenConfigKey : ConfigKey<String>("token")
+object TokenConfigKey : ConfigKey<String>("token", single = true)
 
-object UserIdConfigKey : ConfigKey<Int>("userId")
+object UserIdConfigKey : ConfigKey<Int>("userId", single = true)

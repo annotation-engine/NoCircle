@@ -1,8 +1,8 @@
 package com.nocircle.server.app.tables
 
-import com.nocircle.server.common.exposed.NoIntEntity
 import com.nocircle.server.common.exposed.NoTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 
 object Users : NoTable("tb_user") {
@@ -19,17 +19,17 @@ object Users : NoTable("tb_user") {
 		.nullable()
 }
 
-class User(id: EntityID<Int>) : NoIntEntity<Users>(id, Users) {
+class User(id: EntityID<Int>) : IntEntity(id) {
 	
 	companion object : IntEntityClass<User>(Users)
 	
-	var username by table.username
+	var username by Users.username
 	
-	var password by table.password
+	var password by Users.password
 	
-	val nickname by table.nickname
+	val nickname by Users.nickname
 	
-	val pinyin by table.pinyin
+	val pinyin by Users.pinyin
 	
-	val avatarUrl by table.avatarUrl
+	val avatarUrl by Users.avatarUrl
 }

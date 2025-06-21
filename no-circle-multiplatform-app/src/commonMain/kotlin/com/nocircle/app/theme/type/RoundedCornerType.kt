@@ -69,7 +69,7 @@ enum class RoundedCornerType(
 	}
 }
 
-private object RoundedCornerTypeConfigKey : ConfigKey<RoundedCornerType>("roundedCornerType", isOwn = true)
+private object RoundedCornerTypeConfigKey : ConfigKey<RoundedCornerType>("roundedCornerType")
 
 private var currentType: RoundedCornerType? = null
 private var currentShapes: Shapes? = null

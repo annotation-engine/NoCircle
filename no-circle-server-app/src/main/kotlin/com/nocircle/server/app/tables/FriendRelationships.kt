@@ -1,8 +1,8 @@
 package com.nocircle.server.app.tables
 
-import com.nocircle.server.common.exposed.NoIntEntity
 import com.nocircle.server.common.exposed.NoTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 
 object FriendRelationships : NoTable("tb_friend_relationship") {
@@ -12,17 +12,13 @@ object FriendRelationships : NoTable("tb_friend_relationship") {
 	
 	val friendId = integer("friend_id")
 		.references(Users.id)
-	
-	val pinyin = varchar("pinyin", 100)
 }
 
-class FriendRelationship(id: EntityID<Int>) : NoIntEntity<FriendRelationships>(id, FriendRelationships) {
+class FriendRelationship(id: EntityID<Int>) : IntEntity(id) {
 	
 	companion object : IntEntityClass<FriendRelationship>(FriendRelationships)
 	
-	val userId by table.userId
+	val userId by FriendRelationships.userId
 	
-	val friendId by table.friendId
-	
-	val pinyin by table.pinyin
+	val friendId by FriendRelationships.friendId
 }

@@ -26,4 +26,4 @@ enum class NoIconType {
 	}
 }
 
-private object IconTypeConfigKey : ConfigKey<NoIconType>("iconType", isOwn = true)
+private object IconTypeConfigKey : ConfigKey<NoIconType>("iconType")

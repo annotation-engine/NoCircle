@@ -2,7 +2,6 @@ package com.nocircle.server.app.routes.friend
 
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
-import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.plugins.FriendRouteGroup
 import com.nocircle.server.common.expends.toShanghaiLocalDateTime
 import com.nocircle.server.common.model.respondOK
@@ -18,21 +17,17 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 context(_: FriendRouteGroup, _: Authorized)
 fun Route.queryFriend() = get("query") {
 	val userId = call.getPrincipal().userId
-	val list = transaction {
-		val friendRelationships = FriendRelationshipDao.getListByUserId(userId)
-		val friendIds = friendRelationships.map { it.friendId }
-		val friends = UserDao.getListByIds(friendIds)
-		friendRelationships.map { relationship ->
-			val friend = friends.first { it.id.value == relationship.friendId }
+	val data = transaction {
+		FriendRelationshipDao.getFriendsByUserId(userId).map {
 			FriendDTO(
-				userId = friend.id.value,
-				username = friend.username,
-				nickname = friend.nickname,
-				avatarUrl = friend.avatarUrl,
-				first = friend.pinyin.first().uppercase(),
-				createdTime = relationship.createTime.toShanghaiLocalDateTime()
+				userId = it.friendId,
+				username = it.username,
+				nickname = it.nickname,
+				avatarUrl = it.avatarUrl,
+				pinyin = it.pinyin,
+				createTime = it.createTime.toShanghaiLocalDateTime()
 			)
 		}
 	}
-	call.respondOK(list, NoCode.FRIEND_QUERY_SUCCESS)
+	call.respondOK(data, NoCode.FRIEND_QUERY_SUCCESS)
 }

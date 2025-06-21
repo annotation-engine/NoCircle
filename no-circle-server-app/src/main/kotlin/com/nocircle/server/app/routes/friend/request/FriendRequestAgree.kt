@@ -3,7 +3,6 @@ package com.nocircle.server.app.routes.friend.request
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.plugins.FriendRouteGroup
 import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.model.respondOK
@@ -29,10 +28,8 @@ fun Route.agreeFriendRequest() = post("request/agree") {
 	val status = transaction {
 		val success = FriendRequestDao.updateOne(id, targetId, userId, FriendRequests.Status.AGREED)
 		if (!success) return@transaction null
-		val userPinyin = UserDao.getPinyinById(userId) ?: return@transaction null
-		val friendPinyin = UserDao.getPinyinById(targetId) ?: return@transaction null
-		FriendRelationshipDao.insertOne(userId, targetId, friendPinyin)
-		FriendRelationshipDao.insertOne(targetId, userId, userPinyin)
+		FriendRelationshipDao.insertOne(userId, targetId)
+		FriendRelationshipDao.insertOne(targetId, userId)
 		FriendRequestDao.deleteOne(userId, targetId)
 	}
 	if (status == null) {

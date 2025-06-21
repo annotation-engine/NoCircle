@@ -1,8 +1,8 @@
 package com.nocircle.server.app.tables
 
-import com.nocircle.server.common.exposed.NoIntEntity
 import com.nocircle.server.common.exposed.NoTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.datetime.timestamp
 
@@ -18,13 +18,13 @@ object UserLogins : NoTable("tb_user_login") {
 	enum class Method { PASSWORD, TOKEN }
 }
 
-class UserLogin(id: EntityID<Int>) : NoIntEntity<UserLogins>(id, UserLogins) {
+class UserLogin(id: EntityID<Int>) : IntEntity(id) {
 	
 	companion object : IntEntityClass<UserLogin>(UserLogins)
 	
-	val userId by table.userId
+	val userId by UserLogins.userId
 	
-	val loginTime by table.loginTime
+	val loginTime by UserLogins.loginTime
 	
-	val method by table.method
+	val method by UserLogins.method
 }

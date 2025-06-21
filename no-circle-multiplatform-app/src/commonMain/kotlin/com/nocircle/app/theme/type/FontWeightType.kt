@@ -22,11 +22,11 @@ import org.jetbrains.compose.resources.Font
 enum class FontWeightType(
 	val offsetWeight: Int
 ) {
-	EXTRA_LIGHT(-300),
-	LIGHT(-200),
-	NORMAL(-100),
-	BOLD(0),
-	EXTRA_BOLD(100);
+	EXTRA_LIGHT(-200),
+	LIGHT(-100),
+	NORMAL(0),
+	BOLD(100),
+	EXTRA_BOLD(200);
 	
 	companion object Companion : StatusFlowConfig<FontWeightType>() {
 		override suspend fun getConfigFromStorage(): FontWeightType {
@@ -39,7 +39,7 @@ enum class FontWeightType(
 	}
 }
 
-private object FontWeightTypeConfigKey : ConfigKey<FontWeightType>("fontWeightType", isOwn = true)
+private object FontWeightTypeConfigKey : ConfigKey<FontWeightType>("fontWeightType")
 
 private var currentType: FontWeightType? = null
 private var currentTypography: Typography? = null

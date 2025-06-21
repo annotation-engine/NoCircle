@@ -2,6 +2,7 @@ package com.nocircle.server.common.exposed
 
 import kotlinx.datetime.Clock
 import org.jetbrains.exposed.v1.core.*
+import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.statements.UpdateStatement
 import org.jetbrains.exposed.v1.jdbc.Query
 import org.jetbrains.exposed.v1.jdbc.andWhere
@@ -28,6 +29,13 @@ fun Query.logicExists(
 			acc.and { table.deleteFlag eq false }
 		}
 	}
+}
+
+fun isLogicExists(
+	table: NoTable,
+	vararg tables: NoTable
+): Op<Boolean> = tables.fold(table.deleteFlag eq false) { acc, table ->
+	acc.and { table.deleteFlag eq false }
 }
 
 fun <T : NoTable> T.logicUpdate(

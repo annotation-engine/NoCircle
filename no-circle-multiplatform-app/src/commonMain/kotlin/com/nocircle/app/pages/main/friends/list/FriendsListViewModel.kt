@@ -37,14 +37,10 @@ class FriendsListViewModel : NoViewModel() {
 	init {
 		viewModelScope.launch {
 			async { loadFriendList() }
-			async {
-			
-			}
 		}
 	}
 	
 	suspend fun loadFriendList() {
-		
 		val result = ktorfitx.friendApi.queryFriendList()
 		if (result.success) {
 		

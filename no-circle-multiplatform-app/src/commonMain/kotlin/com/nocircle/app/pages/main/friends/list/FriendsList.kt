@@ -57,9 +57,9 @@ fun FriendsList(
 				items = friendList,
 				key = { _, it -> it.userId }
 			) { index, it ->
-				val showFirst = index == 0 || friendList[index - 1].first != it.first
+				val showFirst = index == 0 || friendList[index - 1].pinyin != it.pinyin
 				if (showFirst) {
-					FirstChar(it.first)
+					FirstChar(it.pinyin)
 				}
 				Friend(it)
 			}
