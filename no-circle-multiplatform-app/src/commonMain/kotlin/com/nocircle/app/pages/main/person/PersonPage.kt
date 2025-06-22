@@ -26,6 +26,7 @@ import com.nocircle.app.pages.main.person.message.MessageCenterRoute
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
+import com.nocircle.common.constants.StringConstants
 import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
@@ -101,7 +102,7 @@ private fun UserDetailCard() {
 				)
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
-					text = AppString.PERSON_ID.value(userDetail?.username ?: ""),
+					text = StringConstants.ID + (userDetail?.username ?: ""),
 					color = MaterialTheme.colorScheme.onSurfaceVariant,
 					style = MaterialTheme.typography.bodyMedium,
 				)

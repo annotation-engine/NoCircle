@@ -103,8 +103,8 @@ class FriendsListViewModel : NoViewModel() {
 					return@collectLatest
 				}
 				_friendSearchList.value = friendList.value.mapNotNull {
-					val usernameIndices = it.username.findIndices(search)
-					val nicknameIndices = it.nickname.findIndices(search)
+					val usernameIndices = it.username.findIndices(search, ignoreCase = true)
+					val nicknameIndices = it.nickname.findIndices(search, ignoreCase = true)
 					if (usernameIndices.isEmpty() && nicknameIndices.isEmpty()) {
 						NoLog.info(it)
 						return@mapNotNull null

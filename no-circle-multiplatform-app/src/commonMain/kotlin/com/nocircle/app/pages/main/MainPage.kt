@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -56,7 +57,6 @@ import com.nocircle.compose.desktop.TooltipText
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
-import com.nocircle.compose.material3.NoTabRow
 import com.nocircle.compose.material3.showNoSnackbar
 import com.nocircle.compose.navigation.*
 import com.nocircle.compose.resources.NoIcon
@@ -174,24 +174,46 @@ private fun BottomNavigationBar(
 	subRoute: MainSubRoute,
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
-	NoTabRow(
-		selected = subRoute,
-		onSelectedChange = onSubRouteChange,
-		items = MainSubRoute.entries,
+	Row(
 		modifier = Modifier
 			.background(MaterialTheme.colorScheme.surfaceContainerLow)
 			.padding(16.dp)
 			.height(56.dp)
-	) { subRoute ->
-		NoIcon(
-			icon = subRoute.icon.value()
-		)
-		Spacer(modifier = Modifier.width(8.dp))
-		Text(
-			text = subRoute.title.value(),
-			maxLines = 1,
-			overflow = TextOverflow.Ellipsis
-		)
+	) {
+		MainSubRoute.entries.fastForEachIndexed { index, current ->
+			Column(
+				modifier = Modifier
+					.weight(1f)
+					.fillMaxHeight()
+					.clip(MaterialTheme.shapes.medium)
+					.clickable {
+						onSubRouteChange(current)
+					}
+					.padding(6.dp),
+				verticalArrangement = Arrangement.Center,
+				horizontalAlignment = Alignment.CenterHorizontally
+			) {
+				val selected = subRoute == current
+				val color by animateColorAsState(
+					targetValue = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+				)
+				val iconSize by animateDpAsState(
+					targetValue = if (selected) 44.dp else 24.dp
+				)
+				NoIcon(
+					icon = current.icon.value(),
+					modifier = Modifier.size(iconSize),
+					tint = color
+				)
+				Spacer(modifier = Modifier.height(4.dp))
+				Text(
+					text = current.title.value(),
+					modifier = Modifier.height(16.dp),
+					style = MaterialTheme.typography.bodySmall,
+					color = color
+				)
+			}
+		}
 	}
 }
 
@@ -397,16 +419,10 @@ private fun LeftMenuItem(
 		isExpended = isExpended
 	) {
 		val containerColor by animateColorAsState(
-			targetValue = when {
-				selected -> MaterialTheme.colorScheme.primary
-				else -> Color.Transparent
-			},
+			targetValue = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent
 		)
 		val contentColor by animateColorAsState(
-			targetValue = when {
-				selected -> MaterialTheme.colorScheme.onPrimary
-				else -> MaterialTheme.colorScheme.primary
-			},
+			targetValue = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
 		)
 		Row(
 			modifier = modifier

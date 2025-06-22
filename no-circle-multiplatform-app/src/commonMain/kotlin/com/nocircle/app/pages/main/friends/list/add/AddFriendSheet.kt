@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
+import com.nocircle.common.constants.StringConstants
 import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.material3.LocalSnackbarHostState
@@ -119,7 +120,7 @@ private fun UserCard(
 				)
 				Spacer(modifier = Modifier.height(8.dp))
 				Text(
-					text = AppString.FRIENDS_ADD_FRIEND_ID.value(searchUser.username),
+					text = StringConstants.ID + searchUser.username,
 					color = MaterialTheme.colorScheme.onSurfaceVariant,
 					style = MaterialTheme.typography.bodyMedium,
 				)

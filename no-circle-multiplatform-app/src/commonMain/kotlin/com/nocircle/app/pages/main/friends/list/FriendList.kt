@@ -14,13 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.nocircle.app.pages.main.friends.list.FriendsListViewModel.SortOrder.ASC
 import com.nocircle.app.pages.main.friends.list.FriendsListViewModel.SortOrder.DESC
 import com.nocircle.app.pages.main.friends.list.add.AddFriendSheet
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
+import com.nocircle.common.constants.StringConstants
 import com.nocircle.common.device.DeviceType
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
@@ -146,8 +150,8 @@ private fun FriendList(
 				.fillMaxSize(),
 			state = scrollState,
 			contentPadding = PaddingValues(
-				top = 10.dp,
-				bottom = 10.dp
+				top = 8.dp,
+				bottom = 8.dp
 			)
 		) {
 			itemsIndexed(
@@ -177,9 +181,9 @@ private fun FriendItem(
 			.fillMaxWidth()
 			.padding(
 				start = 32.dp,
-				top = 10.dp,
+				top = 8.dp,
 				end = 16.dp,
-				bottom = 10.dp
+				bottom = 8.dp
 			)
 			.height(44.dp),
 		verticalAlignment = Alignment.CenterVertically
@@ -211,7 +215,7 @@ private fun FriendSubtitleItem(
 			.fillMaxWidth()
 			.padding(
 				horizontal = 32.dp,
-				vertical = 10.dp
+				vertical = 8.dp
 			)
 	) {
 		Text(
@@ -222,9 +226,9 @@ private fun FriendSubtitleItem(
 	}
 	HorizontalDivider(
 		modifier = Modifier.padding(start = 32.dp),
-		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.25f)
 	)
-	Spacer(modifier = Modifier.height(10.dp))
+	Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
@@ -280,8 +284,8 @@ private fun FriendSearchList(
 		modifier = modifier,
 		state = scrollState,
 		contentPadding = PaddingValues(
-			top = 10.dp,
-			bottom = 10.dp
+			top = 8.dp,
+			bottom = 8.dp
 		)
 	) {
 		itemsIndexed(
@@ -301,9 +305,9 @@ private fun FriendSearchItem(
 			.fillMaxWidth()
 			.padding(
 				start = 32.dp,
-				top = 10.dp,
+				top = 8.dp,
 				end = 16.dp,
-				bottom = 10.dp
+				bottom = 8.dp
 			)
 			.height(44.dp),
 		verticalAlignment = Alignment.CenterVertically
@@ -322,19 +326,42 @@ private fun FriendSearchItem(
 			verticalArrangement = Arrangement.SpaceBetween
 		) {
 			Text(
-				text = item.nickname,
+				text = getAnnotatedString(item.nickname, item.nicknameIndices),
 				maxLines = 1,
 				overflow = TextOverflow.Ellipsis,
-				color = MaterialTheme.colorScheme.onSurface,
+				color = MaterialTheme.colorScheme.outline,
 				style = MaterialTheme.typography.titleMedium
 			)
 			Text(
-				text = "ID: ${item.username}",
+				text = AnnotatedID + getAnnotatedString(item.username, item.usernameIndices),
 				maxLines = 1,
 				overflow = TextOverflow.Ellipsis,
-				color = MaterialTheme.colorScheme.onSurfaceVariant,
+				color = MaterialTheme.colorScheme.outline,
 				style = MaterialTheme.typography.bodyMedium
 			)
+		}
+	}
+}
+
+private val AnnotatedID = buildAnnotatedString {
+	append(StringConstants.ID)
+}
+
+@Composable
+private fun getAnnotatedString(
+	text: String,
+	indices: List<IntRange>
+) = buildAnnotatedString {
+	val spanStyle = SpanStyle(
+		color = MaterialTheme.colorScheme.onSurface
+	)
+	text.forEachIndexed { index, char ->
+		if (indices.any { index in it }) {
+			withStyle(spanStyle) {
+				append(char)
+			}
+		} else {
+			append(char)
 		}
 	}
 }

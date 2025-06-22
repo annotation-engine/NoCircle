@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppString
+import com.nocircle.common.constants.StringConstants
 import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.resources.value
@@ -100,7 +101,7 @@ private fun ReceivedRequestCard(
 					)
 					Spacer(modifier = Modifier.height(8.dp))
 					Text(
-						text = AppString.FRIENDS_ADD_FRIEND_ID.value(request.username),
+						text = StringConstants.ID + request.username,
 						color = MaterialTheme.colorScheme.onSurfaceVariant,
 						style = MaterialTheme.typography.bodyMedium,
 					)
