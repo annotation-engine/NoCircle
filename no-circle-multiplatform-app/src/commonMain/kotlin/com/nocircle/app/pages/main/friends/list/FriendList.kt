@@ -329,14 +329,14 @@ private fun FriendSearchItem(
 				text = getAnnotatedString(item.nickname, item.nicknameIndices),
 				maxLines = 1,
 				overflow = TextOverflow.Ellipsis,
-				color = MaterialTheme.colorScheme.outline,
+				color = MaterialTheme.colorScheme.outline.copy(alpha = 0.8f),
 				style = MaterialTheme.typography.titleMedium
 			)
 			Text(
 				text = AnnotatedID + getAnnotatedString(item.username, item.usernameIndices),
 				maxLines = 1,
 				overflow = TextOverflow.Ellipsis,
-				color = MaterialTheme.colorScheme.outline,
+				color = MaterialTheme.colorScheme.outline.copy(alpha = 0.8f),
 				style = MaterialTheme.typography.bodyMedium
 			)
 		}
@@ -353,7 +353,7 @@ private fun getAnnotatedString(
 	indices: List<IntRange>
 ) = buildAnnotatedString {
 	val spanStyle = SpanStyle(
-		color = MaterialTheme.colorScheme.onSurface
+		color = MaterialTheme.colorScheme.primary
 	)
 	text.forEachIndexed { index, char ->
 		if (indices.any { index in it }) {
