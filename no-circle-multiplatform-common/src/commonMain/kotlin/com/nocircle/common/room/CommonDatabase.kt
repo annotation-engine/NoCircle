@@ -14,7 +14,7 @@ import com.nocircle.common.room.entity.LogEntity
 		ConfigEntity::class,
 		LogEntity::class
 	],
-	version = DB_VERSION
+	version = 1
 )
 @ConstructedBy(CommonDatabaseConstructor::class)
 internal abstract class CommonDatabase : RoomDatabase() {

@@ -1,7 +1,6 @@
 package com.nocircle.app.room.entity
 
 import androidx.room.*
-import kotlinx.datetime.LocalDateTime
 
 @Entity("tb_friend_list")
 class FriendListEntity(
@@ -12,8 +11,7 @@ class FriendListEntity(
 	val username: String,
 	val nickname: String,
 	val avatarUrl: String?,
-	val pinyin: String,
-	val createTime: LocalDateTime
+	val pinyin: String
 )
 
 @Dao

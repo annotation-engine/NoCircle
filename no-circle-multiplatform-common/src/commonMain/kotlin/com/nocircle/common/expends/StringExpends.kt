@@ -7,3 +7,13 @@ fun String.isAlphanumeric(): Boolean {
 fun String.isNotAlphanumeric(): Boolean {
 	return this.any { !(it.isLetterOrDigit()) }
 }
+
+fun String.findIndices(text: String): List<IntRange> {
+	val indices = mutableListOf<IntRange>()
+	var index = this.indexOf(text)
+	while (index != -1) {
+		indices += index..index + text.lastIndex
+		index = this.indexOf(text, index + 1)
+	}
+	return indices
+}

@@ -18,5 +18,3 @@ inline fun <reified T : RoomDatabase> getRoomDatabase(
 	.setDriver(BundledSQLiteDriver())
 	.setQueryCoroutineContext(Dispatchers.IO)
 	.build()
-
-const val DB_VERSION = 1

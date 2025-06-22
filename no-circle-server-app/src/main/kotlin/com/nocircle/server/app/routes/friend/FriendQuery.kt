@@ -3,7 +3,6 @@ package com.nocircle.server.app.routes.friend
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.plugins.FriendRouteGroup
-import com.nocircle.server.common.expends.toShanghaiLocalDateTime
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.Authorized
 import com.nocircle.server.common.routes.getPrincipal
@@ -20,12 +19,11 @@ fun Route.queryFriend() = get("query") {
 	val data = transaction {
 		FriendRelationshipDao.getFriendsByUserId(userId).map {
 			FriendDTO(
-				friendId = it.friendId,
+				friendId = it.friendId.value,
 				username = it.username,
 				nickname = it.nickname,
 				avatarUrl = it.avatarUrl,
-				pinyin = it.pinyin,
-				createTime = it.createTime.toShanghaiLocalDateTime()
+				pinyin = it.pinyin
 			)
 		}
 	}

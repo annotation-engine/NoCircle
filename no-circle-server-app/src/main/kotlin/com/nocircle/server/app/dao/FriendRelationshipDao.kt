@@ -47,9 +47,9 @@ object FriendRelationshipDao {
 
 class Friend(id: EntityID<Int>) : IntEntity(id) {
 	
-	companion object : IntEntityClass<Friend>(FriendRelationships)
+	companion object : IntEntityClass<Friend>(Users)
 	
-	val friendId by FriendRelationships.friendId
+	val friendId by Users.id
 	
 	val username by Users.username
 	
@@ -58,6 +58,4 @@ class Friend(id: EntityID<Int>) : IntEntity(id) {
 	val avatarUrl by Users.avatarUrl
 	
 	val pinyin by Users.pinyin
-	
-	val createTime by FriendRelationships.createTime
 }

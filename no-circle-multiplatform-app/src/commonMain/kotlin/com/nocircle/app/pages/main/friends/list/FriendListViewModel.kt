@@ -7,15 +7,19 @@ import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.room.AppDatabase
 import com.nocircle.app.room.entity.FriendListEntity
 import com.nocircle.common.config.*
+import com.nocircle.common.expends.findIndices
+import com.nocircle.common.log.NoLog
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.friend.FriendDTO
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
-@OptIn(FlowPreview::class)
 class FriendsListViewModel : NoViewModel() {
 	
 	private val _search = MutableStateFlow("")
@@ -26,14 +30,17 @@ class FriendsListViewModel : NoViewModel() {
 	
 	val sortOrder = MutableStateFlow(SortOrder.ASC)
 	
+	private val _friendSearchList = MutableStateFlow<List<FriendSearch>>(emptyList())
+	val friendSearchList = _friendSearchList.asStateFlow()
+	
+	private val _showFriendSearchList = MutableStateFlow(false)
+	val showFriendSearchList = _showFriendSearchList.asStateFlow()
+	
 	init {
 		viewModelScope.launch {
 			async { loadFriendList() }
-			async {
-				sortOrder.collect {
-					_friendList.value = friendList.value.sorted()
-				}
-			}
+			async { sortOrderCollect() }
+			async { searchCollect() }
 		}
 	}
 	
@@ -54,8 +61,7 @@ class FriendsListViewModel : NoViewModel() {
 					username = it.username,
 					nickname = it.nickname,
 					avatarUrl = it.avatarUrl,
-					pinyin = it.pinyin,
-					createTime = it.createTime
+					pinyin = it.pinyin
 				)
 			}
 		} else {
@@ -72,14 +78,55 @@ class FriendsListViewModel : NoViewModel() {
 					username = it.username,
 					nickname = it.nickname,
 					avatarUrl = it.avatarUrl,
-					pinyin = it.pinyin,
-					createTime = it.createTime
+					pinyin = it.pinyin
 				)
 				friendListDao.insert(entity)
 			}
 			result.data!!
 		}
 		_friendList.value = friendList.sorted()
+	}
+	
+	private suspend fun sortOrderCollect() {
+		sortOrder.collect {
+			_friendList.value = friendList.value.sorted()
+		}
+	}
+	
+	@OptIn(FlowPreview::class)
+	private suspend fun searchCollect() {
+		search.debounce(0.2.seconds)
+			.collectLatest { search ->
+				_showFriendSearchList.value = search.isNotBlank()
+				if (search.isBlank()) {
+					_friendSearchList.value = emptyList()
+					return@collectLatest
+				}
+				_friendSearchList.value = friendList.value.mapNotNull {
+					val usernameIndices = it.username.findIndices(search)
+					val nicknameIndices = it.nickname.findIndices(search)
+					if (usernameIndices.isEmpty() && nicknameIndices.isEmpty()) {
+						NoLog.info(it)
+						return@mapNotNull null
+					}
+					FriendSearch(
+						friendId = it.friendId,
+						username = it.username,
+						nickname = it.nickname,
+						avatarUrl = it.avatarUrl,
+						usernameIndices = usernameIndices,
+						nicknameIndices = nicknameIndices
+					)
+				}.sortedWith { item1, item2 ->
+					val count1 = item1.usernameIndices.size + item1.nicknameIndices.size
+					val count2 = item2.usernameIndices.size + item2.nicknameIndices.size
+					when {
+						count1 > count2 -> -1
+						count1 < count2 -> 1
+						else -> 0
+					}
+				}
+			}
 	}
 	
 	private fun List<FriendDTO>.sorted(): List<FriendDTO> {
@@ -96,15 +143,16 @@ class FriendsListViewModel : NoViewModel() {
 		}
 	}
 	
-	enum class SortOrder {
-		ASC,
-		DESC
-	}
+	enum class SortOrder { ASC, DESC }
 	
-	enum class SortBy {
-		Nickname,
-		CreateTime
-	}
+	data class FriendSearch(
+		val friendId: Int,
+		val username: String,
+		val nickname: String,
+		val avatarUrl: String?,
+		val usernameIndices: List<IntRange>,
+		val nicknameIndices: List<IntRange>,
+	)
 }
 
 object FriendVersionConfigKey : ConfigKey<Int>("friendVersion")

@@ -42,7 +42,7 @@ fun FriendsList(
 		topBar = {
 			NoTopAppBar(
 				actions = {
-					FriendsSearch(
+					FriendSearch(
 						viewModel = viewModel,
 						isCompat = isCompat,
 					)
@@ -51,77 +51,21 @@ fun FriendsList(
 			)
 		}
 	) { paddingValues ->
-		val friendList by viewModel.friendList.collectAsState()
-		Box(
-			modifier = Modifier
-				.fillMaxSize()
-				.padding(paddingValues)
-		) {
-			val scrollState = rememberLazyListState()
-			LaunchedEffect(friendList) {
-				scrollState.scrollToItem(0)
-			}
-			LazyColumn(
-				modifier = Modifier
-					.fillMaxSize(),
-				state = scrollState,
-				contentPadding = PaddingValues(
-					top = 8.dp,
-					bottom = 8.dp
-				)
-			) {
-				itemsIndexed(
-					items = friendList
-				) { index, it ->
-					val showFirst = index == 0 || friendList[index - 1].initial != it.initial
-					if (showFirst) {
-						Initial(it.initial)
-					}
-					Friend(it)
-				}
-			}
-			SwitchSortOrder(
+		val showFriendSearchList by viewModel.showFriendSearchList.collectAsState()
+		if (showFriendSearchList) {
+			FriendSearchList(
 				viewModel = viewModel,
-				isCompat = isCompat
+				modifier = Modifier
+					.fillMaxSize()
+					.padding(paddingValues)
 			)
-		}
-	}
-}
-
-@Composable
-private fun BoxScope.SwitchSortOrder(
-	viewModel: FriendsListViewModel,
-	isCompat: Boolean,
-) {
-	val sortOrder by viewModel.sortOrder.collectAsState()
-	val switchSortOrder = {
-		viewModel.sortOrder.value = if (sortOrder == ASC) DESC else ASC
-	}
-	val rotate by animateFloatAsState(
-		targetValue = if (sortOrder == DESC) 0f else 180f
-	)
-	if (isCompat) {
-		FloatingActionButton(
-			onClick = switchSortOrder,
-			modifier = Modifier
-				.align(Alignment.BottomEnd)
-				.offset(x = (-16).dp, y = (-16).dp)
-		) {
-			NoIcon(
-				icon = Icons.Outlined.TextRotateUp,
-				modifier = Modifier.rotate(rotate)
-			)
-		}
-	} else {
-		SmallFloatingActionButton(
-			onClick = switchSortOrder,
-			modifier = Modifier
-				.align(Alignment.BottomEnd)
-				.offset(x = (-12).dp, y = (-12).dp)
-		) {
-			NoIcon(
-				icon = Icons.Outlined.TextRotateUp,
-				modifier = Modifier.rotate(rotate)
+		} else {
+			FriendList(
+				viewModel = viewModel,
+				isCompat = isCompat,
+				modifier = Modifier
+					.fillMaxSize()
+					.padding(paddingValues)
 			)
 		}
 	}
@@ -130,7 +74,7 @@ private fun BoxScope.SwitchSortOrder(
 private val MediumContentPadding = PaddingValues(12.dp)
 
 @Composable
-private fun FriendsSearch(
+private fun FriendSearch(
 	viewModel: FriendsListViewModel,
 	isCompat: Boolean,
 ) {
@@ -184,31 +128,72 @@ private fun FriendsSearch(
 }
 
 @Composable
-private fun Friend(
-	friend: FriendDTO,
+private fun FriendList(
+	viewModel: FriendsListViewModel,
+	isCompat: Boolean,
+	modifier: Modifier = Modifier,
+) {
+	val friendList by viewModel.friendList.collectAsState()
+	Box(
+		modifier = modifier
+	) {
+		val scrollState = rememberLazyListState()
+		LaunchedEffect(friendList) {
+			scrollState.scrollToItem(0)
+		}
+		LazyColumn(
+			modifier = Modifier
+				.fillMaxSize(),
+			state = scrollState,
+			contentPadding = PaddingValues(
+				top = 10.dp,
+				bottom = 10.dp
+			)
+		) {
+			itemsIndexed(
+				items = friendList
+			) { index, it ->
+				val first = it.pinyin.first().uppercase()
+				val showSubtitle = index == 0 || friendList[index - 1].pinyin.first().uppercase() != first
+				if (showSubtitle) {
+					FriendSubtitleItem(first)
+				}
+				FriendItem(it)
+			}
+		}
+		SwitchSortOrder(
+			viewModel = viewModel,
+			isCompat = isCompat
+		)
+	}
+}
+
+@Composable
+private fun FriendItem(
+	item: FriendDTO,
 ) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(
 				start = 32.dp,
-				top = 8.dp,
+				top = 10.dp,
 				end = 16.dp,
-				bottom = 8.dp
+				bottom = 10.dp
 			)
-			.height(40.dp),
+			.height(44.dp),
 		verticalAlignment = Alignment.CenterVertically
 	) {
 		NoAsyncImage(
-			url = friend.avatarUrl,
+			url = item.avatarUrl,
 			modifier = Modifier
-				.size(40.dp)
+				.size(44.dp)
 				.clip(MaterialTheme.shapes.medium),
 			contentScale = ContentScale.Crop,
 		)
 		Spacer(Modifier.width(8.dp))
 		Text(
-			text = friend.nickname,
+			text = item.nickname,
 			maxLines = 1,
 			overflow = TextOverflow.Ellipsis,
 			color = MaterialTheme.colorScheme.onSurface,
@@ -218,19 +203,19 @@ private fun Friend(
 }
 
 @Composable
-private fun Initial(
-	initial: String
+private fun FriendSubtitleItem(
+	first: String
 ) {
 	Box(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(
 				horizontal = 32.dp,
-				vertical = 8.dp
+				vertical = 10.dp
 			)
 	) {
 		Text(
-			text = initial,
+			text = first,
 			color = MaterialTheme.colorScheme.outline,
 			style = MaterialTheme.typography.bodyMedium
 		)
@@ -239,5 +224,117 @@ private fun Initial(
 		modifier = Modifier.padding(start = 32.dp),
 		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
 	)
-	Spacer(modifier = Modifier.height(8.dp))
+	Spacer(modifier = Modifier.height(10.dp))
+}
+
+@Composable
+private fun BoxScope.SwitchSortOrder(
+	viewModel: FriendsListViewModel,
+	isCompat: Boolean,
+) {
+	val sortOrder by viewModel.sortOrder.collectAsState()
+	val switchSortOrder = {
+		viewModel.sortOrder.value = if (sortOrder == ASC) DESC else ASC
+	}
+	val rotate by animateFloatAsState(
+		targetValue = if (sortOrder == DESC) 0f else 180f
+	)
+	if (isCompat) {
+		FloatingActionButton(
+			onClick = switchSortOrder,
+			modifier = Modifier
+				.align(Alignment.BottomEnd)
+				.offset(x = (-16).dp, y = (-16).dp)
+		) {
+			NoIcon(
+				icon = Icons.Outlined.TextRotateUp,
+				modifier = Modifier.rotate(rotate)
+			)
+		}
+	} else {
+		SmallFloatingActionButton(
+			onClick = switchSortOrder,
+			modifier = Modifier
+				.align(Alignment.BottomEnd)
+				.offset(x = (-12).dp, y = (-12).dp)
+		) {
+			NoIcon(
+				icon = Icons.Outlined.TextRotateUp,
+				modifier = Modifier.rotate(rotate)
+			)
+		}
+	}
+}
+
+@Composable
+private fun FriendSearchList(
+	viewModel: FriendsListViewModel,
+	modifier: Modifier = Modifier,
+) {
+	val friendSearchList by viewModel.friendSearchList.collectAsState()
+	val scrollState = rememberLazyListState()
+	LaunchedEffect(friendSearchList) {
+		scrollState.scrollToItem(0)
+	}
+	LazyColumn(
+		modifier = modifier,
+		state = scrollState,
+		contentPadding = PaddingValues(
+			top = 10.dp,
+			bottom = 10.dp
+		)
+	) {
+		itemsIndexed(
+			items = friendSearchList
+		) { index, it ->
+			FriendSearchItem(it)
+		}
+	}
+}
+
+@Composable
+private fun FriendSearchItem(
+	item: FriendsListViewModel.FriendSearch
+) {
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(
+				start = 32.dp,
+				top = 10.dp,
+				end = 16.dp,
+				bottom = 10.dp
+			)
+			.height(44.dp),
+		verticalAlignment = Alignment.CenterVertically
+	) {
+		NoAsyncImage(
+			url = item.avatarUrl,
+			modifier = Modifier
+				.size(44.dp)
+				.clip(MaterialTheme.shapes.medium),
+			contentScale = ContentScale.Crop,
+		)
+		Spacer(Modifier.width(8.dp))
+		Column(
+			modifier = Modifier
+				.fillMaxSize(),
+			verticalArrangement = Arrangement.SpaceBetween
+		) {
+			Text(
+				text = item.nickname,
+				maxLines = 1,
+				overflow = TextOverflow.Ellipsis,
+				color = MaterialTheme.colorScheme.onSurface,
+				style = MaterialTheme.typography.titleMedium
+			)
+			Text(
+				text = "ID: ${item.username}",
+				maxLines = 1,
+				overflow = TextOverflow.Ellipsis,
+				color = MaterialTheme.colorScheme.onSurfaceVariant,
+				style = MaterialTheme.typography.bodyMedium
+			)
+		}
+	}
 }
