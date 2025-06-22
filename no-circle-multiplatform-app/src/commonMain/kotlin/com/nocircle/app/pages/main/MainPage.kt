@@ -6,10 +6,10 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -26,7 +26,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
@@ -53,6 +52,7 @@ import com.nocircle.app.theme.scheme.ThemeMode
 import com.nocircle.compose.desktop.NoTooltipArea
 import com.nocircle.compose.desktop.NoTooltipPlacement
 import com.nocircle.compose.desktop.NoWindowDraggableArea
+import com.nocircle.compose.desktop.TooltipText
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.material3.NoScaffold
@@ -155,6 +155,7 @@ private fun MainPage(
 			}
 		}
 		if (WindowWidthSizes.isCompact) {
+			HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f))
 			BottomNavigationBar(
 				subRoute = subRoute,
 				onSubRouteChange = onSubRouteChange
@@ -178,8 +179,9 @@ private fun BottomNavigationBar(
 		onSelectedChange = onSubRouteChange,
 		items = MainSubRoute.entries,
 		modifier = Modifier
+			.background(MaterialTheme.colorScheme.surfaceContainerLow)
 			.padding(16.dp)
-			.height(56.dp),
+			.height(56.dp)
 	) { subRoute ->
 		NoIcon(
 			icon = subRoute.icon.value()
@@ -232,7 +234,7 @@ private fun LeftNavigationBar(
 			modifier = Modifier
 				.width(width)
 				.fillMaxHeight()
-				.background(MaterialTheme.colorScheme.surfaceContainer)
+				.background(MaterialTheme.colorScheme.surfaceContainerLow)
 		) {
 			var menuItemTop by remember { mutableStateOf(Dp.Unspecified) }
 			LightingEffect(
@@ -492,32 +494,7 @@ private fun LeftItemWithExpended(
 	content: @Composable () -> Unit
 ) {
 	NoTooltipArea(
-		tooltip = {
-			Text(
-				text = tooltipText,
-				modifier = Modifier
-					.clip(MaterialTheme.shapes.medium)
-					.shadow(
-						elevation = 8.dp,
-					)
-					.border(
-						width = 1.dp,
-						color = Color(0xFF2B2D31),
-						shape = MaterialTheme.shapes.medium
-					)
-					.background(
-						color = Color(0xFF25272C),
-						shape = MaterialTheme.shapes.medium
-					)
-					.padding(
-						horizontal = 12.dp,
-						vertical = 8.dp
-					),
-				color = Color.White,
-				style = MaterialTheme.typography.bodyMedium,
-				textAlign = TextAlign.Center
-			)
-		},
+		tooltip = { TooltipText(tooltipText) },
 		delayMillis = if (isExpended) Int.MAX_VALUE else 200,
 		tooltipPlacement = NoTooltipPlacement.ComponentRect(
 			anchor = Alignment.CenterEnd,

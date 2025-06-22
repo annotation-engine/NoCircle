@@ -12,5 +12,5 @@ data class FriendDTO(
 	val pinyin: String,
 	val createTime: LocalDateTime
 ) {
-	val first by lazy { pinyin.first().uppercase() }
+	val initial by lazy { pinyin.first().uppercase() }
 }

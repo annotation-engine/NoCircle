@@ -25,18 +25,12 @@ class FriendsListViewModel : NoViewModel() {
 	val friendList = _friendList.asStateFlow()
 	
 	val sortOrder = MutableStateFlow(SortOrder.ASC)
-	val sortBy = MutableStateFlow(SortBy.Nickname)
 	
 	init {
 		viewModelScope.launch {
 			async { loadFriendList() }
 			async {
 				sortOrder.collect {
-					_friendList.value = friendList.value.sorted()
-				}
-			}
-			async {
-				sortBy.collect {
 					_friendList.value = friendList.value.sorted()
 				}
 			}
@@ -89,20 +83,10 @@ class FriendsListViewModel : NoViewModel() {
 	}
 	
 	private fun List<FriendDTO>.sorted(): List<FriendDTO> {
-		return when (sortBy.value) {
-			SortBy.Nickname -> {
-				when (sortOrder.value) {
-					SortOrder.ASC -> this.sortedBy { it.pinyin.lowercase() }
-					SortOrder.DESC -> this.sortedByDescending { it.pinyin.lowercase() }
-				}
-			}
-			
-			SortBy.CreateTime -> {
-				when (sortOrder.value) {
-					SortOrder.ASC -> this.sortedBy { it.createTime }
-					SortOrder.DESC -> this.sortedByDescending { it.createTime }
-				}
-			}
+		return if (sortOrder.value == SortOrder.ASC) {
+			this.sortedBy { it.pinyin.lowercase() }
+		} else {
+			this.sortedByDescending { it.pinyin.lowercase() }
 		}
 	}
 	
