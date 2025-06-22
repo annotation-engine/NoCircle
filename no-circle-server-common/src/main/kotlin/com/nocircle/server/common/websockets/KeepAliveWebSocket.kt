@@ -34,6 +34,7 @@ suspend inline fun <reified T> sendToReceiver(
 }
 
 private val CannotAccept = CloseReason(CloseReason.Codes.CANNOT_ACCEPT, "Unauthorized")
+private val NORMAL = CloseReason(CloseReason.Codes.NORMAL, "Connection closed")
 
 fun Application.keepAliveWebSocket() {
 	routing {
@@ -41,7 +42,7 @@ fun Application.keepAliveWebSocket() {
 			webSocket("/keepAlive") {
 				val principal = call.getPrincipalOrNull() ?: return@webSocket close(CannotAccept)
 				if (principal.userId in sessions) {
-					sessions[principal.userId]!!.close(CannotAccept)
+					sessions[principal.userId]!!.close(NORMAL)
 				}
 				while (true) {
 					if (principal.userId !in sessions) {

@@ -4,11 +4,14 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
+import com.nocircle.app.room.converters.LocalDateTimeConverter
+import com.nocircle.app.room.entity.FriendListDao
+import com.nocircle.app.room.entity.FriendListEntity
 import com.nocircle.common.room.DB_VERSION
 import com.nocircle.common.room.getRoomDatabase
 
 @Database(
-	entities = [FriendList::class],
+	entities = [FriendListEntity::class],
 	version = DB_VERSION
 )
 @TypeConverters(LocalDateTimeConverter::class)

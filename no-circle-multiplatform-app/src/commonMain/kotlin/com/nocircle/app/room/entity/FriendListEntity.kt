@@ -1,10 +1,10 @@
-package com.nocircle.app.room
+package com.nocircle.app.room.entity
 
 import androidx.room.*
 import kotlinx.datetime.LocalDateTime
 
 @Entity("tb_friend_list")
-class FriendList(
+class FriendListEntity(
 	@PrimaryKey(autoGenerate = true)
 	val id: Int = 0,
 	val userId: Int,
@@ -20,14 +20,11 @@ class FriendList(
 interface FriendListDao {
 	
 	@Insert
-	suspend fun insert(entity: FriendList)
+	suspend fun insert(entity: FriendListEntity)
 	
 	@Query("SELECT * FROM tb_friend_list WHERE userId = :userId")
-	suspend fun queryList(userId: Int): List<FriendList>
+	suspend fun queryList(userId: Int): List<FriendListEntity>
 	
 	@Query("DELETE FROM tb_friend_list WHERE userId = :userId")
 	suspend fun deleteAll(userId: Int): Int
-	
-	@Query("DELETE FROM tb_friend_list WHERE userId = :userId AND friendId = :friendId")
-	suspend fun delete(userId: Int, friendId: Int): Int
 }

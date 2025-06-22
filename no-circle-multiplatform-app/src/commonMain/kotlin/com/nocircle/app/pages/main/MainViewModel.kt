@@ -63,7 +63,9 @@ class MainViewModel : NoViewModel() {
 					}
 				}
 			} catch (_: Exception) {
+				
 			}
+			if (close) return
 			attempt++
 			if (attempt == 1) {
 				showNoErrorSnackbar(AppString.MAIN_WEBSOCKET_OFFLINE)

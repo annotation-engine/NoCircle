@@ -2,6 +2,7 @@ package com.nocircle.server.app.plugins
 
 import com.nocircle.server.app.routes.auth.verifyToken
 import com.nocircle.server.app.routes.friend.queryFriend
+import com.nocircle.server.app.routes.friend.queryFriendVersion
 import com.nocircle.server.app.routes.friend.request.*
 import com.nocircle.server.app.routes.label.addLabel
 import com.nocircle.server.app.routes.label.deleteLabel
@@ -62,6 +63,7 @@ object FriendRouteGroup : NoRouteGroup("friend") {
 	context(_: Authorized)
 	override fun Route.authenticates() {
 		queryFriend()
+		queryFriendVersion()
 		
 		addFriendRequest()
 		queryFriendRequest()

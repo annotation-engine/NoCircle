@@ -20,7 +20,7 @@ fun Route.queryFriend() = get("query") {
 	val data = transaction {
 		FriendRelationshipDao.getFriendsByUserId(userId).map {
 			FriendDTO(
-				userId = it.friendId,
+				friendId = it.friendId,
 				username = it.username,
 				nickname = it.nickname,
 				avatarUrl = it.avatarUrl,

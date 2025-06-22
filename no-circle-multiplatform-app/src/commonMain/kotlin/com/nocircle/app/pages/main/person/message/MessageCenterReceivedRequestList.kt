@@ -42,7 +42,10 @@ fun MessageCenterReceivedRequestList() {
 			verticalArrangement = Arrangement.spacedBy(12.dp),
 			horizontalArrangement = Arrangement.spacedBy(12.dp)
 		) {
-			items(requests) {
+			items(
+				items = requests,
+				key = { it.id }
+			) {
 				ReceivedRequestCard(
 					viewModel = viewModel,
 					request = it

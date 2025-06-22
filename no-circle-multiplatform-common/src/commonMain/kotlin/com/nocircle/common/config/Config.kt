@@ -13,25 +13,27 @@ abstract class ConfigKey<T : Any>(
 	val single: Boolean = false
 ) {
 	val cacheMap = mutableMapOf<Int, T?>()
-	
-	suspend fun getUserIdOrNull() = if (single) SINGLE_USER_ID else UserIdConfigKey.get()
 }
 
 private const val SINGLE_USER_ID = -1
 
 suspend inline fun <reified T : Any> ConfigKey<T>.set(value: T?) = this.set(value, serializer())
 
-suspend inline fun <reified T : Any> ConfigKey<T>.get(): T? = this.get(serializer())
+suspend inline fun <reified T : Any> ConfigKey<T>.getOrNull(): T? = this.getOrNull(serializer())
+
+suspend inline fun <reified T : Any> ConfigKey<T>.get(): T = this.get(serializer())
+
+suspend fun getUserId(single: Boolean) = if (single) SINGLE_USER_ID else UserIdConfigKey.get()
 
 suspend fun <T : Any> ConfigKey<T>.clear() {
-	val userId = getUserIdOrNull() ?: return
+	val userId = getUserId(single)
 	cacheMap -= userId
 	val configDao = CommonDatabase.INSTANCE.getConfigDao()
 	configDao.delete(userId, key)
 }
 
 suspend fun <T : Any> ConfigKey<T>.set(value: T?, serializer: KSerializer<T>) {
-	val userId = getUserIdOrNull() ?: return
+	val userId = getUserId(single)
 	cacheMap[userId] = value
 	val configDao = CommonDatabase.INSTANCE.getConfigDao()
 	val exists = configDao.exists(userId, key)
@@ -43,8 +45,8 @@ suspend fun <T : Any> ConfigKey<T>.set(value: T?, serializer: KSerializer<T>) {
 	}
 }
 
-suspend fun <T : Any> ConfigKey<T>.get(serializer: KSerializer<T>): T? {
-	val userId = getUserIdOrNull() ?: return null
+suspend fun <T : Any> ConfigKey<T>.getOrNull(serializer: KSerializer<T>): T? {
+	val userId = getUserId(single)
 	if (userId in cacheMap) {
 		return cacheMap[userId]
 	}
@@ -53,6 +55,18 @@ suspend fun <T : Any> ConfigKey<T>.get(serializer: KSerializer<T>): T? {
 	val value = entity.value?.let { Json.decodeFromString(serializer, it) }
 	cacheMap[userId] = value
 	return value
+}
+
+suspend fun <T : Any> ConfigKey<T>.get(serializer: KSerializer<T>): T {
+	val userId = getUserId(single)
+	if (userId in cacheMap) {
+		return cacheMap[userId]!!
+	}
+	val configDao = CommonDatabase.INSTANCE.getConfigDao()
+	val entity = configDao.query(userId, key)
+	return Json.decodeFromString(serializer, entity!!.value!!).also {
+		cacheMap[userId] = it
+	}
 }
 
 object TokenConfigKey : ConfigKey<String>("token", single = true)

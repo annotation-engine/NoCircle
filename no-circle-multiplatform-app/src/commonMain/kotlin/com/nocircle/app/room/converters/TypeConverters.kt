@@ -1,4 +1,4 @@
-package com.nocircle.app.room
+package com.nocircle.app.room.converters
 
 import androidx.room.TypeConverter
 import kotlinx.datetime.LocalDateTime

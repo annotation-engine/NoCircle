@@ -3,7 +3,7 @@ package com.nocircle.app.ktorfitx
 import cn.vividcode.multiplatform.ktorfitx.api.ktorfit
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
 import com.nocircle.common.config.TokenConfigKey
-import com.nocircle.common.config.get
+import com.nocircle.common.config.getOrNull
 import com.nocircle.common.device.DeviceName.ANDROID
 import com.nocircle.common.device.NoDevice
 import io.ktor.client.engine.*
@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
 
 val ktorfitx = ktorfit {
 	token {
-		runBlocking { TokenConfigKey.get() }
+		runBlocking { TokenConfigKey.getOrNull() }
 	}
 	baseUrl = when (NoDevice.Name) {
 		ANDROID -> "http://10.0.2.2:8080/api/"

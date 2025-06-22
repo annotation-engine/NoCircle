@@ -55,11 +55,11 @@ fun FriendsList(
 		) {
 			itemsIndexed(
 				items = friendList,
-				key = { _, it -> it.userId }
+				key = { _, it -> it.friendId }
 			) { index, it ->
-				val showFirst = index == 0 || friendList[index - 1].pinyin != it.pinyin
+				val showFirst = index == 0 || friendList[index - 1].first != it.first
 				if (showFirst) {
-					FirstChar(it.pinyin)
+					FirstChar(it.first)
 				}
 				Friend(it)
 			}

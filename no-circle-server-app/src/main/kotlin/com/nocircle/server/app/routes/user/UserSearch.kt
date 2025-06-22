@@ -24,7 +24,7 @@ fun Route.searchUser() = get("search") {
 	val userId = call.getPrincipal().userId
 	val username: String by call.queryParameters
 	if (username.isBlank()) {
-		return@get call.respondOK(NoCode.FRIEND_SEARCH_USERNAME_NOT_EMPTY)
+		return@get call.respondOK(NoCode.USER_SEARCH_USERNAME_NOT_EMPTY)
 	}
 	val searchUser = transaction {
 		val user = UserDao.getOneByUsername(username) ?: return@transaction null
@@ -48,7 +48,7 @@ fun Route.searchUser() = get("search") {
 			relationship = relationship,
 			isAlreadySend = isAlreadySend
 		)
-	} ?: return@get call.respondOK(NoCode.FRIEND_SEARCH_NOT_FOUND)
+	} ?: return@get call.respondOK(NoCode.USER_SEARCH_NOT_FOUND)
 	
-	call.respondOK(searchUser, NoCode.FRIEND_SEARCH_SUCCESS)
+	call.respondOK(searchUser, NoCode.USER_SEARCH_SUCCESS)
 }

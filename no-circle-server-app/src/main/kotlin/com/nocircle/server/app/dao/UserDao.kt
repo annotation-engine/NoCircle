@@ -13,13 +13,12 @@ import org.jetbrains.exposed.v1.jdbc.selectAll
 
 object UserDao {
 	
-	
 	fun insertOne(username: String, password: String, nickname: String): Boolean {
 		val insert = Users.insert {
 			it[this.username] = username
 			it[this.password] = PasswordUtils.encrypt(password)
 			it[this.nickname] = nickname
-			it[this.pinyin] = nickname.toPinyin("")
+			it[this.pinyin] = nickname.toPinyin("").replace(" ", "")
 		}
 		return insert.insertedCount == 1
 	}

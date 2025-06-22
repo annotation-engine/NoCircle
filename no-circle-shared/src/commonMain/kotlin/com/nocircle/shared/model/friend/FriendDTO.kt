@@ -5,10 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FriendDTO(
-	val userId: Int,
+	val friendId: Int,
 	val username: String,
 	val nickname: String,
 	val avatarUrl: String?,
 	val pinyin: String,
 	val createTime: LocalDateTime
-)
+) {
+	val first by lazy { pinyin.first().uppercase() }
+}
