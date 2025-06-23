@@ -103,6 +103,18 @@
 		"zh": "搜索",
 		"en": "Search"
 	},
+	"FRIENDS_SEARCH_NOT_FOUND": {
+		"zh": "未搜索到结果",
+		"en": "No result found"
+	},
+	"FRIENDS_SEARCH_FOUND_ONE": {
+		"zh": "搜索到1条结果",
+		"en": "1 result found"
+	},
+	"FRIENDS_SEARCH_FOUND_MORE": {
+		"zh": "搜索到{}条结果",
+		"en": "{} results found"
+	},
 	"FRIENDS_ADD_FRIEND_TITLE": {
 		"zh": "添加好友",
 		"en": "Add Friend"

@@ -57,4 +57,5 @@ object AppIcon {
 	val ArrowBack = autoMirroredIcons({ ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack }, { ArrowBack })
 	val RoundedCorner = icons({ RoundedCorner }, { RoundedCorner }, { RoundedCorner }, { RoundedCorner }, { RoundedCorner })
 	val LineWeight = icons({ LineWeight }, { LineWeight }, { LineWeight }, { LineWeight }, { LineWeight })
+	val TextRotateUp = icons({ TextRotateUp }, { TextRotateUp }, { TextRotateUp }, { TextRotateUp }, { TextRotateUp })
 }

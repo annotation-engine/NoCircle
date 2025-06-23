@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.TextRotateUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -38,7 +36,7 @@ import com.nocircle.shared.model.friend.FriendDTO
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun FriendsList(
+fun FriendList(
 	isCompat: Boolean,
 ) {
 	val viewModel = koinViewModel<FriendsListViewModel>()
@@ -251,7 +249,7 @@ private fun BoxScope.SwitchSortOrder(
 				.offset(x = (-16).dp, y = (-16).dp)
 		) {
 			NoIcon(
-				icon = Icons.Outlined.TextRotateUp,
+				icon = AppIcon.TextRotateUp.value(),
 				modifier = Modifier.rotate(rotate)
 			)
 		}
@@ -263,7 +261,7 @@ private fun BoxScope.SwitchSortOrder(
 				.offset(x = (-12).dp, y = (-12).dp)
 		) {
 			NoIcon(
-				icon = Icons.Outlined.TextRotateUp,
+				icon = AppIcon.TextRotateUp.value(),
 				modifier = Modifier.rotate(rotate)
 			)
 		}
@@ -313,7 +311,11 @@ private fun FriendSearchHint(
 		contentAlignment = Alignment.Center
 	) {
 		Text(
-			text = if (count > 0) "为您搜索到${count}个好友" else "未搜索到好友",
+			text = when (count) {
+				0 -> AppString.FRIENDS_SEARCH_NOT_FOUND.value()
+				1 -> AppString.FRIENDS_SEARCH_FOUND_ONE.value()
+				else -> AppString.FRIENDS_SEARCH_FOUND_MORE.value(count)
+			},
 			color = MaterialTheme.colorScheme.outline,
 			style = MaterialTheme.typography.bodyMedium
 		)
