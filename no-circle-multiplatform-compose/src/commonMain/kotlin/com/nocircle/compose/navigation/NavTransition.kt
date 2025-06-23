@@ -41,4 +41,6 @@ object NoneTransition {
 	
 	val Enter: EnterTransitionLambda = { EnterTransition.None }
 	val Exit: ExitTransitionLambda = { ExitTransition.None }
+	val PopEnter: EnterTransitionLambda = { EnterTransition.None }
+	val PopExit: ExitTransitionLambda = { ExitTransition.None }
 }

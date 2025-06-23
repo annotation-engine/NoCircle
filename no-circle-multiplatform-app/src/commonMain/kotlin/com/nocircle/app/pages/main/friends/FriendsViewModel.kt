@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class FriendsViewModel : NoViewModel() {
 	
-	val contentWidth = MutableStateFlow(240.dp)
+	val leftWidth = MutableStateFlow(240.dp)
 }

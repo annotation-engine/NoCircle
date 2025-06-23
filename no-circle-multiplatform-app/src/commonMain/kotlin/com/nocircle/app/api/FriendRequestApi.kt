@@ -45,7 +45,7 @@ interface FriendRequestApi {
 	@GET("query")
 	suspend fun queryRequestList(
 		@Query type: FriendRequestType
-	): ResultBody<List<FriendRequestDTO>>
+	): ResultBody<List<FriendRequestDTO>>?
 	
 	@BearerAuth
 	@GET("queryPendingCount")

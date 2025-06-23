@@ -10,7 +10,8 @@ import com.nocircle.app.pages.account.register.RegisterViewModel
 import com.nocircle.app.pages.guide.GuideViewModel
 import com.nocircle.app.pages.main.MainViewModel
 import com.nocircle.app.pages.main.friends.FriendsViewModel
-import com.nocircle.app.pages.main.friends.list.FriendsListViewModel
+import com.nocircle.app.pages.main.friends.detail.FriendDetailViewModel
+import com.nocircle.app.pages.main.friends.list.FriendListViewModel
 import com.nocircle.app.pages.main.friends.list.add.AddFriendViewModel
 import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.pages.main.person.label.EditLabelViewModel
@@ -32,7 +33,8 @@ private val NoKoinModule = module {
 	viewModel { RegisterViewModel() }
 	viewModel { MainViewModel() }
 	viewModel { FriendsViewModel() }
-	viewModel { FriendsListViewModel() }
+	viewModel { FriendListViewModel() }
+	viewModel { FriendDetailViewModel() }
 	viewModel { AddFriendViewModel() }
 	viewModel { PersonViewModel() }
 	viewModel { SettingsViewModel() }

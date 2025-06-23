@@ -1,6 +1,7 @@
 package com.nocircle.app.pages.main.friends.list
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -17,8 +18,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.pages.main.friends.list.FriendsListViewModel.SortOrder.ASC
-import com.nocircle.app.pages.main.friends.list.FriendsListViewModel.SortOrder.DESC
+import com.nocircle.app.pages.main.friends.list.FriendListViewModel.SortOrder.ASC
+import com.nocircle.app.pages.main.friends.list.FriendListViewModel.SortOrder.DESC
 import com.nocircle.app.pages.main.friends.list.add.AddFriendSheet
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
@@ -32,16 +33,18 @@ import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.material3.NoTopAppBarDefaults
 import com.nocircle.compose.resources.value
+import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.shared.model.friend.FriendDTO
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FriendList(
-	isCompat: Boolean,
+	navigate: (Int) -> Unit
 ) {
-	val viewModel = koinViewModel<FriendsListViewModel>()
+	val viewModel = koinViewModel<FriendListViewModel>()
 	NoScaffold(
 		topBar = {
+			val isCompat = WindowWidthSizes.isCompact
 			NoTopAppBar(
 				actions = {
 					FriendSearch(
@@ -62,9 +65,11 @@ fun FriendList(
 					.padding(paddingValues)
 			)
 		} else {
+			val isCompat = WindowWidthSizes.isCompact
 			FriendList(
 				viewModel = viewModel,
 				isCompat = isCompat,
+				navigate = navigate,
 				modifier = Modifier
 					.fillMaxSize()
 					.padding(paddingValues)
@@ -77,7 +82,7 @@ private val MediumContentPadding = PaddingValues(12.dp)
 
 @Composable
 private fun FriendSearch(
-	viewModel: FriendsListViewModel,
+	viewModel: FriendListViewModel,
 	isCompat: Boolean,
 ) {
 	Row(
@@ -131,8 +136,9 @@ private fun FriendSearch(
 
 @Composable
 private fun FriendList(
-	viewModel: FriendsListViewModel,
+	viewModel: FriendListViewModel,
 	isCompat: Boolean,
+	navigate: (Int) -> Unit,
 	modifier: Modifier = Modifier,
 ) {
 	val friendList by viewModel.friendList.collectAsState()
@@ -160,7 +166,10 @@ private fun FriendList(
 				if (showSubtitle) {
 					FriendSubtitleItem(first)
 				}
-				FriendItem(it)
+				FriendItem(
+					item = it,
+					navigate = navigate,
+				)
 			}
 		}
 		SwitchSortOrder(
@@ -173,10 +182,14 @@ private fun FriendList(
 @Composable
 private fun FriendItem(
 	item: FriendDTO,
+	navigate: (Int) -> Unit,
 ) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
+			.clickable {
+				navigate(item.friendId)
+			}
 			.padding(
 				start = 32.dp,
 				top = 8.dp,
@@ -231,7 +244,7 @@ private fun FriendSubtitleItem(
 
 @Composable
 private fun BoxScope.SwitchSortOrder(
-	viewModel: FriendsListViewModel,
+	viewModel: FriendListViewModel,
 	isCompat: Boolean,
 ) {
 	val sortOrder by viewModel.sortOrder.collectAsState()
@@ -270,7 +283,7 @@ private fun BoxScope.SwitchSortOrder(
 
 @Composable
 private fun FriendSearchList(
-	viewModel: FriendsListViewModel,
+	viewModel: FriendListViewModel,
 	modifier: Modifier = Modifier,
 ) {
 	val friendSearchList by viewModel.friendSearchList.collectAsState()
@@ -328,7 +341,7 @@ private fun FriendSearchHint(
 
 @Composable
 private fun FriendSearchItem(
-	item: FriendsListViewModel.FriendSearch
+	item: FriendListViewModel.FriendSearch
 ) {
 	Row(
 		modifier = Modifier

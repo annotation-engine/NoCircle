@@ -35,6 +35,7 @@ fun GuidePage() {
 	LaunchedEffect(Unit) {
 		viewModel.navigateTo.collect {
 			controller.navigate(it) {
+				launchSingleTop = true
 				popUpTo(GuideRoute) {
 					inclusive = true
 				}

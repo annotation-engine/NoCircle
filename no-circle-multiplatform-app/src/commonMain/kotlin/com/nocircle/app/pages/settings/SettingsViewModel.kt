@@ -20,6 +20,7 @@ class SettingsViewModel : NoViewModel() {
 				TokenConfigKey.clear()
 				UserIdConfigKey.clear()
 				getNavController().navigate(LoginRoute) {
+					launchSingleTop = true
 					popUpTo(0) {
 						inclusive = true
 					}

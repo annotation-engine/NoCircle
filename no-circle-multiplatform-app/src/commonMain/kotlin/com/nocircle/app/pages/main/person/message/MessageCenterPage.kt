@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.*
 import com.nocircle.compose.navigation.LocalNavController
 import com.nocircle.compose.navigation.NoRoute
@@ -32,8 +33,14 @@ fun MessageCenterPage() {
 		topBar = {
 			NoTopAppBar(
 				title = { Text(AppString.MESSAGE_CENTER_TITLE.value()) },
-				onNavigationIconClick = if (WindowWidthSizes.isCompact) {
-					{ controller.popBackStack() }
+				navigationIcon = if (WindowWidthSizes.isCompact) {
+					{
+						NoIconButton(
+							icon = AppIcon.ArrowBack.value()
+						) {
+							controller.popBackStack()
+						}
+					}
 				} else null
 			)
 		}

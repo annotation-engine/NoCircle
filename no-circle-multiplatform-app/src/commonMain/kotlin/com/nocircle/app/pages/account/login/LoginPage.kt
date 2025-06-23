@@ -114,6 +114,7 @@ fun LoginPage() {
 					val success = viewModel.login()
 					if (success) {
 						controller.navigate(MainRoute) {
+							launchSingleTop = true
 							popUpTo(0) {
 								inclusive = true
 							}
@@ -126,7 +127,9 @@ fun LoginPage() {
 					modifier = Modifier.fillMaxWidth(),
 					colors = NoButtonColors.SecondaryContainerColors
 				) {
-					controller.navigate(route = RegisterRoute)
+					controller.navigate(RegisterRoute) {
+						launchSingleTop = true
+					}
 				}
 				Spacer(modifier = Modifier.height(80.dp))
 			}

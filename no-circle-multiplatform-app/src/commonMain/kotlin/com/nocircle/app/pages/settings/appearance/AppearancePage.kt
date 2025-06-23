@@ -34,6 +34,7 @@ import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.scheme.*
 import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.navigation.LocalNavController
@@ -58,8 +59,14 @@ fun AppearancePage() {
 		topBar = {
 			NoTopAppBar(
 				title = { Text(AppString.APPEARANCE.value()) },
-				onNavigationIconClick = if (WindowWidthSizes.isCompact) {
-					{ controller.popBackStack() }
+				navigationIcon = if (WindowWidthSizes.isCompact) {
+					{
+						NoIconButton(
+							icon = AppIcon.ArrowBack.value()
+						) {
+							controller.popBackStack()
+						}
+					}
 				} else null
 			)
 		},

@@ -64,6 +64,7 @@ import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
@@ -155,7 +156,6 @@ private fun MainPage(
 			}
 		}
 		if (WindowWidthSizes.isCompact) {
-			HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f))
 			BottomNavigationBar(
 				subRoute = subRoute,
 				onSubRouteChange = onSubRouteChange
@@ -169,16 +169,34 @@ private val LeftNavigationWidth = 72.dp
 private val LeftExpendedNavigationWidth = 160.dp
 private val LeftNavigationItemHeight = 48.dp
 
+private val _bottomNavigationBarHeight = MutableStateFlow(88.dp)
+
+fun showBottomNavigationBar() {
+	_bottomNavigationBarHeight.value = 88.dp
+}
+
+fun hideBottomNavigationBar() {
+	_bottomNavigationBarHeight.value = Dp.Hairline
+}
+
 @Composable
 private fun BottomNavigationBar(
 	subRoute: MainSubRoute,
 	onSubRouteChange: (MainSubRoute) -> Unit
 ) {
+	val targetHeight by _bottomNavigationBarHeight.collectAsState()
+	val height by animateDpAsState(targetHeight)
+	val showDivider by remember(height) {
+		derivedStateOf { height > Dp.Hairline }
+	}
+	if (showDivider) {
+		HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f))
+	}
 	Row(
 		modifier = Modifier
 			.background(MaterialTheme.colorScheme.surfaceContainerLow)
+			.height(height)
 			.padding(16.dp)
-			.height(56.dp)
 	) {
 		MainSubRoute.entries.fastForEachIndexed { index, current ->
 			Column(

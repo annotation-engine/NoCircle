@@ -22,6 +22,7 @@ import com.nocircle.app.theme.type.RoundedCornerType
 import com.nocircle.compose.foundation.NoButton
 import com.nocircle.compose.foundation.NoButtonColors
 import com.nocircle.compose.foundation.NoIcon
+import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.layout.NoAlertModalBottomSheet
 import com.nocircle.compose.layout.NoOption
 import com.nocircle.compose.material3.NoDropdownMenu
@@ -49,8 +50,14 @@ fun SettingsPage() {
 		topBar = {
 			NoTopAppBar(
 				title = { Text(AppString.SETTINGS.value()) },
-				onNavigationIconClick = if (WindowWidthSizes.isCompact) {
-					{ controller.popBackStack() }
+				navigationIcon = if (WindowWidthSizes.isCompact) {
+					{
+						NoIconButton(
+							icon = AppIcon.ArrowBack.value()
+						) {
+							controller.popBackStack()
+						}
+					}
 				} else null
 			)
 		},
@@ -108,7 +115,9 @@ private fun NavToAppearance() {
 			)
 		}
 	) {
-		controller.navigate(route = AppearanceRoute)
+		controller.navigate(AppearanceRoute) {
+			launchSingleTop = true
+		}
 	}
 }
 

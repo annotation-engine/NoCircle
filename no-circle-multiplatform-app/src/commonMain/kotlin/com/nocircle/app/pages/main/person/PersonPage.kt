@@ -208,7 +208,9 @@ private fun FriendAddRequest() {
 			)
 		}
 	) {
-		controller.navigate(route = MessageCenterRoute)
+		controller.navigate(MessageCenterRoute) {
+			launchSingleTop = true
+		}
 	}
 }
 
@@ -226,6 +228,8 @@ private fun OptionList() {
 			)
 		}
 	) {
-		controller.navigate(route = SettingsRoute)
+		controller.navigate(SettingsRoute) {
+			launchSingleTop = true
+		}
 	}
 }

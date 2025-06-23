@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
-class FriendsListViewModel : NoViewModel() {
+class FriendListViewModel : NoViewModel() {
 	
 	private val _search = MutableStateFlow("")
 	val search = _search.asStateFlow()
