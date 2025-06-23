@@ -8,7 +8,6 @@ import com.nocircle.app.room.AppDatabase
 import com.nocircle.app.room.entity.FriendListEntity
 import com.nocircle.common.config.*
 import com.nocircle.common.expends.findIndices
-import com.nocircle.common.log.NoLog
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.friend.FriendDTO
 import kotlinx.coroutines.FlowPreview
@@ -96,17 +95,16 @@ class FriendsListViewModel : NoViewModel() {
 	@OptIn(FlowPreview::class)
 	private suspend fun searchCollect() {
 		search.debounce(0.2.seconds)
-			.collectLatest { search ->
-				_showFriendSearchList.value = search.isNotBlank()
-				if (search.isBlank()) {
-					_friendSearchList.value = emptyList()
+			.collectLatest {
+				val search = it.trim()
+				_showFriendSearchList.value = search.isNotEmpty()
+				if (!_showFriendSearchList.value) {
 					return@collectLatest
 				}
 				_friendSearchList.value = friendList.value.mapNotNull {
 					val usernameIndices = it.username.findIndices(search, ignoreCase = true)
 					val nicknameIndices = it.nickname.findIndices(search, ignoreCase = true)
 					if (usernameIndices.isEmpty() && nicknameIndices.isEmpty()) {
-						NoLog.info(it)
 						return@mapNotNull null
 					}
 					FriendSearch(

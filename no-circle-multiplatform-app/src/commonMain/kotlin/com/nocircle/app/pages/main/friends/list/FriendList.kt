@@ -182,7 +182,7 @@ private fun FriendItem(
 			.padding(
 				start = 32.dp,
 				top = 8.dp,
-				end = 16.dp,
+				end = 8.dp,
 				bottom = 8.dp
 			)
 			.height(44.dp),
@@ -225,8 +225,8 @@ private fun FriendSubtitleItem(
 		)
 	}
 	HorizontalDivider(
-		modifier = Modifier.padding(start = 32.dp),
-		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.25f)
+		modifier = Modifier.padding(start = 16.dp),
+		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
 	)
 	Spacer(modifier = Modifier.height(8.dp))
 }
@@ -288,12 +288,40 @@ private fun FriendSearchList(
 			bottom = 8.dp
 		)
 	) {
+		item {
+			FriendSearchHint(friendSearchList.size)
+		}
 		itemsIndexed(
 			items = friendSearchList
 		) { index, it ->
 			FriendSearchItem(it)
 		}
 	}
+}
+
+@Composable
+private fun FriendSearchHint(
+	count: Int
+) {
+	Box(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(
+				top = 8.dp,
+				bottom = 16.dp
+			),
+		contentAlignment = Alignment.Center
+	) {
+		Text(
+			text = if (count > 0) "为您搜索到${count}个好友" else "未搜索到好友",
+			color = MaterialTheme.colorScheme.outline,
+			style = MaterialTheme.typography.bodyMedium
+		)
+	}
+	HorizontalDivider(
+		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+	)
+	Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
@@ -306,7 +334,7 @@ private fun FriendSearchItem(
 			.padding(
 				start = 32.dp,
 				top = 8.dp,
-				end = 16.dp,
+				end = 8.dp,
 				bottom = 8.dp
 			)
 			.height(44.dp),
