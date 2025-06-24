@@ -5,11 +5,11 @@ import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.app.plugins.UserRouteGroup
+import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
-import com.nocircle.shared.model.label.LabelDTO
+import com.nocircle.shared.model.label.UserLabelDTO
 import com.nocircle.shared.model.user.UserSearchDTO
 import com.nocircle.shared.model.user.UserSearchDTO.RelationshipDTO.*
 import io.ktor.server.routing.*
@@ -19,7 +19,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 搜索用户
  */
-context(_: UserRouteGroup, _: Authorized)
+context(_: UserRouteContext, _: AuthContext)
 fun Route.searchUser() = get("search") {
 	val userId = call.getPrincipal().userId
 	val username: String by call.queryParameters
@@ -30,7 +30,11 @@ fun Route.searchUser() = get("search") {
 		val user = UserDao.getOneByUsername(username) ?: return@transaction null
 		val receiverId = user.id.value
 		val labels = UserLabelDao.getListByUserId(receiverId).map {
-			LabelDTO(it.id.value, it.label, it.color)
+			UserLabelDTO(
+				id = it.id.value,
+				label = it.label,
+				color = it.color
+			)
 		}
 		val relationship = if (userId == receiverId) OWNER else {
 			val isFriend = FriendRelationshipDao.isFriend(userId, receiverId)

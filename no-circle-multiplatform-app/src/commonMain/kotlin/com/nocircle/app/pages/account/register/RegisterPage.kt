@@ -44,7 +44,7 @@ fun RegisterPage() {
 		snackbarHostState = hostState,
 	) { paddingValues ->
 		val verticalScroll = rememberScrollState()
-		val isCompat = WindowHeightSizes.isCompact
+		val isCompact = WindowHeightSizes.isCompact
 		Box(
 			modifier = Modifier
 				.fillMaxSize()

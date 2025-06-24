@@ -7,7 +7,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -33,6 +32,7 @@ import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.foundation.NoTag
 import com.nocircle.compose.layout.NoOption
+import com.nocircle.compose.layout.VerticalScrollColumn
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.navigation.LocalNavController
 import com.nocircle.compose.resources.value
@@ -40,29 +40,18 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun PersonPage() {
-	val verticalScrollState = rememberScrollState()
 	NoScaffold { paddingValues ->
-		Box(
+		VerticalScrollColumn(
 			modifier = Modifier
-				.fillMaxSize(),
-			contentAlignment = Alignment.TopCenter
+				.padding(paddingValues)
 		) {
-			Column(
-				modifier = Modifier
-					.widthIn(max = 840.dp)
-					.fillMaxSize()
-					.verticalScroll(verticalScrollState)
-					.padding(paddingValues)
-					.padding(16.dp)
-			) {
-				UserDetailCard()
-				Spacer(modifier = Modifier.height(16.dp))
-				LastLoginTime()
-				Spacer(modifier = Modifier.height(16.dp))
-				FriendAddRequest()
-				Spacer(modifier = Modifier.height(16.dp))
-				OptionList()
-			}
+			UserDetailCard()
+			Spacer(modifier = Modifier.height(16.dp))
+			LastLoginTime()
+			Spacer(modifier = Modifier.height(16.dp))
+			FriendAddRequest()
+			Spacer(modifier = Modifier.height(16.dp))
+			OptionList()
 		}
 	}
 }

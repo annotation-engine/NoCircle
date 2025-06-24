@@ -21,4 +21,6 @@ class FriendRelationship(id: EntityID<Int>) : IntEntity(id) {
 	val userId by FriendRelationships.userId
 	
 	val friendId by FriendRelationships.friendId
+	
+	val createTime by FriendRelationships.createTime
 }

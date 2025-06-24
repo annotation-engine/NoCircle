@@ -11,7 +11,7 @@ import com.nocircle.app.generated.resources.MiSans_VF
 import com.nocircle.app.generated.resources.Res
 import com.nocircle.app.pages.settings.memory.freeMemory
 import com.nocircle.common.config.ConfigKey
-import com.nocircle.common.config.getOrNull
+import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.compose.coroutines.StatusFlowConfig
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ enum class FontWeightType(
 	
 	companion object Companion : StatusFlowConfig<FontWeightType>() {
 		override suspend fun getConfigFromStorage(): FontWeightType {
-			return FontWeightTypeConfigKey.getOrNull() ?: NORMAL
+			return FontWeightTypeConfigKey.get() ?: NORMAL
 		}
 		
 		override suspend fun setConfigToStorage(oldConfig: FontWeightType, newConfig: FontWeightType) {

@@ -1,5 +1,6 @@
 package com.nocircle.server.app.dao
 
+import com.nocircle.server.app.tables.FriendRelationship
 import com.nocircle.server.app.tables.FriendRelationships
 import com.nocircle.server.app.tables.Users
 import com.nocircle.server.common.exposed.exists
@@ -10,10 +11,7 @@ import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.core.innerJoin
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
-import org.jetbrains.exposed.v1.jdbc.SizedIterable
-import org.jetbrains.exposed.v1.jdbc.insert
-import org.jetbrains.exposed.v1.jdbc.select
-import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.*
 
 object FriendRelationshipDao {
 	
@@ -30,6 +28,15 @@ object FriendRelationshipDao {
 			.where { (FriendRelationships.userId eq userId) and (FriendRelationships.friendId eq friendId) }
 			.logicExists(FriendRelationships)
 			.exists()
+	}
+	
+	fun getOneByUserIdAndFriendId(userId: Int, friendId: Int): FriendRelationship? {
+		val resultRow = FriendRelationships.selectAll()
+			.where { FriendRelationships.userId eq userId }
+			.andWhere { FriendRelationships.friendId eq friendId }
+			.logicExists(FriendRelationships)
+			.singleOrNull() ?: return null
+		return FriendRelationship.wrapRow(resultRow)
 	}
 	
 	fun getFriendsByUserId(userId: Int): SizedIterable<Friend> {

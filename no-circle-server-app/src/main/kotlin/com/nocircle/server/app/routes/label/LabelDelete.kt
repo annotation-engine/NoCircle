@@ -2,9 +2,9 @@ package com.nocircle.server.app.routes.label
 
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.app.plugins.LabelRouteGroup
+import com.nocircle.server.app.plugins.LabelRouteContext
 import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -14,7 +14,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 删除标签
  */
-context(_: LabelRouteGroup, _: Authorized)
+context(_: LabelRouteContext, _: AuthContext)
 fun Route.deleteLabel() = post("delete") {
 	val userId = call.getPrincipal().userId
 	val id: Int by call.receiveParameters()

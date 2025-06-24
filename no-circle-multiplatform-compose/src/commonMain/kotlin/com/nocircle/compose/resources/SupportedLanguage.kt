@@ -1,7 +1,7 @@
 package com.nocircle.compose.resources
 
 import com.nocircle.common.config.ConfigKey
-import com.nocircle.common.config.getOrNull
+import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.compose.coroutines.StatusFlowConfig
 import kotlinx.serialization.Serializable
@@ -23,7 +23,7 @@ enum class SupportedLanguage(
 	companion object : StatusFlowConfig<SupportedLanguage>() {
 		
 		override suspend fun getConfigFromStorage(): SupportedLanguage {
-			return SupportedLanguageConfigKey.getOrNull() ?: CHINESE
+			return SupportedLanguageConfigKey.get() ?: CHINESE
 		}
 		
 		override suspend fun setConfigToStorage(oldConfig: SupportedLanguage, newConfig: SupportedLanguage) {

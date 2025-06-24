@@ -1,6 +1,6 @@
 package com.nocircle.shared.model.friend.request
 
-import com.nocircle.shared.model.label.LabelDTO
+import com.nocircle.shared.model.label.UserLabelDTO
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -12,7 +12,7 @@ data class FriendRequestDTO(
 	val avatarUrl: String?,
 	val status: Status,
 	val createTime: String,
-	val labels: List<LabelDTO>
+	val labels: List<UserLabelDTO>
 ) {
 	
 	@Serializable

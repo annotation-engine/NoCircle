@@ -1,14 +1,14 @@
 package com.nocircle.app.pages.settings
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -25,6 +25,7 @@ import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
 import com.nocircle.compose.layout.NoAlertModalBottomSheet
 import com.nocircle.compose.layout.NoOption
+import com.nocircle.compose.layout.VerticalScrollColumn
 import com.nocircle.compose.material3.NoDropdownMenu
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
@@ -62,38 +63,24 @@ fun SettingsPage() {
 			)
 		},
 	) { paddingValues ->
-		val verticalScrollState = rememberScrollState()
-		Box(
+		VerticalScrollColumn(
 			modifier = Modifier
-				.fillMaxSize()
-				.padding(top = paddingValues.calculateTopPadding())
-				.verticalScroll(verticalScrollState),
-			contentAlignment = Alignment.TopCenter
+				.padding(paddingValues)
 		) {
-			Column(
-				modifier = Modifier
-					.widthIn(max = 840.dp)
-					.fillMaxSize()
-					.padding(
-						horizontal = 16.dp,
-						vertical = 32.dp
-					)
-			) {
-				val viewModel = koinViewModel<SettingsViewModel>()
-				NavToAppearance()
-				Spacer(modifier = Modifier.height(16.dp))
-				SwitchLanguage()
-				Spacer(modifier = Modifier.height(16.dp))
-				SwitchIconType()
-				Spacer(modifier = Modifier.height(16.dp))
-				SwitchShapesType()
-				Spacer(modifier = Modifier.height(16.dp))
-				SwitchFontWeight()
-				Spacer(modifier = Modifier.height(16.dp))
-				Memory()
-				Spacer(modifier = Modifier.height(16.dp))
-				Logout(viewModel)
-			}
+			val viewModel = koinViewModel<SettingsViewModel>()
+			NavToAppearance()
+			Spacer(modifier = Modifier.height(16.dp))
+			SwitchLanguage()
+			Spacer(modifier = Modifier.height(16.dp))
+			SwitchIconType()
+			Spacer(modifier = Modifier.height(16.dp))
+			SwitchShapesType()
+			Spacer(modifier = Modifier.height(16.dp))
+			SwitchFontWeight()
+			Spacer(modifier = Modifier.height(16.dp))
+			Memory()
+			Spacer(modifier = Modifier.height(16.dp))
+			Logout(viewModel)
 		}
 	}
 }

@@ -2,7 +2,7 @@ package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
-import com.nocircle.server.app.plugins.UserRouteGroup
+import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.common.model.respondOK
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -12,7 +12,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户注册
  */
-context(_: UserRouteGroup)
+context(_: UserRouteContext)
 fun Route.userRegister() = post("register") {
 	val parameters = call.receiveParameters()
 	val username: String by parameters

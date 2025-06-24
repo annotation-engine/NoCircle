@@ -26,7 +26,7 @@ import com.nocircle.compose.material3.NoModalBottomSheet
 import com.nocircle.compose.material3.rememberNoModalBottomSheetState
 import com.nocircle.compose.material3.showNoSnackbar
 import com.nocircle.compose.resources.value
-import com.nocircle.shared.model.label.LabelDTO
+import com.nocircle.shared.model.label.UserLabelDTO
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.math.roundToInt
 
@@ -168,8 +168,8 @@ fun EditLabelSheet(
 private const val MAX_COUNT = 4
 private const val MAX_TOTAL_DISPLAY_LENGTH = 20
 
-private fun List<LabelDTO>.getLabelTotalDisplayLength(
-	predicate: ((LabelDTO) -> Boolean)? = null
+private fun List<UserLabelDTO>.getLabelTotalDisplayLength(
+	predicate: ((UserLabelDTO) -> Boolean)? = null
 ): Int {
 	val list = if (predicate != null) this.filter(predicate) else this
 	return list.sumOf { it.label.getDisplayLength() }
@@ -177,7 +177,7 @@ private fun List<LabelDTO>.getLabelTotalDisplayLength(
 
 @Composable
 private fun Label(
-	label: LabelDTO,
+	label: UserLabelDTO,
 	selected: Boolean,
 	onClick: () -> Unit,
 ) {

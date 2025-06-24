@@ -2,10 +2,10 @@ package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLoginDao
-import com.nocircle.server.app.plugins.UserRouteGroup
+import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.common.expends.formatToShanghai
 import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.shared.model.user.UserDetailDTO
@@ -15,7 +15,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户详情
  */
-context(_: UserRouteGroup, _: Authorized)
+context(_: UserRouteContext, _: AuthContext)
 fun Route.userDetail() = get("detail") {
 	val userId = call.getPrincipal().userId
 	val userDetail = transaction {

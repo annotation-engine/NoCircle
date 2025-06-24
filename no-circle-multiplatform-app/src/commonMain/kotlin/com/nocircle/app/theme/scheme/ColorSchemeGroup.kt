@@ -9,7 +9,7 @@ import com.nocircle.app.pages.settings.memory.freeMemory
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.scheme.ColorSchemeContrast.*
 import com.nocircle.common.config.ConfigKey
-import com.nocircle.common.config.getOrNull
+import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.compose.coroutines.StatusFlowConfig
 import kotlinx.serialization.Serializable
@@ -91,7 +91,7 @@ data class ColorSchemeConfig(
 	
 	companion object : StatusFlowConfig<ColorSchemeConfig>() {
 		override suspend fun getConfigFromStorage(): ColorSchemeConfig {
-			return ColorSchemeConfigKey.getOrNull() ?: ColorSchemeConfig(STANDARD, BlueColorSchemeGroup.name, ThemeMode.SYSTEM)
+			return ColorSchemeConfigKey.get() ?: ColorSchemeConfig(STANDARD, BlueColorSchemeGroup.name, ThemeMode.SYSTEM)
 		}
 		
 		override suspend fun setConfigToStorage(oldConfig: ColorSchemeConfig, newConfig: ColorSchemeConfig) {

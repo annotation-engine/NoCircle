@@ -38,7 +38,7 @@ fun <T : Any> NoAdaptiveSplitScreen(
 	modifier: Modifier = Modifier,
 	leftWidthRange: ClosedRange<Dp> = NoAdaptiveSplitScreenDefaults.LeftWidthRange,
 	rightMinWidth: Dp = NoAdaptiveSplitScreenDefaults.RightMinWidth,
-	leftContent: @Composable (navigate: (data: T) -> Unit) -> Unit,
+	leftContent: @Composable (current: T?, navigate: (data: T) -> Unit) -> Unit,
 	rightContent: @Composable (data: T, popBackStack: () -> Unit) -> Unit,
 	rightEmptyContent: @Composable () -> Unit
 ) {
@@ -49,6 +49,7 @@ fun <T : Any> NoAdaptiveSplitScreen(
 			controller.popBackStack()
 		}
 	}
+	var current by remember { mutableStateOf<T?>(null) }
 	NavHost(
 		navController = controller,
 		startDestination = ADAPTIVE_SPLIT_SCREEN,
@@ -70,20 +71,18 @@ fun <T : Any> NoAdaptiveSplitScreen(
 						size = it.toDpSize(density)
 					}
 			) {
-				var data by remember { mutableStateOf<T?>(null) }
 				Box(
 					modifier = Modifier
 						.fillMaxHeight()
 						.then(if (isCompact) Modifier.fillMaxWidth() else Modifier.width(leftWidth))
 				) {
-					leftContent {
+					leftContent(current) {
+						current = it
 						if (isCompact) {
 							controller.currentSavedStateHandle?.set("data", it)
 							controller.navigate(ADAPTIVE_RIGHT) {
 								launchSingleTop = true
 							}
-						} else {
-							data = it
 						}
 					}
 				}
@@ -93,9 +92,9 @@ fun <T : Any> NoAdaptiveSplitScreen(
 							.padding(start = leftWidth + 1.dp)
 							.fillMaxSize()
 					) {
-						if (data != null) {
-							rightContent(data!!) {
-								data = null
+						if (current != null) {
+							rightContent(current!!) {
+								current = null
 							}
 						} else {
 							rightEmptyContent()
@@ -114,8 +113,10 @@ fun <T : Any> NoAdaptiveSplitScreen(
 		composable(
 			route = ADAPTIVE_RIGHT
 		) {
-			val data = controller.previousSavedStateHandle?.get<T>("data") ?: return@composable
+			val data = controller.previousSavedStateHandle?.get<T>("data")
+				?: return@composable
 			rightContent(data) {
+				current = null
 				controller.popBackStack()
 			}
 		}
@@ -166,6 +167,15 @@ private fun HighlightDivider(
 				centerPercent to centerColor,
 				1f to bothEndsColor
 			)
+		}
+	}
+	val isCompact = WindowWidthSizes.isCompact
+	LaunchedEffect(size.width) {
+		if (!isCompact) {
+			val newLeftWidth = size.width - rightMinWidth - 1.dp
+			if (leftWidth > newLeftWidth) {
+				onLeftWidthChange(newLeftWidth)
+			}
 		}
 	}
 	Box(

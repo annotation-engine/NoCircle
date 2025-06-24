@@ -6,7 +6,10 @@ import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.room.AppDatabase
 import com.nocircle.app.room.entity.FriendListEntity
-import com.nocircle.common.config.*
+import com.nocircle.common.config.ConfigKey
+import com.nocircle.common.config.UserIdConfigKey
+import com.nocircle.common.config.get
+import com.nocircle.common.config.set
 import com.nocircle.common.expends.findIndices
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.friend.FriendDTO
@@ -44,14 +47,14 @@ class FriendListViewModel : NoViewModel() {
 	}
 	
 	suspend fun loadFriendList() {
-		val userId = UserIdConfigKey.get()
+		val userId = UserIdConfigKey.get()!!
 		val friendVersionResult = ktorfitx.friendApi.queryFriendVersion() ?: return networkError()
 		if (!friendVersionResult.success) {
 			return showNoErrorSnackbar(friendVersionResult.msg)
 		}
 		val friendListDao = AppDatabase.INSTANCE.getFriendListDao()
 		
-		val version = FriendVersionConfigKey.getOrNull() ?: -1
+		val version = FriendVersionConfigKey.get() ?: -1
 		
 		val friendList = if (friendVersionResult.data!! == version) {
 			friendListDao.queryList(userId).map {

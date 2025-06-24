@@ -1,6 +1,7 @@
 package com.nocircle.app.pages.main.friends.list
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -39,20 +41,21 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FriendList(
+	current: Int?,
 	navigate: (Int) -> Unit
 ) {
 	val viewModel = koinViewModel<FriendListViewModel>()
 	NoScaffold(
 		topBar = {
-			val isCompat = WindowWidthSizes.isCompact
+			val isCompact = WindowWidthSizes.isCompact
 			NoTopAppBar(
 				actions = {
 					FriendSearch(
 						viewModel = viewModel,
-						isCompat = isCompat,
+						isCompact = isCompact,
 					)
 				},
-				contentPadding = if (isCompat) NoTopAppBarDefaults.contentPadding else MediumContentPadding
+				contentPadding = if (isCompact) NoTopAppBarDefaults.contentPadding else MediumContentPadding
 			)
 		}
 	) { paddingValues ->
@@ -60,15 +63,18 @@ fun FriendList(
 		if (showFriendSearchList) {
 			FriendSearchList(
 				viewModel = viewModel,
+				current = current,
+				navigate = navigate,
 				modifier = Modifier
 					.fillMaxSize()
 					.padding(paddingValues)
 			)
 		} else {
-			val isCompat = WindowWidthSizes.isCompact
+			val isCompact = WindowWidthSizes.isCompact
 			FriendList(
 				viewModel = viewModel,
-				isCompat = isCompat,
+				isCompact = isCompact,
+				current = current,
 				navigate = navigate,
 				modifier = Modifier
 					.fillMaxSize()
@@ -83,17 +89,17 @@ private val MediumContentPadding = PaddingValues(12.dp)
 @Composable
 private fun FriendSearch(
 	viewModel: FriendListViewModel,
-	isCompat: Boolean,
+	isCompact: Boolean,
 ) {
 	Row(
 		modifier = Modifier.fillMaxWidth(),
 		verticalAlignment = Alignment.CenterVertically
 	) {
 		val search by viewModel.search.collectAsState()
-		val size by remember(isCompat) {
+		val size by remember(isCompact) {
 			derivedStateOf {
 				when {
-					isCompat -> 48.dp
+					isCompact -> 48.dp
 					DeviceType.isDesktop -> 40.dp
 					else -> 44.dp
 				}
@@ -114,7 +120,7 @@ private fun FriendSearch(
 				)
 			}
 		)
-		Spacer(modifier = Modifier.width(if (isCompat) 12.dp else 8.dp))
+		Spacer(modifier = Modifier.width(if (isCompact) 12.dp else 8.dp))
 		var showAddFriendSheet by remember { mutableStateOf(false) }
 		NoIconButton(
 			icon = AppIcon.Add.value(),
@@ -137,7 +143,8 @@ private fun FriendSearch(
 @Composable
 private fun FriendList(
 	viewModel: FriendListViewModel,
-	isCompat: Boolean,
+	isCompact: Boolean,
+	current: Int?,
 	navigate: (Int) -> Unit,
 	modifier: Modifier = Modifier,
 ) {
@@ -168,13 +175,14 @@ private fun FriendList(
 				}
 				FriendItem(
 					item = it,
+					selected = current == it.friendId,
 					navigate = navigate,
 				)
 			}
 		}
 		SwitchSortOrder(
 			viewModel = viewModel,
-			isCompat = isCompat
+			isCompact = isCompact
 		)
 	}
 }
@@ -182,11 +190,15 @@ private fun FriendList(
 @Composable
 private fun FriendItem(
 	item: FriendDTO,
+	selected: Boolean,
 	navigate: (Int) -> Unit,
 ) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
+			.background(
+				color = if (selected) MaterialTheme.colorScheme.surfaceContainerHighest else Color.Transparent
+			)
 			.clickable {
 				navigate(item.friendId)
 			}
@@ -245,7 +257,7 @@ private fun FriendSubtitleItem(
 @Composable
 private fun BoxScope.SwitchSortOrder(
 	viewModel: FriendListViewModel,
-	isCompat: Boolean,
+	isCompact: Boolean,
 ) {
 	val sortOrder by viewModel.sortOrder.collectAsState()
 	val switchSortOrder = {
@@ -254,7 +266,7 @@ private fun BoxScope.SwitchSortOrder(
 	val rotate by animateFloatAsState(
 		targetValue = if (sortOrder == DESC) 0f else 180f
 	)
-	if (isCompat) {
+	if (isCompact) {
 		FloatingActionButton(
 			onClick = switchSortOrder,
 			modifier = Modifier
@@ -284,6 +296,8 @@ private fun BoxScope.SwitchSortOrder(
 @Composable
 private fun FriendSearchList(
 	viewModel: FriendListViewModel,
+	current: Int?,
+	navigate: (Int) -> Unit,
 	modifier: Modifier = Modifier,
 ) {
 	val friendSearchList by viewModel.friendSearchList.collectAsState()
@@ -305,7 +319,11 @@ private fun FriendSearchList(
 		itemsIndexed(
 			items = friendSearchList
 		) { index, it ->
-			FriendSearchItem(it)
+			FriendSearchItem(
+				item = it,
+				selected = current == it.friendId,
+				navigate = navigate
+			)
 		}
 	}
 }
@@ -341,11 +359,19 @@ private fun FriendSearchHint(
 
 @Composable
 private fun FriendSearchItem(
-	item: FriendListViewModel.FriendSearch
+	item: FriendListViewModel.FriendSearch,
+	selected: Boolean,
+	navigate: (Int) -> Unit,
 ) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
+			.background(
+				color = if (selected) MaterialTheme.colorScheme.surfaceContainerHighest else Color.Transparent
+			)
+			.clickable {
+				navigate(item.friendId)
+			}
 			.padding(
 				start = 32.dp,
 				top = 8.dp,
@@ -368,18 +394,21 @@ private fun FriendSearchItem(
 				.fillMaxSize(),
 			verticalArrangement = Arrangement.SpaceBetween
 		) {
+			val contentColor = MaterialTheme.colorScheme.onSurface.copy(
+				alpha = if (selected) 0.75f else 0.5f
+			)
 			Text(
 				text = getAnnotatedString(item.nickname, item.nicknameIndices),
 				maxLines = 1,
 				overflow = TextOverflow.Ellipsis,
-				color = MaterialTheme.colorScheme.outline.copy(alpha = 0.8f),
+				color = contentColor,
 				style = MaterialTheme.typography.titleMedium
 			)
 			Text(
 				text = AnnotatedID + getAnnotatedString(item.username, item.usernameIndices),
 				maxLines = 1,
 				overflow = TextOverflow.Ellipsis,
-				color = MaterialTheme.colorScheme.outline.copy(alpha = 0.8f),
+				color = contentColor,
 				style = MaterialTheme.typography.bodyMedium
 			)
 		}

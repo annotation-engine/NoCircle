@@ -25,13 +25,13 @@ fun NoTopAppBar(
 	colors: NoTopAppBarColors = NoTopAppBarDefaults.topAppBarColors
 ) {
 	val paddingValues = NoTopAppBarDefaults.windowInsets.asPaddingValues()
-	val isCompat = WindowWidthSizes.isCompact
+	val isCompact = WindowWidthSizes.isCompact
 	val deviceType = NoDevice.Type
-	val windowInsets by remember(paddingValues, isCompat) {
+	val windowInsets by remember(paddingValues, isCompact) {
 		derivedStateOf {
 			WindowInsets(
 				top = when {
-					!isCompat -> paddingValues.calculateTopPadding() / 2
+					!isCompact -> paddingValues.calculateTopPadding() / 2
 					deviceType == DeviceType.DESKTOP -> paddingValues.calculateTopPadding() + 20.dp
 					else -> paddingValues.calculateTopPadding()
 				}

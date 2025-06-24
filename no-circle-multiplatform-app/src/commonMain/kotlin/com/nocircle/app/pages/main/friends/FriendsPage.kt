@@ -15,8 +15,11 @@ fun FriendsPage() {
 	NoAdaptiveSplitScreen(
 		leftWidth = leftWidth,
 		onLeftWidthChange = { viewModel.leftWidth.value = it },
-		leftContent = { navigate ->
-			FriendList(navigate)
+		leftContent = { current, navigate ->
+			FriendList(
+				current = current,
+				navigate = navigate
+			)
 		},
 		rightContent = { friendId, popBackStack ->
 			FriendDetailPage(

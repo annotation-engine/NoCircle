@@ -83,7 +83,7 @@ fun MainPage() {
 	NoScaffold(
 		snackbarHostState = hostState,
 	) {
-		val isCompat = WindowWidthSizes.isCompact
+		val isCompact = WindowWidthSizes.isCompact
 		val subRoute by viewModel.mainSubRoute.collectAsState()
 		LocalNavControllerProvider(MainRoute) { controller ->
 			val onSubRouteChange = { route: MainSubRoute ->
@@ -94,7 +94,7 @@ fun MainPage() {
 					viewModel.mainSubRoute.value = route
 				}
 			}
-			if (!isCompat) {
+			if (!isCompact) {
 				LeftNavigationBar(
 					subRoute = subRoute,
 					onSubRouteChange = onSubRouteChange
@@ -104,7 +104,7 @@ fun MainPage() {
 				navController = controller,
 				startDestination = MainRoute,
 				modifier = Modifier
-					.padding(start = if (isCompat) Dp.Hairline else LeftNavigationWidth)
+					.padding(start = if (isCompact) Dp.Hairline else LeftNavigationWidth)
 					.shadow(
 						elevation = 4.dp,
 						spotColor = MaterialTheme.colorScheme.outlineVariant,
@@ -112,10 +112,10 @@ fun MainPage() {
 					)
 					.background(MaterialTheme.colorScheme.surface)
 					.fillMaxSize(),
-				enterTransition = if (isCompat) HorizontalSlideTransition.Enter else FadeTransition.Enter,
-				exitTransition = if (isCompat) HorizontalSlideTransition.Exit else FadeTransition.Exit,
-				popEnterTransition = if (isCompat) HorizontalSlideTransition.PopEnter else FadeTransition.PopEnter,
-				popExitTransition = if (isCompat) HorizontalSlideTransition.PopExit else FadeTransition.PopExit,
+				enterTransition = if (isCompact) HorizontalSlideTransition.Enter else FadeTransition.Enter,
+				exitTransition = if (isCompact) HorizontalSlideTransition.Exit else FadeTransition.Exit,
+				popEnterTransition = if (isCompact) HorizontalSlideTransition.PopEnter else FadeTransition.PopEnter,
+				popExitTransition = if (isCompact) HorizontalSlideTransition.PopExit else FadeTransition.PopExit,
 			) {
 				composable<MainRoute> {
 					MainPage(

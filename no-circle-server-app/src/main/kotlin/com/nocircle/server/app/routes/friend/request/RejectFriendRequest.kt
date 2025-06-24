@@ -2,10 +2,10 @@ package com.nocircle.server.app.routes.friend.request
 
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.app.plugins.FriendRouteGroup
+import com.nocircle.server.app.plugins.FriendRouteContext
 import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.Authorized
+import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
 import com.nocircle.shared.websocket.WebSocketType
@@ -17,7 +17,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 拒绝好友请求
  */
-context(_: FriendRouteGroup, _: Authorized)
+context(_: FriendRouteContext, _: AuthContext)
 fun Route.rejectFriendRequest() = post("request/reject") {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()

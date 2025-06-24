@@ -2,6 +2,7 @@ package com.nocircle.server.app.plugins
 
 import com.nocircle.server.app.routes.auth.verifyToken
 import com.nocircle.server.app.routes.friend.queryFriend
+import com.nocircle.server.app.routes.friend.queryFriendDetail
 import com.nocircle.server.app.routes.friend.queryFriendVersion
 import com.nocircle.server.app.routes.friend.request.*
 import com.nocircle.server.app.routes.label.addLabel
@@ -9,37 +10,37 @@ import com.nocircle.server.app.routes.label.deleteLabel
 import com.nocircle.server.app.routes.label.queryLabel
 import com.nocircle.server.app.routes.label.updateLabel
 import com.nocircle.server.app.routes.user.*
-import com.nocircle.server.common.routes.Authorized
-import com.nocircle.server.common.routes.NoRouteGroup
-import com.nocircle.server.common.routes.routeContexts
+import com.nocircle.server.common.routes.AuthContext
+import com.nocircle.server.common.routes.RouteContext
+import com.nocircle.server.common.routes.routes
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Application.configureRoutes() {
-	routeContexts(
-		AuthRouteGroup,
-		UserRouteGroup,
-		LabelRouteGroup,
-		FriendRouteGroup
+	routes(
+		AuthRouteContext,
+		UserRouteContext,
+		LabelRouteContext,
+		FriendRouteContext
 	)
 }
 
-object AuthRouteGroup : NoRouteGroup("auth") {
+object AuthRouteContext : RouteContext("auth") {
 	
-	context(_: Authorized)
+	context(_: AuthContext)
 	override fun Route.authenticates() {
 		verifyToken()
 	}
 }
 
-object UserRouteGroup : NoRouteGroup("user") {
+object UserRouteContext : RouteContext("user") {
 	
 	override fun Route.routes() {
 		userLogin()
 		userRegister()
 	}
 	
-	context(_: Authorized)
+	context(_: AuthContext)
 	override fun Route.authenticates() {
 		userDetail()
 		userLogout()
@@ -47,9 +48,9 @@ object UserRouteGroup : NoRouteGroup("user") {
 	}
 }
 
-object LabelRouteGroup : NoRouteGroup("label") {
+object LabelRouteContext : RouteContext("label") {
 	
-	context(_: Authorized)
+	context(_: AuthContext)
 	override fun Route.authenticates() {
 		addLabel()
 		deleteLabel()
@@ -58,12 +59,13 @@ object LabelRouteGroup : NoRouteGroup("label") {
 	}
 }
 
-object FriendRouteGroup : NoRouteGroup("friend") {
+object FriendRouteContext : RouteContext("friend") {
 	
-	context(_: Authorized)
+	context(_: AuthContext)
 	override fun Route.authenticates() {
 		queryFriend()
 		queryFriendVersion()
+		queryFriendDetail()
 		
 		addFriendRequest()
 		queryFriendRequest()

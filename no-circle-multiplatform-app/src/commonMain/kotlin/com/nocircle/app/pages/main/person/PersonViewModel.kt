@@ -8,7 +8,7 @@ import com.nocircle.app.ktorfitx.ktorfitx
 import com.nocircle.app.ktorfitx.success
 import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
-import com.nocircle.shared.model.label.LabelDTO
+import com.nocircle.shared.model.label.UserLabelDTO
 import com.nocircle.shared.model.user.UserDetailDTO
 import com.nocircle.shared.websocket.WebSocketType
 import kotlinx.coroutines.async
@@ -21,7 +21,7 @@ class PersonViewModel : NoViewModel() {
 	private val _userDetail = MutableStateFlow<UserDetailDTO?>(null)
 	val userDetail = _userDetail.asStateFlow()
 	
-	private val _labels = MutableStateFlow<List<LabelDTO>>(emptyList())
+	private val _labels = MutableStateFlow<List<UserLabelDTO>>(emptyList())
 	val labels = _labels.asStateFlow()
 	
 	private val _friendRequestPendingCount = MutableStateFlow(0)

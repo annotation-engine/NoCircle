@@ -2,7 +2,7 @@ package com.nocircle.app.api
 
 import cn.vividcode.multiplatform.ktorfitx.annotation.*
 import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
-import com.nocircle.shared.model.label.LabelDTO
+import com.nocircle.shared.model.label.UserLabelDTO
 
 @Api(url = "label")
 interface LabelApi {
@@ -30,5 +30,5 @@ interface LabelApi {
 	
 	@BearerAuth
 	@GET("query")
-	suspend fun queryLabelList(): ResultBody<List<LabelDTO>>?
+	suspend fun queryLabelList(): ResultBody<List<UserLabelDTO>>?
 }

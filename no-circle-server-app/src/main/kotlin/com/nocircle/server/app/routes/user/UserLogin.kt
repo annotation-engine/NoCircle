@@ -4,7 +4,7 @@ import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLoginDao
 import com.nocircle.server.app.plugins.NoRedisKey
-import com.nocircle.server.app.plugins.UserRouteGroup
+import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.app.plugins.yaml
 import com.nocircle.server.app.tables.UserLogins
@@ -21,7 +21,7 @@ import kotlin.time.toJavaDuration
 /**
  * 用户登录
  */
-context(_: UserRouteGroup)
+context(_: UserRouteContext)
 fun Route.userLogin() = post("login") {
 	val parameters = call.receiveParameters()
 	val username: String by parameters

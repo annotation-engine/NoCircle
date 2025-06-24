@@ -1,5 +1,6 @@
 package com.nocircle.app.room
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
@@ -11,6 +12,7 @@ import com.nocircle.common.room.getRoomDatabase
 	entities = [FriendListEntity::class],
 	version = 2
 )
+@ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
 	
 	companion object {
