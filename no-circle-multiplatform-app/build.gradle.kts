@@ -28,7 +28,6 @@ kotlin {
 	}
 	
 	listOf(
-		iosX64(),
 		iosArm64(),
 		iosSimulatorArm64(),
 	).forEach {
@@ -51,8 +50,6 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-			implementation(projects.noCircleMultiplatformCompose)
-			implementation(projects.noCircleMultiplatformCommon)
 			implementation(compose.preview)
 			implementation(libs.bundles.multiplatform.app.android)
 		}
@@ -69,14 +66,10 @@ kotlin {
 			implementation(libs.bundles.multiplatform.app)
 		}
 		desktopMain.dependencies {
-			implementation(projects.noCircleMultiplatformCompose)
-			implementation(projects.noCircleMultiplatformCommon)
 			implementation(compose.desktop.currentOs)
 			implementation(libs.bundles.multiplatform.app.desktop)
 		}
 		iosMain.dependencies {
-			implementation(projects.noCircleMultiplatformCompose)
-			implementation(projects.noCircleMultiplatformCommon)
 			implementation(libs.bundles.multiplatform.app.ios)
 		}
 	}
@@ -125,25 +118,27 @@ android {
 
 dependencies {
 	kspCommonMainMetadata(libs.ktorfitx.ksp)
-	add("kspAndroid", libs.room.compiler)
-	add("kspDesktop", libs.room.compiler)
-	add("kspIosX64", libs.room.compiler)
-	add("kspIosArm64", libs.room.compiler)
-	add("kspIosSimulatorArm64", libs.room.compiler)
+	
+	arrayOf(
+		"kspAndroid",
+		"kspDesktop",
+		"kspIosArm64",
+		"kspIosSimulatorArm64",
+	).forEach { name ->
+		add(name, libs.room.compiler)
+	}
 }
 
 afterEvaluate {
 	
-	val taskNames = listOf(
+	arrayOf(
 		"kspDebugKotlinAndroid",
 		"kspReleaseKotlinAndroid",
 		"kspKotlinDesktop",
-		"kspKotlinIosX64",
 		"kspKotlinIosArm64",
-		"kspKotlinIosSimulatorArm64",
-	)
-	taskNames.forEach {
-		tasks.named(it) {
+		"kspKotlinIosSimulatorArm64"
+	).forEach { name ->
+		tasks.named(name) {
 			dependsOn("kspCommonMainKotlinMetadata")
 		}
 	}

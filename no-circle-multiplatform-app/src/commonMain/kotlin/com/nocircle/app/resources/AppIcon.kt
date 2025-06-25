@@ -50,6 +50,7 @@ object AppIcon {
 	val MarkEmailUnread = icons({ MarkEmailUnread }, { MarkEmailUnread }, { MarkEmailUnread }, { MarkEmailUnread }, { MarkEmailUnread })
 	val Memory = icons({ Memory }, { Memory }, { Memory }, { Memory }, { Memory })
 	val Person = icons({ Person }, { Person }, { Person }, { Person }, { Person })
+	val Public = icons({ Public }, { Public }, { Public }, { Public }, { Public })
 	val Remove = icons({ Remove }, { Remove }, { Remove }, { Remove }, { Remove })
 	val RoundedCorner = icons({ RoundedCorner }, { RoundedCorner }, { RoundedCorner }, { RoundedCorner }, { RoundedCorner })
 	val Search = icons({ Search }, { Search }, { Search }, { Search }, { Search })

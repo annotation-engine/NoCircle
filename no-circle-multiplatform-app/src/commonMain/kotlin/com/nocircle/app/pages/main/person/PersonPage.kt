@@ -26,6 +26,7 @@ import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.constants.StringConstants
+import com.nocircle.compose.expends.format
 import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIcon
@@ -37,6 +38,7 @@ import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.navigation.LocalNavController
 import com.nocircle.compose.resources.value
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.time.ExperimentalTime
 
 @Composable
 fun PersonPage() {
@@ -155,11 +157,12 @@ private fun EditLabel(
 	}
 }
 
+@OptIn(ExperimentalTime::class)
 @Composable
 private fun LastLoginTime() {
 	val viewModel = koinViewModel<PersonViewModel>()
 	val userDetail by viewModel.userDetail.collectAsState()
-	val lastLoginTime = userDetail?.lastLoginTime
+	val lastLoginTime = userDetail?.lastLoginTime?.format()
 	NoOption(
 		title = { Text(AppString.PERSON_LAST_LOGIN_TIME.value()) },
 		icon = { NoIcon(AppIcon.AccessTime.value()) },

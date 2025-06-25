@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.settings.memory
+package com.nocircle.app.pages.settings.items
 
 actual suspend fun getUsedMemory(): Long {
 	val runtime = Runtime.getRuntime()

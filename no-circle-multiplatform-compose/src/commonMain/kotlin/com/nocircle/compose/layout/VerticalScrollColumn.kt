@@ -15,7 +15,7 @@ fun VerticalScrollColumn(
 	modifier: Modifier = Modifier,
 	scrollState: ScrollState = rememberScrollState(),
 	contentMaxWidth: Dp = 840.dp,
-	contentPadding: PaddingValues = PaddingValues(16.dp, 32.dp),
+	contentPadding: PaddingValues = PaddingValues(16.dp),
 	content: @Composable ColumnScope.() -> Unit
 ) {
 	Box(

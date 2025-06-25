@@ -5,7 +5,7 @@ import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendRouteContext
-import com.nocircle.server.common.expends.toShanghaiLocalDateTime
+import com.nocircle.server.common.expends.toKtInstant
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
@@ -14,7 +14,9 @@ import com.nocircle.shared.model.label.UserLabelDTO
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 context(_: FriendRouteContext, _: AuthContext)
 fun Route.queryFriendDetail() = get("detail/query") {
 	val userId = call.getPrincipal().userId
@@ -37,7 +39,7 @@ fun Route.queryFriendDetail() = get("detail/query") {
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
 			labels = labels,
-			createTime = relationship.createTime.toShanghaiLocalDateTime()
+			createTime = relationship.createTime.toKtInstant()
 		)
 	}
 	if (data != null) {

@@ -30,6 +30,7 @@ import com.nocircle.compose.navigation.NoneTransition
 import com.nocircle.compose.navigation.currentSavedStateHandle
 import com.nocircle.compose.navigation.previousSavedStateHandle
 import com.nocircle.compose.windowsize.WindowWidthSizes
+import kotlinx.coroutines.delay
 
 @Composable
 fun <T : Any> NoAdaptiveSplitScreen(
@@ -44,9 +45,13 @@ fun <T : Any> NoAdaptiveSplitScreen(
 ) {
 	val isCompact = WindowWidthSizes.isCompact
 	val controller = rememberNavController()
+	var isHorizontalSlideTransition by remember { mutableStateOf(true) }
 	LaunchedEffect(isCompact) {
 		if (!isCompact && controller.currentDestination?.route == ADAPTIVE_RIGHT) {
+			isHorizontalSlideTransition = false
 			controller.popBackStack()
+			delay(300)
+			isHorizontalSlideTransition = true
 		}
 	}
 	var current by remember { mutableStateOf<T?>(null) }
@@ -54,10 +59,10 @@ fun <T : Any> NoAdaptiveSplitScreen(
 		navController = controller,
 		startDestination = ADAPTIVE_SPLIT_SCREEN,
 		modifier = modifier,
-		enterTransition = if (isCompact) HorizontalSlideTransition.Enter else NoneTransition.Enter,
-		exitTransition = if (isCompact) HorizontalSlideTransition.Exit else NoneTransition.Exit,
-		popEnterTransition = if (isCompact) HorizontalSlideTransition.PopEnter else NoneTransition.PopEnter,
-		popExitTransition = if (isCompact) HorizontalSlideTransition.PopExit else NoneTransition.PopExit
+		enterTransition = if (isHorizontalSlideTransition) HorizontalSlideTransition.Enter else NoneTransition.Enter,
+		exitTransition = if (isHorizontalSlideTransition) HorizontalSlideTransition.Exit else NoneTransition.Exit,
+		popEnterTransition = if (isHorizontalSlideTransition) HorizontalSlideTransition.PopEnter else NoneTransition.PopEnter,
+		popExitTransition = if (isHorizontalSlideTransition) HorizontalSlideTransition.PopExit else NoneTransition.PopExit
 	) {
 		composable(
 			route = ADAPTIVE_SPLIT_SCREEN

@@ -6,11 +6,11 @@ import androidx.compose.material3.Shapes
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.pages.settings.memory.freeMemory
+import com.nocircle.app.pages.settings.items.freeMemory
 import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
-import com.nocircle.compose.coroutines.StatusFlowConfig
+import com.nocircle.compose.coroutines.StateConfigManager
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -57,7 +57,7 @@ enum class RoundedCornerType(
 		extraLarge = 56.dp
 	);
 	
-	companion object Companion : StatusFlowConfig<RoundedCornerType>() {
+	companion object Companion : StateConfigManager<RoundedCornerType>() {
 		
 		override suspend fun getConfigFromStorage(): RoundedCornerType {
 			return RoundedCornerTypeConfigKey.get() ?: NORMAL

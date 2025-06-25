@@ -9,11 +9,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import com.nocircle.app.generated.resources.MiSans_VF
 import com.nocircle.app.generated.resources.Res
-import com.nocircle.app.pages.settings.memory.freeMemory
+import com.nocircle.app.pages.settings.items.freeMemory
 import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
-import com.nocircle.compose.coroutines.StatusFlowConfig
+import com.nocircle.compose.coroutines.StateConfigManager
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.Font
@@ -28,7 +28,7 @@ enum class FontWeightType(
 	BOLD(100),
 	EXTRA_BOLD(200);
 	
-	companion object Companion : StatusFlowConfig<FontWeightType>() {
+	companion object Companion : StateConfigManager<FontWeightType>() {
 		override suspend fun getConfigFromStorage(): FontWeightType {
 			return FontWeightTypeConfigKey.get() ?: NORMAL
 		}

@@ -1,9 +1,12 @@
 package com.nocircle.shared.model.friend
 
 import com.nocircle.shared.model.label.UserLabelDTO
-import kotlinx.datetime.LocalDateTime
+import com.nocircle.shared.serialization.ISOInstantSerializer
 import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class FriendDetailDTO(
 	val friendId: Int,
@@ -11,5 +14,6 @@ data class FriendDetailDTO(
 	val nickname: String,
 	val avatarUrl: String?,
 	val labels: List<UserLabelDTO>,
-	val createTime: LocalDateTime
+	@Serializable(with = ISOInstantSerializer::class)
+	val createTime: Instant
 )

@@ -7,7 +7,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 
-abstract class StatusFlowConfig<T : Any> {
+abstract class StateConfigManager<T : Any> {
 	
 	abstract suspend fun getConfigFromStorage(): T
 	

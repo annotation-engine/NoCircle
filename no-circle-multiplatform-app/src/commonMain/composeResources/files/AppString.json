@@ -92,7 +92,7 @@
 		"en": "Expand"
 	},
 	"MAIN_WEBSOCKET_ONLINE": {
-		"zh": "您已上线",
+		"zh": "您已重新上线",
 		"en": "You are online"
 	},
 	"MAIN_WEBSOCKET_OFFLINE": {
@@ -326,6 +326,10 @@
 	"SETTINGS_USE_MEMORY": {
 		"zh": "当前使用：{}",
 		"en": "Currently using: {}"
+	},
+	"SETTINGS_TIME_ZONE": {
+		"zh": "时区",
+		"en": "Time Zone"
 	},
 	"APPEARANCE": {
 		"zh": "外观",

@@ -5,13 +5,13 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.*
-import com.nocircle.app.pages.settings.memory.freeMemory
+import com.nocircle.app.pages.settings.items.freeMemory
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.scheme.ColorSchemeContrast.*
 import com.nocircle.common.config.ConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
-import com.nocircle.compose.coroutines.StatusFlowConfig
+import com.nocircle.compose.coroutines.StateConfigManager
 import kotlinx.serialization.Serializable
 
 @Immutable
@@ -89,7 +89,7 @@ data class ColorSchemeConfig(
 	val themeMode: ThemeMode,
 ) {
 	
-	companion object : StatusFlowConfig<ColorSchemeConfig>() {
+	companion object : StateConfigManager<ColorSchemeConfig>() {
 		override suspend fun getConfigFromStorage(): ColorSchemeConfig {
 			return ColorSchemeConfigKey.get() ?: ColorSchemeConfig(STANDARD, BlueColorSchemeGroup.name, ThemeMode.SYSTEM)
 		}

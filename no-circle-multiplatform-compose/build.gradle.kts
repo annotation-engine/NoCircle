@@ -22,7 +22,6 @@ kotlin {
 	}
 	
 	listOf(
-		iosX64(),
 		iosArm64(),
 		iosSimulatorArm64(),
 	).forEach {
@@ -46,7 +45,6 @@ kotlin {
 		
 		androidMain.dependencies {
 			implementation(libs.bundles.multiplatform.compose.android)
-			implementation(projects.noCircleMultiplatformCommon)
 		}
 		commonMain.dependencies {
 			implementation(compose.runtime)
@@ -64,7 +62,6 @@ kotlin {
 		desktopMain.dependencies {
 			implementation(compose.desktop.currentOs)
 			implementation(libs.bundles.multiplatform.compose.desktop)
-			implementation(projects.noCircleMultiplatformCommon)
 		}
 	}
 	compilerOptions {

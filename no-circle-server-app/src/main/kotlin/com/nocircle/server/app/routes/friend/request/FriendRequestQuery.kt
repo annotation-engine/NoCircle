@@ -8,7 +8,7 @@ import com.nocircle.server.app.plugins.FriendRouteContext
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
 import com.nocircle.server.app.tables.FriendRequests
-import com.nocircle.server.common.expends.formatToShanghai
+import com.nocircle.server.common.expends.toKtInstant
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
@@ -17,6 +17,7 @@ import com.nocircle.shared.model.label.UserLabelDTO
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import kotlin.time.ExperimentalTime
 
 /**
  * 好友请求查询
@@ -38,6 +39,7 @@ fun Route.queryFriendRequest() = get("request/query") {
 /**
  * 获取我发送的请求
  */
+@OptIn(ExperimentalTime::class)
 private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getSentRequests(senderId)
 	val receiverIds = requests.map { it.receiverId }
@@ -61,7 +63,7 @@ private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
 			status = it.status.toDTOStatus(),
-			createTime = it.createTime.formatToShanghai(),
+			createTime = it.createTime.toKtInstant(),
 			labels = labels
 		)
 	}
@@ -70,6 +72,7 @@ private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 /**
  * 获取发送给我的请求
  */
+@OptIn(ExperimentalTime::class)
 private fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getReceivedRequests(receiverId)
 	val senderIds = requests.map { it.senderId }
@@ -93,7 +96,7 @@ private fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 			nickname = user.nickname,
 			avatarUrl = user.avatarUrl,
 			status = it.status.toDTOStatus(),
-			createTime = it.createTime.formatToShanghai(),
+			createTime = it.createTime.toKtInstant(),
 			labels = labels
 		)
 	}

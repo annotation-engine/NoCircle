@@ -16,12 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.constants.StringConstants
+import com.nocircle.compose.expends.format
 import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.*
 import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.time.ExperimentalTime
 
 @Composable
 fun MessageCenterReceivedRequestList() {
@@ -58,6 +60,7 @@ fun MessageCenterReceivedRequestList() {
 	}
 }
 
+@OptIn(ExperimentalTime::class)
 @Composable
 private fun ReceivedRequestCard(
 	viewModel: MessageCenterViewModel,
@@ -107,7 +110,7 @@ private fun ReceivedRequestCard(
 					)
 				}
 				Text(
-					text = request.createTime,
+					text = request.createTime.format(),
 					modifier = Modifier
 						.align(Alignment.BottomStart)
 						.clip(MaterialTheme.shapes.extraSmall)

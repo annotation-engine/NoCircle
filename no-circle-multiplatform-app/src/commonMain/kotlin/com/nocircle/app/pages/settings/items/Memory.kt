@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.settings.memory
+package com.nocircle.app.pages.settings.items
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
