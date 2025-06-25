@@ -18,6 +18,7 @@ import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.pages.main.hideBottomNavigationBar
 import com.nocircle.app.pages.main.showBottomNavigationBar
 import com.nocircle.app.resources.AppIcon
+import com.nocircle.app.resources.AppString
 import com.nocircle.common.constants.StringConstants
 import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.NoAsyncImage
@@ -53,9 +54,8 @@ fun FriendDetailPage(
 		topBar = {
 			NoTopAppBar(
 				title = {
-					val friendDetail by viewModel.friendDetail.collectAsState()
 					Text(
-						text = friendDetail?.nickname ?: ""
+						text = AppString.FRIEND_DETAIL_TITLE.value()
 					)
 				},
 				navigationIcon = {

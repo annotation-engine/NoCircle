@@ -44,6 +44,8 @@ import com.nocircle.app.pages.main.person.message.MessageCenterPage
 import com.nocircle.app.pages.main.person.message.MessageCenterRoute
 import com.nocircle.app.pages.settings.SettingsPage
 import com.nocircle.app.pages.settings.SettingsRoute
+import com.nocircle.app.pages.settings.about.AboutPage
+import com.nocircle.app.pages.settings.about.AboutRoute
 import com.nocircle.app.pages.settings.appearance.AppearancePage
 import com.nocircle.app.pages.settings.appearance.AppearanceRoute
 import com.nocircle.app.resources.AppIcon
@@ -126,6 +128,7 @@ fun MainPage() {
 				composable<SettingsRoute> { SettingsPage() }
 				composable<AppearanceRoute> { AppearancePage() }
 				composable<MessageCenterRoute> { MessageCenterPage() }
+				composable<AboutRoute> { AboutPage() }
 			}
 		}
 	}

@@ -5,35 +5,45 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextOverflow
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
-import com.nocircle.compose.resources.value
+import com.nocircle.compose.desktop.NoTooltipArea
+import com.nocircle.compose.desktop.TooltipText
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.layout.NoOption
+import com.nocircle.compose.resources.value
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun Memory() {
-	val coroutineScope = rememberCoroutineScope()
-	NoOption(
-		title = { Text(AppString.SETTINGS_MEMORY.value()) },
-		icon = { NoIcon(AppIcon.Memory.value()) },
-		actions = {
-			var usedMemory by remember { mutableStateOf("-----") }
-			LaunchedEffect(Unit) {
-				while (true) {
-					usedMemory = getUsedMemory().format()
-					delay(1000L)
-				}
-			}
-			Text(
-				text = AppString.SETTINGS_USE_MEMORY.value(usedMemory),
-				overflow = TextOverflow.Ellipsis,
-				maxLines = 1
+	NoTooltipArea(
+		tooltip = {
+			TooltipText(
+				text = AppString.SETTINGS_MEMORY_HINT.value()
 			)
-		}
+		},
 	) {
-		coroutineScope.launch {
-			freeMemory()
+		val coroutineScope = rememberCoroutineScope()
+		NoOption(
+			title = { Text(AppString.SETTINGS_MEMORY.value()) },
+			icon = { NoIcon(AppIcon.Memory.value()) },
+			actions = {
+				var usedMemory by remember { mutableStateOf("-----") }
+				LaunchedEffect(Unit) {
+					while (true) {
+						usedMemory = getUsedMemory().format()
+						delay(1000L)
+					}
+				}
+				Text(
+					text = AppString.SETTINGS_MEMORY_USAGE.value(usedMemory),
+					overflow = TextOverflow.Ellipsis,
+					maxLines = 1
+				)
+			}
+		) {
+			coroutineScope.launch {
+				freeMemory()
+			}
 		}
 	}
 }

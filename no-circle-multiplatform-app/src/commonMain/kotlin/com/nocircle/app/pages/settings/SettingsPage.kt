@@ -29,7 +29,7 @@ fun SettingsPage() {
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
-				title = { Text(AppString.SETTINGS.value()) },
+				title = { Text(AppString.SETTINGS_TITLE.value()) },
 				navigationIcon = if (WindowWidthSizes.isCompact) {
 					{
 						NoIconButton(
@@ -59,6 +59,8 @@ fun SettingsPage() {
 			SwitchTimeZone()
 			Spacer(modifier = Modifier.height(16.dp))
 			Memory()
+			Spacer(modifier = Modifier.height(16.dp))
+			NavigateToAboutPage()
 			Spacer(modifier = Modifier.height(16.dp))
 			Logout()
 		}

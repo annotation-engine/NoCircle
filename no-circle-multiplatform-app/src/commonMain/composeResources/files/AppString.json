@@ -99,61 +99,65 @@
 		"zh": "您已掉线，请检查网络",
 		"en": "You are offline, please check your network"
 	},
-	"FRIENDS_SEARCH": {
+	"FRIEND_SEARCH": {
 		"zh": "搜索",
 		"en": "Search"
 	},
-	"FRIENDS_SEARCH_NOT_FOUND": {
+	"FRIEND_SEARCH_NOT_FOUND": {
 		"zh": "未搜索到结果",
 		"en": "No result found"
 	},
-	"FRIENDS_SEARCH_FOUND_ONE": {
+	"FRIEND_SEARCH_FOUND_ONE": {
 		"zh": "搜索到1条结果",
 		"en": "1 result found"
 	},
-	"FRIENDS_SEARCH_FOUND_MORE": {
+	"FRIEND_SEARCH_FOUND_MORE": {
 		"zh": "搜索到{}条结果",
 		"en": "{} results found"
 	},
-	"FRIENDS_ADD_FRIEND_TITLE": {
+	"FRIEND_ADD_FRIEND_TITLE": {
 		"zh": "添加好友",
 		"en": "Add Friend"
 	},
-	"FRIENDS_ADD_FRIEND_HINT": {
+	"FRIEND_ADD_FRIEND_HINT": {
 		"zh": "搜索用户完整用户名",
 		"en": "Search by full username"
 	},
-	"FRIENDS_ADD_FRIEND_PLEASE_INPUT_USERNAME": {
+	"FRIEND_ADD_FRIEND_PLEASE_INPUT_USERNAME": {
 		"zh": "请输入用户名",
 		"en": "Please enter username"
 	},
-	"FRIENDS_ADD_FRIEND_NOT_FOUND_USER": {
+	"FRIEND_ADD_FRIEND_NOT_FOUND_USER": {
 		"zh": "未搜索到用户",
 		"en": "User not found"
 	},
-	"FRIENDS_ADD_FRIEND_NOT_NICKNAME": {
+	"FRIEND_ADD_FRIEND_NOT_NICKNAME": {
 		"zh": "该用户未设置昵称",
 		"en": "This user has no nickname"
 	},
-	"FRIENDS_ADD_FRIEND_ALREADY_FRIEND": {
+	"FRIEND_ADD_FRIEND_ALREADY_FRIEND": {
 		"zh": "你们已经是好友了",
 		"en": "You are already friends"
 	},
-	"FRIENDS_ADD_FRIEND_NOT_ADD_OWNER": {
+	"FRIEND_ADD_FRIEND_NOT_ADD_OWNER": {
 		"zh": "你不能添加自己",
 		"en": "You cannot add yourself"
 	},
-	"FRIENDS_ADD_FRIEND_ALREADY_SEND_REQUEST": {
+	"FRIEND_ADD_FRIEND_ALREADY_SEND_REQUEST": {
 		"zh": "已经发送过好友申请了",
 		"en": "Friend request has already been sent"
 	},
-	"FRIENDS_ADD_FRIEND_SEND_REQUEST": {
+	"FRIEND_ADD_FRIEND_SEND_REQUEST": {
 		"zh": "点击发送好友申请",
 		"en": "Click to send a friend request"
 	},
-	"FRIENDS_ADD_FRIEND_SEND_SUCCESS": {
+	"FRIEND_ADD_FRIEND_SEND_SUCCESS": {
 		"zh": "已发送好友申请",
 		"en": "Friend request sent successfully"
+	},
+	"FRIEND_DETAIL_TITLE": {
+		"zh": "好友详情",
+		"en": "Friend Details"
 	},
 	"PERSON_SETTINGS_SUBTITLE": {
 		"zh": "外观、语言、图标、圆角、内存、退出登录",
@@ -223,13 +227,17 @@
 		"zh": "标签不能为空",
 		"en": "Label must not be empty"
 	},
-	"SETTINGS": {
+	"SETTINGS_TITLE": {
 		"zh": "设置",
 		"en": "Settings"
 	},
 	"SETTINGS_APPEARANCE_SUBTITLE": {
-		"zh": "对比度，深浅色模式，主题色",
+		"zh": "对比度、深浅色模式、主题色",
 		"en": "Contrast, Dark/Light Mode, Theme Color"
+	},
+	"SETTINGS_ABOUT_SUBTITLE": {
+		"zh": "版本更新、第三方依赖、项目成员",
+		"en": "Version updates, third-party dependencies, project members"
 	},
 	"SETTINGS_LOGOUT": {
 		"zh": "退出登录",
@@ -323,15 +331,19 @@
 		"zh": "内存",
 		"en": "Memory"
 	},
-	"SETTINGS_USE_MEMORY": {
-		"zh": "当前使用：{}",
-		"en": "Currently using: {}"
+	"SETTINGS_MEMORY_USAGE": {
+		"zh": "当前使用量：{}",
+		"en": "Current usage: {}"
+	},
+	"SETTINGS_MEMORY_HINT": {
+		"zh": "点击可以释放内存",
+		"en": "Clicking can free up memory"
 	},
 	"SETTINGS_TIME_ZONE": {
 		"zh": "时区",
 		"en": "Time Zone"
 	},
-	"APPEARANCE": {
+	"APPEARANCE_TITLE": {
 		"zh": "外观",
 		"en": "Appearance"
 	},
@@ -487,8 +499,16 @@
 		"zh": "暂无消息",
 		"en": "No news for the time being"
 	},
-	"MESSAGE_CENTER_WANT_ADD_FRIEND": {
-		"zh": "{} 想要加您为好友",
-		"en": "{} wants to add you as a friend"
+	"ABOUT_TITLE": {
+		"zh": "关于",
+		"en": "About"
+	},
+	"ABOUT_VERSION_UPDATE": {
+		"zh": "版本更新",
+		"en": "Version Update"
+	},
+	"ABOUT_THIRD_PARTY_LIBRARY": {
+		"zh": "第三方库",
+		"en": "Third-party Library"
 	}
 }

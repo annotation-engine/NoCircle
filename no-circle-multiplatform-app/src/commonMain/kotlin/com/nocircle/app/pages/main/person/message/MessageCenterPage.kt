@@ -15,6 +15,7 @@ import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.layout.VerticalColumn
 import com.nocircle.compose.material3.*
 import com.nocircle.compose.navigation.LocalNavController
 import com.nocircle.compose.navigation.NoRoute
@@ -45,72 +46,59 @@ fun MessageCenterPage() {
 			)
 		}
 	) { paddingValues ->
-		Box(
+		VerticalColumn(
 			modifier = Modifier
-				.fillMaxSize()
-				.padding(top = paddingValues.calculateTopPadding()),
-			contentAlignment = Alignment.TopCenter
+				.padding(paddingValues)
 		) {
-			Column(
-				modifier = Modifier
-					.widthIn(max = 840.dp)
-					.fillMaxSize()
-					.padding(
-						start = 16.dp,
-						top = 16.dp,
-						end = 16.dp
-					)
-			) {
-				val viewModel = koinViewModel<MessageCenterViewModel>()
-				var selectedSubRoute by remember { mutableStateOf(MessageCenterSubRoute.SENT_REQUEST) }
-				val sentRequests by viewModel.sentRequests.collectAsState()
-				val receivedRequests by viewModel.receivedRequests.collectAsState()
-				NoTabRow(
-					selected = selectedSubRoute,
-					onSelectedChange = { selectedSubRoute = it },
-					items = MessageCenterSubRoute.entries,
-					interval = 12.dp
-				) { subRoute ->
-					val icon by remember(subRoute, receivedRequests.size) {
-						derivedStateOf {
-							when {
-								subRoute == MessageCenterSubRoute.SENT_REQUEST -> AppIcon.ForwardToInbox
-								receivedRequests.isEmpty() -> AppIcon.Email
-								else -> AppIcon.MarkEmailUnread
-							}
+			val viewModel = koinViewModel<MessageCenterViewModel>()
+			var selectedSubRoute by remember { mutableStateOf(MessageCenterSubRoute.SENT_REQUEST) }
+			val sentRequests by viewModel.sentRequests.collectAsState()
+			val receivedRequests by viewModel.receivedRequests.collectAsState()
+			NoTabRow(
+				selected = selectedSubRoute,
+				onSelectedChange = { selectedSubRoute = it },
+				items = MessageCenterSubRoute.entries,
+				interval = 12.dp
+			) { subRoute ->
+				val icon by remember(subRoute, receivedRequests.size) {
+					derivedStateOf {
+						when {
+							subRoute == MessageCenterSubRoute.SENT_REQUEST -> AppIcon.ForwardToInbox
+							receivedRequests.isEmpty() -> AppIcon.Email
+							else -> AppIcon.MarkEmailUnread
 						}
 					}
-					NoIcon(icon.value())
-					Spacer(modifier = Modifier.width(8.dp))
-					val count = if (subRoute == MessageCenterSubRoute.SENT_REQUEST) sentRequests.size else receivedRequests.size
-					Text(subRoute.title.value(count))
 				}
-				val hostState = LocalSnackbarHostState.current
-				LaunchedEffect(Unit) {
-					viewModel.snackbarCollect(hostState::showNoSnackbar)
+				NoIcon(icon.value())
+				Spacer(modifier = Modifier.width(8.dp))
+				val count = if (subRoute == MessageCenterSubRoute.SENT_REQUEST) sentRequests.size else receivedRequests.size
+				Text(subRoute.title.value(count))
+			}
+			val hostState = LocalSnackbarHostState.current
+			LaunchedEffect(Unit) {
+				viewModel.snackbarCollect(hostState::showNoSnackbar)
+			}
+			Crossfade(
+				targetState = selectedSubRoute,
+				modifier = Modifier.fillMaxSize(),
+				animationSpec = tween(durationMillis = 100),
+				label = "MessageCenterCrossfade",
+			) { subRoute ->
+				when (subRoute) {
+					MessageCenterSubRoute.SENT_REQUEST -> MessageCenterSentRequestList()
+					MessageCenterSubRoute.RECEIVED_REQUEST -> MessageCenterReceivedRequestList()
 				}
-				Crossfade(
-					targetState = selectedSubRoute,
-					modifier = Modifier.fillMaxSize(),
-					animationSpec = tween(durationMillis = 100),
-					label = "MessageCenterCrossfade",
-				) { subRoute ->
-					when (subRoute) {
-						MessageCenterSubRoute.SENT_REQUEST -> MessageCenterSentRequestList()
-						MessageCenterSubRoute.RECEIVED_REQUEST -> MessageCenterReceivedRequestList()
-					}
-					Box(
-						modifier = Modifier
-							.fillMaxWidth()
-							.height(16.dp)
-							.background(
-								brush = Brush.verticalGradient(
-									0f to MaterialTheme.colorScheme.surface,
-									1f to MaterialTheme.colorScheme.surface.copy(alpha = 0f)
-								)
+				Box(
+					modifier = Modifier
+						.fillMaxWidth()
+						.height(16.dp)
+						.background(
+							brush = Brush.verticalGradient(
+								0f to MaterialTheme.colorScheme.surface,
+								1f to MaterialTheme.colorScheme.surface.copy(alpha = 0f)
 							)
-					)
-				}
+						)
+				)
 			}
 		}
 	}

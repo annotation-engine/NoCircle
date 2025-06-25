@@ -18,9 +18,9 @@ import com.nocircle.compose.windowsize.WindowWidthSizes
 @Composable
 fun NoTopAppBar(
 	modifier: Modifier = Modifier,
-	title: (@Composable () -> Unit)? = null,
+	title: (@Composable RowScope.() -> Unit)? = null,
 	navigationIcon: (@Composable () -> Unit)? = null,
-	actions: @Composable (RowScope.() -> Unit)? = null,
+	actions: (@Composable RowScope.() -> Unit)? = null,
 	contentPadding: PaddingValues = NoTopAppBarDefaults.contentPadding,
 	colors: NoTopAppBarColors = NoTopAppBarDefaults.topAppBarColors
 ) {
@@ -63,9 +63,10 @@ fun NoTopAppBar(
 				Spacer(Modifier.width(8.dp))
 				CompositionLocalProvider(
 					LocalContentColor provides colors.titleContentColor,
-					LocalTextStyle provides MaterialTheme.typography.titleLarge,
-					content = title
-				)
+					LocalTextStyle provides MaterialTheme.typography.titleLarge
+				) {
+					title()
+				}
 				Spacer(Modifier.width(8.dp))
 			}
 			Spacer(Modifier.weight(1f))

@@ -40,7 +40,7 @@ fun AddFriendSheet(
 		onDismissRequest = onDismissRequest,
 		sheetState = sheetState,
 		icon = { NoIcon(AppIcon.Add.value()) },
-		title = { Text(AppString.FRIENDS_ADD_FRIEND_TITLE.value()) }
+		title = { Text(AppString.FRIEND_ADD_FRIEND_TITLE.value()) }
 	) {
 		val viewModel = koinViewModel<AddFriendViewModel>()
 		val hostState = LocalSnackbarHostState.current
@@ -54,7 +54,7 @@ fun AddFriendSheet(
 			onValueChange = viewModel::updateSearch,
 			modifier = Modifier.fillMaxWidth(),
 			leadingIcon = { NoIcon(AppIcon.Search.value()) },
-			placeholder = { Text(AppString.FRIENDS_ADD_FRIEND_HINT.value()) }
+			placeholder = { Text(AppString.FRIEND_ADD_FRIEND_HINT.value()) }
 		)
 		Spacer(modifier = Modifier.height(16.dp))
 		HorizontalDivider()
@@ -73,7 +73,7 @@ fun AddFriendSheet(
 			} else {
 				val hint by remember(username) {
 					derivedStateOf {
-						if (username.isBlank()) AppString.FRIENDS_ADD_FRIEND_PLEASE_INPUT_USERNAME else AppString.FRIENDS_ADD_FRIEND_NOT_FOUND_USER
+						if (username.isBlank()) AppString.FRIEND_ADD_FRIEND_PLEASE_INPUT_USERNAME else AppString.FRIEND_ADD_FRIEND_NOT_FOUND_USER
 					}
 				}
 				HintText(
@@ -170,11 +170,11 @@ private fun UserCard(
 	var string by remember(searchUser) {
 		mutableStateOf(
 			value = when (searchUser.relationship) {
-				FRIEND -> AppString.FRIENDS_ADD_FRIEND_ALREADY_FRIEND
-				OWNER -> AppString.FRIENDS_ADD_FRIEND_NOT_ADD_OWNER
+				FRIEND -> AppString.FRIEND_ADD_FRIEND_ALREADY_FRIEND
+				OWNER -> AppString.FRIEND_ADD_FRIEND_NOT_ADD_OWNER
 				STRANGER -> when (searchUser.isAlreadySend) {
-					true -> AppString.FRIENDS_ADD_FRIEND_ALREADY_SEND_REQUEST
-					false -> AppString.FRIENDS_ADD_FRIEND_SEND_REQUEST
+					true -> AppString.FRIEND_ADD_FRIEND_ALREADY_SEND_REQUEST
+					false -> AppString.FRIEND_ADD_FRIEND_SEND_REQUEST
 				}
 			}
 		)
@@ -187,7 +187,7 @@ private fun UserCard(
 	) {
 		val success = viewModel.sendFriendAddRequest(searchUser.userId)
 		if (success) {
-			string = AppString.FRIENDS_ADD_FRIEND_SEND_SUCCESS
+			string = AppString.FRIEND_ADD_FRIEND_SEND_SUCCESS
 			enabled = false
 		}
 	}

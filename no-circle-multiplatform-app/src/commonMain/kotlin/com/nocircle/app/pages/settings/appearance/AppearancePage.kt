@@ -58,7 +58,7 @@ fun AppearancePage() {
 	NoScaffold(
 		topBar = {
 			NoTopAppBar(
-				title = { Text(AppString.APPEARANCE.value()) },
+				title = { Text(AppString.APPEARANCE_TITLE.value()) },
 				navigationIcon = if (WindowWidthSizes.isCompact) {
 					{
 						NoIconButton(

@@ -114,7 +114,7 @@ private fun FriendSearch(
 			prefix = { NoIcon(icon = AppIcon.Search.value()) },
 			placeholder = {
 				Text(
-					text = AppString.FRIENDS_SEARCH.value(),
+					text = AppString.FRIEND_SEARCH.value(),
 					overflow = TextOverflow.Ellipsis,
 					maxLines = 1
 				)
@@ -343,9 +343,9 @@ private fun FriendSearchHint(
 	) {
 		Text(
 			text = when (count) {
-				0 -> AppString.FRIENDS_SEARCH_NOT_FOUND.value()
-				1 -> AppString.FRIENDS_SEARCH_FOUND_ONE.value()
-				else -> AppString.FRIENDS_SEARCH_FOUND_MORE.value(count)
+				0 -> AppString.FRIEND_SEARCH_NOT_FOUND.value()
+				1 -> AppString.FRIEND_SEARCH_FOUND_ONE.value()
+				else -> AppString.FRIEND_SEARCH_FOUND_MORE.value(count)
 			},
 			color = MaterialTheme.colorScheme.outline,
 			style = MaterialTheme.typography.bodyMedium

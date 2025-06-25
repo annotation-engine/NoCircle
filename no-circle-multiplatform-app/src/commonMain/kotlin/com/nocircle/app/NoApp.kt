@@ -17,6 +17,7 @@ import com.nocircle.app.pages.main.person.PersonViewModel
 import com.nocircle.app.pages.main.person.label.EditLabelViewModel
 import com.nocircle.app.pages.main.person.message.MessageCenterViewModel
 import com.nocircle.app.pages.settings.SettingsViewModel
+import com.nocircle.app.pages.settings.about.AboutViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
 import com.nocircle.compose.resources.loadStringJsonObject
@@ -41,6 +42,7 @@ private val NoKoinModule = module {
 	viewModel { AppearanceViewModel() }
 	viewModel { EditLabelViewModel() }
 	viewModel { MessageCenterViewModel() }
+	viewModel { AboutViewModel() }
 }
 
 @Composable

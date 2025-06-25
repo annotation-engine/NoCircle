@@ -53,7 +53,7 @@ fun PersonPage() {
 			Spacer(modifier = Modifier.height(16.dp))
 			FriendAddRequest()
 			Spacer(modifier = Modifier.height(16.dp))
-			OptionList()
+			NavigateToSettingsPage()
 		}
 	}
 }
@@ -207,10 +207,10 @@ private fun FriendAddRequest() {
 }
 
 @Composable
-private fun OptionList() {
+private fun NavigateToSettingsPage() {
 	val controller = LocalNavController.current
 	NoOption(
-		title = { Text(AppString.SETTINGS.value()) },
+		title = { Text(AppString.SETTINGS_TITLE.value()) },
 		icon = { NoIcon(AppIcon.Settings.value()) },
 		actions = {
 			Text(

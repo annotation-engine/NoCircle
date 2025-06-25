@@ -1,9 +1,6 @@
 package com.nocircle.compose.layout
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,20 +8,19 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun VerticalScrollColumn(
+fun VerticalColumn(
 	modifier: Modifier = Modifier,
-	scrollState: ScrollState = rememberScrollState(),
 	contentMaxWidth: Dp = 840.dp,
 	contentPadding: PaddingValues = PaddingValues(
-		horizontal = 16.dp,
-		vertical = 32.dp
+		start = 16.dp,
+		top = 16.dp,
+		end = 16.dp
 	),
 	content: @Composable ColumnScope.() -> Unit
 ) {
 	Box(
 		modifier = modifier
-			.fillMaxSize()
-			.verticalScroll(scrollState),
+			.fillMaxSize(),
 		contentAlignment = Alignment.TopCenter
 	) {
 		Column(
