@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -37,6 +38,8 @@ import com.nocircle.compose.material3.NoTopAppBarDefaults
 import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.shared.model.friend.FriendDTO
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -55,7 +58,7 @@ fun FriendList(
 						isCompact = isCompact,
 					)
 				},
-				contentPadding = if (isCompact) NoTopAppBarDefaults.contentPadding else MediumContentPadding
+				contentPadding = if (isCompact) NoTopAppBarDefaults.MediumContentPadding else NoTopAppBarDefaults.SmallContentPadding
 			)
 		}
 	) { paddingValues ->
@@ -83,8 +86,6 @@ fun FriendList(
 		}
 	}
 }
-
-private val MediumContentPadding = PaddingValues(12.dp)
 
 @Composable
 private fun FriendSearch(
@@ -161,8 +162,7 @@ private fun FriendList(
 				.fillMaxSize(),
 			state = scrollState,
 			contentPadding = PaddingValues(
-				top = 16.dp,
-				bottom = 16.dp
+				top = 16.dp
 			)
 		) {
 			itemsIndexed(
@@ -180,9 +180,23 @@ private fun FriendList(
 				)
 			}
 		}
+		var isShowSortOrder by remember { mutableStateOf(false) }
+		val alpha by animateFloatAsState(
+			targetValue = if (isShowSortOrder) 1f else 0f
+		)
+		LaunchedEffect(scrollState) {
+			snapshotFlow {
+				val lastVisible = scrollState.layoutInfo.visibleItemsInfo.lastOrNull()
+				val lastVisibleIndex = scrollState.layoutInfo.totalItemsCount - 1
+				lastVisible?.index == lastVisibleIndex
+			}.distinctUntilChanged().collectLatest {
+				isShowSortOrder = !it
+			}
+		}
 		SwitchSortOrder(
 			viewModel = viewModel,
-			isCompact = isCompact
+			isCompact = isCompact,
+			alpha = alpha,
 		)
 	}
 }
@@ -257,6 +271,7 @@ private fun FriendSubtitleItem(
 private fun BoxScope.SwitchSortOrder(
 	viewModel: FriendListViewModel,
 	isCompact: Boolean,
+	alpha: Float
 ) {
 	val sortOrder by viewModel.sortOrder.collectAsState()
 	val switchSortOrder = {
@@ -265,12 +280,17 @@ private fun BoxScope.SwitchSortOrder(
 	val rotate by animateFloatAsState(
 		targetValue = if (sortOrder == DESC) 0f else 180f
 	)
+	val show by remember(alpha) {
+		derivedStateOf { alpha > 0f }
+	}
+	if (!show) return
 	if (isCompact) {
 		FloatingActionButton(
 			onClick = switchSortOrder,
 			modifier = Modifier
 				.align(Alignment.BottomEnd)
 				.offset(x = (-16).dp, y = (-16).dp)
+				.alpha(alpha)
 		) {
 			NoIcon(
 				icon = AppIcon.TextRotateUp.value(),
@@ -283,6 +303,7 @@ private fun BoxScope.SwitchSortOrder(
 			modifier = Modifier
 				.align(Alignment.BottomEnd)
 				.offset(x = (-12).dp, y = (-12).dp)
+				.alpha(alpha)
 		) {
 			NoIcon(
 				icon = AppIcon.TextRotateUp.value(),
@@ -306,11 +327,7 @@ private fun FriendSearchList(
 	}
 	LazyColumn(
 		modifier = modifier,
-		state = scrollState,
-		contentPadding = PaddingValues(
-			top = 16.dp,
-			bottom = 16.dp
-		)
+		state = scrollState
 	) {
 		item {
 			FriendSearchHint(friendSearchList.size)
@@ -335,8 +352,7 @@ private fun FriendSearchHint(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(
-				top = 16.dp,
-				bottom = 16.dp
+				vertical = 16.dp
 			),
 		contentAlignment = Alignment.Center
 	) {
@@ -392,9 +408,7 @@ private fun FriendSearchItem(
 				.fillMaxSize(),
 			verticalArrangement = Arrangement.SpaceBetween
 		) {
-			val contentColor = MaterialTheme.colorScheme.onSurface.copy(
-				alpha = if (selected) 0.6f else 0.5f
-			)
+			val contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
 			Text(
 				text = getAnnotatedString(item.nickname, item.nicknameIndices),
 				maxLines = 1,

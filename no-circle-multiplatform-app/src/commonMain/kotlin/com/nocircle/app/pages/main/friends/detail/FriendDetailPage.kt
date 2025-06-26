@@ -1,9 +1,7 @@
 package com.nocircle.app.pages.main.friends.detail
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,26 +10,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEachIndexed
 import com.nocircle.app.pages.main.AutoVisibleBottomNavigation
 import com.nocircle.app.resources.AppIcon
-import com.nocircle.app.resources.AppString
 import com.nocircle.common.constants.StringConstants
-import com.nocircle.compose.expends.hexToColor
 import com.nocircle.compose.foundation.NoAsyncImage
 import com.nocircle.compose.foundation.NoIconButton
-import com.nocircle.compose.foundation.NoTag
-import com.nocircle.compose.layout.VerticalScrollColumn
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.material3.NoTopAppBarDefaults
 import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
+import com.nocircle.shared.model.friend.FriendDetailDTO
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -50,98 +42,81 @@ fun FriendDetailPage(
 		topBar = {
 			val isCompact = WindowWidthSizes.isCompact
 			NoTopAppBar(
-				title = {
-					Text(
-						text = AppString.FRIEND_DETAIL_TITLE.value()
-					)
-				},
 				navigationIcon = {
 					NoIconButton(
-						icon = if (isCompact) AppIcon.ArrowBack.value() else AppIcon.Close.value()
+						icon = if (isCompact) AppIcon.ArrowBack.value() else AppIcon.Close.value(),
+						tint = MaterialTheme.colorScheme.inverseOnSurface
 					) {
 						popBackStack()
 					}
 				},
-				contentPadding = if (isCompact) NoTopAppBarDefaults.contentPadding else MediumContentPadding
+				contentPadding = if (isCompact) NoTopAppBarDefaults.MediumContentPadding else NoTopAppBarDefaults.SmallContentPadding,
+				colors = NoTopAppBarDefaults.TransparentTopAppColors
 			)
 		}
 	) { paddingValues ->
-		VerticalScrollColumn(
-			modifier = Modifier.padding(
-				top = paddingValues.calculateTopPadding()
-			)
+		Box(
+			modifier = Modifier
+				.fillMaxSize(),
+			contentAlignment = Alignment.TopCenter
 		) {
-			FriendDetailCard()
+			val friendDetail by viewModel.friendDetail.collectAsState()
+			if (friendDetail != null) {
+				FriendAvatarBackground(
+					avatarUrl = friendDetail!!.avatarUrl
+				)
+				FriendDetailColumn(
+					item = friendDetail!!
+				)
+			}
 		}
 	}
 }
 
 @Composable
-private fun FriendDetailCard() {
-	val viewModel = koinViewModel<FriendDetailViewModel>()
-	Row(
+private fun FriendAvatarBackground(
+	avatarUrl: String?
+) {
+	NoAsyncImage(
+		url = avatarUrl,
 		modifier = Modifier
 			.fillMaxWidth()
-			.background(
-				color = MaterialTheme.colorScheme.surfaceContainer,
-				shape = MaterialTheme.shapes.medium
-			)
-			.padding(12.dp)
-			.height(100.dp)
-	) {
-		val friendDetail by viewModel.friendDetail.collectAsState()
-		NoAsyncImage(
-			url = friendDetail?.avatarUrl,
-			modifier = Modifier
-				.size(100.dp)
-				.clip(MaterialTheme.shapes.medium),
-			placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceContainerHighest),
-			contentScale = ContentScale.Crop
-		)
-		Spacer(modifier = Modifier.width(12.dp))
-		Box(
-			modifier = Modifier
-				.fillMaxSize()
-		) {
-			Column {
-				Text(
-					text = friendDetail?.nickname ?: "",
-					color = MaterialTheme.colorScheme.onSurface,
-					style = MaterialTheme.typography.titleMedium,
-				)
-				Spacer(modifier = Modifier.height(8.dp))
-				Text(
-					text = StringConstants.ID + (friendDetail?.username ?: ""),
-					color = MaterialTheme.colorScheme.onSurfaceVariant,
-					style = MaterialTheme.typography.bodyMedium,
-				)
-			}
-			
-			val horizontalScroll = rememberScrollState()
-			Row(
-				modifier = Modifier
-					.align(Alignment.BottomStart)
-					.horizontalScroll(horizontalScroll)
-					.background(
-						color = if (friendDetail == null) MaterialTheme.colorScheme.surface else Color.Transparent,
-						shape = MaterialTheme.shapes.extraSmall
-					)
-			) {
-				val labels = friendDetail?.labels
-				labels?.fastForEachIndexed { index, label ->
-					NoTag(
-						text = label.label,
-						color = hexToColor(label.color),
-						shape = MaterialTheme.shapes.small,
-						contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-					)
-					if (index < labels.lastIndex) {
-						Spacer(modifier = Modifier.width(6.dp))
-					}
-				}
-			}
-		}
-	}
+			.height(200.dp)
+			.blur(50.dp)
+	)
 }
 
-private val MediumContentPadding = PaddingValues(12.dp)
+@Composable
+private fun FriendDetailColumn(
+	item: FriendDetailDTO
+) {
+	Column(
+		modifier = Modifier
+			.padding(top = 150.dp),
+		horizontalAlignment = Alignment.CenterHorizontally,
+	) {
+		NoAsyncImage(
+			url = item.avatarUrl,
+			modifier = Modifier
+				.size(100.dp)
+				.border(
+					width = 2.5.dp,
+					color = MaterialTheme.colorScheme.inverseOnSurface,
+					shape = MaterialTheme.shapes.medium
+				)
+				.clip(MaterialTheme.shapes.medium)
+		)
+		Spacer(modifier = Modifier.height(16.dp))
+		Text(
+			text = item.nickname,
+			color = MaterialTheme.colorScheme.onSurface,
+			style = MaterialTheme.typography.titleLarge
+		)
+		Spacer(modifier = Modifier.height(8.dp))
+		Text(
+			text = StringConstants.ID + item.username,
+			color = MaterialTheme.colorScheme.outline,
+			style = MaterialTheme.typography.bodyMedium
+		)
+	}
+}

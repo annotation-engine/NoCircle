@@ -18,6 +18,8 @@ fun VerticalScrollColumn(
 		horizontal = 16.dp,
 		vertical = 32.dp
 	),
+	verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+	horizontalAlignment: Alignment.Horizontal = Alignment.Start,
 	content: @Composable ColumnScope.() -> Unit
 ) {
 	Box(
@@ -32,6 +34,8 @@ fun VerticalScrollColumn(
 				.widthIn(max = contentMaxWidth)
 				.fillMaxSize()
 				.padding(contentPadding),
+			verticalArrangement = verticalArrangement,
+			horizontalAlignment = horizontalAlignment,
 			content = content
 		)
 	}

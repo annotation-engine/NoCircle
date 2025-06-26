@@ -21,8 +21,8 @@ fun NoTopAppBar(
 	title: (@Composable RowScope.() -> Unit)? = null,
 	navigationIcon: (@Composable () -> Unit)? = null,
 	actions: (@Composable RowScope.() -> Unit)? = null,
-	contentPadding: PaddingValues = NoTopAppBarDefaults.contentPadding,
-	colors: NoTopAppBarColors = NoTopAppBarDefaults.topAppBarColors
+	contentPadding: PaddingValues = NoTopAppBarDefaults.MediumContentPadding,
+	colors: NoTopAppBarColors = NoTopAppBarDefaults.TopAppBarColors
 ) {
 	val paddingValues = NoTopAppBarDefaults.windowInsets.asPaddingValues()
 	val isCompact = WindowWidthSizes.isCompact
@@ -89,7 +89,7 @@ object NoTopAppBarDefaults {
 		@Composable
 		get() = TopAppBarDefaults.windowInsets
 	
-	val topAppBarColors: NoTopAppBarColors
+	val TopAppBarColors: NoTopAppBarColors
 		@Composable
 		get() = NoTopAppBarColors(
 			containerColor = MaterialTheme.colorScheme.surface,
@@ -99,7 +99,19 @@ object NoTopAppBarDefaults {
 			shadowColor = MaterialTheme.colorScheme.onSurface
 		)
 	
-	val contentPadding = PaddingValues(16.dp)
+	val TransparentTopAppColors: NoTopAppBarColors
+		@Composable
+		get() = NoTopAppBarColors(
+			containerColor = Color.Transparent,
+			navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+			titleContentColor = MaterialTheme.colorScheme.onSurface,
+			actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+			shadowColor = Color.Transparent
+		)
+	
+	val MediumContentPadding = PaddingValues(16.dp)
+	
+	val SmallContentPadding = PaddingValues(12.dp)
 }
 
 @Immutable

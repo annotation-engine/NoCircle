@@ -31,9 +31,7 @@ fun AboutPage() {
 		topBar = {
 			val controller = LocalNavController.current
 			NoTopAppBar(
-				title = {
-					Text(AppString.ABOUT_TITLE.value())
-				},
+				title = { Text(AppString.ABOUT_TITLE.value()) },
 				navigationIcon = if (WindowWidthSizes.isCompact) {
 					{
 						NoIconButton(
