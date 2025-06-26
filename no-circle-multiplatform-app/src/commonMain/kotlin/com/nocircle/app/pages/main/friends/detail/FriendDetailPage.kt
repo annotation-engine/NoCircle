@@ -45,7 +45,7 @@ fun FriendDetailPage(
 				navigationIcon = {
 					NoIconButton(
 						icon = if (isCompact) AppIcon.ArrowBack.value() else AppIcon.Close.value(),
-						tint = MaterialTheme.colorScheme.inverseOnSurface
+						containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
 					) {
 						popBackStack()
 					}
@@ -81,7 +81,7 @@ private fun FriendAvatarBackground(
 		url = avatarUrl,
 		modifier = Modifier
 			.fillMaxWidth()
-			.height(200.dp)
+			.height(220.dp)
 			.blur(50.dp)
 	)
 }
@@ -92,7 +92,7 @@ private fun FriendDetailColumn(
 ) {
 	Column(
 		modifier = Modifier
-			.padding(top = 150.dp),
+			.padding(top = 170.dp),
 		horizontalAlignment = Alignment.CenterHorizontally,
 	) {
 		NoAsyncImage(
@@ -101,10 +101,10 @@ private fun FriendDetailColumn(
 				.size(100.dp)
 				.border(
 					width = 2.5.dp,
-					color = MaterialTheme.colorScheme.inverseOnSurface,
-					shape = MaterialTheme.shapes.medium
+					color = MaterialTheme.colorScheme.surface,
+					shape = MaterialTheme.shapes.large
 				)
-				.clip(MaterialTheme.shapes.medium)
+				.clip(MaterialTheme.shapes.large)
 		)
 		Spacer(modifier = Modifier.height(16.dp))
 		Text(
