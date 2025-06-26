@@ -1,50 +1,30 @@
 package com.nocircle.compose.resources
 
-import androidx.collection.MutableIntObjectMap
-import androidx.collection.mutableIntObjectMapOf
 import androidx.compose.runtime.*
-import androidx.compose.ui.util.fastFlatMap
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.*
 import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.readResourceBytes
+import kotlin.reflect.KClass
 
-interface NoString {
-	
-	val packageName: String
-}
+interface NoString
 
-private val LoadStringJsonMutex = Mutex()
+private const val STRING_FILE_PATH = "composeResources/{}.generated.resources/files/strings/{}"
 
-private const val STRING_FILE_PATH = "composeResources/{}.generated.resources/files/"
+private val jsonElementCacheMap = mutableMapOf<String, JsonElement>()
 
-private val allFileNames = mutableMapOf<String, List<String>>()
-
-private val jsonObjectCacheMap = mutableMapOf<String, Map<String, JsonElement>>()
-
-private val stringCacheMap = mutableMapOf<String, MutableMap<SupportedLanguage, MutableIntObjectMap<String>>>()
+private val stringCacheMap = mutableMapOf<SupportedLanguage, MutableMap<String, String>>()
 
 @OptIn(InternalResourceApi::class)
-suspend fun loadStringJsonObject(
+suspend fun preloadStringJsonElements(
 	packageName: String,
-	fileNames: List<String> = allFileNames[packageName] ?: emptyList()
-): Map<String, JsonElement> {
-	return LoadStringJsonMutex.withLock {
-		jsonObjectCacheMap[packageName]?.let { return it }
-		if (packageName !in allFileNames) {
-			allFileNames[packageName] = fileNames
-		}
-		fileNames.fastFlatMap { fileName ->
-			val path = "${STRING_FILE_PATH}$fileName".format(packageName)
-			val json = readResourceBytes(path).decodeToString()
-			Json.parseToJsonElement(json).jsonObject.entries
-		}.associate { it.toPair() }.also {
-			jsonObjectCacheMap[packageName] = it
-		}
+	enum: KClass<out Enum<*>>,
+	resourceName: String
+) {
+	val path = STRING_FILE_PATH.format(packageName, resourceName)
+	val json = readResourceBytes(path).decodeToString()
+	val prefix = enum.qualifiedName!!
+	jsonElementCacheMap += Json.parseToJsonElement(json).jsonObject.entries.map {
+		"$prefix:${it.key}" to it.value
 	}
 }
 
@@ -62,56 +42,31 @@ fun NoString.value(
 	}
 }
 
-@Stable
-private fun NoString.getCacheRawString(language: SupportedLanguage): String {
-	val hashCode = this.hashCode()
-	val value = stringCacheMap[packageName]?.get(language)?.get(hashCode)
-	if (value != null) return value
-	val cacheMap = stringCacheMap.getOrPut(packageName) { mutableMapOf() }
-		.getOrPut(language) { mutableIntObjectMapOf() }
-	val elementCacheMap = jsonObjectCacheMap[packageName] ?: runBlocking(Dispatchers.IO) {
-		loadStringJsonObject(packageName)
-	}
-	var element = elementCacheMap[this.toString()] ?: return ""
-	if (element is JsonObject) {
-		element = element.jsonObject[language.language] ?: return ""
-	}
-	return element.jsonPrimitive.content.also {
-		cacheMap[hashCode] = it
-	}
-}
-
-suspend fun NoString.getString(
+fun NoString.getString(
 	vararg args: Any?
 ): String {
 	val current = SupportedLanguage.value
-	val value = this.getSuspendedCacheRawString(current)
+	val value = getCacheRawString(current)
+	if (args.isEmpty()) return value
 	return value.format(*args)
 }
 
-@Stable
-private suspend fun NoString.getSuspendedCacheRawString(language: SupportedLanguage): String {
-	val hashCode = this.hashCode()
-	val value = stringCacheMap[packageName]?.get(language)?.get(hashCode)
-	if (value != null) return value
-	val cacheMap = stringCacheMap.getOrPut(packageName) { mutableMapOf() }
-		.getOrPut(language) { mutableIntObjectMapOf() }
-	val elementCacheMap = jsonObjectCacheMap[packageName] ?: loadStringJsonObject(packageName)
-	var element = elementCacheMap[this.toString()] ?: return ""
-	if (element is JsonObject) {
-		element = element.jsonObject[language.language] ?: return ""
-	}
-	return element.jsonPrimitive.content.also {
-		cacheMap[hashCode] = it
-	}
-}
-
 fun clearSupportedLanguageCache(language: SupportedLanguage) {
-	stringCacheMap.values.forEach { cacheMap ->
-		cacheMap -= language
-	}
+	stringCacheMap -= language
 }
 
+@Stable
+private fun NoString.getCacheRawString(language: SupportedLanguage): String {
+	val key = "${this::class.qualifiedName!!}:$this"
+	val cacheMap = stringCacheMap.getOrPut(language) { mutableMapOf() }
+	return cacheMap.getOrPut(key) {
+		var element = jsonElementCacheMap[key] ?: return@getOrPut ""
+		if (element is JsonObject) {
+			element = element.jsonObject[language.language] ?: return@getOrPut ""
+		}
+		element.jsonPrimitive.content
+	}
+}
 
 private val formatRegex = """\{(\d*)\}""".toRegex()
 

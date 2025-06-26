@@ -114,10 +114,10 @@ fun MainPage() {
 					)
 					.background(MaterialTheme.colorScheme.surface)
 					.fillMaxSize(),
-				enterTransition = if (isCompact) HorizontalSlideTransition.Enter else FadeTransition.Enter,
-				exitTransition = if (isCompact) HorizontalSlideTransition.Exit else FadeTransition.Exit,
-				popEnterTransition = if (isCompact) HorizontalSlideTransition.PopEnter else FadeTransition.PopEnter,
-				popExitTransition = if (isCompact) HorizontalSlideTransition.PopExit else FadeTransition.PopExit,
+				enterTransition = enterTransition { if (isCompact) horizontalSlider() else fade() },
+				exitTransition = exitTransition { if (isCompact) horizontalSlider() else fade() },
+				popEnterTransition = popEnterTransition { if (isCompact) horizontalSlider() else fade() },
+				popExitTransition = popExitTransition { if (isCompact) horizontalSlider() else fade() }
 			) {
 				composable<MainRoute> {
 					MainPage(
@@ -174,12 +174,17 @@ private val LeftNavigationItemHeight = 48.dp
 
 private val _bottomNavigationBarHeight = MutableStateFlow(88.dp)
 
-fun showBottomNavigationBar() {
-	_bottomNavigationBarHeight.value = 88.dp
-}
-
-fun hideBottomNavigationBar() {
-	_bottomNavigationBarHeight.value = Dp.Hairline
+@Composable
+fun AutoVisibleBottomNavigation() {
+	val isCompact = WindowWidthSizes.isCompact
+	DisposableEffect(Unit) {
+		if (isCompact) {
+			_bottomNavigationBarHeight.value = Dp.Hairline
+		}
+		onDispose {
+			_bottomNavigationBarHeight.value = 88.dp
+		}
+	}
 }
 
 @Composable

@@ -35,6 +35,7 @@ import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.scheme.*
 import com.nocircle.compose.foundation.NoIcon
 import com.nocircle.compose.foundation.NoIconButton
+import com.nocircle.compose.layout.VerticalScrollColumn
 import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.material3.NoTopAppBar
 import com.nocircle.compose.navigation.LocalNavController
@@ -71,29 +72,18 @@ fun AppearancePage() {
 			)
 		},
 	) { paddingValues ->
-		val verticalScrollState = rememberScrollState()
-		val overscrollEffect = rememberOverscrollEffect()
-		Box(
-			modifier = Modifier
-				.fillMaxSize()
-				.padding(top = paddingValues.calculateTopPadding())
-				.verticalScroll(verticalScrollState)
-				.overscroll(overscrollEffect),
-			contentAlignment = Alignment.TopCenter
+		VerticalScrollColumn(
+			modifier = Modifier.padding(
+				top = paddingValues.calculateTopPadding(),
+			),
+			contentPadding = PaddingValues(
+				horizontal = Dp.Hairline,
+				vertical = 16.dp
+			)
 		) {
-			Column(
-				modifier = Modifier
-					.widthIn(max = 840.dp)
-					.fillMaxSize()
-					.padding(
-						horizontal = 4.dp,
-						vertical = 16.dp
-					),
-			) {
-				ColorSchemeContrastOptions()
-				ThemeModeOptions()
-				ColorSchemeGroupOptions()
-			}
+			ColorSchemeContrastOptions()
+			ThemeModeOptions()
+			ColorSchemeGroupOptions()
 		}
 	}
 }
@@ -120,36 +110,6 @@ private fun ColorSchemeContrastOptions() {
 		) {
 			coroutineScope.launch(Dispatchers.IO) {
 				ColorSchemeConfig.update(config.copy(contrast = contrast))
-			}
-		}
-	}
-}
-
-/**
- * 主题色
- */
-@Composable
-private fun ColorSchemeGroupOptions() {
-	val config = ColorSchemeConfig.current
-	val coroutineScope = rememberCoroutineScope()
-	val current by remember(config.group) {
-		derivedStateOf { ColorSchemeGroup.allColorSchemeGroups.first { it.name == config.group } }
-	}
-	SettingsOptions(
-		icon = AppIcon.ColorLens.value(),
-		title = AppString.APPEARANCE_THEME.value(),
-		items = ColorSchemeGroup.allColorSchemeGroups,
-		current = current
-	) { group ->
-		val colorScheme = getColorScheme(group = group)
-		ColorSchemeCard(
-			selected = current == group,
-			colorScheme = colorScheme,
-			name = current.name.value(),
-			preview = AppString.APPEARANCE_THEME_PREVIEW.value()
-		) {
-			coroutineScope.launch(Dispatchers.IO) {
-				ColorSchemeConfig.update(config.copy(group = group.name))
 			}
 		}
 	}
@@ -242,6 +202,36 @@ private fun ThemeModeOptions() {
 }
 
 private val BooleanList = arrayOf(true, false)
+
+/**
+ * 主题色
+ */
+@Composable
+private fun ColorSchemeGroupOptions() {
+	val config = ColorSchemeConfig.current
+	val coroutineScope = rememberCoroutineScope()
+	val current by remember(config.group) {
+		derivedStateOf { ColorSchemeGroup.allColorSchemeGroups.first { it.name == config.group } }
+	}
+	SettingsOptions(
+		icon = AppIcon.ColorLens.value(),
+		title = AppString.APPEARANCE_THEME.value(),
+		items = ColorSchemeGroup.allColorSchemeGroups,
+		current = current
+	) { group ->
+		val colorScheme = getColorScheme(group = group)
+		ColorSchemeCard(
+			selected = current == group,
+			colorScheme = colorScheme,
+			name = group.name.value(),
+			preview = AppString.APPEARANCE_THEME_PREVIEW.value()
+		) {
+			coroutineScope.launch(Dispatchers.IO) {
+				ColorSchemeConfig.update(config.copy(group = group.name))
+			}
+		}
+	}
+}
 
 /**
  * 设置选项
@@ -473,7 +463,7 @@ private fun <T> SingleLineOptions(
 			.fillMaxWidth()
 			.onSizeChanged {
 				viewModel.colorSchemeCardWidth.value = with(density) {
-					(it.width.toDp() - 12.dp - IntervalDp * (displayCount - 1)) / displayCount
+					(it.width.toDp() - 20.dp - IntervalDp * (displayCount - 1)) / displayCount
 				}
 			},
 		state = lazyListState
@@ -481,7 +471,7 @@ private fun <T> SingleLineOptions(
 		itemsIndexed(items) { index, item ->
 			if (cardWidth == Dp.Unspecified) return@itemsIndexed
 			if (index == 0) {
-				Spacer(modifier = Modifier.width(6.dp))
+				Spacer(modifier = Modifier.width(10.dp))
 			}
 			Box(
 				modifier = Modifier
@@ -492,7 +482,7 @@ private fun <T> SingleLineOptions(
 			if (index < items.lastIndex) {
 				Spacer(modifier = Modifier.width(IntervalDp))
 			} else {
-				Spacer(modifier = Modifier.width(6.dp))
+				Spacer(modifier = Modifier.width(10.dp))
 			}
 		}
 	}
@@ -521,7 +511,7 @@ private fun <T> MultiLineOptions(
 				modifier = Modifier
 					.fillMaxWidth()
 			) {
-				Spacer(modifier = Modifier.width(6.dp))
+				Spacer(modifier = Modifier.width(10.dp))
 				items.forEachIndexed { index, item ->
 					Box(
 						modifier = Modifier.width(cardWidth)
@@ -532,7 +522,7 @@ private fun <T> MultiLineOptions(
 						Spacer(modifier = Modifier.width(IntervalDp))
 					}
 				}
-				Spacer(modifier = Modifier.width(6.dp))
+				Spacer(modifier = Modifier.width(10.dp))
 			}
 			if (index < allItems.lastIndex) {
 				Spacer(modifier = Modifier.height(IntervalDp))

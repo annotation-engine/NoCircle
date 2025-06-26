@@ -20,10 +20,6 @@ import com.nocircle.app.pages.settings.SettingsViewModel
 import com.nocircle.app.pages.settings.about.AboutViewModel
 import com.nocircle.app.pages.settings.appearance.AppearanceViewModel
 import com.nocircle.app.theme.NoMaterialTheme
-import com.nocircle.compose.resources.loadStringJsonObject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.withContext
 import org.koin.compose.KoinApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -50,7 +46,6 @@ fun NoApp(
 	onDestinationChangedListener: NavController.OnDestinationChangedListener? = null,
 	onColorSchemeChange: ((ColorScheme) -> Unit)? = null
 ) {
-	PreloadAllString()
 	KoinApplication(
 		application = {
 			modules(NoKoinModule)
@@ -64,16 +59,6 @@ fun NoApp(
 					onColorSchemeChange(colorScheme)
 				}
 			}
-		}
-	}
-}
-
-@Composable
-private fun PreloadAllString() {
-	LaunchedEffect(Unit) {
-		withContext(Dispatchers.IO) {
-			loadStringJsonObject("com.nocircle.app", listOf("AppString.json"))
-			loadStringJsonObject("com.nocircle.compose", listOf("ComposeString.json"))
 		}
 	}
 }

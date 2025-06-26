@@ -43,10 +43,7 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun PersonPage() {
 	NoScaffold { paddingValues ->
-		VerticalScrollColumn(
-			modifier = Modifier
-				.padding(paddingValues)
-		) {
+		VerticalScrollColumn {
 			UserDetailCard()
 			Spacer(modifier = Modifier.height(16.dp))
 			LastLoginTime()

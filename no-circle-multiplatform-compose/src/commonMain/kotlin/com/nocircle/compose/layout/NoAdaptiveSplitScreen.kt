@@ -25,22 +25,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nocircle.compose.expends.toDpSize
-import com.nocircle.compose.navigation.HorizontalSlideTransition
-import com.nocircle.compose.navigation.NoneTransition
-import com.nocircle.compose.navigation.currentSavedStateHandle
-import com.nocircle.compose.navigation.previousSavedStateHandle
+import com.nocircle.compose.navigation.*
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import kotlinx.coroutines.delay
 
 @Composable
 fun <T : Any> NoAdaptiveSplitScreen(
+	current: T?,
+	onCurrentChange: (T?) -> Unit,
 	leftWidth: Dp,
 	onLeftWidthChange: (Dp) -> Unit,
 	modifier: Modifier = Modifier,
 	leftWidthRange: ClosedRange<Dp> = NoAdaptiveSplitScreenDefaults.LeftWidthRange,
 	rightMinWidth: Dp = NoAdaptiveSplitScreenDefaults.RightMinWidth,
 	leftContent: @Composable (current: T?, navigate: (data: T) -> Unit) -> Unit,
-	rightContent: @Composable (data: T, popBackStack: () -> Unit) -> Unit,
+	rightContent: @Composable (data: T?, popBackStack: () -> Unit) -> Unit,
 	rightEmptyContent: @Composable () -> Unit
 ) {
 	val isCompact = WindowWidthSizes.isCompact
@@ -50,19 +49,18 @@ fun <T : Any> NoAdaptiveSplitScreen(
 		if (!isCompact && controller.currentDestination?.route == ADAPTIVE_RIGHT) {
 			isHorizontalSlideTransition = false
 			controller.popBackStack()
-			delay(300)
+			delay(300L)
 			isHorizontalSlideTransition = true
 		}
 	}
-	var current by remember { mutableStateOf<T?>(null) }
 	NavHost(
 		navController = controller,
 		startDestination = ADAPTIVE_SPLIT_SCREEN,
 		modifier = modifier,
-		enterTransition = if (isHorizontalSlideTransition) HorizontalSlideTransition.Enter else NoneTransition.Enter,
-		exitTransition = if (isHorizontalSlideTransition) HorizontalSlideTransition.Exit else NoneTransition.Exit,
-		popEnterTransition = if (isHorizontalSlideTransition) HorizontalSlideTransition.PopEnter else NoneTransition.PopEnter,
-		popExitTransition = if (isHorizontalSlideTransition) HorizontalSlideTransition.PopExit else NoneTransition.PopExit
+		enterTransition = enterTransition { if (isHorizontalSlideTransition) horizontalSlider() else none },
+		exitTransition = exitTransition { if (isHorizontalSlideTransition) horizontalSlider() else none },
+		popEnterTransition = popEnterTransition { if (isHorizontalSlideTransition) horizontalSlider() else none },
+		popExitTransition = popExitTransition { if (isHorizontalSlideTransition) horizontalSlider() else none }
 	) {
 		composable(
 			route = ADAPTIVE_SPLIT_SCREEN
@@ -82,7 +80,7 @@ fun <T : Any> NoAdaptiveSplitScreen(
 						.then(if (isCompact) Modifier.fillMaxWidth() else Modifier.width(leftWidth))
 				) {
 					leftContent(current) {
-						current = it
+						onCurrentChange(it)
 						if (isCompact) {
 							controller.currentSavedStateHandle?.set("data", it)
 							controller.navigate(ADAPTIVE_RIGHT) {
@@ -98,8 +96,8 @@ fun <T : Any> NoAdaptiveSplitScreen(
 							.fillMaxSize()
 					) {
 						if (current != null) {
-							rightContent(current!!) {
-								current = null
+							rightContent(current) {
+								onCurrentChange(null)
 							}
 						} else {
 							rightEmptyContent()
@@ -119,9 +117,8 @@ fun <T : Any> NoAdaptiveSplitScreen(
 			route = ADAPTIVE_RIGHT
 		) {
 			val data = controller.previousSavedStateHandle?.get<T>("data")
-				?: return@composable
 			rightContent(data) {
-				current = null
+				onCurrentChange(null)
 				controller.popBackStack()
 			}
 		}

@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,8 +18,7 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.pages.main.hideBottomNavigationBar
-import com.nocircle.app.pages.main.showBottomNavigationBar
+import com.nocircle.app.pages.main.AutoVisibleBottomNavigation
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.constants.StringConstants
@@ -34,24 +36,19 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FriendDetailPage(
-	friendId: Int,
+	friendId: Int?,
 	popBackStack: () -> Unit
 ) {
-	val isCompact = WindowWidthSizes.isCompact
 	val viewModel = koinViewModel<FriendDetailViewModel>()
 	LaunchedEffect(friendId) {
-		viewModel.loadFriendDetail(friendId)
-	}
-	DisposableEffect(Unit) {
-		if (isCompact) {
-			hideBottomNavigationBar()
-		}
-		onDispose {
-			showBottomNavigationBar()
+		if (friendId != null) {
+			viewModel.loadFriendDetail(friendId)
 		}
 	}
+	AutoVisibleBottomNavigation()
 	NoScaffold(
 		topBar = {
+			val isCompact = WindowWidthSizes.isCompact
 			NoTopAppBar(
 				title = {
 					Text(
@@ -70,7 +67,9 @@ fun FriendDetailPage(
 		}
 	) { paddingValues ->
 		VerticalScrollColumn(
-			modifier = Modifier.padding(paddingValues)
+			modifier = Modifier.padding(
+				top = paddingValues.calculateTopPadding()
+			)
 		) {
 			FriendDetailCard()
 		}

@@ -12,7 +12,6 @@ private val _sessions = mutableMapOf<Int, MutableList<DefaultWebSocketServerSess
 val sessions: Map<Int, MutableList<DefaultWebSocketServerSession>> = _sessions
 
 private val CannotAccept = CloseReason(CloseReason.Codes.CANNOT_ACCEPT, "Unauthorized")
-private val NORMAL = CloseReason(CloseReason.Codes.NORMAL, "Connection closed")
 
 fun Application.keepAliveWebSocket() {
 	routing {
@@ -23,7 +22,6 @@ fun Application.keepAliveWebSocket() {
 				val sessions = _sessions.getOrPut(principal.userId) { mutableListOf() }
 				sessions += this
 				val username = principal.username
-				NoLog.info("[WS] Connect: $username")
 				try {
 					for (frame in incoming) {
 						if (frame is Frame.Close) break

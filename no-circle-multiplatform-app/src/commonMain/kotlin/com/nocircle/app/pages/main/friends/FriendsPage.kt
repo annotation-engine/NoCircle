@@ -11,8 +11,11 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun FriendsPage() {
 	val viewModel = koinViewModel<FriendsViewModel>()
+	val current by viewModel.current.collectAsState()
 	val leftWidth by viewModel.leftWidth.collectAsState()
 	NoAdaptiveSplitScreen(
+		current = current,
+		onCurrentChange = { viewModel.current.value = it },
 		leftWidth = leftWidth,
 		onLeftWidthChange = { viewModel.leftWidth.value = it },
 		leftContent = { current, navigate ->

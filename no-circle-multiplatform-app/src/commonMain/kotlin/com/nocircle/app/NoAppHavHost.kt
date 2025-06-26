@@ -13,9 +13,7 @@ import com.nocircle.app.pages.guide.GuidePage
 import com.nocircle.app.pages.guide.GuideRoute
 import com.nocircle.app.pages.main.MainPage
 import com.nocircle.app.pages.main.MainRoute
-import com.nocircle.compose.navigation.HorizontalSlideTransition
-import com.nocircle.compose.navigation.LocalNavControllerProvider
-import com.nocircle.compose.navigation.NoneTransition
+import com.nocircle.compose.navigation.*
 
 @Composable
 fun NoAppNavHost(
@@ -25,17 +23,17 @@ fun NoAppNavHost(
 		NavHost(
 			navController = it,
 			startDestination = GuideRoute,
-			enterTransition = HorizontalSlideTransition.Enter,
-			exitTransition = HorizontalSlideTransition.Exit,
-			popEnterTransition = HorizontalSlideTransition.PopEnter,
-			popExitTransition = HorizontalSlideTransition.PopExit,
+			enterTransition = enterTransition { horizontalSlider() },
+			exitTransition = exitTransition { horizontalSlider() },
+			popEnterTransition = popEnterTransition { horizontalSlider() },
+			popExitTransition = popExitTransition { horizontalSlider() },
 		) {
 			composable<GuideRoute> { GuidePage() }
 			composable<LoginRoute> { LoginPage() }
 			composable<RegisterRoute> { RegisterPage() }
 			composable<MainRoute>(
-				enterTransition = NoneTransition.Enter,
-				exitTransition = NoneTransition.Exit
+				enterTransition = enterTransition { none },
+				exitTransition = exitTransition { none }
 			) {
 				MainPage()
 			}

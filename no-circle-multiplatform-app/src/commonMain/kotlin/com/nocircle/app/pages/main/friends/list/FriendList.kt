@@ -161,8 +161,8 @@ private fun FriendList(
 				.fillMaxSize(),
 			state = scrollState,
 			contentPadding = PaddingValues(
-				top = 8.dp,
-				bottom = 8.dp
+				top = 16.dp,
+				bottom = 16.dp
 			)
 		) {
 			itemsIndexed(
@@ -197,16 +197,16 @@ private fun FriendItem(
 		modifier = Modifier
 			.fillMaxWidth()
 			.background(
-				color = if (selected) MaterialTheme.colorScheme.surfaceContainerHighest else Color.Transparent
+				color = if (selected) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Transparent
 			)
 			.clickable {
 				navigate(item.friendId)
 			}
 			.padding(
 				start = 32.dp,
-				top = 8.dp,
-				end = 8.dp,
-				bottom = 8.dp
+				top = 16.dp,
+				end = 16.dp,
+				bottom = 16.dp
 			)
 			.height(44.dp),
 		verticalAlignment = Alignment.CenterVertically
@@ -218,7 +218,7 @@ private fun FriendItem(
 				.clip(MaterialTheme.shapes.medium),
 			contentScale = ContentScale.Crop,
 		)
-		Spacer(Modifier.width(8.dp))
+		Spacer(Modifier.width(12.dp))
 		Text(
 			text = item.nickname,
 			maxLines = 1,
@@ -248,10 +248,9 @@ private fun FriendSubtitleItem(
 		)
 	}
 	HorizontalDivider(
-		modifier = Modifier.padding(start = 16.dp),
+		modifier = Modifier.padding(start = 32.dp),
 		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
 	)
-	Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
@@ -309,8 +308,8 @@ private fun FriendSearchList(
 		modifier = modifier,
 		state = scrollState,
 		contentPadding = PaddingValues(
-			top = 8.dp,
-			bottom = 8.dp
+			top = 16.dp,
+			bottom = 16.dp
 		)
 	) {
 		item {
@@ -336,7 +335,7 @@ private fun FriendSearchHint(
 		modifier = Modifier
 			.fillMaxWidth()
 			.padding(
-				top = 8.dp,
+				top = 16.dp,
 				bottom = 16.dp
 			),
 		contentAlignment = Alignment.Center
@@ -354,7 +353,6 @@ private fun FriendSearchHint(
 	HorizontalDivider(
 		color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
 	)
-	Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
@@ -367,16 +365,16 @@ private fun FriendSearchItem(
 		modifier = Modifier
 			.fillMaxWidth()
 			.background(
-				color = if (selected) MaterialTheme.colorScheme.surfaceContainerHighest else Color.Transparent
+				color = if (selected) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Transparent
 			)
 			.clickable {
 				navigate(item.friendId)
 			}
 			.padding(
 				start = 32.dp,
-				top = 8.dp,
-				end = 8.dp,
-				bottom = 8.dp
+				top = 16.dp,
+				end = 16.dp,
+				bottom = 16.dp
 			)
 			.height(44.dp),
 		verticalAlignment = Alignment.CenterVertically
@@ -395,7 +393,7 @@ private fun FriendSearchItem(
 			verticalArrangement = Arrangement.SpaceBetween
 		) {
 			val contentColor = MaterialTheme.colorScheme.onSurface.copy(
-				alpha = if (selected) 0.75f else 0.5f
+				alpha = if (selected) 0.6f else 0.5f
 			)
 			Text(
 				text = getAnnotatedString(item.nickname, item.nicknameIndices),

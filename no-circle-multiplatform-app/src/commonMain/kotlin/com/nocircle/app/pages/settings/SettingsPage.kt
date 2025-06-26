@@ -43,8 +43,9 @@ fun SettingsPage() {
 		},
 	) { paddingValues ->
 		VerticalScrollColumn(
-			modifier = Modifier
-				.padding(paddingValues)
+			modifier = Modifier.padding(
+				top = paddingValues.calculateTopPadding(),
+			)
 		) {
 			NavigateToAppearancePage()
 			Spacer(modifier = Modifier.height(16.dp))

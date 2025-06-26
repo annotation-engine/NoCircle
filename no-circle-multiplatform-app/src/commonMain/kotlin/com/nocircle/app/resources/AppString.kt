@@ -132,6 +132,4 @@ enum class AppString : NoString {
 	ABOUT_TITLE,
 	ABOUT_VERSION_UPDATE,
 	ABOUT_THIRD_PARTY_LIBRARY;
-	
-	override val packageName = "com.nocircle.app"
 }
