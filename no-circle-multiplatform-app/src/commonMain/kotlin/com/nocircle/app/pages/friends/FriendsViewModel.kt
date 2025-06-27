@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.friends
+package com.nocircle.app.pages.friends
 
 import androidx.compose.ui.unit.dp
 import com.nocircle.compose.viewmodel.NoViewModel

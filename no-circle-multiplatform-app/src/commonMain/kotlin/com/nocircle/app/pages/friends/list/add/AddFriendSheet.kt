@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.friends.list.add
+package com.nocircle.app.pages.friends.list.add
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll

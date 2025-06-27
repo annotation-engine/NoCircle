@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person.label
+package com.nocircle.app.pages.person.label
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.pages.main.person.PersonViewModel
+import com.nocircle.app.pages.person.PersonViewModel
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.compose.expends.getDisplayLength

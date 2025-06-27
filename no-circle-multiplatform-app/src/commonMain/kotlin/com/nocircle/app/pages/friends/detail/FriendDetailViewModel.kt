@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.friends.detail
+package com.nocircle.app.pages.friends.detail
 
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx

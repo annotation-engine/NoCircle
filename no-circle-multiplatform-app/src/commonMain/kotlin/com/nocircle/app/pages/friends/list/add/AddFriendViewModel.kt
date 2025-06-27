@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.friends.list.add
+package com.nocircle.app.pages.friends.list.add
 
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impls.friendRequestApi

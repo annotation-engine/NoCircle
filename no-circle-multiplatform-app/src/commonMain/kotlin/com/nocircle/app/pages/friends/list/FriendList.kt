@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.friends.list
+package com.nocircle.app.pages.friends.list
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -21,9 +21,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.pages.main.friends.list.FriendListViewModel.SortOrder.ASC
-import com.nocircle.app.pages.main.friends.list.FriendListViewModel.SortOrder.DESC
-import com.nocircle.app.pages.main.friends.list.add.AddFriendSheet
+import com.nocircle.app.pages.friends.list.FriendListViewModel.SortOrder.ASC
+import com.nocircle.app.pages.friends.list.FriendListViewModel.SortOrder.DESC
+import com.nocircle.app.pages.friends.list.add.AddFriendSheet
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.constants.StringConstants

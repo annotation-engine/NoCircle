@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person
+package com.nocircle.app.pages.person
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -19,8 +19,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.nocircle.app.pages.main.person.label.EditLabelSheet
-import com.nocircle.app.pages.main.person.message.MessageCenterRoute
+import com.nocircle.app.pages.person.label.EditLabelSheet
+import com.nocircle.app.pages.person.message.MessageCenterRoute
 import com.nocircle.app.pages.settings.SettingsRoute
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.app.resources.AppString

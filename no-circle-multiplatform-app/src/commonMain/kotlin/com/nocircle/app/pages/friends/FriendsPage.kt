@@ -1,10 +1,10 @@
-package com.nocircle.app.pages.main.friends
+package com.nocircle.app.pages.friends
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.nocircle.app.pages.main.friends.detail.FriendDetailPage
-import com.nocircle.app.pages.main.friends.list.FriendList
+import com.nocircle.app.pages.friends.detail.FriendDetailPage
+import com.nocircle.app.pages.friends.list.FriendList
 import com.nocircle.compose.layout.NoAdaptiveSplitScreen
 import org.koin.compose.viewmodel.koinViewModel
 

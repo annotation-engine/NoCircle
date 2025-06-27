@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person.label
+package com.nocircle.app.pages.person.label
 
 import androidx.compose.ui.graphics.Color
 import com.nocircle.app.api.impls.labelApi

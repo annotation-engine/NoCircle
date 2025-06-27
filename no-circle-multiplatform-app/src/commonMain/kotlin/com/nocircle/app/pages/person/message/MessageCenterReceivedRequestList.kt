@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person.message
+package com.nocircle.app.pages.person.message
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,12 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.nocircle.app.resources.AppString
-import com.nocircle.app.theme.colors.NoColor
 import com.nocircle.common.constants.StringConstants
 import com.nocircle.compose.expends.format
 import com.nocircle.compose.expends.hexToColor
@@ -24,14 +22,14 @@ import com.nocircle.compose.foundation.*
 import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
-import com.nocircle.shared.model.friend.request.FriendRequestDTO.Status.*
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.ExperimentalTime
 
 @Composable
-fun MessageCenterSentRequestList() {
+fun MessageCenterReceivedRequestList() {
 	val viewModel = koinViewModel<MessageCenterViewModel>()
-	val requests by viewModel.sentRequests.collectAsState()
+	val requests by viewModel.receivedRequests.collectAsState()
+	
 	val showList by remember(requests.size) {
 		derivedStateOf { requests.isNotEmpty() }
 	}
@@ -47,8 +45,11 @@ fun MessageCenterSentRequestList() {
 			verticalArrangement = Arrangement.spacedBy(12.dp),
 			horizontalArrangement = Arrangement.spacedBy(12.dp)
 		) {
-			items(requests) {
-				SentRequestCard(
+			items(
+				items = requests,
+				key = { it.id }
+			) {
+				ReceivedRequestCard(
 					viewModel = viewModel,
 					request = it
 				)
@@ -61,7 +62,7 @@ fun MessageCenterSentRequestList() {
 
 @OptIn(ExperimentalTime::class)
 @Composable
-private fun SentRequestCard(
+private fun ReceivedRequestCard(
 	viewModel: MessageCenterViewModel,
 	request: FriendRequestDTO
 ) {
@@ -124,13 +125,6 @@ private fun SentRequestCard(
 					style = MaterialTheme.typography.bodyMedium,
 					color = MaterialTheme.colorScheme.onSurfaceVariant
 				)
-				NoTag(
-					text = request.status.getString(),
-					modifier = Modifier.align(Alignment.TopEnd),
-					color = request.status.getColor(),
-					style = MaterialTheme.typography.bodyMedium,
-					type = NoTagType.Border()
-				)
 			}
 		}
 		Row(
@@ -144,58 +138,38 @@ private fun SentRequestCard(
 				request.labels.fastForEach {
 					NoTag(
 						text = it.label,
-						color = hexToColor(it.color)
+						color = hexToColor(it.color),
+						contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
 					)
 					Spacer(modifier = Modifier.width(6.dp))
 				}
 			} else {
 				NoTag(
 					text = AppString.PERSON_MESSAGE_NO_LABEL.value(),
-					color = MaterialTheme.colorScheme.surfaceContainerHighest
+					color = MaterialTheme.colorScheme.surfaceContainerHighest,
+					contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
 				)
 			}
 			Spacer(modifier = Modifier.weight(1f))
-			if (request.status == PENDING) {
-				NoButton(
-					text = AppString.MESSAGE_CENTER_CANCEL.value(),
-					modifier = Modifier.height(36.dp),
-					style = MaterialTheme.typography.bodyMedium,
-					colors = NoButtonColors.ErrorColors,
-					contentPadding = NoButtonDefaults.TextButtonContentPadding
-				) {
-					viewModel.cancelSentRequest(request.id, request.targetId)
-				}
-			} else {
-				NoButton(
-					text = AppString.MESSAGE_CENTER_DELETE.value(),
-					modifier = Modifier.height(36.dp),
-					style = MaterialTheme.typography.bodyMedium,
-					colors = NoButtonColors.SurfaceContainerHighestColors,
-					contentPadding = NoButtonDefaults.TextButtonContentPadding
-				) {
-					viewModel.deleteSentRequest(request.id, request.targetId)
-				}
+			NoButton(
+				text = AppString.MESSAGE_CENTER_AGREE.value(),
+				modifier = Modifier.height(36.dp),
+				style = MaterialTheme.typography.bodyMedium,
+				colors = NoButtonColors.PrimaryColors,
+				contentPadding = NoButtonDefaults.TextButtonContentPadding
+			) {
+				viewModel.agreeReceivedRequest(request.id, request.targetId)
+			}
+			Spacer(modifier = Modifier.width(8.dp))
+			NoButton(
+				text = AppString.MESSAGE_CENTER_REJECT.value(),
+				modifier = Modifier.height(36.dp),
+				style = MaterialTheme.typography.bodyMedium,
+				colors = NoButtonColors.ErrorColors,
+				contentPadding = NoButtonDefaults.TextButtonContentPadding
+			) {
+				viewModel.rejectReceivedRequest(request.id, request.targetId)
 			}
 		}
 	}
-}
-
-@Composable
-private fun FriendRequestDTO.Status.getColor(): Color {
-	return when (this) {
-		AGREED -> NoColor.Green
-		REJECTED -> NoColor.Red
-		PENDING -> NoColor.Yellow
-		CANCELED -> NoColor.Gray
-	}
-}
-
-@Composable
-private fun FriendRequestDTO.Status.getString(): String {
-	return when (this) {
-		AGREED -> AppString.MESSAGE_CENTER_AGREED
-		REJECTED -> AppString.MESSAGE_CENTER_REJECTED
-		PENDING -> AppString.MESSAGE_CENTER_PENDING
-		CANCELED -> AppString.MESSAGE_CENTER_CANCELED
-	}.value()
 }

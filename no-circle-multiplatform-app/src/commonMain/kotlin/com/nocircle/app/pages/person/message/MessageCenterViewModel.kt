@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person.message
+package com.nocircle.app.pages.person.message
 
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.FriendRequestType

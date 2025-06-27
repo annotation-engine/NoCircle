@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.groups
+package com.nocircle.app.pages.groups
 
 import androidx.compose.runtime.Composable
 

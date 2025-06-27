@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.friends.detail
+package com.nocircle.app.pages.friends.detail
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.nocircle.app.pages.main.AutoVisibleBottomNavigation
+import com.nocircle.app.pages.main.navigation.AutoVisibleBottomNavigation
 import com.nocircle.app.resources.AppIcon
 import com.nocircle.common.constants.StringConstants
 import com.nocircle.compose.foundation.NoAsyncImage

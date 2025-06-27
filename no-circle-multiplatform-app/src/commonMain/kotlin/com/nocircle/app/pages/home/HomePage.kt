@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.home
+package com.nocircle.app.pages.home
 
 import androidx.compose.runtime.Composable
 

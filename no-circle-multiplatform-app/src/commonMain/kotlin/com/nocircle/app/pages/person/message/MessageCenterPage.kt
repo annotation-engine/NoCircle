@@ -1,4 +1,4 @@
-package com.nocircle.app.pages.main.person.message
+package com.nocircle.app.pages.person.message
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
