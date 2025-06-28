@@ -5,7 +5,7 @@ import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 
-object FriendRelationships : NoTable("tb_friend_relationship") {
+object FriendRelationships : NoTable("friend_relationship") {
 	
 	val userId = integer("user_id")
 		.references(Users.id)

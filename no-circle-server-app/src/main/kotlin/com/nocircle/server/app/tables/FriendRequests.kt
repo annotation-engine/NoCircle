@@ -5,11 +5,13 @@ import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 
-object FriendRequests : NoTable("tb_friend_request") {
+object FriendRequests : NoTable("friend_request") {
 	
 	val senderId = integer("sender_id")
+		.references(Users.id)
 	
 	val receiverId = integer("receiver_id")
+		.references(Users.id)
 	
 	val status = enumerationByName<Status>("status", 8)
 	

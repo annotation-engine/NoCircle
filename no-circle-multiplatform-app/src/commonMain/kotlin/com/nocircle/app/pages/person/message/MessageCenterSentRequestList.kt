@@ -50,7 +50,7 @@ fun MessageCenterSentRequestList() {
 			items(requests) {
 				SentRequestCard(
 					viewModel = viewModel,
-					request = it
+					item = it
 				)
 			}
 		}
@@ -63,7 +63,7 @@ fun MessageCenterSentRequestList() {
 @Composable
 private fun SentRequestCard(
 	viewModel: MessageCenterViewModel,
-	request: FriendRequestDTO
+	item: FriendRequestDTO
 ) {
 	Column(
 		modifier = Modifier
@@ -81,7 +81,7 @@ private fun SentRequestCard(
 				.height(90.dp)
 		) {
 			NoAsyncImage(
-				url = request.avatarUrl,
+				url = item.avatarUrl,
 				modifier = Modifier
 					.size(90.dp)
 					.clip(MaterialTheme.shapes.small),
@@ -97,19 +97,19 @@ private fun SentRequestCard(
 						.align(Alignment.TopStart)
 				) {
 					Text(
-						text = request.nickname,
+						text = item.nickname,
 						color = MaterialTheme.colorScheme.onSurface,
 						style = MaterialTheme.typography.titleMedium,
 					)
 					Spacer(modifier = Modifier.height(8.dp))
 					Text(
-						text = StringConstants.ID + request.username,
+						text = StringConstants.ID + item.username,
 						color = MaterialTheme.colorScheme.onSurfaceVariant,
 						style = MaterialTheme.typography.bodyMedium,
 					)
 				}
 				Text(
-					text = request.createTime.format(),
+					text = item.createTime.format(),
 					modifier = Modifier
 						.align(Alignment.BottomStart)
 						.clip(MaterialTheme.shapes.extraSmall)
@@ -125,9 +125,9 @@ private fun SentRequestCard(
 					color = MaterialTheme.colorScheme.onSurfaceVariant
 				)
 				NoTag(
-					text = request.status.getString(),
+					text = item.status.getString(),
 					modifier = Modifier.align(Alignment.TopEnd),
-					color = request.status.getColor(),
+					color = item.status.getColor(),
 					style = MaterialTheme.typography.bodyMedium,
 					type = NoTagType.Border()
 				)
@@ -137,11 +137,11 @@ private fun SentRequestCard(
 			modifier = Modifier.fillMaxSize(),
 			verticalAlignment = Alignment.Bottom
 		) {
-			val showLabels by remember(request.labels.size) {
-				derivedStateOf { request.labels.isNotEmpty() }
+			val showLabels by remember(item.labels.size) {
+				derivedStateOf { item.labels.isNotEmpty() }
 			}
 			if (showLabels) {
-				request.labels.fastForEach {
+				item.labels.fastForEach {
 					NoTag(
 						text = it.label,
 						color = hexToColor(it.color)
@@ -155,7 +155,7 @@ private fun SentRequestCard(
 				)
 			}
 			Spacer(modifier = Modifier.weight(1f))
-			if (request.status == PENDING) {
+			if (item.status == PENDING) {
 				NoButton(
 					text = AppString.MESSAGE_CENTER_CANCEL.value(),
 					modifier = Modifier.height(36.dp),
@@ -163,7 +163,7 @@ private fun SentRequestCard(
 					colors = NoButtonColors.ErrorColors,
 					contentPadding = NoButtonDefaults.TextButtonContentPadding
 				) {
-					viewModel.cancelSentRequest(request.id, request.targetId)
+					viewModel.cancelSentRequest(item.id, item.targetId)
 				}
 			} else {
 				NoButton(
@@ -173,7 +173,7 @@ private fun SentRequestCard(
 					colors = NoButtonColors.SurfaceContainerHighestColors,
 					contentPadding = NoButtonDefaults.TextButtonContentPadding
 				) {
-					viewModel.deleteSentRequest(request.id, request.targetId)
+					viewModel.deleteSentRequest(item.id, item.targetId)
 				}
 			}
 		}

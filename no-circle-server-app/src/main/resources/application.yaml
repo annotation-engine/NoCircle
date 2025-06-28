@@ -12,10 +12,9 @@ jwt:
   secret: "oB25pdw7tBo6pVIqGdeiFuizxixUbFuQ"
   timeout: "7d"
 mysql:
-  url: "jdbc:mysql://localhost:3306/no_circle"
-  user: "root"
-  driver: "com.mysql.cj.jdbc.Driver"
-  password: "1234.com"
+  url: "jdbc:postgresql://localhost:5432/nocircle"
+  user: "cooder"
+  password: ""
 security:
   algorithm: "PBKDF2WithHmacSHA256"
   pepper: "acf9ZLSr27I7i4DRVk54l0FXz9xYsgf1"

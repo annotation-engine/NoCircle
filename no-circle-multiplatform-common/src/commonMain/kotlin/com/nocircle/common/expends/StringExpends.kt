@@ -1,11 +1,15 @@
 package com.nocircle.common.expends
 
-fun String.isAlphanumeric(): Boolean {
-	return this.all { it.isLetterOrDigit() }
+fun String.isLowerCases(): Boolean {
+	return this.all { it.isLowerCase() }
 }
 
-fun String.isNotAlphanumeric(): Boolean {
-	return this.any { !(it.isLetterOrDigit()) }
+fun String.isUpperCases(): Boolean {
+	return this.all { it.isUpperCase() }
+}
+
+fun String.isDigits(): Boolean {
+	return this.all { it.isDigit() }
 }
 
 fun String.findIndices(text: String, ignoreCase: Boolean = false): List<IntRange> {

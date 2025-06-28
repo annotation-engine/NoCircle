@@ -15,7 +15,7 @@ koin = "4.1.0"
 ktor = "3.2.0"
 ktorfitx = "3.2.0-2.6.0"
 exposed = "1.0.0-beta-2"
-mysql = "9.3.0"
+postgresql = "42.7.7"
 coil3 = "3.2.0"
 logback-classic = "1.5.18"
 hutool = "5.8.39"
@@ -61,7 +61,7 @@ exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version
 exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
 exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
 exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kotlin-datetime", version.ref = "exposed" }
-mysql-connector-j = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
 hutool-extra = { group = "cn.hutool", name = "hutool-extra", version.ref = "hutool" }
@@ -160,7 +160,7 @@ server-app = [
     'exposed-dao',
     'exposed-jdbc',
     'exposed-kotlin-datetime',
-    'mysql-connector-j',
+    'postgresql',
     'logback-classic',
     'hutool-crypto',
     'redisson'

@@ -6,7 +6,7 @@ import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.coroutines.FunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
-import com.nocircle.common.expends.isNotAlphanumeric
+import com.nocircle.common.expends.isLowerCases
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -25,7 +25,7 @@ class RegisterViewModel : NoViewModel() {
 	val nickname = MutableStateFlow("")
 	
 	fun updateUsername(value: String) {
-		if (value.length > 20 || value.isNotAlphanumeric()) return
+		if (value.length > 12 || !value.isLowerCases()) return
 		this.username.value = value
 	}
 	

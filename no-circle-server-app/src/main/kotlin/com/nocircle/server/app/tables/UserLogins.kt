@@ -6,7 +6,7 @@ import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.datetime.timestamp
 
-object UserLogins : NoTable("tb_user_login") {
+object UserLogins : NoTable("user_login") {
 	
 	val userId = integer("user_id")
 		.references(Users.id)

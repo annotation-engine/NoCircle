@@ -44,7 +44,6 @@ class JwtConfig private constructor(
 class MysqlConfig private constructor(
 	val url: String,
 	val user: String,
-	val driver: String,
 	val password: String,
 )
 
