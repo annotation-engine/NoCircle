@@ -1,5 +1,6 @@
 package com.nocircle.compose.foundation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
@@ -17,6 +18,9 @@ import coil3.compose.SubcomposeAsyncImageScope
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.nocircle.compose.expends.vector
+import com.nocircle.compose.generated.resources.Res
+import com.nocircle.compose.generated.resources.placeholder_image
 import com.nocircle.compose.material3.NoWave
 
 @Composable
@@ -28,7 +32,12 @@ fun NoAsyncImage(
 	transform: (State) -> State = AsyncImagePainter.DefaultTransform,
 	loading: @Composable (SubcomposeAsyncImageScope.(State.Loading) -> Unit)? = { NoWave(4) },
 	success: @Composable (SubcomposeAsyncImageScope.(State.Success) -> Unit)? = null,
-	error: @Composable (SubcomposeAsyncImageScope.(State.Error) -> Unit)? = null,
+	error: @Composable (SubcomposeAsyncImageScope.(State.Error) -> Unit)? = {
+		NoImage(
+			imageVector = Res.drawable.placeholder_image.vector,
+			modifier = Modifier.fillMaxSize(),
+		)
+	},
 	onLoading: ((State.Loading) -> Unit)? = null,
 	onSuccess: ((State.Success) -> Unit)? = null,
 	onError: ((State.Error) -> Unit)? = null,

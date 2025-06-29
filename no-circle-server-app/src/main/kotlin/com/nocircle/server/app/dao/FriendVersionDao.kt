@@ -16,7 +16,7 @@ object FriendVersionDao {
 		return resultRow[FriendVersions.version]
 	}
 	
-	fun insert(userId: Int): Boolean {
+	fun insertOne(userId: Int): Boolean {
 		val insert = FriendVersions.insert {
 			it[this.userId] = userId
 			it[this.version] = 1

@@ -1,10 +1,7 @@
 package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.code.NoCode
-import com.nocircle.server.app.dao.FriendRelationshipDao
-import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.app.dao.UserDao
-import com.nocircle.server.app.dao.UserLabelDao
+import com.nocircle.server.app.dao.*
 import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.AuthContext
@@ -43,11 +40,12 @@ fun Route.searchUser() = get("search") {
 		val isAlreadySend = if (userId == receiverId) false else {
 			FriendRequestDao.isAlreadySend(userId, receiverId)
 		}
+		val avatarUrl = UserDetailDao.getAvatarUrlByUserId(receiverId)
 		UserSearchDTO(
 			userId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
-			avatarUrl = user.avatarUrl,
+			avatarUrl = avatarUrl,
 			labels = labels,
 			relationship = relationship,
 			isAlreadySend = isAlreadySend

@@ -4,11 +4,11 @@ import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.plugins.FriendRouteContext
-import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -31,7 +31,7 @@ fun Route.addFriendRequest() = post("request/add") {
 		if (!isExists) return@transaction NoCode.FRIEND_REQUEST_ADD_USER_NOT_FOUND
 		val request = FriendRequestDao.getOneBySenderIdAndReceiverId(userId, targetId)
 		if (request != null) {
-			if (request.status == FriendRequests.Status.PENDING) {
+			if (request.status == FriendRequestDTO.Status.PENDING) {
 				return@transaction NoCode.FRIEND_REQUEST_ADD_REPEATED
 			} else {
 				FriendRequestDao.deleteOne(userId, targetId)

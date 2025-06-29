@@ -160,6 +160,7 @@ server-app = [
     'exposed-dao',
     'exposed-jdbc',
     'exposed-kotlin-datetime',
+    'kotlinx-datetime',
     'postgresql',
     'logback-classic',
     'hutool-crypto',

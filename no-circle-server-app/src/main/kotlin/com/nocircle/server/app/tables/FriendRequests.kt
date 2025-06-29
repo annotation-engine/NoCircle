@@ -1,6 +1,7 @@
 package com.nocircle.server.app.tables
 
 import com.nocircle.server.common.exposed.NoTable
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
@@ -13,9 +14,7 @@ object FriendRequests : NoTable("friend_request") {
 	val receiverId = integer("receiver_id")
 		.references(Users.id)
 	
-	val status = enumerationByName<Status>("status", 8)
-	
-	enum class Status { AGREED, REJECTED, PENDING, CANCELED }
+	val status = enumerationByName<FriendRequestDTO.Status>("status", 8)
 }
 
 class FriendRequest(id: EntityID<Int>) : IntEntity(id) {

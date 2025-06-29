@@ -3,11 +3,11 @@ package com.nocircle.server.app.routes.friend.request
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
+import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendRouteContext
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
-import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.expends.toKtInstant
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.AuthContext
@@ -43,12 +43,12 @@ fun Route.queryFriendRequest() = get("request/query") {
 private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getSentRequests(senderId)
 	val receiverIds = requests.map { it.receiverId }
-	val receivers = UserDao.getListByIds(receiverIds)
+	val receiverMap = UserDao.getMapByIds(receiverIds)
 	val labels = UserLabelDao.getMapByUserIds(receiverIds)
+	val avatarUrlMap = UserDetailDao.getAvatarUrlMapByUserIds(receiverIds)
 	return requests.map {
-		val user = receivers.first { user ->
-			user.id.value == it.receiverId
-		}
+		val user = receiverMap[it.receiverId]!!
+		val avatarUrl = avatarUrlMap[it.receiverId]
 		val labels = labels[it.receiverId]?.map { label ->
 			UserLabelDTO(
 				id = label.id.value,
@@ -61,8 +61,8 @@ private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 			targetId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
-			avatarUrl = user.avatarUrl,
-			status = it.status.toDTOStatus(),
+			avatarUrl = avatarUrl,
+			status = it.status,
 			createTime = it.createTime.toKtInstant(),
 			labels = labels
 		)
@@ -76,12 +76,12 @@ private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 private fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getReceivedRequests(receiverId)
 	val senderIds = requests.map { it.senderId }
-	val senders = UserDao.getListByIds(senderIds)
+	val senderMap = UserDao.getMapByIds(senderIds)
+	val avatarUrlMap = UserDetailDao.getAvatarUrlMapByUserIds(senderIds)
 	val labels = UserLabelDao.getMapByUserIds(senderIds)
 	return requests.map {
-		val user = senders.first { user ->
-			user.id.value == it.senderId
-		}
+		val user = senderMap[it.senderId]!!
+		val avatarUrl = avatarUrlMap[it.senderId]
 		val labels = labels[it.senderId]?.map { label ->
 			UserLabelDTO(
 				id = label.id.value,
@@ -94,20 +94,11 @@ private fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 			targetId = user.id.value,
 			username = user.username,
 			nickname = user.nickname,
-			avatarUrl = user.avatarUrl,
-			status = it.status.toDTOStatus(),
+			avatarUrl = avatarUrl,
+			status = it.status,
 			createTime = it.createTime.toKtInstant(),
 			labels = labels
 		)
-	}
-}
-
-private fun FriendRequests.Status.toDTOStatus(): FriendRequestDTO.Status {
-	return when (this) {
-		FriendRequests.Status.AGREED -> FriendRequestDTO.Status.AGREED
-		FriendRequests.Status.REJECTED -> FriendRequestDTO.Status.REJECTED
-		FriendRequests.Status.PENDING -> FriendRequestDTO.Status.PENDING
-		FriendRequests.Status.CANCELED -> FriendRequestDTO.Status.CANCELED
 	}
 }
 

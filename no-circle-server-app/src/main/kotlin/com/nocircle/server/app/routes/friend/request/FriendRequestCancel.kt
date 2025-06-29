@@ -3,11 +3,11 @@ package com.nocircle.server.app.routes.friend.request
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.plugins.FriendRouteContext
-import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -25,7 +25,7 @@ fun Route.cancelFriendRequest() = post("request/cancel") {
 	val targetId: Int by parameters
 	
 	val success = transaction {
-		FriendRequestDao.updateOne(id, userId, targetId, FriendRequests.Status.CANCELED)
+		FriendRequestDao.updateOne(id, userId, targetId, FriendRequestDTO.Status.CANCELED)
 	}
 	if (success) {
 		sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST, userId, targetId)

@@ -2,6 +2,7 @@ package com.nocircle.server.app.routes.user
 
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
+import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLoginDao
 import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.common.expends.toKtInstant
@@ -22,11 +23,15 @@ fun Route.userDetail() = get("detail") {
 	val userId = call.getPrincipal().userId
 	val userDetail = transaction {
 		val user = UserDao.getOneById(userId) ?: return@transaction null
+		val userDetail = UserDetailDao.getOneByUserId(userId)
 		val lastLoginTime = UserLoginDao.getLastLoginByUserId(userId)?.loginTime
 		UserDetailDTO(
 			username = user.username,
 			nickname = user.nickname,
-			avatarUrl = user.avatarUrl,
+			avatarUrl = userDetail.avatarUrl,
+			email = userDetail.email,
+			signature = userDetail.signature,
+			gender = userDetail.gender,
 			lastLoginTime = lastLoginTime?.toKtInstant()
 		)
 	} ?: return@get call.respondOK(NoCode.USER_DETAIL_FAILURE)

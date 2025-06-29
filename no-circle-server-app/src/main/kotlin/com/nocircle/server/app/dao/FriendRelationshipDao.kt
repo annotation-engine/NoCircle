@@ -62,7 +62,5 @@ class Friend(id: EntityID<Int>) : IntEntity(id) {
 	
 	val nickname by Users.nickname
 	
-	val avatarUrl by Users.avatarUrl
-	
 	val pinyin by Users.pinyin
 }

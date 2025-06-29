@@ -6,8 +6,8 @@ import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicDeleteWhere
 import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.exposed.logicUpdate
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import org.jetbrains.exposed.v1.core.SortOrder
-import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.jdbc.andWhere
 import org.jetbrains.exposed.v1.jdbc.insert
@@ -20,12 +20,12 @@ object FriendRequestDao {
 		val insert = FriendRequests.insert {
 			it[this.senderId] = senderId
 			it[this.receiverId] = receiverId
-			it[this.status] = FriendRequests.Status.PENDING
+			it[this.status] = FriendRequestDTO.Status.PENDING
 		}
 		return insert.insertedCount == 1
 	}
 	
-	fun updateOne(id: Int, senderId: Int, receiverId: Int, status: FriendRequests.Status): Boolean {
+	fun updateOne(id: Int, senderId: Int, receiverId: Int, status: FriendRequestDTO.Status): Boolean {
 		val updateCount = FriendRequests.logicUpdate(
 			where = {
 				(FriendRequests.id eq id) and
@@ -49,7 +49,7 @@ object FriendRequestDao {
 	fun getReceivedRequests(receiverId: Int): List<FriendRequest> {
 		val query = FriendRequests.selectAll()
 			.where { FriendRequests.receiverId eq receiverId }
-			.andWhere { FriendRequests.status eq FriendRequests.Status.PENDING }
+			.andWhere { FriendRequests.status eq FriendRequestDTO.Status.PENDING }
 			.logicExists(FriendRequests)
 			.orderBy(FriendRequests.createTime, SortOrder.DESC)
 		return FriendRequest.wrapRows(query).toList()
@@ -58,7 +58,7 @@ object FriendRequestDao {
 	fun getReceivedPendingRequestCount(receiverId: Int): Int {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.receiverId eq receiverId }
-			.andWhere { FriendRequests.status eq FriendRequests.Status.PENDING }
+			.andWhere { FriendRequests.status eq FriendRequestDTO.Status.PENDING }
 			.logicExists(FriendRequests)
 			.count()
 			.toInt()
@@ -68,7 +68,7 @@ object FriendRequestDao {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.senderId eq senderId }
 			.andWhere { FriendRequests.receiverId eq receiverId }
-			.andWhere { FriendRequests.status eq FriendRequests.Status.PENDING }
+			.andWhere { FriendRequests.status eq FriendRequestDTO.Status.PENDING }
 			.logicExists(FriendRequests)
 			.exists()
 	}

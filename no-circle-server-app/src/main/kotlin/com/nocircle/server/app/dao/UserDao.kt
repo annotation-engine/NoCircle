@@ -7,20 +7,22 @@ import com.nocircle.server.common.expends.toPinyin
 import com.nocircle.server.common.exposed.exists
 import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.exposed.selectWithout
-import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.insertReturning
 import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
 
 object UserDao {
 	
-	fun insertOne(username: String, password: String, nickname: String): Boolean {
-		val insert = Users.insert {
+	fun insertOne(username: String, password: String, nickname: String): Int? {
+		val resultRow = Users.insertReturning(
+			returning = listOf(Users.id)
+		) {
 			it[this.username] = username
 			it[this.password] = PasswordUtils.encrypt(password)
 			it[this.nickname] = nickname
 			it[this.pinyin] = nickname.toPinyin("").replace(" ", "")
-		}
-		return insert.insertedCount == 1
+		}.singleOrNull() ?: return null
+		return User.wrapRow(resultRow).id.value
 	}
 	
 	fun getOneById(id: Int): User? {
@@ -31,12 +33,12 @@ object UserDao {
 		return User.wrapRow(row)
 	}
 	
-	fun getListByIds(ids: Collection<Int>): List<User> {
-		if (ids.isEmpty()) return emptyList()
+	fun getMapByIds(ids: Collection<Int>): Map<Int, User> {
+		if (ids.isEmpty()) return emptyMap()
 		val query = Users.selectWithout(Users.password)
 			.where { Users.id inList ids }
 			.logicExists(Users)
-		return User.wrapRows(query).toList()
+		return User.wrapRows(query).associateBy { it.id.value }
 	}
 	
 	fun getOneByUsername(username: String): User? {

@@ -14,9 +14,6 @@ object Users : NoTable("user") {
 	val nickname = varchar("nickname", 20)
 	
 	val pinyin = varchar("pinyin", 100)
-	
-	val avatarUrl = varchar("avatar_url", 255)
-		.nullable()
 }
 
 class User(id: EntityID<Int>) : IntEntity(id) {
@@ -30,6 +27,4 @@ class User(id: EntityID<Int>) : IntEntity(id) {
 	val nickname by Users.nickname
 	
 	val pinyin by Users.pinyin
-	
-	val avatarUrl by Users.avatarUrl
 }

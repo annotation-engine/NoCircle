@@ -1,7 +1,8 @@
 package com.nocircle.shared.model.friend
 
 import com.nocircle.shared.model.label.UserLabelDTO
-import com.nocircle.shared.serialization.ISOInstantSerializer
+import com.nocircle.shared.model.user.Gender
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -13,7 +14,10 @@ data class FriendDetailDTO(
 	val username: String,
 	val nickname: String,
 	val avatarUrl: String?,
+	val email: String?,
+	val signature: String?,
+	val gender: Gender?,
 	val labels: List<UserLabelDTO>,
-	@Serializable(with = ISOInstantSerializer::class)
+	@Contextual
 	val createTime: Instant
 )

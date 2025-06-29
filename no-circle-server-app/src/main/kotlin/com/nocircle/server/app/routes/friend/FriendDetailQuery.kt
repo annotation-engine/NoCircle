@@ -3,6 +3,7 @@ package com.nocircle.server.app.routes.friend
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.UserDao
+import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.plugins.FriendRouteContext
 import com.nocircle.server.common.expends.toKtInstant
@@ -33,11 +34,15 @@ fun Route.queryFriendDetail() = get("detail/query") {
 				color = it.color
 			)
 		}
+		val userDetail = UserDetailDao.getOneByUserId(friendId)
 		FriendDetailDTO(
 			friendId = friendId,
 			username = user.username,
 			nickname = user.nickname,
-			avatarUrl = user.avatarUrl,
+			avatarUrl = userDetail.avatarUrl,
+			email = userDetail.email,
+			signature = userDetail.signature,
+			gender = userDetail.gender,
 			labels = labels,
 			createTime = relationship.createTime.toKtInstant()
 		)

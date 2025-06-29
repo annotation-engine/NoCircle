@@ -23,6 +23,7 @@ fun configureDatabase() {
 
 private val tables = arrayOf(
 	Users,
+	UserDetails,
 	UserLabels,
 	UserLogins,
 	FriendRequests,

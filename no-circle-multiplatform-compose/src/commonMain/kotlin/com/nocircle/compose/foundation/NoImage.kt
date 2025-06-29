@@ -21,7 +21,7 @@ fun NoImage(
 	modifier: Modifier = Modifier,
 	contentDescription: String? = null,
 	alignment: Alignment = Alignment.Center,
-	contentScale: ContentScale = ContentScale.Fit,
+	contentScale: ContentScale = ContentScale.Crop,
 	alpha: Float = DefaultAlpha,
 	colorFilter: ColorFilter? = null,
 	filterQuality: FilterQuality = DrawScope.DefaultFilterQuality
@@ -45,7 +45,7 @@ fun NoImage(
 	modifier: Modifier = Modifier,
 	contentDescription: String? = null,
 	alignment: Alignment = Alignment.Center,
-	contentScale: ContentScale = ContentScale.Fit,
+	contentScale: ContentScale = ContentScale.Crop,
 	alpha: Float = DefaultAlpha,
 	colorFilter: ColorFilter? = null
 ) {
@@ -66,7 +66,7 @@ fun NoImage(
 	modifier: Modifier = Modifier,
 	contentDescription: String? = null,
 	alignment: Alignment = Alignment.Center,
-	contentScale: ContentScale = ContentScale.Fit,
+	contentScale: ContentScale = ContentScale.Crop,
 	alpha: Float = DefaultAlpha,
 	colorFilter: ColorFilter? = null
 ) {

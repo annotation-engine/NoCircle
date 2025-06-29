@@ -5,11 +5,11 @@ import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.FriendVersionDao
 import com.nocircle.server.app.plugins.FriendRouteContext
-import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.model.respondOK
 import com.nocircle.server.common.routes.AuthContext
 import com.nocircle.server.common.routes.getPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
+import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -27,12 +27,12 @@ fun Route.agreeFriendRequest() = post("request/agree") {
 	val targetId: Int by parameters
 	
 	val status = transaction {
-		val success = FriendRequestDao.updateOne(id, targetId, userId, FriendRequests.Status.AGREED)
+		val success = FriendRequestDao.updateOne(id, targetId, userId, FriendRequestDTO.Status.AGREED)
 		if (!success) return@transaction null
 		listOf(userId, targetId).forEach { userId ->
 			FriendVersionDao.getVersionByUserId(userId)?.let {
 				FriendVersionDao.update(userId, it + 1)
-			} ?: FriendVersionDao.insert(userId)
+			} ?: FriendVersionDao.insertOne(userId)
 		}
 		FriendRelationshipDao.insertOne(userId, targetId)
 		FriendRelationshipDao.insertOne(targetId, userId)
