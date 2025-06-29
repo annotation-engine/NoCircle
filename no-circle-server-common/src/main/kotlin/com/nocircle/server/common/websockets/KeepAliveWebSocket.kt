@@ -18,10 +18,10 @@ fun Application.keepAliveWebSocket() {
 		authenticate {
 			webSocket("/keepAlive") {
 				val principal = call.getPrincipalOrNull() ?: return@webSocket close(CannotAccept)
-				
 				val sessions = _sessions.getOrPut(principal.userId) { mutableListOf() }
 				sessions += this
 				val username = principal.username
+				NoLog.info("[WS] Cconnect: $username")
 				try {
 					for (frame in incoming) {
 						if (frame is Frame.Close) break

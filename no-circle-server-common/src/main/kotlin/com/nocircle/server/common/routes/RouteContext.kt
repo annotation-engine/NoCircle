@@ -50,9 +50,8 @@ fun Application.routes(vararg group: RouteContext) {
 	}
 	val rootNode = Node("/")
 	routingRoot.parseNode(rootNode)
-	val tree = buildTreeString(rootNode, "").drop(44)
+	NoLog.info(buildTreeString(rootNode, "").drop(44))
 	NoLog.info("[TOTAL] $count")
-	NoLog.info(tree)
 }
 
 private fun RoutingNode.parseNode(

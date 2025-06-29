@@ -7,10 +7,9 @@ import kotlin.time.Duration.Companion.seconds
 
 fun Application.configureWebSockets() {
 	install(WebSockets) {
-		pingPeriod = 15.seconds
-		timeout = 15.seconds
-		maxFrameSize = 10 * 1024 * 1024
-		masking = false
+		pingPeriod = 10.seconds
+		timeout = 10.seconds
+		maxFrameSize = Long.MAX_VALUE
 	}
 	keepAliveWebSocket()
 }

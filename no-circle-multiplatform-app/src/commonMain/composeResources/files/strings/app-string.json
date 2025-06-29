@@ -115,6 +115,10 @@
 		"zh": "搜索到{}条结果",
 		"en": "{} results found"
 	},
+	"FRIEND_NOT_FRIEND": {
+		"zh": "您还没有添加过好友",
+		"en": "You haven't added any friends yet"
+	},
 	"FRIEND_ADD_FRIEND_TITLE": {
 		"zh": "添加好友",
 		"en": "Add Friend"
@@ -154,10 +158,6 @@
 	"FRIEND_ADD_FRIEND_SEND_SUCCESS": {
 		"zh": "已发送好友申请",
 		"en": "Friend request sent successfully"
-	},
-	"FRIEND_DETAIL_TITLE": {
-		"zh": "好友详情",
-		"en": "Friend Details"
 	},
 	"PERSON_SETTINGS_SUBTITLE": {
 		"zh": "外观、语言、图标、圆角、内存、退出登录",

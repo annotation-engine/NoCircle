@@ -44,6 +44,7 @@ fun Route.agreeFriendRequest() = post("request/agree") {
 	}
 	sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, targetId)
 	sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, userId)
+	sendToReceiver(WebSocketType.FRIEND_LIST, userId, targetId)
 	if (status) {
 		sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, userId)
 	}

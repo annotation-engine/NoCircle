@@ -153,6 +153,14 @@ private fun FriendList(
 	Box(
 		modifier = modifier
 	) {
+		val showHint by remember(friendList.size) {
+			derivedStateOf { friendList.isEmpty() }
+		}
+		if (showHint) {
+			FriendHint(
+				text = AppString.FRIEND_NOT_FRIEND.value()
+			)
+		}
 		val scrollState = rememberLazyListState()
 		LaunchedEffect(friendList) {
 			scrollState.scrollToItem(0)
@@ -330,7 +338,13 @@ private fun FriendSearchList(
 		state = scrollState
 	) {
 		item {
-			FriendSearchHint(friendSearchList.size)
+			FriendHint(
+				text = when (friendSearchList.size) {
+					0 -> AppString.FRIEND_SEARCH_NOT_FOUND.value()
+					1 -> AppString.FRIEND_SEARCH_FOUND_ONE.value()
+					else -> AppString.FRIEND_SEARCH_FOUND_MORE.value(friendSearchList.size)
+				}
+			)
 		}
 		itemsIndexed(
 			items = friendSearchList
@@ -345,8 +359,8 @@ private fun FriendSearchList(
 }
 
 @Composable
-private fun FriendSearchHint(
-	count: Int
+private fun FriendHint(
+	text: String
 ) {
 	Box(
 		modifier = Modifier
@@ -357,11 +371,7 @@ private fun FriendSearchHint(
 		contentAlignment = Alignment.Center
 	) {
 		Text(
-			text = when (count) {
-				0 -> AppString.FRIEND_SEARCH_NOT_FOUND.value()
-				1 -> AppString.FRIEND_SEARCH_FOUND_ONE.value()
-				else -> AppString.FRIEND_SEARCH_FOUND_MORE.value(count)
-			},
+			text = text,
 			color = MaterialTheme.colorScheme.outline,
 			style = MaterialTheme.typography.bodyMedium
 		)

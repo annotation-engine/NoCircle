@@ -11,8 +11,10 @@ import com.nocircle.common.config.UserIdConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.common.expends.findIndices
+import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.friend.FriendDTO
+import com.nocircle.shared.websocket.WebSocketType
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,6 +45,9 @@ class FriendListViewModel : NoViewModel() {
 			async { loadFriendList() }
 			async { sortOrderCollect() }
 			async { searchCollect() }
+			WebSocketScheduler.addCollect(WebSocketType.FRIEND_LIST) {
+				loadFriendList()
+			}
 		}
 	}
 	

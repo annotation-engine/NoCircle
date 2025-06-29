@@ -18,7 +18,7 @@ fun configureDatabase() {
 			SchemaUtils.create(*tables)
 		}
 	}
-	NoLog.info("Mysql connected used for ${millis / 1_000f} seconds.")
+	NoLog.info("Postgresql connected used for ${millis / 1_000f} seconds.")
 }
 
 private val tables = arrayOf(
