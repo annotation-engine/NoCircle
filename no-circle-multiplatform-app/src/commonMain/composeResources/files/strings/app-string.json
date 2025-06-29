@@ -236,8 +236,8 @@
 		"en": "Contrast, Dark/Light Mode, Theme Color"
 	},
 	"SETTINGS_ABOUT_SUBTITLE": {
-		"zh": "版本更新、第三方依赖、项目成员",
-		"en": "Version updates, third-party dependencies, project members"
+		"zh": "版本更新、第三方依赖",
+		"en": "Version updates, third-party dependencies"
 	},
 	"SETTINGS_LOGOUT": {
 		"zh": "退出登录",
