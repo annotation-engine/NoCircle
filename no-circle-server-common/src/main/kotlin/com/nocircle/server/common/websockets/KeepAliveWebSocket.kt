@@ -1,7 +1,7 @@
 package com.nocircle.server.common.websockets
 
-import com.nocircle.server.common.log.NoLog
 import com.nocircle.server.common.expends.getPrincipalOrNull
+import com.nocircle.server.common.log.NoLog
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
@@ -21,7 +21,7 @@ fun Application.keepAliveWebSocket() {
 				val sessions = _sessions.getOrPut(principal.userId) { mutableListOf() }
 				sessions += this
 				val username = principal.username
-				NoLog.info("[WS] Cconnect: $username")
+				NoLog.info("[WS] Connect: $username")
 				try {
 					for (frame in incoming) {
 						if (frame is Frame.Close) break
