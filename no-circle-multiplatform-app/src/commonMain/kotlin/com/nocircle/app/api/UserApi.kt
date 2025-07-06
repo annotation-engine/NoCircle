@@ -1,10 +1,10 @@
 package com.nocircle.app.api
 
-import cn.vividcode.multiplatform.ktorfitx.annotation.*
-import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
-import com.nocircle.shared.model.user.UserSearchDTO
+import cn.ktorfitx.multiplatform.annotation.*
+import cn.ktorfitx.multiplatform.core.model.ApiResult
 import com.nocircle.shared.model.user.UserDetailDTO
 import com.nocircle.shared.model.user.UserLoginDTO
+import com.nocircle.shared.model.user.UserSearchDTO
 
 @Api(url = "user")
 interface UserApi {
@@ -13,26 +13,26 @@ interface UserApi {
 	suspend fun login(
 		@Field username: String,
 		@Field password: String
-	): ResultBody<UserLoginDTO>?
+	): ApiResult<UserLoginDTO>?
 	
 	@POST("register")
 	suspend fun register(
 		@Field username: String,
 		@Field password: String,
 		@Field nickname: String
-	): ResultBody<Unit>?
+	): ApiResult<Unit>?
 	
 	@BearerAuth
 	@POST("logout")
-	suspend fun logout(): ResultBody<Unit>?
+	suspend fun logout(): ApiResult<Unit>?
 	
 	@BearerAuth
 	@GET("detail")
-	suspend fun queryDetail(): ResultBody<UserDetailDTO>?
+	suspend fun queryDetail(): ApiResult<UserDetailDTO>?
 	
 	@BearerAuth
 	@GET("search")
 	suspend fun searchUser(
 		@Query username: String
-	): ResultBody<UserSearchDTO>?
+	): ApiResult<UserSearchDTO>?
 }

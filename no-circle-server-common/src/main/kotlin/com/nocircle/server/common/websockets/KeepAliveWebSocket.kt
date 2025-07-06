@@ -1,7 +1,7 @@
 package com.nocircle.server.common.websockets
 
 import com.nocircle.server.common.log.NoLog
-import com.nocircle.server.common.routes.getPrincipalOrNull
+import com.nocircle.server.common.expends.getPrincipalOrNull
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*

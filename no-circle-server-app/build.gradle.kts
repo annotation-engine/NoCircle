@@ -5,6 +5,7 @@ plugins {
 	alias(libs.plugins.kotlin.jvm)
 	alias(libs.plugins.kotlin.serialization)
 	alias(libs.plugins.ktor)
+	alias(libs.plugins.ksp)
 }
 
 group = "com.nocircle.server.app"
@@ -31,4 +32,6 @@ dependencies {
 	implementation(projects.noCircleServerCommon)
 	implementation(projects.noCircleShared)
 	implementation(libs.bundles.server.app)
+	
+	ksp(libs.ktorfitx.server.ksp)
 }

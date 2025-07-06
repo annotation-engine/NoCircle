@@ -1,11 +1,11 @@
 package com.nocircle.server.app.routes.user
 
+import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
-import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.common.expends.isLowerCases
-import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.common.model.ApiResult
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -14,16 +14,21 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 用户注册
  */
-context(_: UserRouteContext)
-fun Route.userRegister() = post("register") {
+@POST("user/register")
+suspend fun RoutingContext.userRegister(): ApiResult<Unit> {
 	val parameters = call.receiveParameters()
 	val username: String by parameters
 	val password: String by parameters
 	val nickname: String by parameters
-	if (username.length !in 8..12 || !username.isLowerCases() || password.length !in 8..20 || nickname.isBlank() || nickname.length > 20) {
-		return@post call.respondOK(NoCode.USER_REGISTER_FAILURE)
+	if (username.length !in 8..12 ||
+		!username.isLowerCases() ||
+		password.length !in 8..20 ||
+		nickname.isBlank() ||
+		nickname.length > 20
+	) {
+		return ApiResult.new(NoCode.USER_REGISTER_FAILURE)
 	}
-	val status = transaction {
+	val code = transaction {
 		val exists = UserDao.isExistsByUsername(username)
 		if (exists) {
 			return@transaction NoCode.USER_REGISTER_USER_ALREADY_EXISTS
@@ -35,5 +40,5 @@ fun Route.userRegister() = post("register") {
 		val success = UserDetailDao.insertOne(userId)
 		if (success) NoCode.USER_REGISTER_SUCCESS else NoCode.USER_REGISTER_FAILURE
 	}
-	call.respondOK(status)
+	return ApiResult.new(code)
 }

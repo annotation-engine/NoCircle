@@ -117,7 +117,7 @@ android {
 }
 
 dependencies {
-	kspCommonMainMetadata(libs.ktorfitx.ksp)
+	kspCommonMainMetadata(libs.ktorfitx.multiplatform.ksp)
 	
 	arrayOf(
 		"kspAndroid",

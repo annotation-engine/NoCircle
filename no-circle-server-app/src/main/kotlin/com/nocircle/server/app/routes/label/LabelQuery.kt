@@ -1,11 +1,11 @@
 package com.nocircle.server.app.routes.label
 
+import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.GET
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.app.plugins.LabelRouteContext
-import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.shared.model.label.UserLabelDTO
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -13,8 +13,9 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 查询标签
  */
-context(_: LabelRouteContext, _: AuthContext)
-fun Route.queryLabel() = get("query") {
+@Authentication
+@GET("label/query")
+fun RoutingContext.queryLabel(): ApiResult<List<UserLabelDTO>> {
 	val userId = call.getPrincipal().userId
 	val data = transaction {
 		UserLabelDao.getListByUserId(userId).map {
@@ -25,5 +26,5 @@ fun Route.queryLabel() = get("query") {
 			)
 		}
 	}
-	call.respondOK(data, NoCode.LABEL_QUERY_SUCCESS)
+	return ApiResult.new(data, NoCode.LABEL_QUERY_SUCCESS)
 }

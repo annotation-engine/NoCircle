@@ -15,7 +15,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="desktopRunHot" />
+          <option value="hotRunDesktop" />
           <option value="--auto" />
         </list>
       </option>

@@ -1,7 +1,7 @@
 package com.nocircle.app.api
 
-import cn.vividcode.multiplatform.ktorfitx.annotation.*
-import cn.vividcode.multiplatform.ktorfitx.api.model.ResultBody
+import cn.ktorfitx.multiplatform.annotation.*
+import cn.ktorfitx.multiplatform.core.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 
 @Api("/friend/request")
@@ -11,43 +11,42 @@ interface FriendRequestApi {
 	@POST("add")
 	suspend fun addRequest(
 		@Field targetId: Int
-	): ResultBody<Unit>?
+	): ApiResult<Unit>?
 	
 	@BearerAuth
 	@POST("cancel")
 	suspend fun cancelRequest(
 		@Field id: Int,
 		@Field targetId: Int
-	): ResultBody<Unit>?
+	): ApiResult<Unit>?
 	
 	@BearerAuth
 	@POST("delete")
 	suspend fun deleteRequest(
-		@Field id: Int,
 		@Field targetId: Int
-	): ResultBody<Unit>?
+	): ApiResult<Unit>?
 	
 	@BearerAuth
 	@POST("reject")
 	suspend fun rejectRequest(
 		@Field id: Int,
 		@Field targetId: Int
-	): ResultBody<Unit>?
+	): ApiResult<Unit>?
 	
 	@BearerAuth
 	@POST("agree")
 	suspend fun agreeRequest(
 		@Field id: Int,
 		@Field targetId: Int
-	): ResultBody<Unit>?
+	): ApiResult<Unit>?
 	
 	@BearerAuth
 	@GET("query")
 	suspend fun queryRequestList(
 		@Query type: FriendRequestType
-	): ResultBody<List<FriendRequestDTO>>?
+	): ApiResult<List<FriendRequestDTO>>?
 	
 	@BearerAuth
 	@GET("queryPendingCount")
-	suspend fun queryPendingRequestCount(): ResultBody<Int>?
+	suspend fun queryPendingRequestCount(): ApiResult<Int>?
 }

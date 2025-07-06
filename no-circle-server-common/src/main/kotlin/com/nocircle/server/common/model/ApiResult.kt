@@ -10,7 +10,21 @@ data class ApiResult<out T : Any>(
 	val code: Int,
 	val msg: String,
 	val data: T?
-)
+) {
+	
+	companion object {
+		
+		@JvmName("create")
+		inline fun <reified T : Any, C : Code> new(data: T, code: C): ApiResult<T> {
+			return ApiResult(code.code, code.msg, data)
+		}
+		
+		@JvmName("create")
+		inline fun <reified T : Any, C : Code> new(code: C): ApiResult<T> {
+			return ApiResult(code.code, code.msg, null)
+		}
+	}
+}
 
 suspend inline fun <reified T, C : Code> ApplicationCall.respondOK(
 	data: T,

@@ -1,15 +1,15 @@
 package com.nocircle.server.app.routes.friend
 
+import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.GET
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.app.plugins.FriendRouteContext
 import com.nocircle.server.common.expends.toKtInstant
-import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.shared.model.friend.FriendDetailDTO
 import com.nocircle.shared.model.label.UserLabelDTO
 import io.ktor.server.routing.*
@@ -18,8 +18,9 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
-context(_: FriendRouteContext, _: AuthContext)
-fun Route.queryFriendDetail() = get("detail/query") {
+@Authentication
+@GET("friend/detail/query")
+fun RoutingContext.queryFriendDetail(): ApiResult<FriendDetailDTO> {
 	val userId = call.getPrincipal().userId
 	val friendId: Int by call.queryParameters
 	val data = transaction {
@@ -47,9 +48,9 @@ fun Route.queryFriendDetail() = get("detail/query") {
 			createTime = relationship.createTime.toKtInstant()
 		)
 	}
-	if (data != null) {
-		call.respondOK(data, NoCode.FRIEND_DETAIL_QUERY_SUCCESS)
+	return if (data != null) {
+		ApiResult.new(data, NoCode.FRIEND_DETAIL_QUERY_SUCCESS)
 	} else {
-		call.respondOK(NoCode.FRIEND_DETAIL_NOT_FOUND)
+		ApiResult.new(NoCode.FRIEND_DETAIL_NOT_FOUND)
 	}
 }

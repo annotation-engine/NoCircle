@@ -1,17 +1,17 @@
 package com.nocircle.server.app.routes.friend.request
 
+import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.GET
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.app.plugins.FriendRouteContext
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
 import com.nocircle.server.common.expends.toKtInstant
-import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.model.label.UserLabelDTO
 import io.ktor.server.routing.*
@@ -22,8 +22,9 @@ import kotlin.time.ExperimentalTime
 /**
  * 好友请求查询
  */
-context(_: FriendRouteContext, _: AuthContext)
-fun Route.queryFriendRequest() = get("request/query") {
+@Authentication
+@GET("friend/request/query")
+fun RoutingContext.queryFriendRequest(): ApiResult<List<FriendRequestDTO>> {
 	val userId = call.getPrincipal().userId
 	val type: FriendRequestType by call.parameters
 	
@@ -33,7 +34,7 @@ fun Route.queryFriendRequest() = get("request/query") {
 			RECEIVED -> getReceivedRequests(userId)
 		}
 	}
-	call.respondOK(data, NoCode.FRIEND_REQUEST_QUERY_SUCCESS)
+	return ApiResult.new(data, NoCode.FRIEND_REQUEST_QUERY_SUCCESS)
 }
 
 /**

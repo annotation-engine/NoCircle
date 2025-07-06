@@ -1,12 +1,12 @@
 package com.nocircle.server.app.routes.friend.request
 
+import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
-import com.nocircle.server.app.plugins.FriendRouteContext
-import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
@@ -18,13 +18,14 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 添加好友请求
  */
-context(_: FriendRouteContext, _: AuthContext)
-fun Route.addFriendRequest() = post("request/add") {
+@Authentication
+@POST("friend/request/add")
+suspend fun RoutingContext.addFriendRequest(): ApiResult<Unit> {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()
 	val targetId: Int by parameters
 	if (userId == targetId) {
-		return@post call.respondOK(NoCode.FRIEND_REQUEST_ADD_CANNOT_ADD_ONESELF)
+		return ApiResult.new(NoCode.FRIEND_REQUEST_ADD_CANNOT_ADD_ONESELF)
 	}
 	val code = transaction {
 		val isExists = UserDao.isExistsByUserId(targetId)
@@ -44,5 +45,5 @@ fun Route.addFriendRequest() = post("request/add") {
 		sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST, userId, targetId)
 		sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, targetId)
 	}
-	call.respondOK(code)
+	return ApiResult.new(code)
 }

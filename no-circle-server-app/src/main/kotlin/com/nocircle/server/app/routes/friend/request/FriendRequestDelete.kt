@@ -1,11 +1,11 @@
 package com.nocircle.server.app.routes.friend.request
 
+import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.app.plugins.FriendRouteContext
-import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.getPrincipal
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -14,16 +14,16 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 删除好友请求
  */
-context(_: FriendRouteContext, _: AuthContext)
-fun Route.deleteFriendRequest() = post("request/delete") {
+@Authentication
+@POST("friend/request/delete")
+suspend fun RoutingContext.deleteFriendRequest(): ApiResult<Unit> {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()
-	val id: Int by parameters
 	val targetId: Int by parameters
 	
 	val success = transaction {
 		FriendRequestDao.deleteOne(userId, targetId)
 	}
 	val code = if (success) NoCode.FRIEND_REQUEST_DELETE_SUCCESS else NoCode.FRIEND_REQUEST_DELETE_FAILURE
-	call.respondOK(code)
+	return ApiResult.new(code)
 }

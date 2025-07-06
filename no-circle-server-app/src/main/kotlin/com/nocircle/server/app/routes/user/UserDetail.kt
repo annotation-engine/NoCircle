@@ -1,14 +1,14 @@
 package com.nocircle.server.app.routes.user
 
+import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.GET
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLoginDao
-import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.common.expends.toKtInstant
-import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.shared.model.user.UserDetailDTO
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -18,10 +18,11 @@ import kotlin.time.ExperimentalTime
  * 用户详情
  */
 @OptIn(ExperimentalTime::class)
-context(_: UserRouteContext, _: AuthContext)
-fun Route.userDetail() = get("detail") {
+@Authentication
+@GET("user/detail")
+fun RoutingContext.userDetail(): ApiResult<UserDetailDTO> {
 	val userId = call.getPrincipal().userId
-	val userDetail = transaction {
+	val data = transaction {
 		val user = UserDao.getOneById(userId) ?: return@transaction null
 		val userDetail = UserDetailDao.getOneByUserId(userId)
 		val lastLoginTime = UserLoginDao.getLastLoginByUserId(userId)?.loginTime
@@ -34,7 +35,10 @@ fun Route.userDetail() = get("detail") {
 			gender = userDetail.gender,
 			lastLoginTime = lastLoginTime?.toKtInstant()
 		)
-	} ?: return@get call.respondOK(NoCode.USER_DETAIL_FAILURE)
-	
-	call.respondOK(userDetail, NoCode.USER_DETAIL_SUCCESS)
+	}
+	return if (data != null) {
+		ApiResult.new(data, NoCode.USER_DETAIL_FAILURE)
+	} else {
+		ApiResult.new(NoCode.USER_DETAIL_FAILURE)
+	}
 }

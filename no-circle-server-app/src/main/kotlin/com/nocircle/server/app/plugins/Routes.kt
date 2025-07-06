@@ -1,78 +1,106 @@
+@file:RouteGenerator
+
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.app.routes.auth.verifyToken
-import com.nocircle.server.app.routes.friend.queryFriend
-import com.nocircle.server.app.routes.friend.queryFriendDetail
-import com.nocircle.server.app.routes.friend.queryFriendVersion
-import com.nocircle.server.app.routes.friend.request.*
-import com.nocircle.server.app.routes.label.addLabel
-import com.nocircle.server.app.routes.label.deleteLabel
-import com.nocircle.server.app.routes.label.queryLabel
-import com.nocircle.server.app.routes.label.updateLabel
-import com.nocircle.server.app.routes.user.*
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.RouteContext
-import com.nocircle.server.common.routes.routes
+import cn.ktorfitx.server.annotation.RouteGenerator
+import com.nocircle.server.app.plugins.generators.generateRoutes
+import com.nocircle.server.common.log.NoLog
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 
 fun Application.configureRoutes() {
-	routes(
-		AuthRouteContext,
-		UserRouteContext,
-		LabelRouteContext,
-		FriendRouteContext
-	)
+	routing {
+		generateRoutes()
+	}
+	routingRoot.printTree()
 }
 
-object AuthRouteContext : RouteContext("auth") {
-	
-	context(_: AuthContext)
-	override fun Route.authenticates() {
-		verifyToken()
+private fun RoutingNode.printTree() {
+	val rootNode = Node("/")
+	this.parseNode(rootNode)
+	NoLog.info(buildTreeString(rootNode, "").drop(44))
+	NoLog.info("[TOTAL] $count")
+}
+
+private fun RoutingNode.parseNode(
+	rootNode: Node
+) {
+	if (this.selector is HttpMethodRouteSelector) {
+		val selector = this.selector as HttpMethodRouteSelector
+		val method = selector.method
+		val paths = this.path.split('/').drop(1)
+		var current = rootNode
+		paths.forEachIndexed { index, path ->
+			if (index < paths.lastIndex) {
+				var pathNode = current.children.find { it.path == path }
+				if (pathNode == null) {
+					pathNode = Node(path)
+					current.children += pathNode
+				}
+				current = pathNode
+			} else {
+				var node = current.children.find { it.path == path }
+				if (node == null) {
+					node = Node(path)
+					current.children += node
+				}
+				node.method = method.toString()
+				node.auth = this.auth
+			}
+		}
+	} else {
+		this.children.forEach {
+			it.parseNode(rootNode)
+		}
 	}
 }
 
-object UserRouteContext : RouteContext("user") {
-	
-	override fun Route.routes() {
-		userLogin()
-		userRegister()
+private val RoutingNode.auth: Boolean
+	get() {
+		var isAuthentication = false
+		var current: RoutingNode? = this
+		while (current != null) {
+			if (current.selector is AuthenticationRouteSelector) {
+				isAuthentication = true
+				break
+			}
+			current = current.parent
+		}
+		return isAuthentication
 	}
-	
-	context(_: AuthContext)
-	override fun Route.authenticates() {
-		userDetail()
-		userLogout()
-		searchUser()
-	}
-}
 
-object LabelRouteContext : RouteContext("label") {
-	
-	context(_: AuthContext)
-	override fun Route.authenticates() {
-		addLabel()
-		deleteLabel()
-		updateLabel()
-		queryLabel()
-	}
-}
+private class Node(
+	val path: String,
+	var method: String? = null,
+	var auth: Boolean? = null,
+	val children: MutableList<Node> = mutableListOf()
+)
 
-object FriendRouteContext : RouteContext("friend") {
-	
-	context(_: AuthContext)
-	override fun Route.authenticates() {
-		queryFriend()
-		queryFriendVersion()
-		queryFriendDetail()
-		
-		addFriendRequest()
-		queryFriendRequest()
-		cancelFriendRequest()
-		deleteFriendRequest()
-		queryFriendRequestPendingCount()
-		rejectFriendRequest()
-		agreeFriendRequest()
-	}
+private var count = 0
+
+private fun buildTreeString(node: Node, tabs: String): String = buildString {
+	node.children
+		.sortedBy { it.path.lowercase() }
+		.forEachIndexed { index, child ->
+			var tab = when {
+				node.children.lastIndex == index -> "└──"
+				tabs.isEmpty() && index == 0 -> "┌──"
+				else -> "├──"
+			}
+			append("${" ".repeat(44)}$tabs$tab ${child.path}")
+			if (child.method != null) {
+				count++
+				append(" [${child.method}]")
+				if (child.auth == true) {
+					append(" *")
+				}
+			}
+			append('\n')
+			tab = when (index) {
+				node.children.lastIndex -> "    "
+				else -> "│   "
+			}
+			append(buildTreeString(child, tabs + tab))
+		}
 }

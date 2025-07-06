@@ -1,16 +1,16 @@
 package com.nocircle.server.app.routes.user
 
+import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserLoginDao
 import com.nocircle.server.app.plugins.NoRedisKey
-import com.nocircle.server.app.plugins.UserRouteContext
 import com.nocircle.server.app.plugins.redisson
 import com.nocircle.server.app.plugins.yaml
 import com.nocircle.server.app.tables.UserLogins
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
-import com.nocircle.server.common.model.respondOK
+import com.nocircle.server.common.model.ApiResult
 import com.nocircle.shared.model.user.UserLoginDTO
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -21,8 +21,8 @@ import kotlin.time.toJavaDuration
 /**
  * 用户登录
  */
-context(_: UserRouteContext)
-fun Route.userLogin() = post("login") {
+@POST("user/login")
+suspend fun RoutingContext.userLogin(): ApiResult<UserLoginDTO> {
 	val parameters = call.receiveParameters()
 	val username: String by parameters
 	val password: String by parameters
@@ -30,7 +30,7 @@ fun Route.userLogin() = post("login") {
 		UserDao.getOneByUsername(username)
 	}
 	if (user == null || !PasswordUtils.verity(password, user.password)) {
-		return@post call.respondOK(NoCode.USER_LOGIN_USERNAME_OR_PASSWORD_ERROR)
+		return ApiResult.new(NoCode.USER_LOGIN_USERNAME_OR_PASSWORD_ERROR)
 	}
 	val userId = user.id.value
 	transaction {
@@ -39,9 +39,9 @@ fun Route.userLogin() = post("login") {
 	val token = JWTUtils.generate(userId, user.username)
 	val bucket = redisson.getBucket<String>("${NoRedisKey.USER_TOKEN}::${userId}")
 	bucket.set(token, yaml.jwt.timeout.toJavaDuration())
-	val userLogin = UserLoginDTO(
+	val data = UserLoginDTO(
 		userId = userId,
 		token = token,
 	)
-	call.respondOK(userLogin, NoCode.USER_LOGIN_SUCCESS)
+	return ApiResult.new(data, NoCode.USER_LOGIN_SUCCESS)
 }

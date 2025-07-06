@@ -173,7 +173,7 @@ private fun SentRequestCard(
 					colors = NoButtonColors.SurfaceContainerHighestColors,
 					contentPadding = NoButtonDefaults.TextButtonContentPadding
 				) {
-					viewModel.deleteSentRequest(item.id, item.targetId)
+					viewModel.deleteSentRequest(item.targetId)
 				}
 			}
 		}

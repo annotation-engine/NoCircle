@@ -67,9 +67,9 @@ class MessageCenterViewModel : NoViewModel() {
 		}
 	}
 	
-	suspend fun deleteSentRequest(id: Int, targetId: Int) {
+	suspend fun deleteSentRequest(targetId: Int) {
 		FunctionLocker.tryWithLock(::deleteSentRequest) {
-			val result = ktorfitx.friendRequestApi.deleteRequest(id, targetId)
+			val result = ktorfitx.friendRequestApi.deleteRequest(targetId)
 				?: return@tryWithLock networkError()
 			if (result.success) {
 				loadSentRequests()

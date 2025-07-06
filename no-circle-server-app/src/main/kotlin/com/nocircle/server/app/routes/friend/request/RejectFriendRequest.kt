@@ -1,11 +1,11 @@
 package com.nocircle.server.app.routes.friend.request
 
+import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.app.plugins.FriendRouteContext
-import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
@@ -17,8 +17,9 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 拒绝好友请求
  */
-context(_: FriendRouteContext, _: AuthContext)
-fun Route.rejectFriendRequest() = post("request/reject") {
+@Authentication
+@POST("friend/request/reject")
+suspend fun RoutingContext.rejectFriendRequest(): ApiResult<Unit> {
 	val userId = call.getPrincipal().userId
 	val parameters = call.receiveParameters()
 	val id: Int by parameters
@@ -31,5 +32,5 @@ fun Route.rejectFriendRequest() = post("request/reject") {
 		sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, userId)
 	}
 	val code = if (success) NoCode.FRIEND_REQUEST_REJECT_SUCCESS else NoCode.FRIEND_REQUEST_REJECT_FAILURE
-	call.respondOK(code)
+	return ApiResult.new(code)
 }

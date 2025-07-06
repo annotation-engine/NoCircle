@@ -1,9 +1,9 @@
 package com.nocircle.app.api
 
-import cn.vividcode.multiplatform.ktorfitx.annotation.Api
-import cn.vividcode.multiplatform.ktorfitx.annotation.BearerAuth
-import cn.vividcode.multiplatform.ktorfitx.websockets.WebSocket
-import cn.vividcode.multiplatform.ktorfitx.websockets.WebSocketSessionHandler
+import cn.ktorfitx.multiplatform.annotation.Api
+import cn.ktorfitx.multiplatform.annotation.BearerAuth
+import cn.ktorfitx.multiplatform.annotation.WebSocket
+import cn.ktorfitx.multiplatform.websockets.WebSocketSessionHandler
 
 @Api
 interface KeepAliveApi {

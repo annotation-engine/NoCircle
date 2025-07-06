@@ -1,11 +1,11 @@
 package com.nocircle.server.app.routes.user
 
+import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.GET
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.*
-import com.nocircle.server.app.plugins.UserRouteContext
-import com.nocircle.server.common.model.respondOK
-import com.nocircle.server.common.routes.AuthContext
-import com.nocircle.server.common.routes.getPrincipal
+import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.shared.model.label.UserLabelDTO
 import com.nocircle.shared.model.user.UserSearchDTO
 import com.nocircle.shared.model.user.UserSearchDTO.RelationshipDTO.*
@@ -16,14 +16,15 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 /**
  * 搜索用户
  */
-context(_: UserRouteContext, _: AuthContext)
-fun Route.searchUser() = get("search") {
+@Authentication
+@GET("user/search")
+fun RoutingContext.searchUser(): ApiResult<UserSearchDTO> {
 	val userId = call.getPrincipal().userId
 	val username: String by call.queryParameters
 	if (username.isBlank()) {
-		return@get call.respondOK(NoCode.USER_SEARCH_USERNAME_NOT_EMPTY)
+		return ApiResult.new(NoCode.USER_SEARCH_USERNAME_NOT_EMPTY)
 	}
-	val searchUser = transaction {
+	val data = transaction {
 		val user = UserDao.getOneByUsername(username) ?: return@transaction null
 		val receiverId = user.id.value
 		val labels = UserLabelDao.getListByUserId(receiverId).map {
@@ -50,7 +51,10 @@ fun Route.searchUser() = get("search") {
 			relationship = relationship,
 			isAlreadySend = isAlreadySend
 		)
-	} ?: return@get call.respondOK(NoCode.USER_SEARCH_NOT_FOUND)
-	
-	call.respondOK(searchUser, NoCode.USER_SEARCH_SUCCESS)
+	}
+	return if (data != null) {
+		ApiResult.new(data, NoCode.USER_SEARCH_NOT_FOUND)
+	} else {
+		ApiResult.new(NoCode.USER_SEARCH_SUCCESS)
+	}
 }
