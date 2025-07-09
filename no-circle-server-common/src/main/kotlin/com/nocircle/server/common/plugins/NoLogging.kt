@@ -1,6 +1,7 @@
 package com.nocircle.server.common.plugins
 
 import com.nocircle.server.common.log.NoLog
+import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -17,7 +18,7 @@ val NoLogging = createApplicationPlugin(
 		call.attributes.put(DurationTimeKey, System.currentTimeMillis())
 	}
 	onCallRespond { call, value ->
-		val status = call.response.status() ?: return@onCallRespond
+		val status = call.response.status() ?: HttpStatusCode.OK
 		val message = buildString {
 			append(status)
 			append(": ")

@@ -14,7 +14,9 @@ class SettingsViewModel : NoViewModel() {
 	
 	suspend fun logout() {
 		FunctionLocker.tryWithLock(::logout) {
-			ktorfitx.userApi.logout() ?: networkError()
+			ktorfitx.userApi.logout().onFailure {
+				networkError()
+			}
 			TokenConfigKey.clear()
 			UserIdConfigKey.clear()
 			getNavController().navigate(LoginRoute) {

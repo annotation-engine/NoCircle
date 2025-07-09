@@ -1,7 +1,6 @@
 package com.nocircle.app.ktorfitx
 
 import cn.ktorfitx.multiplatform.core.ktorfit
-import cn.ktorfitx.multiplatform.core.model.ApiResult
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.device.DeviceName.ANDROID
@@ -50,6 +49,3 @@ val ktorfitx = ktorfit {
 }
 
 expect val HttpClientEngineFactory: HttpClientEngineFactory<*>
-
-val <T : Any> ApiResult<T>.success: Boolean
-	get() = this.code == 0

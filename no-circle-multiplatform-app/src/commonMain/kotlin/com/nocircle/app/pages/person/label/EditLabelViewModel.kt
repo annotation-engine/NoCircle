@@ -3,10 +3,10 @@ package com.nocircle.app.pages.person.label
 import androidx.compose.ui.graphics.Color
 import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.coroutines.FunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
+import com.nocircle.common.expends.success
 import com.nocircle.compose.expends.colorToHex
 import com.nocircle.compose.resources.getString
 import com.nocircle.compose.viewmodel.NoViewModel
@@ -16,7 +16,7 @@ class EditLabelViewModel : NoViewModel() {
 	suspend fun deleteLabelById(id: Int): Boolean {
 		return FunctionLocker.tryWithLock(::deleteLabelById, OnBusyReturnFalse) {
 			val result = ktorfitx.labelApi.deleteLabel(id)
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
 			autoShowNoSnackbar(result.success, result.msg)
 			result.success
 		}
@@ -29,7 +29,7 @@ class EditLabelViewModel : NoViewModel() {
 				return@tryWithLock false
 			}
 			val result = ktorfitx.labelApi.addLabel(label, colorToHex(color))
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
 			autoShowNoSnackbar(result.success, result.msg)
 			result.success
 		}
@@ -42,7 +42,7 @@ class EditLabelViewModel : NoViewModel() {
 				return@tryWithLock false
 			}
 			val result = ktorfitx.labelApi.updateLabel(id, label, colorToHex(color))
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
 			autoShowNoSnackbar(result.success, result.msg)
 			result.success
 		}

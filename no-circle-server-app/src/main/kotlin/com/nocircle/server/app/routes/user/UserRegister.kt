@@ -4,8 +4,9 @@ import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.isLowerCases
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.shared.model.ApiResult
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -26,7 +27,7 @@ suspend fun RoutingContext.userRegister(): ApiResult<Unit> {
 		nickname.isBlank() ||
 		nickname.length > 20
 	) {
-		return ApiResult.new(NoCode.USER_REGISTER_FAILURE)
+		return ApiResult.create(NoCode.USER_REGISTER_FAILURE)
 	}
 	val code = transaction {
 		val exists = UserDao.isExistsByUsername(username)
@@ -40,5 +41,5 @@ suspend fun RoutingContext.userRegister(): ApiResult<Unit> {
 		val success = UserDetailDao.insertOne(userId)
 		if (success) NoCode.USER_REGISTER_SUCCESS else NoCode.USER_REGISTER_FAILURE
 	}
-	return ApiResult.new(code)
+	return ApiResult.create(code)
 }

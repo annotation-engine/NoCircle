@@ -2,7 +2,7 @@ package com.nocircle.app.pages.friends.detail
 
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.ktorfitx.success
+import com.nocircle.common.expends.success
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.friend.FriendDetailDTO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ class FriendDetailViewModel : NoViewModel() {
 	
 	suspend fun loadFriendDetail(friendId: Int) {
 		val result = ktorfitx.friendApi.queryFriendDetail(friendId)
-			?: return networkError()
+			.getOrNull() ?: return networkError()
 		if (result.success) {
 			_friendDetail.value = result.data
 		} else {

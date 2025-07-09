@@ -10,7 +10,8 @@ import com.nocircle.server.app.plugins.yaml
 import com.nocircle.server.app.tables.UserLogins
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.user.UserLoginDTO
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -30,7 +31,7 @@ suspend fun RoutingContext.userLogin(): ApiResult<UserLoginDTO> {
 		UserDao.getOneByUsername(username)
 	}
 	if (user == null || !PasswordUtils.verity(password, user.password)) {
-		return ApiResult.new(NoCode.USER_LOGIN_USERNAME_OR_PASSWORD_ERROR)
+		return ApiResult.create(NoCode.USER_LOGIN_USERNAME_OR_PASSWORD_ERROR)
 	}
 	val userId = user.id.value
 	transaction {
@@ -43,5 +44,5 @@ suspend fun RoutingContext.userLogin(): ApiResult<UserLoginDTO> {
 		userId = userId,
 		token = token,
 	)
-	return ApiResult.new(data, NoCode.USER_LOGIN_SUCCESS)
+	return ApiResult.create(data, NoCode.USER_LOGIN_SUCCESS)
 }

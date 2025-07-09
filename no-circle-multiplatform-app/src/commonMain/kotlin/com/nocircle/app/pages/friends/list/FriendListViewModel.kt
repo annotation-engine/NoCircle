@@ -3,7 +3,6 @@ package com.nocircle.app.pages.friends.list
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.room.AppDatabase
 import com.nocircle.app.room.entity.FriendListEntity
 import com.nocircle.common.config.ConfigKey
@@ -11,6 +10,7 @@ import com.nocircle.common.config.UserIdConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.config.set
 import com.nocircle.common.expends.findIndices
+import com.nocircle.common.expends.success
 import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.friend.FriendDTO
@@ -53,7 +53,8 @@ class FriendListViewModel : NoViewModel() {
 	
 	suspend fun loadFriendList() {
 		val userId = UserIdConfigKey.get()!!
-		val friendVersionResult = ktorfitx.friendApi.queryFriendVersion() ?: return networkError()
+		val friendVersionResult = ktorfitx.friendApi.queryFriendVersion()
+			.getOrNull() ?: return networkError()
 		if (!friendVersionResult.success) {
 			return showNoErrorSnackbar(friendVersionResult.msg)
 		}
@@ -72,7 +73,8 @@ class FriendListViewModel : NoViewModel() {
 				)
 			}
 		} else {
-			val result = ktorfitx.friendApi.queryFriendList() ?: return networkError()
+			val result = ktorfitx.friendApi.queryFriendList()
+				.getOrNull() ?: return networkError()
 			if (!result.success) {
 				return showNoErrorSnackbar(result.msg)
 			}

@@ -26,4 +26,4 @@ redis:
   database: 4
 logger:
   enabled: true
-  responseBody: false
+  responseBody: true

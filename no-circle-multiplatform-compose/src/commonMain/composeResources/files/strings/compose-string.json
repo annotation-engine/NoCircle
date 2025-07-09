@@ -1,26 +1,14 @@
 {
-	"NETWORK_CONNECT_ERROR": {
-		"zh": "网络连接错误",
-		"en": "Network connection error",
-		"ja": "ネットワーク接続エラー",
-		"fr": "Erreur de connexion réseau",
-		"de": "Netzwerkverbindungsfehler",
-		"ru": "Ошибка сетевого подключения"
+	"NETWORK_ERROR": {
+		"zh": "网络错误",
+		"en": "Network error"
 	},
 	"CONFIRM": {
 		"zh": "确定",
-		"en": "Confirm",
-		"ja": "確認",
-		"fr": "Confirmer",
-		"de": "Bestätigen",
-		"ru": "Подтвердить"
+		"en": "Confirm"
 	},
 	"CANCEL": {
 		"zh": "取消",
-		"en": "Cancel",
-		"ja": "キャンセル",
-		"fr": "Annuler",
-		"de": "Abbrechen",
-		"ru": "Отмена"
+		"en": "Cancel"
 	}
 }

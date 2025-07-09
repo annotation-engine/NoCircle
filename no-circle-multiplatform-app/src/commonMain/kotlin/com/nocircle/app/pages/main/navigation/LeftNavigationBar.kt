@@ -131,18 +131,16 @@ fun LeftNavigationBar(
 				} else {
 					val personViewModel = koinViewModel<PersonViewModel>()
 					val userDetail by personViewModel.userDetail.collectAsState()
-					if (userDetail != null) {
-						NoAsyncImage(
-							url = userDetail!!.avatarUrl,
-							modifier = Modifier
-								.size(LeftNavigationItemHeight)
-								.clip(MaterialTheme.shapes.medium)
-								.clickable {
-									onSubRouteChange(MainSubRoute.PERSON)
-								},
-							contentScale = ContentScale.Crop,
-						)
-					}
+					NoAsyncImage(
+						url = userDetail?.avatarUrl,
+						modifier = Modifier
+							.size(LeftNavigationItemHeight)
+							.clip(MaterialTheme.shapes.medium)
+							.clickable {
+								onSubRouteChange(MainSubRoute.PERSON)
+							},
+						contentScale = ContentScale.Crop,
+					)
 				}
 				Spacer(modifier = Modifier.height(8.dp))
 				Spacer(modifier = Modifier.weight(1f))

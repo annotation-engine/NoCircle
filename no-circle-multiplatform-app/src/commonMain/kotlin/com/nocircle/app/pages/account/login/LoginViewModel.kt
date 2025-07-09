@@ -2,13 +2,14 @@ package com.nocircle.app.pages.account.login
 
 import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.UserIdConfigKey
 import com.nocircle.common.config.set
 import com.nocircle.common.coroutines.FunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
+import com.nocircle.common.expends.success
+import com.nocircle.common.log.NoLog
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -46,7 +47,8 @@ class LoginViewModel() : NoViewModel() {
 				return@tryWithLock false
 			}
 			val result = ktorfitx.userApi.login(username, password)
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
+			NoLog.info(result)
 			if (result.success) {
 				TokenConfigKey.set(result.data!!.token)
 				UserIdConfigKey.set(result.data!!.userId)

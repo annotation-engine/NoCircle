@@ -2,11 +2,11 @@ package com.nocircle.app.pages.account.register
 
 import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.resources.AppString
 import com.nocircle.common.coroutines.FunctionLocker
 import com.nocircle.common.coroutines.OnBusyReturnFalse
 import com.nocircle.common.expends.isLowerCases
+import com.nocircle.common.expends.success
 import com.nocircle.compose.viewmodel.NoViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -75,7 +75,7 @@ class RegisterViewModel : NoViewModel() {
 				return@tryWithLock false
 			}
 			val result = ktorfitx.userApi.register(username, password, nickname)
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
 			if (!result.success) {
 				showNoErrorSnackbar(result.msg)
 			}

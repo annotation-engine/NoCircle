@@ -9,9 +9,10 @@ import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
-import com.nocircle.server.common.expends.toKtInstant
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.expends.toKtInstant
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.model.label.UserLabelDTO
 import io.ktor.server.routing.*
@@ -34,7 +35,7 @@ fun RoutingContext.queryFriendRequest(): ApiResult<List<FriendRequestDTO>> {
 			RECEIVED -> getReceivedRequests(userId)
 		}
 	}
-	return ApiResult.new(data, NoCode.FRIEND_REQUEST_QUERY_SUCCESS)
+	return ApiResult.create(data, NoCode.FRIEND_REQUEST_QUERY_SUCCESS)
 }
 
 /**

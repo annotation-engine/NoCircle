@@ -4,9 +4,10 @@ import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.server.request.*
@@ -33,5 +34,5 @@ suspend fun RoutingContext.cancelFriendRequest(): ApiResult<Unit> {
 		sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, targetId)
 	}
 	val code = if (success) NoCode.FRIEND_REQUEST_CANCEL_SUCCESS else NoCode.FRIEND_REQUEST_CANCEL_FAILURE
-	return ApiResult.new(code)
+	return ApiResult.create(code)
 }

@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.FriendRequestType
 import com.nocircle.app.api.impls.friendRequestApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.ktorfitx.success
 import com.nocircle.common.coroutines.FunctionLocker
+import com.nocircle.common.expends.success
 import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
@@ -39,7 +39,8 @@ class MessageCenterViewModel : NoViewModel() {
 	}
 	
 	suspend fun loadSentRequests() {
-		val result = ktorfitx.friendRequestApi.queryRequestList(FriendRequestType.SENT) ?: return networkError()
+		val result = ktorfitx.friendRequestApi.queryRequestList(FriendRequestType.SENT)
+			.getOrNull() ?: return networkError()
 		if (result.success) {
 			_sentRequests.value = result.data!!
 		} else {
@@ -48,7 +49,8 @@ class MessageCenterViewModel : NoViewModel() {
 	}
 	
 	suspend fun loadReceivedRequests() {
-		val result = ktorfitx.friendRequestApi.queryRequestList(FriendRequestType.RECEIVED) ?: return networkError()
+		val result = ktorfitx.friendRequestApi.queryRequestList(FriendRequestType.RECEIVED)
+			.getOrNull() ?: return networkError()
 		if (result.success) {
 			_receivedRequests.value = result.data!!
 		} else {
@@ -59,7 +61,7 @@ class MessageCenterViewModel : NoViewModel() {
 	suspend fun cancelSentRequest(id: Int, targetId: Int) {
 		FunctionLocker.tryWithLock(::cancelSentRequest) {
 			val result = ktorfitx.friendRequestApi.cancelRequest(id, targetId)
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
 			if (result.success) {
 				loadSentRequests()
 			}
@@ -70,7 +72,7 @@ class MessageCenterViewModel : NoViewModel() {
 	suspend fun deleteSentRequest(targetId: Int) {
 		FunctionLocker.tryWithLock(::deleteSentRequest) {
 			val result = ktorfitx.friendRequestApi.deleteRequest(targetId)
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
 			if (result.success) {
 				loadSentRequests()
 			}
@@ -81,7 +83,7 @@ class MessageCenterViewModel : NoViewModel() {
 	suspend fun rejectReceivedRequest(id: Int, targetId: Int) {
 		FunctionLocker.tryWithLock(::rejectReceivedRequest) {
 			val result = ktorfitx.friendRequestApi.rejectRequest(id, targetId)
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
 			if (result.success) {
 				loadReceivedRequests()
 			}
@@ -92,7 +94,7 @@ class MessageCenterViewModel : NoViewModel() {
 	suspend fun agreeReceivedRequest(id: Int, targetId: Int) {
 		FunctionLocker.tryWithLock(::agreeReceivedRequest) {
 			val result = ktorfitx.friendRequestApi.agreeRequest(id, targetId)
-				?: return@tryWithLock networkError()
+				.getOrNull() ?: return@tryWithLock networkError()
 			if (result.success) {
 				loadReceivedRequests()
 			}

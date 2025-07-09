@@ -1,7 +1,7 @@
 package com.nocircle.app.api
 
 import cn.ktorfitx.multiplatform.annotation.*
-import cn.ktorfitx.multiplatform.core.model.ApiResult
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.user.UserDetailDTO
 import com.nocircle.shared.model.user.UserLoginDTO
 import com.nocircle.shared.model.user.UserSearchDTO
@@ -13,26 +13,26 @@ interface UserApi {
 	suspend fun login(
 		@Field username: String,
 		@Field password: String
-	): ApiResult<UserLoginDTO>?
+	): Result<ApiResult<UserLoginDTO>>
 	
 	@POST("register")
 	suspend fun register(
 		@Field username: String,
 		@Field password: String,
 		@Field nickname: String
-	): ApiResult<Unit>?
+	): Result<ApiResult<Unit>>
 	
 	@BearerAuth
 	@POST("logout")
-	suspend fun logout(): ApiResult<Unit>?
+	suspend fun logout(): Result<ApiResult<Unit>>
 	
 	@BearerAuth
 	@GET("detail")
-	suspend fun queryDetail(): ApiResult<UserDetailDTO>?
+	suspend fun queryDetail(): Result<ApiResult<UserDetailDTO>>
 	
 	@BearerAuth
 	@GET("search")
 	suspend fun searchUser(
 		@Query username: String
-	): ApiResult<UserSearchDTO>?
+	): Result<ApiResult<UserSearchDTO>>
 }

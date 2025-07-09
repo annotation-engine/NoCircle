@@ -5,8 +5,9 @@ import cn.ktorfitx.server.annotation.GET
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.UserDetailDao
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.FriendDTO
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -33,5 +34,5 @@ fun RoutingContext.queryFriend(): ApiResult<List<FriendDTO>> {
 			)
 		}
 	}
-	return ApiResult.new(data, NoCode.FRIEND_QUERY_SUCCESS)
+	return ApiResult.create(data, NoCode.FRIEND_QUERY_SUCCESS)
 }

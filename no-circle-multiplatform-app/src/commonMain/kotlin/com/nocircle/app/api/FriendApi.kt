@@ -4,7 +4,7 @@ import cn.ktorfitx.multiplatform.annotation.Api
 import cn.ktorfitx.multiplatform.annotation.BearerAuth
 import cn.ktorfitx.multiplatform.annotation.GET
 import cn.ktorfitx.multiplatform.annotation.Query
-import cn.ktorfitx.multiplatform.core.model.ApiResult
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.FriendDTO
 import com.nocircle.shared.model.friend.FriendDetailDTO
 
@@ -13,17 +13,17 @@ interface FriendApi {
 	
 	@BearerAuth
 	@GET("query")
-	suspend fun queryFriendList(): ApiResult<List<FriendDTO>>?
+	suspend fun queryFriendList(): Result<ApiResult<List<FriendDTO>>>
 	
 	@BearerAuth
 	@GET("version/query")
-	suspend fun queryFriendVersion(): ApiResult<Int>?
+	suspend fun queryFriendVersion(): Result<ApiResult<Int>>
 	
 	@BearerAuth
 	@GET("detail/query")
 	suspend fun queryFriendDetail(
 		@Query friendId: Int,
-	): ApiResult<FriendDetailDTO>?
+	): Result<ApiResult<FriendDetailDTO>>
 }
 
 enum class FriendRequestType {

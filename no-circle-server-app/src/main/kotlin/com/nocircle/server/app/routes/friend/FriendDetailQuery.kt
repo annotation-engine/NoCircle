@@ -7,9 +7,10 @@ import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.common.expends.toKtInstant
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.expends.toKtInstant
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.FriendDetailDTO
 import com.nocircle.shared.model.label.UserLabelDTO
 import io.ktor.server.routing.*
@@ -49,8 +50,8 @@ fun RoutingContext.queryFriendDetail(): ApiResult<FriendDetailDTO> {
 		)
 	}
 	return if (data != null) {
-		ApiResult.new(data, NoCode.FRIEND_DETAIL_QUERY_SUCCESS)
+		ApiResult.create(data, NoCode.FRIEND_DETAIL_QUERY_SUCCESS)
 	} else {
-		ApiResult.new(NoCode.FRIEND_DETAIL_NOT_FOUND)
+		ApiResult.create(NoCode.FRIEND_DETAIL_NOT_FOUND)
 	}
 }

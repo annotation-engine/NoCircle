@@ -5,8 +5,9 @@ import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.plugins.NoRedisKey
 import com.nocircle.server.app.plugins.redisson
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.shared.model.ApiResult
 import io.ktor.server.routing.*
 
 /**
@@ -18,5 +19,5 @@ fun RoutingContext.userLogout(): ApiResult<Unit> {
 	val userId = call.getPrincipal().userId
 	val bucket = redisson.getBucket<String>("${NoRedisKey.USER_TOKEN}::$userId")
 	bucket.delete()
-	return ApiResult.new(NoCode.USER_LOGOUT_SUCCESS)
+	return ApiResult.create(NoCode.USER_LOGOUT_SUCCESS)
 }

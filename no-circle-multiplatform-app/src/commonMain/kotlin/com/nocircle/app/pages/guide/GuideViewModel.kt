@@ -3,10 +3,10 @@ package com.nocircle.app.pages.guide
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impls.authApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.ktorfitx.success
 import com.nocircle.app.pages.account.login.LoginRoute
 import com.nocircle.app.pages.main.MainRoute
 import com.nocircle.app.resources.AppString
+import com.nocircle.common.expends.success
 import com.nocircle.compose.navigation.NoRoute
 import com.nocircle.compose.resources.ComposeString
 import com.nocircle.compose.resources.preloadStringJsonElements
@@ -34,7 +34,8 @@ class GuideViewModel : NoViewModel() {
 	}
 	
 	private suspend fun verifyToken(): Boolean {
-		val result = ktorfitx.authApi.verifyToken() ?: return networkError()
+		val result = ktorfitx.authApi.verifyToken()
+			.getOrNull() ?: return networkError()
 		return result.success
 	}
 	

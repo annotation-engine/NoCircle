@@ -109,12 +109,12 @@ abstract class NoViewModel : ViewModel() {
 		}
 	}
 	
-	protected suspend inline fun <reified T : Any> networkError(): T {
-		this.showNoErrorSnackbar(ComposeString.NETWORK_CONNECT_ERROR.getString())
+	protected inline fun <reified T : Any> networkError(): T {
+		this.showNoErrorSnackbar(ComposeString.NETWORK_ERROR.getString())
 		return when (T::class) {
 			Boolean::class -> false
 			Unit::class -> Unit
-			else -> error("不支持的类型")
+			else -> error("Not implemented ${T::class}")
 		} as T
 	}
 }

@@ -5,7 +5,8 @@ import com.nocircle.app.api.impls.friendRequestApi
 import com.nocircle.app.api.impls.labelApi
 import com.nocircle.app.api.impls.userApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.ktorfitx.success
+import com.nocircle.common.expends.success
+import com.nocircle.common.log.NoLog
 import com.nocircle.common.websocket.WebSocketScheduler
 import com.nocircle.compose.viewmodel.NoViewModel
 import com.nocircle.shared.model.label.UserLabelDTO
@@ -40,7 +41,9 @@ class PersonViewModel : NoViewModel() {
 	}
 	
 	private suspend fun loadUserDetail(): Boolean {
-		val result = ktorfitx.userApi.queryDetail() ?: return networkError()
+		val result = ktorfitx.userApi.queryDetail()
+			.getOrNull() ?: return networkError()
+		NoLog.info(result)
 		if (result.success) {
 			_userDetail.value = result.data!!
 		}
@@ -48,14 +51,16 @@ class PersonViewModel : NoViewModel() {
 	}
 	
 	suspend fun loadLabels() {
-		val result = ktorfitx.labelApi.queryLabelList() ?: return
+		val result = ktorfitx.labelApi.queryLabelList()
+			.getOrNull() ?: return
 		if (result.success) {
 			_labels.value = result.data!!
 		}
 	}
 	
 	suspend fun loadRequestReceivedCount() {
-		val result = ktorfitx.friendRequestApi.queryPendingRequestCount() ?: return
+		val result = ktorfitx.friendRequestApi.queryPendingRequestCount()
+			.getOrNull() ?: return
 		if (result.success) {
 			_friendRequestPendingCount.value = result.data!!
 		}

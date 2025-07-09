@@ -4,8 +4,9 @@ import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.GET
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.*
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.label.UserLabelDTO
 import com.nocircle.shared.model.user.UserSearchDTO
 import com.nocircle.shared.model.user.UserSearchDTO.RelationshipDTO.*
@@ -22,7 +23,7 @@ fun RoutingContext.searchUser(): ApiResult<UserSearchDTO> {
 	val userId = call.getPrincipal().userId
 	val username: String by call.queryParameters
 	if (username.isBlank()) {
-		return ApiResult.new(NoCode.USER_SEARCH_USERNAME_NOT_EMPTY)
+		return ApiResult.create(NoCode.USER_SEARCH_USERNAME_NOT_EMPTY)
 	}
 	val data = transaction {
 		val user = UserDao.getOneByUsername(username) ?: return@transaction null
@@ -53,8 +54,8 @@ fun RoutingContext.searchUser(): ApiResult<UserSearchDTO> {
 		)
 	}
 	return if (data != null) {
-		ApiResult.new(data, NoCode.USER_SEARCH_NOT_FOUND)
+		ApiResult.create(data, NoCode.USER_SEARCH_NOT_FOUND)
 	} else {
-		ApiResult.new(NoCode.USER_SEARCH_SUCCESS)
+		ApiResult.create(NoCode.USER_SEARCH_SUCCESS)
 	}
 }

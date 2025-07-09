@@ -1,10 +1,10 @@
 package com.nocircle.server.app.plugins
 
-import com.nocircle.server.common.model.Code
-import com.nocircle.server.common.model.respondOK
+import com.nocircle.shared.model.ApiResult
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.response.*
 
 fun Application.configureStatusPages() {
 	install(StatusPages) {
@@ -12,20 +12,12 @@ fun Application.configureStatusPages() {
 			it.value in 300..599
 		}.toTypedArray()
 		status(*status) {
-			call.respondOK(it.toHttpCode())
+			val apiResult = apiResultCacheMap.getOrPut(it) {
+				ApiResult(it.value, it.description)
+			}
+			call.respond(apiResult)
 		}
 	}
 }
 
-private class HttpCode(
-	override val msg: String,
-	override val code: Int
-) : Code
-
-private val httpCodeMap = mutableMapOf<HttpStatusCode, HttpCode>()
-
-private fun HttpStatusCode.toHttpCode(): HttpCode {
-	return httpCodeMap.getOrPut(this) {
-		HttpCode(description, value)
-	}
-}
+private val apiResultCacheMap = mutableMapOf<HttpStatusCode, ApiResult<Unit>>()

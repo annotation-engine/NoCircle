@@ -6,9 +6,10 @@ import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLoginDao
-import com.nocircle.server.common.expends.toKtInstant
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.expends.toKtInstant
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.user.UserDetailDTO
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -37,8 +38,8 @@ fun RoutingContext.userDetail(): ApiResult<UserDetailDTO> {
 		)
 	}
 	return if (data != null) {
-		ApiResult.new(data, NoCode.USER_DETAIL_FAILURE)
+		ApiResult.create(data, NoCode.USER_DETAIL_SUCCESS)
 	} else {
-		ApiResult.new(NoCode.USER_DETAIL_FAILURE)
+		ApiResult.create(NoCode.USER_DETAIL_FAILURE)
 	}
 }

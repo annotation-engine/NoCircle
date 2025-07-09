@@ -4,8 +4,9 @@ import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.shared.model.ApiResult
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -25,5 +26,5 @@ suspend fun RoutingContext.deleteFriendRequest(): ApiResult<Unit> {
 		FriendRequestDao.deleteOne(userId, targetId)
 	}
 	val code = if (success) NoCode.FRIEND_REQUEST_DELETE_SUCCESS else NoCode.FRIEND_REQUEST_DELETE_FAILURE
-	return ApiResult.new(code)
+	return ApiResult.create(code)
 }

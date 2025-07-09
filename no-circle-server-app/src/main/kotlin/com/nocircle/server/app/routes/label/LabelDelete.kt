@@ -4,8 +4,9 @@ import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserLabelDao
-import com.nocircle.server.common.model.ApiResult
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.shared.model.ApiResult
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -23,5 +24,5 @@ suspend fun RoutingContext.deleteLabel(): ApiResult<Unit> {
 		UserLabelDao.deleteOne(userId, id)
 	}
 	val code = if (success) NoCode.LABEL_DELETE_SUCCESS else NoCode.LABEL_DELETE_FAILURE
-	return ApiResult.new(code)
+	return ApiResult.create(code)
 }

@@ -6,9 +6,10 @@ import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.FriendVersionDao
-import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.websockets.sendToReceiver
+import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.server.request.*
@@ -40,7 +41,7 @@ suspend fun RoutingContext.agreeFriendRequest(): ApiResult<Unit> {
 		FriendRequestDao.deleteOne(userId, targetId)
 	}
 	if (status == null) {
-		return ApiResult.new(NoCode.FRIEND_REQUEST_AGREE_FAILURE)
+		return ApiResult.create(NoCode.FRIEND_REQUEST_AGREE_FAILURE)
 	}
 	sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, targetId)
 	sendToReceiver(WebSocketType.FRIEND_RECEIVED_REQUEST_COUNT, userId, userId)
@@ -48,5 +49,5 @@ suspend fun RoutingContext.agreeFriendRequest(): ApiResult<Unit> {
 	if (status) {
 		sendToReceiver(WebSocketType.FRIEND_SENT_REQUEST, userId, userId)
 	}
-	return ApiResult.new(NoCode.FRIEND_REQUEST_AGREE_SUCCESS)
+	return ApiResult.create(NoCode.FRIEND_REQUEST_AGREE_SUCCESS)
 }

@@ -4,9 +4,10 @@ import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserLabelDao
+import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.getDisplayLength
-import com.nocircle.server.common.model.ApiResult
 import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.shared.model.ApiResult
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -41,7 +42,7 @@ suspend fun RoutingContext.addLabel(): ApiResult<Unit> {
 		val success = UserLabelDao.insertOne(userId, label, color)
 		if (success) NoCode.LABEL_ADD_SUCCESS else NoCode.LABEL_ADD_FAILURE
 	}
-	return ApiResult.new(code)
+	return ApiResult.create(code)
 }
 
 private const val MAX_COUNT = 4
