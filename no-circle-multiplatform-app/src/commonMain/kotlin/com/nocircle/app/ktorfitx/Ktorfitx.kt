@@ -1,6 +1,6 @@
 package com.nocircle.app.ktorfitx
 
-import cn.ktorfitx.multiplatform.core.ktorfit
+import cn.ktorfitx.multiplatform.core.ktorfitx
 import com.nocircle.common.config.TokenConfigKey
 import com.nocircle.common.config.get
 import com.nocircle.common.device.DeviceName.ANDROID
@@ -19,7 +19,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
-val ktorfitx = ktorfit {
+val ktorfitx = ktorfitx {
 	token {
 		runBlocking { TokenConfigKey.get() }
 	}

@@ -2,14 +2,14 @@ package com.nocircle.server.app.routes.friend
 
 import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.GET
+import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.FriendDTO
-import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -17,8 +17,10 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  */
 @Authentication
 @GET("friend/query")
-fun RoutingContext.queryFriend(): ApiResult<List<FriendDTO>> {
-	val userId = call.getPrincipal().userId
+fun queryFriend(
+	@Principal principal: NoPrincipal
+): ApiResult<List<FriendDTO>> {
+	val userId = principal.userId
 	val data = transaction {
 		val friends = FriendRelationshipDao.getFriendsByUserId(userId)
 		val friendIds = friends.map { it.friendId.value }

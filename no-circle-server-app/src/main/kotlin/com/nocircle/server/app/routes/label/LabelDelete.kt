@@ -1,15 +1,14 @@
 package com.nocircle.server.app.routes.label
 
 import cn.ktorfitx.server.annotation.Authentication
+import cn.ktorfitx.server.annotation.Field
 import cn.ktorfitx.server.annotation.POST
+import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
-import io.ktor.server.request.*
-import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -17,9 +16,11 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  */
 @Authentication
 @POST("label/delete")
-suspend fun RoutingContext.deleteLabel(): ApiResult<Unit> {
-	val userId = call.getPrincipal().userId
-	val id: Int by call.receiveParameters()
+fun deleteLabel(
+	@Principal principal: NoPrincipal,
+	@Field id: Int
+): ApiResult<Unit> {
+	val userId = principal.userId
 	val success = transaction {
 		UserLabelDao.deleteOne(userId, id)
 	}

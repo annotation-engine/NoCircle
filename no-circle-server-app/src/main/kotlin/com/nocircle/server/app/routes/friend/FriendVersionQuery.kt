@@ -2,18 +2,20 @@ package com.nocircle.server.app.routes.friend
 
 import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.GET
+import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendVersionDao
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
-import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 @Authentication
 @GET("friend/version/query")
-fun RoutingContext.queryFriendVersion(): ApiResult<Int> {
-	val userId = call.getPrincipal().userId
+fun queryFriendVersion(
+	@Principal principal: NoPrincipal
+): ApiResult<Int> {
+	val userId = principal.userId
 	val version = transaction {
 		FriendVersionDao.getVersionByUserId(userId) ?: 0
 	}

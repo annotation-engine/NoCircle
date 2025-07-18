@@ -1,5 +1,6 @@
 package com.nocircle.server.app.routes.user
 
+import cn.ktorfitx.server.annotation.Field
 import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
@@ -13,9 +14,6 @@ import com.nocircle.server.app.utils.PasswordUtils
 import com.nocircle.server.common.expends.create
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.user.UserLoginDTO
-import io.ktor.server.request.*
-import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.toJavaDuration
 
@@ -23,10 +21,10 @@ import kotlin.time.toJavaDuration
  * 用户登录
  */
 @POST("user/login")
-suspend fun RoutingContext.userLogin(): ApiResult<UserLoginDTO> {
-	val parameters = call.receiveParameters()
-	val username: String by parameters
-	val password: String by parameters
+fun userLogin(
+	@Field username: String,
+	@Field password: String,
+): ApiResult<UserLoginDTO> {
 	val user = transaction {
 		UserDao.getOneByUsername(username)
 	}

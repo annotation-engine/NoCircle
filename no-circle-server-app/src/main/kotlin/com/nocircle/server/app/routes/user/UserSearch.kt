@@ -2,16 +2,16 @@ package com.nocircle.server.app.routes.user
 
 import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.GET
+import cn.ktorfitx.server.annotation.Principal
+import cn.ktorfitx.server.annotation.Query
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.*
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.label.UserLabelDTO
 import com.nocircle.shared.model.user.UserSearchDTO
 import com.nocircle.shared.model.user.UserSearchDTO.RelationshipDTO.*
-import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -19,9 +19,11 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  */
 @Authentication
 @GET("user/search")
-fun RoutingContext.searchUser(): ApiResult<UserSearchDTO> {
-	val userId = call.getPrincipal().userId
-	val username: String by call.queryParameters
+fun searchUser(
+	@Principal principal: NoPrincipal,
+	@Query username: String,
+): ApiResult<UserSearchDTO> {
+	val userId = principal.userId
 	if (username.isBlank()) {
 		return ApiResult.create(NoCode.USER_SEARCH_USERNAME_NOT_EMPTY)
 	}

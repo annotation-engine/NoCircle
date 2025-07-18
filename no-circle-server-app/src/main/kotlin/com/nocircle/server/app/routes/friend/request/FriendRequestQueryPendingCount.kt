@@ -2,12 +2,12 @@ package com.nocircle.server.app.routes.friend.request
 
 import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.GET
+import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.getPrincipal
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
-import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
@@ -15,8 +15,10 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
  */
 @Authentication
 @GET("friend/request/queryPendingCount")
-fun RoutingContext.queryFriendRequestPendingCount(): ApiResult<Int> {
-	val userId = call.getPrincipal().userId
+fun queryFriendRequestPendingCount(
+	@Principal principal: NoPrincipal,
+): ApiResult<Int> {
+	val userId = principal.userId
 	val count = transaction {
 		FriendRequestDao.getReceivedPendingRequestCount(userId)
 	}

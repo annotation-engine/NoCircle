@@ -2,28 +2,30 @@ package com.nocircle.server.app.routes.friend
 
 import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.GET
+import cn.ktorfitx.server.annotation.Principal
+import cn.ktorfitx.server.annotation.Query
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.server.common.expends.toKtInstant
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.FriendDetailDTO
 import com.nocircle.shared.model.label.UserLabelDTO
-import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Authentication
 @GET("friend/detail/query")
-fun RoutingContext.queryFriendDetail(): ApiResult<FriendDetailDTO> {
-	val userId = call.getPrincipal().userId
-	val friendId: Int by call.queryParameters
+fun queryFriendDetail(
+	@Principal principal: NoPrincipal,
+	@Query friendId: Int
+): ApiResult<FriendDetailDTO> {
+	val userId = principal.userId
 	val data = transaction {
 		val user = UserDao.getOneById(friendId) ?: return@transaction null
 		val friendId = user.id.value

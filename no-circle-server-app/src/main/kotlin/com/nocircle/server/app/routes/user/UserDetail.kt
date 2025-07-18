@@ -2,16 +2,16 @@ package com.nocircle.server.app.routes.user
 
 import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.GET
+import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLoginDao
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.server.common.expends.toKtInstant
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.user.UserDetailDTO
-import io.ktor.server.routing.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.ExperimentalTime
 
@@ -21,8 +21,10 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class)
 @Authentication
 @GET("user/detail")
-fun RoutingContext.userDetail(): ApiResult<UserDetailDTO> {
-	val userId = call.getPrincipal().userId
+fun userDetail(
+	@Principal principal: NoPrincipal,
+): ApiResult<UserDetailDTO> {
+	val userId = principal.userId
 	val data = transaction {
 		val user = UserDao.getOneById(userId) ?: return@transaction null
 		val userDetail = UserDetailDao.getOneByUserId(userId)

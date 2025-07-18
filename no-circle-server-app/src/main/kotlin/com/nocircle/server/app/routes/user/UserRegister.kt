@@ -1,5 +1,6 @@
 package com.nocircle.server.app.routes.user
 
+import cn.ktorfitx.server.annotation.Field
 import cn.ktorfitx.server.annotation.POST
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserDao
@@ -7,20 +8,17 @@ import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.isLowerCases
 import com.nocircle.shared.model.ApiResult
-import io.ktor.server.request.*
-import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 用户注册
  */
 @POST("user/register")
-suspend fun RoutingContext.userRegister(): ApiResult<Unit> {
-	val parameters = call.receiveParameters()
-	val username: String by parameters
-	val password: String by parameters
-	val nickname: String by parameters
+fun userRegister(
+	@Field username: String,
+	@Field password: String,
+	@Field nickname: String,
+): ApiResult<Unit> {
 	if (username.length !in 8..12 ||
 		!username.isLowerCases() ||
 		password.length !in 8..20 ||

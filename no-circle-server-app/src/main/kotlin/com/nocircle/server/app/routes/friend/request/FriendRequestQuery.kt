@@ -2,6 +2,8 @@ package com.nocircle.server.app.routes.friend.request
 
 import cn.ktorfitx.server.annotation.Authentication
 import cn.ktorfitx.server.annotation.GET
+import cn.ktorfitx.server.annotation.Principal
+import cn.ktorfitx.server.annotation.Query
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
@@ -10,13 +12,11 @@ import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.getPrincipal
 import com.nocircle.server.common.expends.toKtInstant
+import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.model.label.UserLabelDTO
-import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.ExperimentalTime
 
@@ -25,10 +25,11 @@ import kotlin.time.ExperimentalTime
  */
 @Authentication
 @GET("friend/request/query")
-fun RoutingContext.queryFriendRequest(): ApiResult<List<FriendRequestDTO>> {
-	val userId = call.getPrincipal().userId
-	val type: FriendRequestType by call.parameters
-	
+fun queryFriendRequest(
+	@Principal principal: NoPrincipal,
+	@Query type: FriendRequestType
+): ApiResult<List<FriendRequestDTO>> {
+	val userId = principal.userId
 	val data = transaction {
 		when (type) {
 			SENT -> getSentRequests(userId)
@@ -104,7 +105,7 @@ private fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 	}
 }
 
-private enum class FriendRequestType {
+enum class FriendRequestType {
 	SENT,
 	RECEIVED
 }
