@@ -48,7 +48,6 @@ class LoginViewModel() : NoViewModel() {
 			}
 			val result = ktorfitx.userApi.login(username, password)
 				.getOrNull() ?: return@tryWithLock networkError()
-			NoLog.info(result)
 			if (result.success) {
 				TokenConfigKey.set(result.data!!.token)
 				UserIdConfigKey.set(result.data!!.userId)

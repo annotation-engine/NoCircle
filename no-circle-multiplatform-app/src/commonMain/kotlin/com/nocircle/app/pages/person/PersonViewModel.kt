@@ -43,7 +43,6 @@ class PersonViewModel : NoViewModel() {
 	private suspend fun loadUserDetail(): Boolean {
 		val result = ktorfitx.userApi.queryDetail()
 			.getOrNull() ?: return networkError()
-		NoLog.info(result)
 		if (result.success) {
 			_userDetail.value = result.data!!
 		}
