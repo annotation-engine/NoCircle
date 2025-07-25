@@ -11,7 +11,7 @@ jwt:
   realm: "NoCircle"
   secret: "oB25pdw7tBo6pVIqGdeiFuizxixUbFuQ"
   timeout: "7d"
-mysql:
+database:
   url: "jdbc:postgresql://localhost:5432/nocircle"
   user: "cooder"
   password: ""

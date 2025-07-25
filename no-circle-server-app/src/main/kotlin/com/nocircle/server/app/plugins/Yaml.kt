@@ -18,7 +18,7 @@ lateinit var yaml: YamlConfig
 
 class YamlConfig private constructor(
 	val jwt: JwtConfig,
-	val mysql: MysqlConfig,
+	val database: DatabaseConfig,
 	val security: SecurityConfig,
 	val redis: RedisConfig,
 	val logger: LoggerConfig
@@ -41,7 +41,7 @@ class JwtConfig private constructor(
 	}
 }
 
-class MysqlConfig private constructor(
+class DatabaseConfig private constructor(
 	val url: String,
 	val user: String,
 	val password: String,

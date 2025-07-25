@@ -10,9 +10,9 @@ import kotlin.system.measureTimeMillis
 fun configureDatabase() {
 	val millis = measureTimeMillis {
 		val database = Database.connect(
-			url = yaml.mysql.url,
-			user = yaml.mysql.user,
-			password = yaml.mysql.password
+			url = yaml.database.url,
+			user = yaml.database.user,
+			password = yaml.database.password
 		)
 		transaction(database) {
 			SchemaUtils.create(*tables)
