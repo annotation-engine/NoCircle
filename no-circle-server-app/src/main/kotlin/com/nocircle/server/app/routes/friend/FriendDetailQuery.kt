@@ -10,7 +10,6 @@ import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.toKtInstant
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.FriendDetailDTO
@@ -48,7 +47,7 @@ fun queryFriendDetail(
 			signature = userDetail.signature,
 			gender = userDetail.gender,
 			labels = labels,
-			createTime = relationship.createTime.toKtInstant()
+			createTime = relationship.createTime
 		)
 	}
 	return if (data != null) {

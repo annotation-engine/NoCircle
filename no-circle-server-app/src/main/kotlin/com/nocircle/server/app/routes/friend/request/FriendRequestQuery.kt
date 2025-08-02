@@ -12,7 +12,6 @@ import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.toKtInstant
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
@@ -66,7 +65,7 @@ private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 			nickname = user.nickname,
 			avatarUrl = avatarUrl,
 			status = it.status,
-			createTime = it.createTime.toKtInstant(),
+			createTime = it.createTime,
 			labels = labels
 		)
 	}
@@ -99,7 +98,7 @@ private fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 			nickname = user.nickname,
 			avatarUrl = avatarUrl,
 			status = it.status,
-			createTime = it.createTime.toKtInstant(),
+			createTime = it.createTime,
 			labels = labels
 		)
 	}

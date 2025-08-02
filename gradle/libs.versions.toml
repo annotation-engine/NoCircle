@@ -3,7 +3,7 @@ android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
 kotlin = "2.2.0"
-agp = "8.10.1"
+agp = "8.11.1"
 androidx-activity-compose = "1.10.1"
 compose-multiplatform = "1.9.0-beta01"
 compose-material3 = "1.9.0-alpha04"
@@ -14,9 +14,9 @@ kotlinx-datetime = "0.7.1-0.6.x-compat"
 room = "2.7.2"
 sqlite = "2.5.2"
 koin = "4.1.0"
-ktor = "3.2.2"
-ktorfitx = "3.2.2-3.0.2"
-exposed = "1.0.0-beta-4"
+ktor = "3.2.3"
+ktorfitx = "3.2.3-3.0.4"
+exposed = "1.0.0-beta-5"
 postgresql = "42.7.7"
 coil3 = "3.3.0"
 logback-classic = "1.5.18"
@@ -44,10 +44,6 @@ ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref =
 ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
-ktorfitx-multiplatform-annotation = { group = "cn.ktorfitx", name = "multiplatform-annotation", version.ref = "ktorfitx" }
-ktorfitx-multiplatform-core = { group = "cn.ktorfitx", name = "multiplatform-core", version.ref = "ktorfitx" }
-ktorfitx-multiplatform-websockets = { group = "cn.ktorfitx", name = "multiplatform-websockets", version.ref = "ktorfitx" }
-ktorfitx-multiplatform-ksp = { group = "cn.ktorfitx", name = "multiplatform-ksp", version.ref = "ktorfitx" }
 
 # Ktor Server
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
@@ -70,9 +66,6 @@ hutool-extra = { group = "cn.hutool", name = "hutool-extra", version.ref = "huto
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 tinypinyin = { group = "io.github.biezhi", name = "TinyPinyin", version.ref = "tinypinyin" }
 ktorfitx-server-core = { group = "cn.ktorfitx", name = "server-core", version.ref = "ktorfitx" }
-ktorfitx-server-annotation = { group = "cn.ktorfitx", name = "server-annotation", version.ref = "ktorfitx" }
-ktorfitx-server-auth = { group = "cn.ktorfitx", name = "server-auth", version.ref = "ktorfitx" }
-ktorfitx-server-ksp = { group = "cn.ktorfitx", name = "server-ksp", version.ref = "ktorfitx" }
 
 # Common
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
@@ -89,6 +82,8 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 hot-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hot-reload" }
+ktorfitx-multiplatform = { id = "cn.ktorfitx.multiplatform", version.ref = "ktorfitx" }
+ktorfitx-server = { id = "cn.ktorfitx.server", version.ref = "ktorfitx" }
 
 [bundles]
 multiplatform-app = [
@@ -104,9 +99,6 @@ multiplatform-app = [
     'room-paging',
     'coil-compose',
     'coil-network-ktor3',
-    'ktorfitx-multiplatform-annotation',
-    'ktorfitx-multiplatform-core',
-    'ktorfitx-multiplatform-websockets',
     'kotlinx-datetime'
 ]
 
@@ -171,10 +163,7 @@ server-app = [
     'postgresql',
     'logback-classic',
     'hutool-crypto',
-    'redisson',
-    'ktorfitx-server-core',
-    'ktorfitx-server-annotation',
-    'ktorfitx-server-auth'
+    'redisson'
 ]
 
 server-common = [

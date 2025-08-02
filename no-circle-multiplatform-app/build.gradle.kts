@@ -8,9 +8,9 @@ plugins {
 	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.multiplatform)
 	alias(libs.plugins.kotlin.serialization)
-	alias(libs.plugins.ksp)
 	alias(libs.plugins.room)
 	alias(libs.plugins.hot.reload)
+	alias(libs.plugins.ktorfitx.multiplatform)
 }
 
 val noCircleVersionName = property("no-circle.version.name").toString()
@@ -73,9 +73,6 @@ kotlin {
 			implementation(libs.bundles.multiplatform.app.ios)
 		}
 	}
-	sourceSets.commonMain {
-		kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-	}
 	compilerOptions {
 		languageVersion = KotlinVersion.KOTLIN_2_2
 		apiVersion = KotlinVersion.KOTLIN_2_2
@@ -117,8 +114,6 @@ android {
 }
 
 dependencies {
-	kspCommonMainMetadata(libs.ktorfitx.multiplatform.ksp)
-	
 	arrayOf(
 		"kspAndroid",
 		"kspDesktop",
@@ -142,6 +137,10 @@ afterEvaluate {
 			dependsOn("kspCommonMainKotlinMetadata")
 		}
 	}
+}
+
+ktorfitx {
+	websockets.enabled = true
 }
 
 room {

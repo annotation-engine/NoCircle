@@ -5,6 +5,7 @@ import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
+import kotlin.time.ExperimentalTime
 
 object FriendRequests : NoTable("friend_request") {
 	
@@ -27,5 +28,6 @@ class FriendRequest(id: EntityID<Int>) : IntEntity(id) {
 	
 	val status by FriendRequests.status
 	
+	@OptIn(ExperimentalTime::class)
 	val createTime by FriendRequests.createTime
 }

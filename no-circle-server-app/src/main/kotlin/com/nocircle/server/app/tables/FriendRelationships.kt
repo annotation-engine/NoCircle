@@ -4,6 +4,7 @@ import com.nocircle.server.common.exposed.NoTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
+import kotlin.time.ExperimentalTime
 
 object FriendRelationships : NoTable("friend_relationship") {
 	
@@ -22,5 +23,6 @@ class FriendRelationship(id: EntityID<Int>) : IntEntity(id) {
 	
 	val friendId by FriendRelationships.friendId
 	
+	@OptIn(ExperimentalTime::class)
 	val createTime by FriendRelationships.createTime
 }

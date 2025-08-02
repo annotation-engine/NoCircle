@@ -6,6 +6,7 @@ plugins {
 	alias(libs.plugins.kotlin.serialization)
 	alias(libs.plugins.ktor)
 	alias(libs.plugins.ksp)
+	alias(libs.plugins.ktorfitx.server)
 }
 
 group = "com.nocircle.server.app"
@@ -32,6 +33,9 @@ dependencies {
 	implementation(projects.noCircleServerCommon)
 	implementation(projects.noCircleShared)
 	implementation(libs.bundles.server.app)
-	
-	ksp(libs.ktorfitx.server.ksp)
+}
+
+ktorfitx {
+	websockets.enabled = true
+	auth.enabled = true
 }

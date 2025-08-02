@@ -5,12 +5,14 @@ import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.dao.IntEntity
 import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.datetime.timestamp
+import kotlin.time.ExperimentalTime
 
 object UserLogins : NoTable("user_login") {
 	
 	val userId = integer("user_id")
 		.references(Users.id)
 	
+	@OptIn(ExperimentalTime::class)
 	val loginTime = timestamp("login_time")
 	
 	val method = enumerationByName<Method>("method", 8)
@@ -24,6 +26,7 @@ class UserLogin(id: EntityID<Int>) : IntEntity(id) {
 	
 	val userId by UserLogins.userId
 	
+	@OptIn(ExperimentalTime::class)
 	val loginTime by UserLogins.loginTime
 	
 	val method by UserLogins.method

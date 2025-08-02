@@ -8,7 +8,6 @@ import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLoginDao
 import com.nocircle.server.common.expends.create
-import com.nocircle.server.common.expends.toKtInstant
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.user.UserDetailDTO
@@ -36,7 +35,7 @@ fun userDetail(
 			email = userDetail.email,
 			signature = userDetail.signature,
 			gender = userDetail.gender,
-			lastLoginTime = lastLoginTime?.toKtInstant()
+			lastLoginTime = lastLoginTime
 		)
 	}
 	return if (data != null) {

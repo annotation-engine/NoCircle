@@ -1,6 +1,5 @@
 package com.nocircle.server.common.exposed
 
-import kotlinx.datetime.Clock
 import org.jetbrains.exposed.v1.core.Expression
 import org.jetbrains.exposed.v1.core.Op
 import org.jetbrains.exposed.v1.core.SqlExpressionBuilder
@@ -9,6 +8,8 @@ import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.statements.UpdateStatement
 import org.jetbrains.exposed.v1.jdbc.*
 import org.jetbrains.exposed.v1.jdbc.statements.ReturningBlockingExecutable
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 fun Query.exists(): Boolean = !this.empty()
 
@@ -37,6 +38,7 @@ fun isLogicExists(
 	acc.and { table.deleteFlag eq false }
 }
 
+@OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicUpdate(
 	where: SqlExpressionBuilder.() -> Op<Boolean>,
 	limit: Int? = null,
@@ -49,6 +51,7 @@ fun <T : NoTable> T.logicUpdate(
 	it[this.updateTime] = Clock.System.now()
 }
 
+@OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicUpdateReturning(
 	returning: List<Expression<*>> = columns,
 	where: SqlExpressionBuilder.() -> Op<Boolean>,
@@ -61,6 +64,7 @@ fun <T : NoTable> T.logicUpdateReturning(
 	it[this.updateTime] = Clock.System.now()
 }
 
+@OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicDeleteWhere(
 	limit: Int? = null,
 	where: SqlExpressionBuilder.() -> Op<Boolean>
@@ -72,6 +76,7 @@ fun <T : NoTable> T.logicDeleteWhere(
 	it[this.deleteFlag] = true
 }
 
+@OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicDeleteReturning(
 	returning: List<Expression<*>> = columns,
 	where: SqlExpressionBuilder.() -> Op<Boolean>

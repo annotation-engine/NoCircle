@@ -17,7 +17,6 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
-@OptIn(ExperimentalTime::class)
 val ktorfitx = ktorfitx {
 	token { TokenConfigKey.get() }
 	baseUrl = when (NoDevice.Name) {
@@ -29,6 +28,7 @@ val ktorfitx = ktorfitx {
 			json(
 				json = Json {
 					serializersModule = SerializersModule {
+						@OptIn(ExperimentalTime::class)
 						contextual<Instant>(ISOInstantSerializer)
 					}
 					prettyPrint = false

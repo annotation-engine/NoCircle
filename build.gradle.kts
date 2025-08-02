@@ -10,4 +10,6 @@ plugins {
 	alias(libs.plugins.ksp) apply false
 	alias(libs.plugins.room) apply false
 	alias(libs.plugins.hot.reload) apply false
+	alias(libs.plugins.ktorfitx.multiplatform) apply false
+	alias(libs.plugins.ktorfitx.server) apply false
 }

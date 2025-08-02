@@ -13,6 +13,7 @@ import org.jetbrains.exposed.v1.jdbc.andWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll
+import kotlin.time.ExperimentalTime
 
 object FriendRequestDao {
 	
@@ -38,6 +39,7 @@ object FriendRequestDao {
 		return updateCount == 1
 	}
 	
+	@OptIn(ExperimentalTime::class)
 	fun getSentRequests(senderId: Int): List<FriendRequest> {
 		val query = FriendRequests.selectAll()
 			.where { FriendRequests.senderId eq senderId }
@@ -46,6 +48,7 @@ object FriendRequestDao {
 		return FriendRequest.wrapRows(query).toList()
 	}
 	
+	@OptIn(ExperimentalTime::class)
 	fun getReceivedRequests(receiverId: Int): List<FriendRequest> {
 		val query = FriendRequests.selectAll()
 			.where { FriendRequests.receiverId eq receiverId }
