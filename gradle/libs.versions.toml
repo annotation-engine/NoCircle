@@ -15,7 +15,7 @@ room = "2.7.2"
 sqlite = "2.5.2"
 koin = "4.1.0"
 ktor = "3.2.3"
-ktorfitx = "3.2.3-3.0.4"
+ktorfitx = "3.2.3-3.0.5"
 exposed = "1.0.0-beta-5"
 postgresql = "42.7.7"
 coil3 = "3.3.0"
@@ -65,7 +65,6 @@ hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hu
 hutool-extra = { group = "cn.hutool", name = "hutool-extra", version.ref = "hutool" }
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 tinypinyin = { group = "io.github.biezhi", name = "TinyPinyin", version.ref = "tinypinyin" }
-ktorfitx-server-core = { group = "cn.ktorfitx", name = "server-core", version.ref = "ktorfitx" }
 
 # Common
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
