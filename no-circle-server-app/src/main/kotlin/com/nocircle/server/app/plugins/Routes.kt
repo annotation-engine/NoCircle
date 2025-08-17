@@ -1,9 +1,6 @@
-@file:RouteGenerator
-
 package com.nocircle.server.app.plugins
 
-import cn.ktorfitx.server.annotation.RouteGenerator
-import com.nocircle.server.app.plugins.generators.generateRoutes
+import com.nocircle.server.app.generated.generateRoutes
 import com.nocircle.server.common.log.NoLog
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

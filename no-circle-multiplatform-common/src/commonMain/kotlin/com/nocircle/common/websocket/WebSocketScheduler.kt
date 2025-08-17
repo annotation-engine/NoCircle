@@ -1,6 +1,5 @@
 package com.nocircle.common.websocket
 
-import com.nocircle.common.log.NoLog
 import com.nocircle.shared.websocket.WebSocketType
 import io.ktor.websocket.*
 import kotlinx.coroutines.*
@@ -36,7 +35,6 @@ object WebSocketScheduler {
 		val value = WebSocketModelImpl(senderId, data)
 		val sharedFlows = this.sharedFlowMap[webSocketType] ?: return
 		sharedFlows.emit(value)
-		NoLog.info("[WS]: type=$webSocketType, value=$value")
 	}
 	
 	inline fun <reified T : Any> addGlobalCollect(

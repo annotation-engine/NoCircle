@@ -36,7 +36,7 @@ class MainViewModel : NoViewModel() {
 	
 	private suspend fun keepAlive() {
 		var attempt = 0
-		while (!close) {
+		while (true) {
 			try {
 				ktorfitx.keepAliveApi.keepAlive {
 					if (attempt > 0) {
@@ -44,7 +44,6 @@ class MainViewModel : NoViewModel() {
 					}
 					attempt = 0
 					for (frame in incoming) {
-						if (close) break
 						when (frame) {
 							is Frame.Text -> {
 								WebSocketScheduler.scheduleText(
