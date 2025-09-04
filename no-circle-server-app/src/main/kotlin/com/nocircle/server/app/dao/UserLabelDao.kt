@@ -5,8 +5,10 @@ import com.nocircle.server.app.tables.UserLabels
 import com.nocircle.server.common.exposed.logicDeleteWhere
 import com.nocircle.server.common.exposed.logicExists
 import com.nocircle.server.common.exposed.logicUpdate
-import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.inList
+import org.jetbrains.exposed.v1.core.neq
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 

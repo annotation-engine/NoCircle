@@ -3,6 +3,7 @@ package com.nocircle.server.app.dao
 import com.nocircle.server.app.tables.UserLogin
 import com.nocircle.server.app.tables.UserLogins
 import org.jetbrains.exposed.v1.core.SortOrder
+import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import kotlin.time.Clock

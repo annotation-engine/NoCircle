@@ -9,6 +9,7 @@ import com.nocircle.server.common.exposed.logicUpdate
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.andWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select

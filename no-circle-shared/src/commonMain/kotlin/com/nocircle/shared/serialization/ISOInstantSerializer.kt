@@ -1,9 +1,24 @@
 package com.nocircle.shared.serialization
 
-import kotlinx.datetime.format.DateTimeComponents
-import kotlinx.datetime.serializers.FormattedInstantSerializer
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
-object ISOInstantSerializer : FormattedInstantSerializer(
-	"com.nocircle.shared.serialization.ISO",
-	DateTimeComponents.Formats.ISO_DATE_TIME_OFFSET
-)
+@OptIn(ExperimentalTime::class)
+object ISOInstantSerializer : KSerializer<Instant> {
+	
+	override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("ISOInstant", PrimitiveKind.STRING)
+	
+	override fun serialize(encoder: Encoder, value: Instant) {
+		encoder.encodeString(value.toString())
+	}
+	
+	override fun deserialize(decoder: Decoder): Instant {
+		return Instant.parse(decoder.decodeString())
+	}
+}

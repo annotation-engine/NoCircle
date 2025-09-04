@@ -3,6 +3,8 @@ package com.nocircle.server.app.dao
 import com.nocircle.server.app.tables.UserDetail
 import com.nocircle.server.app.tables.UserDetails
 import com.nocircle.server.common.exposed.logicExists
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.inList
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.select
 import org.jetbrains.exposed.v1.jdbc.selectAll

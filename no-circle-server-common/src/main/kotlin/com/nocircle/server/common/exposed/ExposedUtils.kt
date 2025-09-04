@@ -2,9 +2,8 @@ package com.nocircle.server.common.exposed
 
 import org.jetbrains.exposed.v1.core.Expression
 import org.jetbrains.exposed.v1.core.Op
-import org.jetbrains.exposed.v1.core.SqlExpressionBuilder
-import org.jetbrains.exposed.v1.core.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.statements.UpdateStatement
 import org.jetbrains.exposed.v1.jdbc.*
 import org.jetbrains.exposed.v1.jdbc.statements.ReturningBlockingExecutable
@@ -40,7 +39,7 @@ fun isLogicExists(
 
 @OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicUpdate(
-	where: SqlExpressionBuilder.() -> Op<Boolean>,
+	where: () -> Op<Boolean>,
 	limit: Int? = null,
 	body: T.(UpdateStatement) -> Unit
 ): Int = this.update(
@@ -54,7 +53,7 @@ fun <T : NoTable> T.logicUpdate(
 @OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicUpdateReturning(
 	returning: List<Expression<*>> = columns,
-	where: SqlExpressionBuilder.() -> Op<Boolean>,
+	where: () -> Op<Boolean>,
 	body: T.(UpdateStatement) -> Unit
 ): ReturningBlockingExecutable = this.updateReturning(
 	returning = returning,
@@ -67,7 +66,7 @@ fun <T : NoTable> T.logicUpdateReturning(
 @OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicDeleteWhere(
 	limit: Int? = null,
-	where: SqlExpressionBuilder.() -> Op<Boolean>
+	where: () -> Op<Boolean>
 ): Int = this.update(
 	where = { deleteFlag eq false and where() },
 	limit = limit
@@ -79,7 +78,7 @@ fun <T : NoTable> T.logicDeleteWhere(
 @OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicDeleteReturning(
 	returning: List<Expression<*>> = columns,
-	where: SqlExpressionBuilder.() -> Op<Boolean>
+	where: () -> Op<Boolean>
 ): ReturningBlockingExecutable = this.updateReturning(
 	returning = returning,
 	where = { deleteFlag eq false and where() }
