@@ -9,7 +9,7 @@
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$/no-circle-multiplatform-app" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value="-DmainClass=com.nocircle.app.MainKt --quiet" />
+      <option name="scriptParameters" value="-DmainClass=com.nocircle.app.MainKt --quiet --stacktrace" />
       <option name="taskDescriptions">
         <list />
       </option>

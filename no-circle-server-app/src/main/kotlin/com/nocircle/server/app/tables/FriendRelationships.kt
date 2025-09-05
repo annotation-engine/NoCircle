@@ -1,9 +1,9 @@
 package com.nocircle.server.app.tables
 
+import com.nocircle.server.common.exposed.NoEntity
+import com.nocircle.server.common.exposed.NoEntityClass
 import com.nocircle.server.common.exposed.NoTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
-import org.jetbrains.exposed.v1.dao.IntEntity
-import org.jetbrains.exposed.v1.dao.IntEntityClass
 import kotlin.time.ExperimentalTime
 
 object FriendRelationships : NoTable("friend_relationship") {
@@ -15,9 +15,9 @@ object FriendRelationships : NoTable("friend_relationship") {
 		.references(Users.id)
 }
 
-class FriendRelationship(id: EntityID<Int>) : IntEntity(id) {
+class FriendRelationship(id: EntityID<Int>) : NoEntity(id) {
 	
-	companion object : IntEntityClass<FriendRelationship>(FriendRelationships)
+	companion object : NoEntityClass<FriendRelationship>(FriendRelationships, ::FriendRelationship)
 	
 	val userId by FriendRelationships.userId
 	

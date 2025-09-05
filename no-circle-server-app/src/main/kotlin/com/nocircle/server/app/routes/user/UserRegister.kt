@@ -7,14 +7,14 @@ import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.common.expends.create
 import com.nocircle.server.common.expends.isLowerCases
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.shared.model.ApiResult
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 用户注册
  */
 @POST("user/register")
-fun userRegister(
+suspend fun userRegister(
 	@Field username: String,
 	@Field password: String,
 	@Field nickname: String,
@@ -27,15 +27,13 @@ fun userRegister(
 	) {
 		return ApiResult.create(NoCode.USER_REGISTER_FAILURE)
 	}
-	val code = transaction {
+	val code = tx {
 		val exists = UserDao.isExistsByUsername(username)
 		if (exists) {
-			return@transaction NoCode.USER_REGISTER_USER_ALREADY_EXISTS
+			return@tx NoCode.USER_REGISTER_USER_ALREADY_EXISTS
 		}
 		val userId = UserDao.insertOne(username, password, nickname)
-		if (userId == null) {
-			return@transaction NoCode.USER_REGISTER_FAILURE
-		}
+			?: return@tx NoCode.USER_REGISTER_FAILURE
 		val success = UserDetailDao.insertOne(userId)
 		if (success) NoCode.USER_REGISTER_SUCCESS else NoCode.USER_REGISTER_FAILURE
 	}

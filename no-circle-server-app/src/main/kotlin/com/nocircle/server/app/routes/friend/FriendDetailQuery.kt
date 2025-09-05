@@ -10,26 +10,26 @@ import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.app.dao.UserDetailDao
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.FriendDetailDTO
 import com.nocircle.shared.model.label.UserLabelDTO
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Authentication
 @GET("friend/detail/query")
-fun queryFriendDetail(
+suspend fun queryFriendDetail(
 	@Principal principal: NoPrincipal,
 	@Query friendId: Int
 ): ApiResult<FriendDetailDTO> {
 	val userId = principal.userId
-	val data = transaction {
-		val user = UserDao.getOneById(friendId) ?: return@transaction null
+	val data = tx {
+		val user = UserDao.getOneById(friendId) ?: return@tx null
 		val friendId = user.id.value
 		val relationship = FriendRelationshipDao.getOneByUserIdAndFriendId(userId, friendId)
-			?: return@transaction null
+			?: return@tx null
 		val labels = UserLabelDao.getListByUserId(friendId).map {
 			UserLabelDTO(
 				it.id.value,

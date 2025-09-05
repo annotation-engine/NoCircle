@@ -7,19 +7,19 @@ import cn.ktorfitx.server.annotation.Query
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.*
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.label.UserLabelDTO
 import com.nocircle.shared.model.user.UserSearchDTO
 import com.nocircle.shared.model.user.UserSearchDTO.RelationshipDTO.*
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 搜索用户
  */
 @Authentication
 @GET("user/search")
-fun searchUser(
+suspend fun searchUser(
 	@Principal principal: NoPrincipal,
 	@Query username: String,
 ): ApiResult<UserSearchDTO> {
@@ -27,8 +27,8 @@ fun searchUser(
 	if (username.isBlank()) {
 		return ApiResult.create(NoCode.USER_SEARCH_USERNAME_NOT_EMPTY)
 	}
-	val data = transaction {
-		val user = UserDao.getOneByUsername(username) ?: return@transaction null
+	val data = tx {
+		val user = UserDao.getOneByUsername(username) ?: return@tx null
 		val receiverId = user.id.value
 		val labels = UserLabelDao.getListByUserId(receiverId).map {
 			UserLabelDTO(
@@ -56,8 +56,8 @@ fun searchUser(
 		)
 	}
 	return if (data != null) {
-		ApiResult.create(data, NoCode.USER_SEARCH_NOT_FOUND)
+		ApiResult.create(data, NoCode.USER_SEARCH_SUCCESS)
 	} else {
-		ApiResult.create(NoCode.USER_SEARCH_SUCCESS)
+		ApiResult.create(NoCode.USER_SEARCH_NOT_FOUND)
 	}
 }

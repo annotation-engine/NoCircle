@@ -7,21 +7,21 @@ import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 删除标签
  */
 @Authentication
 @POST("label/delete")
-fun deleteLabel(
+suspend fun deleteLabel(
 	@Principal principal: NoPrincipal,
 	@Field id: Int
 ): ApiResult<Unit> {
 	val userId = principal.userId
-	val success = transaction {
+	val success = tx {
 		UserLabelDao.deleteOne(userId, id)
 	}
 	val code = if (success) NoCode.LABEL_DELETE_SUCCESS else NoCode.LABEL_DELETE_FAILURE

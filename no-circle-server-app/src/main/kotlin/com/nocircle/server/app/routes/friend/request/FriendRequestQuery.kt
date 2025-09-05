@@ -12,11 +12,11 @@ import com.nocircle.server.app.dao.UserLabelDao
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.RECEIVED
 import com.nocircle.server.app.routes.friend.request.FriendRequestType.SENT
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.model.label.UserLabelDTO
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.ExperimentalTime
 
 /**
@@ -24,12 +24,12 @@ import kotlin.time.ExperimentalTime
  */
 @Authentication
 @GET("friend/request/query")
-fun queryFriendRequest(
+suspend fun queryFriendRequest(
 	@Principal principal: NoPrincipal,
 	@Query type: FriendRequestType
 ): ApiResult<List<FriendRequestDTO>> {
 	val userId = principal.userId
-	val data = transaction {
+	val data = tx {
 		when (type) {
 			SENT -> getSentRequests(userId)
 			RECEIVED -> getReceivedRequests(userId)
@@ -42,7 +42,7 @@ fun queryFriendRequest(
  * 获取我发送的请求
  */
 @OptIn(ExperimentalTime::class)
-private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
+private suspend fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getSentRequests(senderId)
 	val receiverIds = requests.map { it.receiverId }
 	val receiverMap = UserDao.getMapByIds(receiverIds)
@@ -75,7 +75,7 @@ private fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
  * 获取发送给我的请求
  */
 @OptIn(ExperimentalTime::class)
-private fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
+private suspend fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getReceivedRequests(receiverId)
 	val senderIds = requests.map { it.senderId }
 	val senderMap = UserDao.getMapByIds(senderIds)

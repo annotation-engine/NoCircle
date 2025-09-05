@@ -7,14 +7,13 @@ import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRelationshipDao
 import com.nocircle.server.app.dao.FriendRequestDao
-import com.nocircle.server.app.dao.FriendVersionDao
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 同意好友请求
@@ -27,14 +26,9 @@ suspend fun agreeFriendRequest(
 	@Field targetId: Int
 ): ApiResult<Unit> {
 	val userId = principal.userId
-	val status = transaction {
+	val status = tx {
 		val success = FriendRequestDao.updateOne(id, targetId, userId, FriendRequestDTO.Status.AGREED)
-		if (!success) return@transaction null
-		listOf(userId, targetId).forEach { userId ->
-			FriendVersionDao.getVersionByUserId(userId)?.let {
-				FriendVersionDao.update(userId, it + 1)
-			} ?: FriendVersionDao.insertOne(userId)
-		}
+		if (!success) return@tx null
 		FriendRelationshipDao.insertOne(userId, targetId)
 		FriendRelationshipDao.insertOne(targetId, userId)
 		FriendRequestDao.deleteOne(userId, targetId)

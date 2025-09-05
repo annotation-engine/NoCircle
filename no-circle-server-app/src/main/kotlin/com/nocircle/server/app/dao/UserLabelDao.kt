@@ -2,50 +2,50 @@ package com.nocircle.server.app.dao
 
 import com.nocircle.server.app.tables.UserLabel
 import com.nocircle.server.app.tables.UserLabels
-import com.nocircle.server.common.exposed.logicDeleteWhere
-import com.nocircle.server.common.exposed.logicExists
-import com.nocircle.server.common.exposed.logicUpdate
+import com.nocircle.server.common.exposed.*
+import kotlinx.coroutines.flow.singleOrNull
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.inList
 import org.jetbrains.exposed.v1.core.neq
-import org.jetbrains.exposed.v1.jdbc.insert
-import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.r2dbc.insert
+import org.jetbrains.exposed.v1.r2dbc.selectAll
 
 object UserLabelDao {
 	
-	fun getOneById(id: Int): UserLabel? {
-		val row = UserLabels.selectAll()
+	suspend fun getOneById(id: Int): UserLabel? {
+		return UserLabels.selectAll()
 			.where { UserLabels.id eq id }
 			.logicExists(UserLabels)
-			.singleOrNull() ?: return null
-		return UserLabel.wrapRow(row)
+			.singleOrNull()
+			?.wrapRow(UserLabel)
 	}
 	
-	fun getListByUserId(userId: Int): List<UserLabel> {
-		val query = UserLabels.selectAll()
+	suspend fun getListByUserId(userId: Int): List<UserLabel> {
+		return UserLabels.selectAll()
 			.where { UserLabels.userId eq userId }
 			.logicExists(UserLabels)
 			.orderBy(UserLabels.id)
-		return UserLabel.wrapRows(query).toList()
+			.wrapRows(UserLabel)
 	}
 	
-	fun getListByUserIdAndNeqId(userId: Int, id: Int): List<UserLabel> {
-		val query = UserLabels.selectAll()
+	suspend fun getListByUserIdAndNeqId(userId: Int, id: Int): List<UserLabel> {
+		return UserLabels.selectAll()
 			.where { (UserLabels.userId eq userId) and (UserLabels.id neq id) }
 			.logicExists(UserLabels)
 			.orderBy(UserLabels.id)
-		return UserLabel.wrapRows(query).toList()
+			.wrapRows(UserLabel)
 	}
 	
-	fun getMapByUserIds(userIds: List<Int>): Map<Int, List<UserLabel>> {
-		val query = UserLabels.selectAll()
+	suspend fun getMapByUserIds(userIds: List<Int>): Map<Int, List<UserLabel>> {
+		return UserLabels.selectAll()
 			.where { UserLabels.userId inList userIds }
 			.logicExists(UserLabels)
-		return UserLabel.wrapRows(query).toList().groupBy { it.userId }
+			.wrapRows(UserLabel)
+			.groupBy { it.userId }
 	}
 	
-	fun insertOne(userId: Int, label: String, color: String): Boolean {
+	suspend fun insertOne(userId: Int, label: String, color: String): Boolean {
 		val insert = UserLabels.insert {
 			it[this.userId] = userId
 			it[this.label] = label
@@ -54,7 +54,7 @@ object UserLabelDao {
 		return insert.insertedCount == 1
 	}
 	
-	fun updateOne(userId: Int, id: Int, label: String, color: String): Boolean {
+	suspend fun updateOne(userId: Int, id: Int, label: String, color: String): Boolean {
 		val count = UserLabels.logicUpdate(
 			where = { (UserLabels.id eq id) and (UserLabels.userId eq userId) }
 		) {
@@ -64,7 +64,7 @@ object UserLabelDao {
 		return count == 1
 	}
 	
-	fun deleteOne(userId: Int, id: Int): Boolean {
+	suspend fun deleteOne(userId: Int, id: Int): Boolean {
 		val count = UserLabels.logicDeleteWhere {
 			(UserLabels.id eq id) and (UserLabels.userId eq userId)
 		}

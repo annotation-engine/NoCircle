@@ -3,12 +3,6 @@ package com.nocircle.app.pages.friends.list
 import androidx.lifecycle.viewModelScope
 import com.nocircle.app.api.impls.friendApi
 import com.nocircle.app.ktorfitx.ktorfitx
-import com.nocircle.app.room.AppDatabase
-import com.nocircle.app.room.entity.FriendListEntity
-import com.nocircle.common.config.ConfigKey
-import com.nocircle.common.config.UserIdConfigKey
-import com.nocircle.common.config.get
-import com.nocircle.common.config.set
 import com.nocircle.common.expends.findIndices
 import com.nocircle.common.expends.success
 import com.nocircle.common.websocket.WebSocketScheduler
@@ -52,48 +46,11 @@ class FriendListViewModel : NoViewModel() {
 	}
 	
 	suspend fun loadFriendList() {
-		val userId = UserIdConfigKey.get()!!
-		val friendVersionResult = ktorfitx.friendApi.queryFriendVersion()
+		val result = ktorfitx.friendApi.queryFriendList()
 			.getOrNull() ?: return networkError()
-		if (!friendVersionResult.success) {
-			return showNoErrorSnackbar(friendVersionResult.msg)
+		if (result.success) {
+			_friendList.value = result.data!!
 		}
-		val friendListDao = AppDatabase.INSTANCE.getFriendListDao()
-		
-		val version = FriendVersionConfigKey.get() ?: -1
-		
-		val friendList = if (friendVersionResult.data!! == version) {
-			friendListDao.queryList(userId).map {
-				FriendDTO(
-					friendId = it.friendId,
-					username = it.username,
-					nickname = it.nickname,
-					avatarUrl = it.avatarUrl,
-					pinyin = it.pinyin
-				)
-			}
-		} else {
-			val result = ktorfitx.friendApi.queryFriendList()
-				.getOrNull() ?: return networkError()
-			if (!result.success) {
-				return showNoErrorSnackbar(result.msg)
-			}
-			FriendVersionConfigKey.set(friendVersionResult.data!!)
-			friendListDao.deleteAll(userId)
-			result.data!!.forEach {
-				val entity = FriendListEntity(
-					userId = userId,
-					friendId = it.friendId,
-					username = it.username,
-					nickname = it.nickname,
-					avatarUrl = it.avatarUrl,
-					pinyin = it.pinyin
-				)
-				friendListDao.insert(entity)
-			}
-			result.data!!
-		}
-		_friendList.value = friendList.sorted()
 	}
 	
 	private suspend fun sortOrderCollect() {
@@ -162,5 +119,3 @@ class FriendListViewModel : NoViewModel() {
 		val nicknameIndices: List<IntRange>,
 	)
 }
-
-object FriendVersionConfigKey : ConfigKey<Int>("friendVersion")

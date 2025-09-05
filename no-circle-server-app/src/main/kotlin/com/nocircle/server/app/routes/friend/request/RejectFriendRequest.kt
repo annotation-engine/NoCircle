@@ -7,12 +7,12 @@ import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 拒绝好友请求
@@ -25,7 +25,7 @@ suspend fun rejectFriendRequest(
 	@Field targetId: Int
 ): ApiResult<Unit> {
 	val userId = principal.userId
-	val success = transaction {
+	val success = tx {
 		FriendRequestDao.updateOne(id, targetId, userId, FriendRequestDTO.Status.REJECTED)
 	}
 	if (success) {

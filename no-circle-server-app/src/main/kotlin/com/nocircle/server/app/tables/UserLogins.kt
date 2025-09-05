@@ -1,9 +1,9 @@
 package com.nocircle.server.app.tables
 
+import com.nocircle.server.common.exposed.NoEntity
+import com.nocircle.server.common.exposed.NoEntityClass
 import com.nocircle.server.common.exposed.NoTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
-import org.jetbrains.exposed.v1.dao.IntEntity
-import org.jetbrains.exposed.v1.dao.IntEntityClass
 import org.jetbrains.exposed.v1.datetime.timestamp
 import kotlin.time.ExperimentalTime
 
@@ -20,9 +20,9 @@ object UserLogins : NoTable("user_login") {
 	enum class Method { PASSWORD, TOKEN }
 }
 
-class UserLogin(id: EntityID<Int>) : IntEntity(id) {
+class UserLogin(id: EntityID<Int>) : NoEntity(id) {
 	
-	companion object : IntEntityClass<UserLogin>(UserLogins)
+	companion object : NoEntityClass<UserLogin>(UserLogins, ::UserLogin)
 	
 	val userId by UserLogins.userId
 	

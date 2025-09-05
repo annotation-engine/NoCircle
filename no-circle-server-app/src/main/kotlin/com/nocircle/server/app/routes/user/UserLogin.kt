@@ -12,27 +12,27 @@ import com.nocircle.server.app.tables.UserLogins
 import com.nocircle.server.app.utils.JWTUtils
 import com.nocircle.server.app.utils.PasswordUtils
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.user.UserLoginDTO
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import kotlin.time.toJavaDuration
 
 /**
  * 用户登录
  */
 @POST("user/login")
-fun userLogin(
+suspend fun userLogin(
 	@Field username: String,
 	@Field password: String,
 ): ApiResult<UserLoginDTO> {
-	val user = transaction {
+	val user = tx {
 		UserDao.getOneByUsername(username)
 	}
 	if (user == null || !PasswordUtils.verity(password, user.password)) {
 		return ApiResult.create(NoCode.USER_LOGIN_USERNAME_OR_PASSWORD_ERROR)
 	}
 	val userId = user.id.value
-	transaction {
+	tx {
 		UserLoginDao.insertOne(userId, UserLogins.Method.PASSWORD)
 	}
 	val token = JWTUtils.generate(userId, user.username)

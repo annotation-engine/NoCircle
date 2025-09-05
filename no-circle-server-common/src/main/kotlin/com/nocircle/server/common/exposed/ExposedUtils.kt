@@ -5,19 +5,25 @@ import org.jetbrains.exposed.v1.core.Op
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.statements.UpdateStatement
-import org.jetbrains.exposed.v1.jdbc.*
-import org.jetbrains.exposed.v1.jdbc.statements.ReturningBlockingExecutable
+import org.jetbrains.exposed.v1.r2dbc.*
+import org.jetbrains.exposed.v1.r2dbc.statements.ReturningSuspendExecutable
+import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-fun Query.exists(): Boolean = !this.empty()
+suspend inline fun <T> tx(
+	db: R2dbcDatabase? = null,
+	noinline statement: suspend R2dbcTransaction.() -> T
+): T = suspendTransaction(db, statement)
+
+suspend fun Query.exists(): Boolean = !this.empty()
 
 fun <T : NoTable> T.selectWithout(
 	column: Expression<*>,
 	vararg columns: Expression<*>
 ): Query {
 	val withoutColumns = columns.toList() + column
-	val columns = this.columns.filter { it !in withoutColumns }
+	val columns = this.columns.filterNot { it in withoutColumns }
 	return this.select(columns)
 }
 
@@ -38,7 +44,7 @@ fun isLogicExists(
 }
 
 @OptIn(ExperimentalTime::class)
-fun <T : NoTable> T.logicUpdate(
+suspend fun <T : NoTable> T.logicUpdate(
 	where: () -> Op<Boolean>,
 	limit: Int? = null,
 	body: T.(UpdateStatement) -> Unit
@@ -55,7 +61,7 @@ fun <T : NoTable> T.logicUpdateReturning(
 	returning: List<Expression<*>> = columns,
 	where: () -> Op<Boolean>,
 	body: T.(UpdateStatement) -> Unit
-): ReturningBlockingExecutable = this.updateReturning(
+): ReturningSuspendExecutable = this.updateReturning(
 	returning = returning,
 	where = { deleteFlag eq false and where() }
 ) {
@@ -64,7 +70,7 @@ fun <T : NoTable> T.logicUpdateReturning(
 }
 
 @OptIn(ExperimentalTime::class)
-fun <T : NoTable> T.logicDeleteWhere(
+suspend fun <T : NoTable> T.logicDeleteWhere(
 	limit: Int? = null,
 	where: () -> Op<Boolean>
 ): Int = this.update(
@@ -79,7 +85,7 @@ fun <T : NoTable> T.logicDeleteWhere(
 fun <T : NoTable> T.logicDeleteReturning(
 	returning: List<Expression<*>> = columns,
 	where: () -> Op<Boolean>
-): ReturningBlockingExecutable = this.updateReturning(
+): ReturningSuspendExecutable = this.updateReturning(
 	returning = returning,
 	where = { deleteFlag eq false and where() }
 ) {
@@ -87,5 +93,8 @@ fun <T : NoTable> T.logicDeleteReturning(
 	it[this.deleteFlag] = true
 }
 
-fun Query.page(number: Int, size: Int): Query =
-	this.offset(((number - 1) * size).toLong())
+fun Query.paginate(number: Int, size: Int): Query {
+	require(number > 0) { "Number must be greater than 0." }
+	require(size > 0) { "Number must be greater than 0." }
+	return this.offset(((number - 1) * size).toLong()).limit(size)
+}

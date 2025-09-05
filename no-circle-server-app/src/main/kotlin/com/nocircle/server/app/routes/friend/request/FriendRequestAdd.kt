@@ -8,12 +8,12 @@ import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.app.dao.UserDao
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.server.common.websockets.sendToReceiver
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.websocket.WebSocketType
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 添加好友请求
@@ -28,13 +28,13 @@ suspend fun addFriendRequest(
 	if (userId == targetId) {
 		return ApiResult.create(NoCode.FRIEND_REQUEST_ADD_CANNOT_ADD_ONESELF)
 	}
-	val code = transaction {
+	val code = tx {
 		val isExists = UserDao.isExistsByUserId(targetId)
-		if (!isExists) return@transaction NoCode.FRIEND_REQUEST_ADD_USER_NOT_FOUND
+		if (!isExists) return@tx NoCode.FRIEND_REQUEST_ADD_USER_NOT_FOUND
 		val request = FriendRequestDao.getOneBySenderIdAndReceiverId(userId, targetId)
 		if (request != null) {
 			if (request.status == FriendRequestDTO.Status.PENDING) {
-				return@transaction NoCode.FRIEND_REQUEST_ADD_REPEATED
+				return@tx NoCode.FRIEND_REQUEST_ADD_REPEATED
 			} else {
 				FriendRequestDao.deleteOne(userId, targetId)
 			}

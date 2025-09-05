@@ -7,21 +7,21 @@ import cn.ktorfitx.server.annotation.Principal
 import com.nocircle.server.app.code.NoCode
 import com.nocircle.server.app.dao.FriendRequestDao
 import com.nocircle.server.common.expends.create
+import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 /**
  * 删除好友请求
  */
 @Authentication
 @POST("friend/request/delete")
-fun deleteFriendRequest(
+suspend fun deleteFriendRequest(
 	@Principal principal: NoPrincipal,
 	@Field targetId: Int
 ): ApiResult<Unit> {
 	val userId = principal.userId
-	val success = transaction {
+	val success = tx {
 		FriendRequestDao.deleteOne(userId, targetId)
 	}
 	val code = if (success) NoCode.FRIEND_REQUEST_DELETE_SUCCESS else NoCode.FRIEND_REQUEST_DELETE_FAILURE

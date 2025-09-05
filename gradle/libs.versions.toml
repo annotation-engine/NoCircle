@@ -15,9 +15,9 @@ room = "2.7.2"
 sqlite = "2.5.2"
 koin = "4.1.1"
 ktor = "3.2.3"
-ktorfitx = "3.2.3-3.1.0-Beta6"
+ktorfitx = "3.2.3-3.1.0-RC1"
 exposed = "1.0.0-rc-1"
-postgresql = "42.7.7"
+r2dbc-postgresql = "1.0.7.RELEASE"
 coil3 = "3.3.0"
 logback-classic = "1.5.18"
 hutool = "5.8.40"
@@ -57,10 +57,9 @@ ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty-jvm", version
 ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml-jvm", version.ref = "ktor" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages-jvm", version.ref = "ktor" }
 exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
-exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
-exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
+exposed-r2dbc = { group = "org.jetbrains.exposed", name = "exposed-r2dbc", version.ref = "exposed" }
 exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kotlin-datetime", version.ref = "exposed" }
-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+r2dbc-postgresql = { group = "org.postgresql", name = "r2dbc-postgresql", version.ref = "r2dbc-postgresql" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
 hutool-extra = { group = "cn.hutool", name = "hutool-extra", version.ref = "hutool" }
@@ -99,7 +98,7 @@ multiplatform-app = [
     'room-paging',
     'coil-compose',
     'coil-network-ktor3',
-#    'kotlinx-datetime'
+    #    'kotlinx-datetime'
 ]
 
 multiplatform-app-desktop = [
@@ -156,10 +155,9 @@ server-app = [
     'ktor-server-status-pages',
     'ktor-serialization-kotlinx-json',
     'exposed-core',
-    'exposed-dao',
-    'exposed-jdbc',
+    'exposed-r2dbc',
     'exposed-kotlin-datetime',
-    'postgresql',
+    'r2dbc-postgresql',
     'logback-classic',
     'hutool-crypto',
     'redisson'
@@ -174,8 +172,7 @@ server-common = [
     'ktor-server-config-yaml',
     'ktor-serialization-kotlinx-json',
     'exposed-core',
-    'exposed-dao',
-    'exposed-jdbc',
+    'exposed-r2dbc',
     'exposed-kotlin-datetime',
     'hutool-extra',
     'tinypinyin'
