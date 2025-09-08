@@ -58,9 +58,7 @@ fun main() {
 }
 
 @Stable
-private fun Color.toAwtColor(): AwtColor {
-	return AwtColor(this.red, this.green, this.blue)
-}
+private fun Color.toAwtColor(): AwtColor = AwtColor(this.red, this.green, this.blue, this.alpha)
 
 @Composable
 private fun FrameWindowScope.WindowEffect(

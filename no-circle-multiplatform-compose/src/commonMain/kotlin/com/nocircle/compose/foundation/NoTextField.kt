@@ -147,34 +147,6 @@ private fun Container(
 	)
 }
 
-@Stable
-private fun TextFieldColors.cursorColor(isError: Boolean): Color =
-	if (isError) errorCursorColor else cursorColor
-
-@Stable
-private fun TextFieldColors.textColor(
-	enabled: Boolean,
-	isError: Boolean,
-	focused: Boolean
-): Color = when {
-	!enabled -> disabledTextColor
-	isError -> errorTextColor
-	focused -> focusedTextColor
-	else -> unfocusedTextColor
-}
-
-@Stable
-private fun TextFieldColors.containerColor(
-	enabled: Boolean,
-	isError: Boolean,
-	focused: Boolean,
-): Color = when {
-	!enabled -> disabledContainerColor
-	isError -> errorContainerColor
-	focused -> focusedContainerColor
-	else -> unfocusedContainerColor
-}
-
 @Composable
 private fun animateBorderStrokeAsState(
 	enabled: Boolean,
@@ -201,18 +173,6 @@ private fun animateBorderStrokeAsState(
 		}
 	
 	return rememberUpdatedState(BorderStroke(thickness.value, indicatorColor.value))
-}
-
-@Stable
-private fun TextFieldColors.indicatorColor(
-	enabled: Boolean,
-	isError: Boolean,
-	focused: Boolean,
-): Color = when {
-	!enabled -> disabledIndicatorColor
-	isError -> errorIndicatorColor
-	focused -> focusedIndicatorColor
-	else -> unfocusedIndicatorColor
 }
 
 @Stable
