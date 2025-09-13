@@ -8,7 +8,6 @@ plugins {
 	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.multiplatform)
 	alias(libs.plugins.kotlin.serialization)
-	alias(libs.plugins.room)
 	alias(libs.plugins.hot.reload)
 	alias(libs.plugins.ktorfitx.multiplatform)
 }
@@ -114,38 +113,8 @@ android {
 	}
 }
 
-dependencies {
-	arrayOf(
-		"kspAndroid",
-		"kspDesktop",
-		"kspIosArm64",
-		"kspIosSimulatorArm64",
-	).forEach { name ->
-		add(name, libs.room.compiler)
-	}
-}
-
-afterEvaluate {
-	
-	arrayOf(
-		"kspDebugKotlinAndroid",
-		"kspReleaseKotlinAndroid",
-		"kspKotlinDesktop",
-		"kspKotlinIosArm64",
-		"kspKotlinIosSimulatorArm64"
-	).forEach { name ->
-		tasks.named(name) {
-			dependsOn("kspCommonMainKotlinMetadata")
-		}
-	}
-}
-
 ktorfitx {
 	websockets.enabled = true
-}
-
-room {
-	schemaDirectory("$projectDir/schemas")
 }
 
 compose.desktop {

@@ -1,18 +1,27 @@
 [versions]
-# Kotlin Multiplatform
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
-agp = "8.11.1"
+
+# Common
+kotlin = "2.2.20"
+ksp = "2.2.20-2.0.3"
+ktor = "3.3.0"
+ktorfitx = "3.3.0-3.1.1"
+kotlinx-datetime = "0.7.1"
+logback-classic = "1.5.18"
+
+# Kotlin Multiplatform
+agp = "8.11.2"
 compose-multiplatform = "1.10.0-alpha01"
 material3 = "1.9.0-beta04"
 navigation3 = "1.0.0-alpha01"
 navigation-compose = "2.9.0-rc01"
-androidx-activity-compose = "1.10.1"
+androidx-activity-compose = "1.11.0"
 hot-reload = "1.0.0-beta06"
 kotlinx-coroutines-swing = "1.10.2"
-room = "2.7.2"
-sqlite = "2.5.2"
+room = "2.8.0"
+sqlite = "2.6.0"
 koin = "4.1.1"
 coil3 = "3.3.0"
 
@@ -24,15 +33,11 @@ hutool = "5.8.40"
 #noinspection NewerVersionAvailable
 tinypinyin = "2.0.3.RELEASE"
 
-# Common
-kotlin = "2.2.10"
-ksp = "2.2.10-2.0.2"
-ktor = "3.2.3"
-ktorfitx = "3.2.3-3.1.0"
-kotlinx-datetime = "0.7.1"
-logback-classic = "1.5.18"
-
 [libraries]
+
+# Common
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
 # Kotlin Multiplatform
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines-swing" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -73,9 +78,6 @@ hutool-extra = { group = "cn.hutool", name = "hutool-extra", version.ref = "huto
 redisson = { group = "org.redisson", name = "redisson", version.ref = "redisson" }
 tinypinyin = { group = "io.github.biezhi", name = "TinyPinyin", version.ref = "tinypinyin" }
 
-# Common
-ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -102,8 +104,6 @@ multiplatform-app = [
     'ktor-client-core',
     'ktor-client-content-negotiation',
     'ktor-serialization-kotlinx-json',
-    'room-runtime',
-    'room-paging',
     'coil-compose',
     'coil-network-ktor3',
 ]

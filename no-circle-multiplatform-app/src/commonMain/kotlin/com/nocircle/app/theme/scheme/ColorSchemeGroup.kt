@@ -5,6 +5,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import com.nocircle.app.pages.settings.items.freeMemory
 import com.nocircle.app.resources.AppString
 import com.nocircle.app.theme.scheme.ColorSchemeContrast.*
@@ -175,5 +176,17 @@ fun animateColorScheme(): ColorScheme {
 		surfaceContainerHighest = transition.animateColor(label = "surfaceContainerHighest") { it.surfaceContainerHighest }.value,
 		surfaceContainerLow = transition.animateColor(label = "surfaceContainerLow") { it.surfaceContainerLow }.value,
 		surfaceContainerLowest = transition.animateColor(label = "surfaceContainerLowest") { it.surfaceContainerLowest }.value,
+		primaryFixed = Color.Unspecified,
+		primaryFixedDim = Color.Unspecified,
+		onPrimaryFixed = Color.Unspecified,
+		onPrimaryFixedVariant = Color.Unspecified,
+		secondaryFixed = Color.Unspecified,
+		secondaryFixedDim = Color.Unspecified,
+		onSecondaryFixed = Color.Unspecified,
+		onSecondaryFixedVariant = Color.Unspecified,
+		tertiaryFixed = Color.Unspecified,
+		tertiaryFixedDim = Color.Unspecified,
+		onTertiaryFixed = Color.Unspecified,
+		onTertiaryFixedVariant = Color.Unspecified,
 	)
 }
