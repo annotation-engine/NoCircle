@@ -1,11 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Ktor" type="KtorApplicationConfigurationType" factoryName="Ktor">
     <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
-    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="io.ktor.server.netty.EngineMain" />
     <module name="no-circle.no-circle-server-app.main" />
     <option name="alternativeJrePath" value="corretto-21" />
-    <option name="alternativeJrePathEnabled" value="true" />
+    <option name="alternativeJrePathEnabled" value="false" />
     <option name="includeProvidedScope" value="false" />
     <option name="mainClass" value="io.ktor.server.netty.EngineMain" />
     <option name="passParentEnvs" value="true" />
