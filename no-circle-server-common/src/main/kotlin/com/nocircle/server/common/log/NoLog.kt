@@ -6,7 +6,7 @@ import org.slf4j.event.Level
 
 object NoLog {
 	
-	val NoCircleLogger: Logger = LoggerFactory.getLogger("NoCircleTag")
+	val NoCircleLogger: Logger = LoggerFactory.getLogger("NoCircle")
 	
 	fun trace(vararg args: Any?) {
 		log(args, Level.TRACE)

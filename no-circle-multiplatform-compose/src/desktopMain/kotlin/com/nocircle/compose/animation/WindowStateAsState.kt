@@ -1,6 +1,9 @@
 package com.nocircle.compose.animation
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPosition
@@ -18,13 +21,11 @@ fun animateWindowStateAsState(
 		targetValue = targetValue,
 		finishedListener = finishedListener
 	)
-	return remember {
-		derivedStateOf {
-			WindowState(
-				position = calcWindowPosition(size),
-				size = size,
-			)
-		}
+	return derivedStateOf {
+		WindowState(
+			position = calcWindowPosition(size),
+			size = size,
+		)
 	}
 }
 

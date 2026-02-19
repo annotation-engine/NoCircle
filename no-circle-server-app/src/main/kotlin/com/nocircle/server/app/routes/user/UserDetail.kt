@@ -12,12 +12,10 @@ import com.nocircle.server.common.exposed.tx
 import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.user.UserDetailDTO
-import kotlin.time.ExperimentalTime
 
 /**
  * 用户详情
  */
-@OptIn(ExperimentalTime::class)
 @Authentication
 @GET("user/detail")
 suspend fun getUserDetail(

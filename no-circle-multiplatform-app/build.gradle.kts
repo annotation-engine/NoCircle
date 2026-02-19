@@ -10,6 +10,7 @@ plugins {
 	alias(libs.plugins.kotlin.serialization)
 	alias(libs.plugins.hot.reload)
 	alias(libs.plugins.ktorfitx.multiplatform)
+	alias(libs.plugins.ksp)
 }
 
 val noCircleVersionName = property("no-circle.version.name").toString()
@@ -21,8 +22,8 @@ kotlin {
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_2
-			apiVersion = KotlinVersion.KOTLIN_2_2
+			languageVersion = KotlinVersion.KOTLIN_2_3
+			apiVersion = KotlinVersion.KOTLIN_2_3
 		}
 	}
 	
@@ -40,8 +41,8 @@ kotlin {
 	jvm("desktop") {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_2
-			apiVersion = KotlinVersion.KOTLIN_2_2
+			languageVersion = KotlinVersion.KOTLIN_2_3
+			apiVersion = KotlinVersion.KOTLIN_2_3
 		}
 	}
 	
@@ -49,21 +50,13 @@ kotlin {
 		val desktopMain by getting
 		
 		androidMain.dependencies {
-			implementation(compose.preview)
 			implementation(libs.bundles.multiplatform.app.android)
 		}
 		commonMain.dependencies {
+			implementation(libs.bundles.multiplatform.app)
 			implementation(projects.noCircleMultiplatformCompose)
 			implementation(projects.noCircleMultiplatformCommon)
 			implementation(projects.noCircleShared)
-			implementation(compose.runtime)
-			implementation(compose.foundation)
-			implementation(compose.material3)
-			implementation(compose.material3AdaptiveNavigationSuite)
-			implementation(compose.ui)
-			implementation(compose.components.resources)
-			implementation(compose.materialIconsExtended)
-			implementation(libs.bundles.multiplatform.app)
 		}
 		desktopMain.dependencies {
 			implementation(compose.desktop.currentOs)
@@ -74,8 +67,8 @@ kotlin {
 		}
 	}
 	compilerOptions {
-		languageVersion = KotlinVersion.KOTLIN_2_2
-		apiVersion = KotlinVersion.KOTLIN_2_2
+		languageVersion = KotlinVersion.KOTLIN_2_3
+		apiVersion = KotlinVersion.KOTLIN_2_3
 		freeCompilerArgs.addAll("-Xexpect-actual-classes", "-Xcontext-parameters")
 	}
 }

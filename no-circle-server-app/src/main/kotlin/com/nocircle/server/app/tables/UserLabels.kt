@@ -1,9 +1,9 @@
 package com.nocircle.server.app.tables
 
-import com.nocircle.server.common.exposed.NoEntity
-import com.nocircle.server.common.exposed.NoEntityClass
 import com.nocircle.server.common.exposed.NoTable
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.dao.IntEntity
+import org.jetbrains.exposed.v1.dao.IntEntityClass
 
 object UserLabels : NoTable("user_label") {
 	
@@ -15,9 +15,9 @@ object UserLabels : NoTable("user_label") {
 	val color = char("color", 9)
 }
 
-class UserLabel(id: EntityID<Int>) : NoEntity(id) {
+class UserLabel(id: EntityID<Int>) : IntEntity(id) {
 	
-	companion object : NoEntityClass<UserLabel>(UserLabels, ::UserLabel)
+	companion object : IntEntityClass<UserLabel>(UserLabels)
 	
 	val userId by UserLabels.userId
 	

@@ -4,19 +4,20 @@ import com.nocircle.server.app.tables.FriendRelationship
 import com.nocircle.server.app.tables.FriendRelationships
 import com.nocircle.server.app.tables.Users
 import com.nocircle.server.common.exposed.*
-import kotlinx.coroutines.flow.singleOrNull
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.innerJoin
-import org.jetbrains.exposed.v1.r2dbc.andWhere
-import org.jetbrains.exposed.v1.r2dbc.insert
-import org.jetbrains.exposed.v1.r2dbc.select
-import org.jetbrains.exposed.v1.r2dbc.selectAll
+import org.jetbrains.exposed.v1.dao.IntEntity
+import org.jetbrains.exposed.v1.dao.IntEntityClass
+import org.jetbrains.exposed.v1.jdbc.andWhere
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.selectAll
 
 object FriendRelationshipDao {
 	
-	suspend fun insertOne(userId: Int, friendId: Int): Boolean {
+	fun insertOne(userId: Int, friendId: Int): Boolean {
 		val insert = FriendRelationships.insert {
 			it[this.userId] = userId
 			it[this.friendId] = friendId
@@ -24,14 +25,14 @@ object FriendRelationshipDao {
 		return insert.insertedCount == 1
 	}
 	
-	suspend fun isFriend(userId: Int, friendId: Int): Boolean {
+	fun isFriend(userId: Int, friendId: Int): Boolean {
 		return FriendRelationships.select(FriendRelationships.id)
 			.where { (FriendRelationships.userId eq userId) and (FriendRelationships.friendId eq friendId) }
 			.logicExists(FriendRelationships)
 			.exists()
 	}
 	
-	suspend fun getOneByUserIdAndFriendId(userId: Int, friendId: Int): FriendRelationship? {
+	fun getOneByUserIdAndFriendId(userId: Int, friendId: Int): FriendRelationship? {
 		return FriendRelationships.selectAll()
 			.where { FriendRelationships.userId eq userId }
 			.andWhere { FriendRelationships.friendId eq friendId }
@@ -40,7 +41,7 @@ object FriendRelationshipDao {
 			?.wrapRow(FriendRelationship)
 	}
 	
-	suspend fun getFriendsByUserId(userId: Int): List<Friend> {
+	fun getFriendsByUserId(userId: Int): List<Friend> {
 		return FriendRelationships.innerJoin(
 			otherTable = Users,
 			onColumn = { this.friendId },
@@ -53,9 +54,9 @@ object FriendRelationshipDao {
 	}
 }
 
-class Friend(id: EntityID<Int>) : NoEntity(id) {
+class Friend(id: EntityID<Int>) : IntEntity(id) {
 	
-	companion object : NoEntityClass<Friend>(Users, ::Friend)
+	companion object : IntEntityClass<Friend>(Users)
 	
 	val friendId by Users.id
 	

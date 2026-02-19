@@ -7,11 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 object NoLog {
 	
-	private const val TAG = "NoCircleTag"
+	private const val TAG = "NoCircle"
 	
 	fun verbose(
 		vararg messages: Any?,
@@ -55,7 +54,6 @@ object NoLog {
 		this.log(LogLevel.ASSERT, store, *messages)
 	}
 	
-	@OptIn(ExperimentalTime::class)
 	private fun log(level: LogLevel, store: Boolean, vararg messages: Any?) {
 		val message = messages.joinToString()
 		this.log(TAG, level, message)

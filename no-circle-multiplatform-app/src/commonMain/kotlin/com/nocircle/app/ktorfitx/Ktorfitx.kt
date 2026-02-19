@@ -14,7 +14,6 @@ import io.ktor.client.plugins.websocket.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 val ktorfitx = ktorfitx {
@@ -28,7 +27,6 @@ val ktorfitx = ktorfitx {
 			json(
 				json = Json {
 					serializersModule = SerializersModule {
-						@OptIn(ExperimentalTime::class)
 						contextual<Instant>(ISOInstantSerializer)
 					}
 					prettyPrint = false

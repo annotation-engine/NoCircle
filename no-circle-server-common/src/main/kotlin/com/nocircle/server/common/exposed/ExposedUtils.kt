@@ -1,22 +1,20 @@
 package com.nocircle.server.common.exposed
 
-import org.jetbrains.exposed.v1.core.Expression
-import org.jetbrains.exposed.v1.core.Op
-import org.jetbrains.exposed.v1.core.and
-import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.*
 import org.jetbrains.exposed.v1.core.statements.UpdateStatement
-import org.jetbrains.exposed.v1.r2dbc.*
-import org.jetbrains.exposed.v1.r2dbc.statements.ReturningSuspendExecutable
-import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
+import org.jetbrains.exposed.v1.dao.IntEntity
+import org.jetbrains.exposed.v1.dao.IntEntityClass
+import org.jetbrains.exposed.v1.jdbc.*
+import org.jetbrains.exposed.v1.jdbc.statements.ReturningBlockingExecutable
+import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 suspend inline fun <T> tx(
-	db: R2dbcDatabase? = null,
-	noinline statement: suspend R2dbcTransaction.() -> T
-): T = suspendTransaction(db, statement)
+	db: Database? = null,
+	noinline statement: suspend JdbcTransaction.() -> T
+): T = suspendTransaction(db, statement = statement)
 
-suspend fun Query.exists(): Boolean = !this.empty()
+fun Query.exists(): Boolean = !this.empty()
 
 fun <T : NoTable> T.selectWithout(
 	column: Expression<*>,
@@ -43,8 +41,7 @@ fun isLogicExists(
 	acc.and { table.deleteFlag eq false }
 }
 
-@OptIn(ExperimentalTime::class)
-suspend fun <T : NoTable> T.logicUpdate(
+fun <T : NoTable> T.logicUpdate(
 	where: () -> Op<Boolean>,
 	limit: Int? = null,
 	body: T.(UpdateStatement) -> Unit
@@ -56,12 +53,11 @@ suspend fun <T : NoTable> T.logicUpdate(
 	it[this.updateTime] = Clock.System.now()
 }
 
-@OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicUpdateReturning(
 	returning: List<Expression<*>> = columns,
 	where: () -> Op<Boolean>,
 	body: T.(UpdateStatement) -> Unit
-): ReturningSuspendExecutable = this.updateReturning(
+): ReturningBlockingExecutable = this.updateReturning(
 	returning = returning,
 	where = { deleteFlag eq false and where() }
 ) {
@@ -69,8 +65,7 @@ fun <T : NoTable> T.logicUpdateReturning(
 	it[this.updateTime] = Clock.System.now()
 }
 
-@OptIn(ExperimentalTime::class)
-suspend fun <T : NoTable> T.logicDeleteWhere(
+fun <T : NoTable> T.logicDeleteWhere(
 	limit: Int? = null,
 	where: () -> Op<Boolean>
 ): Int = this.update(
@@ -81,11 +76,10 @@ suspend fun <T : NoTable> T.logicDeleteWhere(
 	it[this.deleteFlag] = true
 }
 
-@OptIn(ExperimentalTime::class)
 fun <T : NoTable> T.logicDeleteReturning(
 	returning: List<Expression<*>> = columns,
 	where: () -> Op<Boolean>
-): ReturningSuspendExecutable = this.updateReturning(
+): ReturningBlockingExecutable = this.updateReturning(
 	returning = returning,
 	where = { deleteFlag eq false and where() }
 ) {
@@ -98,3 +92,11 @@ fun Query.paginate(number: Int, size: Int): Query {
 	require(size > 0) { "Number must be greater than 0." }
 	return this.offset(((number - 1) * size).toLong()).limit(size)
 }
+
+fun <E : IntEntity, EC : IntEntityClass<E>> ResultRow.wrapRow(
+	entityClass: EC
+): E = entityClass.wrapRow(this)
+
+fun <E : IntEntity, EC : IntEntityClass<E>> SizedIterable<ResultRow>.wrapRows(
+	entityClass: EC
+): List<E> = entityClass.wrapRows(this).toList()

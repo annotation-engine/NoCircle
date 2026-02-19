@@ -42,10 +42,7 @@ class JwtConfig private constructor(
 }
 
 class DatabaseConfig private constructor(
-	val driver: String,
-	val host: String,
-	val port: Int,
-	val name: String,
+	val url: String,
 	val user: String,
 	val password: String,
 )

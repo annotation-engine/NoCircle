@@ -4,32 +4,33 @@ android-minSdk = "24"
 android-targetSdk = "36"
 
 # Common
-kotlin = "2.2.20"
-ksp = "2.2.20-2.0.3"
-ktor = "3.3.0"
-ktorfitx = "3.3.0-3.1.1"
+kotlin = "2.3.10"
+ksp = "2.3.5"
+ktor = "3.4.0"
+ktorfitx = "3.4.0-3.3.0"
 kotlinx-datetime = "0.7.1"
-logback-classic = "1.5.18"
+logback-classic = "1.5.32"
 
 # Kotlin Multiplatform
-agp = "8.11.2"
-compose-multiplatform = "1.10.0-alpha01"
-material3 = "1.9.0-beta06"
-navigation3 = "1.0.0-alpha01"
-navigation-compose = "2.9.0"
-androidx-activity-compose = "1.11.0"
-hot-reload = "1.0.0-beta07"
+agp = "8.12.3"
+compose-multiplatform = "1.11.0-alpha02"
+compose-material3 = "1.11.0-alpha02"
+compose-material-icons-extended = "1.7.3"
+navigation3 = "1.1.0-alpha02"
+navigation-compose = "2.9.2"
+androidx-activity-compose = "1.12.4"
+hot-reload = "1.0.0"
 kotlinx-coroutines-swing = "1.10.2"
-room = "2.8.0"
-sqlite = "2.6.0"
+room = "2.8.4"
+sqlite = "2.6.2"
 koin = "4.1.1"
 coil3 = "3.3.0"
 
 # Ktor Server
-exposed = "1.0.0-rc-1"
-r2dbc-postgresql = "1.0.7.RELEASE"
-redisson = "3.51.0"
-hutool = "5.8.40"
+exposed = "1.0.0"
+postgresql = "42.7.10"
+redisson = "4.2.0"
+hutool = "5.8.43"
 #noinspection NewerVersionAvailable
 tinypinyin = "2.0.3.RELEASE"
 
@@ -39,12 +40,20 @@ tinypinyin = "2.0.3.RELEASE"
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 # Kotlin Multiplatform
+compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "compose-multiplatform" }
+compose-foundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "compose-multiplatform" }
+compose-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "compose-material3" }
+compose-material3-adaptive-navigation-suite = { group = "org.jetbrains.compose.material3", name = "material3-adaptive-navigation-suite", version.ref = "compose-material3" }
+compose-ui = { group = "org.jetbrains.compose.ui", name = "ui", version.ref = "compose-multiplatform" }
+compose-components-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "compose-multiplatform" }
+compose-material-icons-extended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version.ref = "compose-material-icons-extended" }
+compose-ui-tooling-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "compose-multiplatform" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines-swing" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 navigation3-ui = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
-material3-window-size-clazz = { group = "org.jetbrains.compose.material3", name = "material3-window-size-class", version.ref = "material3" }
+material3-window-size-clazz = { group = "org.jetbrains.compose.material3", name = "material3-window-size-class", version.ref = "compose-material3" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
 coil-network-ktor3 = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil3" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
@@ -54,6 +63,7 @@ sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.r
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-websockets = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
 ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
@@ -69,9 +79,10 @@ ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty-jvm", version
 ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml-jvm", version.ref = "ktor" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages-jvm", version.ref = "ktor" }
 exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
-exposed-r2dbc = { group = "org.jetbrains.exposed", name = "exposed-r2dbc", version.ref = "exposed" }
+exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
 exposed-kotlin-datetime = { group = "org.jetbrains.exposed", name = "exposed-kotlin-datetime", version.ref = "exposed" }
-r2dbc-postgresql = { group = "org.postgresql", name = "r2dbc-postgresql", version.ref = "r2dbc-postgresql" }
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback-classic" }
 hutool-crypto = { group = "cn.hutool", name = "hutool-crypto", version.ref = "hutool" }
 hutool-extra = { group = "cn.hutool", name = "hutool-extra", version.ref = "hutool" }
@@ -96,6 +107,14 @@ ktorfitx-server = { id = "cn.ktorfitx.server", version.ref = "ktorfitx" }
 [bundles]
 multiplatform-app = [
     'kotlin-reflect',
+    'compose-runtime',
+    'compose-foundation',
+    'compose-material3',
+    'compose-material3-adaptive-navigation-suite',
+    'compose-ui',
+    'compose-components-resources',
+    'compose-material-icons-extended',
+    'compose-ui-tooling-preview',
     'androidx-navigation-compose',
     'navigation3-ui',
     'material3-window-size-clazz',
@@ -104,6 +123,7 @@ multiplatform-app = [
     'ktor-client-core',
     'ktor-client-content-negotiation',
     'ktor-serialization-kotlinx-json',
+    'ktor-client-websockets',
     'coil-compose',
     'coil-network-ktor3',
 ]
@@ -125,6 +145,12 @@ multiplatform-app-ios = [
 
 multiplatform-compose = [
     'kotlin-reflect',
+    'compose-runtime',
+    'compose-foundation',
+    'compose-material3',
+    'compose-ui',
+    'compose-components-resources',
+    'compose-material-icons-extended',
     'koin-compose-viewmodel',
     'coil-compose',
     'coil-network-ktor3',
@@ -163,9 +189,10 @@ server-app = [
     'ktor-server-status-pages',
     'ktor-serialization-kotlinx-json',
     'exposed-core',
-    'exposed-r2dbc',
+    'exposed-dao',
+    'exposed-jdbc',
     'exposed-kotlin-datetime',
-    'r2dbc-postgresql',
+    'postgresql',
     'logback-classic',
     'hutool-crypto',
     'redisson'
@@ -180,7 +207,8 @@ server-common = [
     'ktor-server-config-yaml',
     'ktor-serialization-kotlinx-json',
     'exposed-core',
-    'exposed-r2dbc',
+    'exposed-dao',
+    'exposed-jdbc',
     'exposed-kotlin-datetime',
     'hutool-extra',
     'tinypinyin'

@@ -23,7 +23,6 @@ import com.nocircle.compose.resources.value
 import com.nocircle.compose.windowsize.WindowWidthSizes
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.time.ExperimentalTime
 
 @Composable
 fun MessageCenterReceivedRequestList() {
@@ -60,7 +59,6 @@ fun MessageCenterReceivedRequestList() {
 	}
 }
 
-@OptIn(ExperimentalTime::class)
 @Composable
 private fun ReceivedRequestCard(
 	viewModel: MessageCenterViewModel,

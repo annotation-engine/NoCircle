@@ -175,6 +175,33 @@ private fun animateBorderStrokeAsState(
 	return rememberUpdatedState(BorderStroke(thickness.value, indicatorColor.value))
 }
 
+private fun TextFieldColors.cursorColor(isError: Boolean): Color =
+	if (isError) errorCursorColor else cursorColor
+
+private fun TextFieldColors.indicatorColor(enabled: Boolean, isError: Boolean, focused: Boolean): Color =
+	when {
+		!enabled -> disabledIndicatorColor
+		isError -> errorIndicatorColor
+		focused -> focusedIndicatorColor
+		else -> unfocusedIndicatorColor
+	}
+
+private fun TextFieldColors.textColor(enabled: Boolean, isError: Boolean, focused: Boolean): Color =
+	when {
+		!enabled -> disabledTextColor
+		isError -> errorTextColor
+		focused -> focusedTextColor
+		else -> unfocusedTextColor
+	}
+
+private fun TextFieldColors.containerColor(enabled: Boolean, isError: Boolean, focused: Boolean): Color =
+	when {
+		!enabled -> disabledContainerColor
+		isError -> errorContainerColor
+		focused -> focusedContainerColor
+		else -> unfocusedContainerColor
+	}
+
 @Stable
 private fun Modifier.textFieldBackground(
 	color: ColorProducer,

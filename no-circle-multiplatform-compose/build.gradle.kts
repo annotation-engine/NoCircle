@@ -16,8 +16,8 @@ kotlin {
 	androidTarget {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_2
-			apiVersion = KotlinVersion.KOTLIN_2_2
+			languageVersion = KotlinVersion.KOTLIN_2_3
+			apiVersion = KotlinVersion.KOTLIN_2_3
 		}
 	}
 	
@@ -35,8 +35,8 @@ kotlin {
 	jvm("desktop") {
 		compilerOptions {
 			jvmTarget = JvmTarget.JVM_21
-			languageVersion = KotlinVersion.KOTLIN_2_2
-			apiVersion = KotlinVersion.KOTLIN_2_2
+			languageVersion = KotlinVersion.KOTLIN_2_3
+			apiVersion = KotlinVersion.KOTLIN_2_3
 		}
 	}
 	
@@ -47,12 +47,6 @@ kotlin {
 			implementation(libs.bundles.multiplatform.compose.android)
 		}
 		commonMain.dependencies {
-			implementation(compose.runtime)
-			implementation(compose.foundation)
-			implementation(compose.material3)
-			implementation(compose.ui)
-			implementation(compose.components.resources)
-			implementation(compose.materialIconsExtended)
 			implementation(libs.bundles.multiplatform.compose)
 			implementation(projects.noCircleMultiplatformCommon)
 		}
@@ -65,8 +59,8 @@ kotlin {
 		}
 	}
 	compilerOptions {
-		languageVersion = KotlinVersion.KOTLIN_2_2
-		apiVersion = KotlinVersion.KOTLIN_2_2
+		languageVersion = KotlinVersion.KOTLIN_2_3
+		apiVersion = KotlinVersion.KOTLIN_2_3
 		freeCompilerArgs.addAll("-Xexpect-actual-classes", "-Xcontext-parameters")
 	}
 }

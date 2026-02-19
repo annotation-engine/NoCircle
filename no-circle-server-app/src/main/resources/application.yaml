@@ -12,10 +12,7 @@ jwt:
   secret: "oB25pdw7tBo6pVIqGdeiFuizxixUbFuQ"
   timeout: "7d"
 database:
-  driver: "postgresql"
-  host: "localhost"
-  port: 5432
-  name: "nocircle"
+  url: "jdbc:postgresql://localhost:5432/nocircle"
   user: "cooder"
   password: ""
 security:

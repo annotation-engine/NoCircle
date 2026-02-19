@@ -17,7 +17,6 @@ import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
 import com.nocircle.shared.model.label.UserLabelDTO
-import kotlin.time.ExperimentalTime
 
 /**
  * 好友请求查询
@@ -41,7 +40,6 @@ suspend fun queryFriendRequest(
 /**
  * 获取我发送的请求
  */
-@OptIn(ExperimentalTime::class)
 private suspend fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getSentRequests(senderId)
 	val receiverIds = requests.map { it.receiverId }
@@ -74,7 +72,6 @@ private suspend fun getSentRequests(senderId: Int): List<FriendRequestDTO> {
 /**
  * 获取发送给我的请求
  */
-@OptIn(ExperimentalTime::class)
 private suspend fun getReceivedRequests(receiverId: Int): List<FriendRequestDTO> {
 	val requests = FriendRequestDao.getReceivedRequests(receiverId)
 	val senderIds = requests.map { it.senderId }

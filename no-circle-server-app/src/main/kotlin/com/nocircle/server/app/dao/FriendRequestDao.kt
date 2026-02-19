@@ -4,19 +4,17 @@ import com.nocircle.server.app.tables.FriendRequest
 import com.nocircle.server.app.tables.FriendRequests
 import com.nocircle.server.common.exposed.*
 import com.nocircle.shared.model.friend.request.FriendRequestDTO
-import kotlinx.coroutines.flow.singleOrNull
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
-import org.jetbrains.exposed.v1.r2dbc.andWhere
-import org.jetbrains.exposed.v1.r2dbc.insert
-import org.jetbrains.exposed.v1.r2dbc.select
-import org.jetbrains.exposed.v1.r2dbc.selectAll
-import kotlin.time.ExperimentalTime
+import org.jetbrains.exposed.v1.jdbc.andWhere
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.selectAll
 
 object FriendRequestDao {
 	
-	suspend fun insertOne(senderId: Int, receiverId: Int): Boolean {
+	fun insertOne(senderId: Int, receiverId: Int): Boolean {
 		val insert = FriendRequests.insert {
 			it[this.senderId] = senderId
 			it[this.receiverId] = receiverId
@@ -25,7 +23,7 @@ object FriendRequestDao {
 		return insert.insertedCount == 1
 	}
 	
-	suspend fun updateOne(id: Int, senderId: Int, receiverId: Int, status: FriendRequestDTO.Status): Boolean {
+	fun updateOne(id: Int, senderId: Int, receiverId: Int, status: FriendRequestDTO.Status): Boolean {
 		val updateCount = FriendRequests.logicUpdate(
 			where = {
 				(FriendRequests.id eq id) and
@@ -38,8 +36,7 @@ object FriendRequestDao {
 		return updateCount == 1
 	}
 	
-	@OptIn(ExperimentalTime::class)
-	suspend fun getSentRequests(senderId: Int): List<FriendRequest> {
+	fun getSentRequests(senderId: Int): List<FriendRequest> {
 		return FriendRequests.selectAll()
 			.where { FriendRequests.senderId eq senderId }
 			.logicExists(FriendRequests)
@@ -47,8 +44,7 @@ object FriendRequestDao {
 			.wrapRows(FriendRequest)
 	}
 	
-	@OptIn(ExperimentalTime::class)
-	suspend fun getReceivedRequests(receiverId: Int): List<FriendRequest> {
+	fun getReceivedRequests(receiverId: Int): List<FriendRequest> {
 		return FriendRequests.selectAll()
 			.where { FriendRequests.receiverId eq receiverId }
 			.andWhere { FriendRequests.status eq FriendRequestDTO.Status.PENDING }
@@ -57,7 +53,7 @@ object FriendRequestDao {
 			.wrapRows(FriendRequest)
 	}
 	
-	suspend fun getReceivedPendingRequestCount(receiverId: Int): Int {
+	fun getReceivedPendingRequestCount(receiverId: Int): Int {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.receiverId eq receiverId }
 			.andWhere { FriendRequests.status eq FriendRequestDTO.Status.PENDING }
@@ -66,7 +62,7 @@ object FriendRequestDao {
 			.toInt()
 	}
 	
-	suspend fun isAlreadySend(senderId: Int, receiverId: Int): Boolean {
+	fun isAlreadySend(senderId: Int, receiverId: Int): Boolean {
 		return FriendRequests.select(FriendRequests.id)
 			.where { FriendRequests.senderId eq senderId }
 			.andWhere { FriendRequests.receiverId eq receiverId }
@@ -75,7 +71,7 @@ object FriendRequestDao {
 			.exists()
 	}
 	
-	suspend fun getOneBySenderIdAndReceiverId(senderId: Int, receiverId: Int): FriendRequest? {
+	fun getOneBySenderIdAndReceiverId(senderId: Int, receiverId: Int): FriendRequest? {
 		return FriendRequests.selectAll()
 			.where { FriendRequests.senderId eq senderId }
 			.andWhere { FriendRequests.receiverId eq receiverId }
@@ -84,7 +80,7 @@ object FriendRequestDao {
 			?.wrapRow(FriendRequest)
 	}
 	
-	suspend fun deleteOne(senderId: Int, receiverId: Int): Boolean {
+	fun deleteOne(senderId: Int, receiverId: Int): Boolean {
 		val deleteCount = FriendRequests.logicDeleteWhere {
 			(FriendRequests.senderId eq senderId) and (FriendRequests.receiverId eq receiverId)
 		}

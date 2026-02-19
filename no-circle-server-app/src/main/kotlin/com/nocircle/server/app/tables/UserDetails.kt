@@ -1,10 +1,10 @@
 package com.nocircle.server.app.tables
 
-import com.nocircle.server.common.exposed.NoEntity
-import com.nocircle.server.common.exposed.NoEntityClass
 import com.nocircle.server.common.exposed.NoTable
 import com.nocircle.shared.model.user.Gender
 import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.dao.IntEntity
+import org.jetbrains.exposed.v1.dao.IntEntityClass
 
 object UserDetails : NoTable("user_detail") {
 	
@@ -28,9 +28,9 @@ object UserDetails : NoTable("user_detail") {
 		.default(null)
 }
 
-class UserDetail(id: EntityID<Int>) : NoEntity(id) {
+class UserDetail(id: EntityID<Int>) : IntEntity(id) {
 	
-	companion object : NoEntityClass<UserDetail>(UserDetails, ::UserDetail)
+	companion object : IntEntityClass<UserDetail>(UserDetails)
 	
 	val userId by UserDetails.userId
 	

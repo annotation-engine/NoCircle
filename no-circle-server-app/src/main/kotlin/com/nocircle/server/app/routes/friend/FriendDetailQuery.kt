@@ -15,9 +15,7 @@ import com.nocircle.server.common.model.NoPrincipal
 import com.nocircle.shared.model.ApiResult
 import com.nocircle.shared.model.friend.FriendDetailDTO
 import com.nocircle.shared.model.label.UserLabelDTO
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 @Authentication
 @GET("friend/detail/query")
 suspend fun queryFriendDetail(

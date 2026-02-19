@@ -37,7 +37,6 @@ import com.nocircle.compose.material3.NoScaffold
 import com.nocircle.compose.navigation.LocalNavController
 import com.nocircle.compose.resources.value
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.time.ExperimentalTime
 
 @Composable
 fun PersonPage() {
@@ -152,7 +151,6 @@ private fun EditLabel(
 	}
 }
 
-@OptIn(ExperimentalTime::class)
 @Composable
 private fun LastLoginTime() {
 	val viewModel = koinViewModel<PersonViewModel>()
