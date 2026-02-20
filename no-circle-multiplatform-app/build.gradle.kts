@@ -1,3 +1,4 @@
+import cn.ktorfitx.common.gradle.plugin.KtorfitxLanguage
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
@@ -108,6 +109,7 @@ android {
 
 ktorfitx {
 	websockets.enabled = true
+	language = KtorfitxLanguage.CHINESE
 }
 
 compose.desktop {
